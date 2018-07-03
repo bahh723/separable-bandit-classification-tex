@@ -1,0 +1,626 @@
+\documentclass{article}
+
+% if you need to pass options to natbib, use, e.g.:
+% \PassOptionsToPackage{numbers, compress}{natbib}
+% before loading nips_2017
+%
+% to avoid loading the natbib package, add option nonatbib:
+% \usepackage[nonatbib]{nips_2017}
+
+%\usepackage{nips_2017}
+
+% to compile a camera-ready version, add the [final] option, e.g.:
+ \usepackage[final]{nips_2017}
+
+%\usepackage[utf8]{inputenc} % allow utf-8 input
+\usepackage[T1]{fontenc}    % use 8-bit T1 fonts
+\usepackage{hyperref}       % hyperlinks
+\usepackage{url}            % simple URL typesetting
+\usepackage{booktabs}       % professional-quality tables
+\usepackage{amsfonts}       % blackboard math symbols
+\usepackage{nicefrac}       % compact symbols for 1/2, etc.
+\usepackage{microtype}      % microtypography
+% For citations
+\usepackage{natbib}
+\usepackage{amsthm}
+% For algorithms
+%\usepackage[algcompatible]{algpseudocode}
+%\usepackage{algorithm}
+%\usepackage{algorithmicx}
+%\usepackage[noend]{algcompatible}
+\usepackage[vlined,linesnumbered,ruled]{algorithm2e}
+\usepackage{bbm}
+\usepackage{amsfonts}
+\usepackage{amsmath}           
+\usepackage{mathtools}    
+\usepackage{amsopn}
+\usepackage{amssymb}
+\usepackage{graphicx}
+\usepackage{enumerate}
+%%%%%%%%%%%%%%%%%% toc 
+\usepackage{scrwfile}
+\TOCclone[\contentsname~(\appendixname)]{toc}{atoc}
+\newcommand\StartAppendixEntries{}
+\AfterTOCHead[toc]{%
+  \renewcommand\StartAppendixEntries{\value{tocdepth}=-10000\relax}%
+}
+\AfterTOCHead[atoc]{%
+  \edef\maintocdepth{\the\value{tocdepth}}%
+  \value{tocdepth}=-10000\relax%
+  \renewcommand\StartAppendixEntries{\value{tocdepth}=\maintocdepth\relax}%
+}
+\newcommand*\appendixwithtoc{%
+  \cleardoublepage
+  \appendix
+  \addtocontents{toc}{\protect\StartAppendixEntries}
+  \listofatoc
+}
+\usepackage{blindtext}
+\usepackage{color}
+%%%%%%%%%%%%%%%%%% toc
+
+%%%%%%%%%%%%%%%% HEADER 
+\newcommand{\EG}{\textsc{Epoch-Greedy}\xspace}
+\newcommand{\EPG}{\textsc{$\epsilon$-Greedy}\xspace}
+\newcommand{\minimonster}{\textsc{ILOVETOCONBANDITS}\xspace}
+\newcommand{\ILTCB}{\textsc{ILTCB}\xspace}
+\newcommand{\AdaEG}{\textsc{Ada-Greedy}\xspace}
+\newcommand{\AdaILTCB}{\textsc{Ada-ILTCB}\xspace}
+\newcommand{\AdaPE}{\textsc{Ada-PE}\xspace}
+\newcommand{\corral}{\textsc{Corral}\xspace}
+\newcommand{\bistro}{\textsc{BISTRO+}\xspace}
+\newcommand{\base}[1]{{{\cal{B}}_{#1}}}
+\newcommand{\scale}{\rho}
+\newcommand{\FS}{\text{FS}}
+
+\newcommand{\calA}{{\mathcal{A}}}
+\newcommand{\calX}{{\mathcal{X}}}
+\newcommand{\calS}{{\mathcal{S}}}
+\newcommand{\calI}{{\mathcal{I}}}
+\newcommand{\calJ}{{\mathcal{J}}}
+\newcommand{\calK}{{\mathcal{K}}}
+\newcommand{\calD}{{\mathcal{D}}}
+\newcommand{\calE}{{\mathcal{E}}}
+\newcommand{\calR}{{\mathcal{R}}}
+\newcommand{\calT}{{\mathcal{T}}}
+\newcommand{\calH}{\mathcal{H}}
+\newcommand{\avgR}{\wh{\cal{R}}}
+\newcommand{\ips}{\wh{r}}
+\newcommand{\whpi}{\wh{\pi}}
+\newcommand{\whE}{\wh{\E}}
+\newcommand{\whV}{\wh{V}}
+\newcommand{\Reg}{\text{\rm Reg}}
+\newcommand{\whReg}{\wh{\text{\rm Reg}}}
+\newcommand{\flg}{\text{\rm flag}}
+\newcommand{\one}{\boldsymbol{1}}
+\newcommand{\var}{\Delta}
+\newcommand{\p}{\prime}
+\newcommand{\nb}{\nabla}
+\newcommand{\e}{\mathbf{e}}
+
+\DeclareMathOperator*{\arginf}{arginf}
+\DeclareMathOperator*{\argsup}{argsup}
+\DeclareMathOperator*{\range}{range}
+\DeclareMathOperator*{\mydet}{det_{+}}
+\DeclarePairedDelimiter\abs{\lvert}{\rvert}
+\DeclarePairedDelimiter\bigabs{\big\lvert}{\big\rvert}
+\DeclarePairedDelimiter\ceil{\lceil}{\rceil}
+\DeclarePairedDelimiter\floor{\lfloor}{\rfloor}
+\DeclarePairedDelimiter\bigceil{\big\lceil}{\big\rceil}
+\DeclarePairedDelimiter\bigfloor{\big\lfloor}{\big\rfloor}
+
+\newcommand{\field}[1]{\mathbb{#1}}
+\newcommand{\fY}{\field{Y}}
+\newcommand{\fX}{\field{X}}
+\newcommand{\fH}{\field{H}}
+\newcommand{\fR}{\field{R}}
+\newcommand{\fN}{\field{N}}
+\newcommand{\E}{\field{E}}
+\newcommand{\err}{\text{err}}
+
+\newcommand{\theset}[2]{ \left\{ {#1} \,:\, {#2} \right\} }
+\newcommand{\inner}[1]{ \left\langle {#1} \right\rangle }
+\newcommand{\Ind}[1]{ \field{I}_{\{{#1}\}} }
+\newcommand{\eye}[1]{ \boldsymbol{I}_{#1} }
+\newcommand{\norm}[1]{\left\|{#1}\right\|}
+%\newcommand{\trace}[1]{\text{tr}\left({#1}\right)}
+\newcommand{\trace}[1]{\textsc{tr}({#1})}
+\newcommand{\diag}[1]{\mathrm{diag}\!\left\{{#1}\right\}}
+
+\newcommand{\defeq}{\stackrel{\rm def}{=}}
+\newcommand{\sgn}{\mbox{\sc sgn}}
+\newcommand{\scI}{\mathcal{I}}
+\newcommand{\scO}{\mathcal{O}}
+\newcommand{\scN}{\mathcal{N}}
+
+\newcommand{\dt}{\displaystyle}
+\renewcommand{\ss}{\subseteq}
+\newcommand{\wh}{\widehat}
+\newcommand{\wt}{\widetilde}
+\newcommand{\ve}{\varepsilon}
+\newcommand{\hlambda}{\wh{\lambda}}
+\newcommand{\yhat}{\wh{y}}
+
+\newcommand{\hDelta}{\wh{\Delta}}
+\newcommand{\hdelta}{\wh{\delta}}
+\newcommand{\spin}{\{-1,+1\}}
+%\newcommand{\calS}{\mathcal{S}}
+\newcommand{\calC}{\mathcal{C}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%
+
+\newtheorem{assumption}{Assumption}
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{remark}[theorem]{Remark}
+\DeclareMathOperator{\val}{val}
+\DeclareMathOperator{\spa}{sp}
+\DeclareMathOperator{\solve}{solve}
+\allowdisplaybreaks
+
+% Packages hyperref and algorithmic misbehave sometimes.  We can fix
+% this with the following command.
+%\newcommand{\theHalgorithm}{\arabic{algorithm}}
+
+\usepackage{amsmath}
+\DeclareMathOperator*{\argmin}{\arg\!\min}
+\DeclareMathOperator*{\argmax}{\arg\!\max}
+
+\title{Bandit Multiclass Classification}
+
+%\author{}
+
+\begin{document}
+% \nipsfinalcopy is no longer used
+
+\maketitle
+	
+%#############################################################################
+%    Introduction
+%#############################################################################
+
+\section{A Regret Lower Bound for A Certain Type of Algorithms}
+In this section, we try to construct an error lower bound for a certain type of algorithms. This type of algorithms does not make update when it makes a wrong prediction. For simplicity, we only consider binary classification.  More formally, the algorithms we consider satisfy the following assumption. 
+
+\begin{assumption}[Algorithm]
+Let $p_t(x)$ be the algorithm's probability of predicting class $1$ (recall we consider binary classification) at round $t$ if it receives the feature vector $x\in \calX \subset \mathbb{R}^d$. We assume $p_t(\cdot)$ is totally determined by all previous \textbf{correct} examples. In other words, $p_t(\cdot)$ is determined by the tuple $((x_{\tau_1}, y_{\tau_1}), \ldots, (x_{\tau_N}, y_{\tau_N}))$ where $1\leq \tau_1 < \tau_2 \ldots < \tau_N < t$ are the rounds that the learner makes correct prediction. 
+\end{assumption}
+
+\begin{assumption}[linearly separable with a margin]
+We assume the samples are linearly separable with margin $\gamma$ (i.e., any two points with different labels have distance no less than $\gamma$). 
+\end{assumption}
+
+\begin{definition}[Free space]
+The free space at time $t$ is the set of points whose label is still underdetermined given $(x_1, y_1), \ldots, (x_{t-1},y_{t-1})$. For example, the $\gamma$-ball centered around any already presented point is excluded from the free space. Denote the free space at time $t$ by $\FS_t$.  
+\end{definition}
+The free space's definition simply means that at time $t$, the adversary can pick any point $x_t$ in $\FS_t$ and assign the label $y_t$ to either $1$ or $2$ without violating the linearly separable and the $\gamma$-margin assumption. 
+
+Below we present the Adversary's strategy of constructing $(x_t, y_t)$. 
+
+\begin{algorithm}[H]
+\caption{Adversary's strategy}
+Pick $x_1$ randomly from $\calX$, and let $y_1=1$. \\
+\For{$t=2, \ldots, T$}{
+    \If{$\tilde{y}_{t-1} \neq y_{t-1}$}{
+        Let $(x_t, y_t)=(x_{t-1}, y_{t-1})$
+    }
+    \ElseIf{$\FS_{t}$ is not empty}{
+        Pick $x_t\in \FS_{t}$. Because of this $x_t$, the free space's volume is reduced. We denote the reduction amount by $V_t=v(\FS_{t+1})-v(\FS_{t})\leq V$. (i.e., $V$ is a global upper bound of $V_t$) \\
+        If $p_t(x_t)\geq 1-\max\left\{\sqrt{V},\frac{1}{\sqrt{T}}\right\}$, then label $y_t=2$; otherwise, label $y_t=1$. 
+    }
+    \Else{
+        Randomly assign $(x_t,y_t)$ with some value that does not violate the assumption. 
+    }
+}
+\end{algorithm}
+
+%\textbf{Analysis}. We assume that in the ``else'' case in the above algorithm, we can always pick $x_t$ such that $V_t\leq V$ (we will show how to pick such $x_t$ later). 
+
+\begin{definition}[history]
+Let $\calH_t$ be the history before time $t$: $\calH_t=\{ (x_s, y_s, \tilde{y}_s) \}_{s=1}^{t-1}$. We use $\E_t[\cdot]$ to denote $\E[\cdot | \calH_t]$. 
+\end{definition}
+
+\begin{lemma}
+If $\exists t$ such $p_t(x_t)\geq 1-\max\left\{ \sqrt{V}, \frac{1}{\sqrt{T}} \right\}$, then $\E_t\left[ \sum_{s=t}^T  \one[\tilde{y}_s\neq y_s] \right] \geq \Omega\left(\min\left\{\frac{1}{\sqrt{V}},\sqrt{T}\right\}\right)$.
+\end{lemma}
+\begin{proof}
+By of the condition and the adversary strategy, we have $y_t=2$. Therefore, the learner will predict the true label with probability $\leq \max \left\{ \sqrt{V}, \frac{1}{\sqrt{T}} \right\}$. And note that if the learner predicts incorrectly at time $t$, then at time $t+1$ the feature vector remains the same $(x_{t+1}=x_t)$ , and the learner's probability of prediction also remains the same $(p_{t+1}(\cdot)=p_t(\cdot))$. Therefore, the expected number of mistakes before the first correct guess is (roughly) larger than  $\frac{1}{\max\left\{\sqrt{V}, \frac{1}{\sqrt{T}}\right\}}=\min\left\{\frac{1}{\sqrt{V}}, \sqrt{T}\right\}$. 
+\end{proof}
+
+\begin{lemma}
+If $\forall s$, $p_s(x_s)\leq 1-\max\left\{\sqrt{V}, \frac{1}{\sqrt{T}}\right\}$, then $\sum_{s=1}^T \E_s[\one[\tilde{y}_s\neq y_s]] = \Omega\left(\min\left\{\sqrt{T}, \frac{1}{\sqrt{V}}\right\}\right)$.
+\end{lemma}
+
+\begin{proof}
+By the condition and the adversary strategy, we know that the probability of error is larger than $\max\left\{\sqrt{V},\frac{1}{\sqrt{T}}\right\}$ at all time $t$ \textit{before the free space is used up}. Since each time the free space only reduces by $V$, in the first $\frac{1}{V}$ rounds (assume the total volume is $1$), the free space is still all available. Therefore, 
+\begin{align*}
+    \sum_{s=1}^T \E_s[\one[\tilde{y}_s\neq y_s]] \geq \min\left\{ T,\frac{1}{V} \right\}\times \max\left\{ \sqrt{V}, \frac{1}{\sqrt{T}} \right\}=\min\left\{\sqrt{T}, \frac{1}{\sqrt{V}}\right\}. 
+\end{align*}
+\end{proof}
+
+\textbf{Discussion}. We believe that $V$ can be in the order of $\mathcal{O}\left(\gamma^d\right)$ (some weaker thing like $\mathcal{O}\left(\gamma^{d/2}\right)$ is also acceptable). Basically, we need to figure out the following question: can we construct a sequence of points $\{x_1,x_2, \ldots\}$ , such that for every $t$, $x_t$'s distance with $\text{conichull}\{x_1,\ldots, x_{t-1}\}$ is larger than $\gamma$, but the volume difference $v(\text{conichull}\{x_1,\ldots, x_{t}\}) - v(\text{conichull}\{x_1,\ldots, x_{t-1}\})$ is upper bounded by $V$?
+
+This lower bound does not rule out those algorithms that change its probability vector based on the $\textbf{count}$ of consecutive errors. This type of algorithm may still easy to be implemented (like QBC). Also it does not rule out the banditron algorithm. 
+
+\section{Biased Halving: Trading Error with Complexity}
+\begin{algorithm}[H]
+\caption{Banditron}
+\textbf{Define}: $\Omega=\{W\in \mathbb{R}^{Kd}: \|\e_i^\top W\|_2\leq D\}$.\\
+For a set $S$ of $W$'s, $S(i|x)$ is the subset of $S$ that outputs class $i$ given feature vector $x$, i.e., $S(i|x)=\{W\in S: (Wx)_i \geq (Wx)_j \ \forall j\}$\\
+$|S|$ denotes the volumn of $S$. \\
+\textbf{parameter}: $\alpha \in (0,1)$ \\
+$\Omega_1=\Omega$.  \\
+\For{$ t=1,\ldots, T $}{
+\If{$\argmax_i \frac{|\Omega_t(i|x_t)|}{|\Omega_t|} \geq 1-\alpha$}{ \label{line:case1}
+        Let $\tilde{y}_t=i$.\\ 
+        \If{$\tilde{y}_t \neq y_t$}{
+            $\Omega_{t+1}=\Omega_t \backslash \Omega_t(\tilde{y}_t|x_t)$. \label{line:cut}
+        }
+    }
+\label{line:case2}\Else{
+        Let $\tilde{y}_t\sim \text{unif}([K])$. \\
+        \If{$\tilde{y}_t=y_t$}{
+            $\Omega_{t+1}=\Omega_t(\tilde{y}_t|x_t)$. \label{line:cut2}
+        }
+    }
+}
+\end{algorithm}
+
+\textbf{Assumption}: If the volume of $\Omega_t$ becomes smaller than $\frac{|\Omega|}{N}$, then the algorithm won't make any error anymore. $N$ should be in the order of $\Theta(\frac{1}{\gamma^{Kd}})$.  \\
+\textbf{Rough analysis:} \\
+Each time the algorithm makes an error in Line~\ref{line:case1}, the volume becomes $\alpha$ times the original volume. So the algorithm will not make more than $ \frac{\ln N}{\ln \frac{1}{\alpha}} $ mistakes in this case. 
+
+In the case of Line~\ref{line:case2}, $K\ln \frac{1}{\delta}$ errors will accompany with a $(1-\alpha)$-factor shrinkage in the volume. Therefore, the number of errors occurred in this case is upper bounded by $ \frac{K\ln\frac{1}{\delta}\ln N}{\ln \frac{1}{1-\alpha}}\leq \frac{K\ln\frac{1}{\delta}\ln N}{\alpha} $.
+
+Now we discuss about the complexity. The main issue is how to maintain $\Omega_t$. Each time the algorithm enters Line~\ref{line:cut}, $\Omega_t$ becomes more and more fragmented. But if $\Omega_t$ can be maintained with $M$ convex cones, then $\Omega_{t+1}$ can be maintained with $(K-1)M\leq KM$ convex cones. And we assume each cone's volume can be computed in \text{poly}($T$) time. Each time the algorithm enters Line~\ref{line:cut2}, the number of convex cones does not increase. 
+
+By the above discussion, there will be no more than $K^{\frac{\ln N}{\ln \frac{1}{\alpha}}}$ convex cones to maintain. And the error bound is in the order of $\frac{K\ln\frac{1}{\delta}\ln N}{\alpha}$ for some $\alpha<\frac{1}{2}$. Let's try to balance the number of errors and computational complexity. Let
+\begin{align*}
+    &K^{\frac{\ln N}{\ln \frac{1}{\alpha}}}\approx\frac{K\ln\frac{1}{\delta}\ln N}{\alpha}\\
+    \Rightarrow &~ \frac{\ln N}{\ln\frac{1}{\alpha}} \ln K \approx  \ln\left(K\ln\frac{1}{\delta}\ln N\right) + \ln\frac{1}{\alpha}\\
+    \Rightarrow &~ \text{pick\ }\ln\frac{1}{\alpha}=\sqrt{\ln N}.
+\end{align*}
+Thus the computational complexity is in the order of $K^{\sqrt{\ln N}}\times \text{poly}(T)=K^{\sqrt{Kd\ln\frac{1}{\delta}}}$. The error bound is $\mathcal{O}\left( e^{\sqrt{Kd\ln \frac{1}{\delta}}} K^2 d \ln\frac{1}{\delta}\ln\frac{1}{\gamma} \right)$.
+
+Another viewpoint: let $\frac{1}{\alpha}=K^\beta$, then the complexity is $\left(\frac{1}{\gamma}\right)^{\frac{Kd}{\beta}}\times \text{poly}(T)$ and the error bound is $K^{\beta+1}\ln\frac{1}{\delta}\ln N$. 
+
+
+
+
+
+
+\section{Cone Algorithm}
+\begin{algorithm}[H]
+\caption{Banditron}
+\textbf{definition}: $K\triangleq$ number of classes, $\gamma\triangleq$  margin\\
+\textbf{Initialize}: $\calS_1=\cdots=\calS_K=\phi$ (empty set) \\
+\For{$t=1, \ldots, T$}{
+    Receive $x_t\in \mathbb{R}^d$. \\
+    Define the cone $\calC_i = \left\{x\in\mathbb{R}^d: x=\sum_{j=1}^{|\calS_i|} \alpha_jy_j, \text{\ where\ } y_j\in \calS_i, \alpha_j\geq 0 \right\}$ \\
+    (that is, $\calC_i$ is the conic hull of $\calS_i$) \\
+    Check whether $x_t$ belongs to, or has distance smaller than $\gamma$, to one of $\calC_1, \ldots, \calC_K$. \\
+    If so, classify $x_t$ to the corresponding class (say class $i$), and let $\calS_i\leftarrow \calS_i \cup \{x_t\}$. {\color{red} This prediction will be correct for sure by our margin assumption.}\\
+    If not, let $\tilde{y}_t\sim \text{unif}([K])$ and predict $\tilde{y}_t$. If $\tilde{y}_t=y_t$, then $\calS_{y_t}\leftarrow \calS_{y_t} \cup \{x_t\}$. 
+}
+\end{algorithm}
+
+\section{One-against-all Perceptron}
+Actually, same as Chicheng's writeup's Section 5: Fixed-Threshold Perceptron. 
+
+\section{Gradient Descent {\color{red} [TODO]}}
+\iffalse
+\section{Continuous EXP4 with Uniform Exploration}
+
+\begin{algorithm}[H]
+\caption{Banditron}
+\textbf{Parameters}: feasible set $\Omega\subset \mathbb{R}^{K\times d}$ \\
+\textbf{Definitions}: $\ell_t(W)\triangleq [1-(Wx_t)_{y_t}+\max_{r\in[K]}(Wx_t)_r]_+$ (hinge loss)\\
+\For{$t=1, \ldots, T$}{
+    Receive $x_t\in \mathbb{R}^d$. \\
+    Define 
+    \begin{gather*}
+    q_t(W)=\frac{\exp(-\alpha \sum_{s=1}^{t-1} \hat{\ell}_s(W))}{\int_{U\in \Omega} \exp(-\alpha \sum_{s=1}^{t-1} \hat{\ell}_s(U))dU }, \ \ \ \ \forall W\in\Omega, 
+    %\Omega_k^t\triangleq\{W\in\Omega: k=\argmax_{r\in[K]} (Wx_t)_r\} \ \ \ \text{i.e., the set of $W$'s that predict class $k$ at time $t$}\\
+    %p_t(k)=\int_{W\in \Omega_k^t} q_t(W)dW, \ \ \ \ \forall k\in[K], \\
+    %\tilde{p}_t(k) \propto p_t(k)\one[p_t(k)\geq \epsilon]
+    \end{gather*} 
+    where $\hat{\ell}_s(W)=\one[\tilde{y}_s=y_s]\left(\frac{\one[\hat{y}_s= y_s]\ell_s(W)}{1-\gamma+\frac{\gamma}{K}} + \frac{\one[\hat{y}_s\neq y_s]\ell_s(W)}{\frac{\gamma}{K}}\right)$.\\
+    Sample $W_t\sim q_t$, and let $\hat{y}_t = \argmax_{r\in[K]}(W_tx_t)_r$.\\
+    Let $\tilde{y}_t=\hat{y}_t$ with probability $1-\gamma$, and $\tilde{y}_t\sim \text{unif}([K])$ with probability $\gamma$. 
+}
+\end{algorithm}
+
+%\begin{assumption}
+%\label{assump:zero}
+%   Assume we know there exists a $W^*\in \Omega$ having zero loss (i.e., $\ell_t(W^*)=0$ for all $t$). 
+%\end{assumption}
+
+%\begin{definition}
+%Define $\tilde{q}_t(W) = q_t(W)\times \frac{\tilde{p}_t(k')}{p_t(k')}$ with $k' = \argmax_r(Wx_t)_r$ (i.e., letting $\tilde{q}_t$ scales with $\tilde{p}_t$). 
+%\end{definition}
+%\begin{definition}
+%Define $\bar{\ell}_t(k)=\int_{W\in\Omega_k^t} \tilde{q}_t(W)\ell_t(W)dW \big/ \int_{W\in\Omega_k^t} \tilde{q}_t(W)dW $, that is, the average loss over $W$'s that predicts class $k$. Defining this is because our problem is slightly different from traditional contextual bandit formulation: with hinge loss, the loss received by different experts may be different even if they predict the same class/action. Note that while $\ell_t(\cdot), \hat{\ell}_t(\cdot)$ are losses for experts, $\bar{\ell}_t(\cdot)$ is loss for actions. 
+%\end{definition}
+
+%\begin{lemma}
+%$\int_{W\in\Omega}q_t(W)\hat{\ell}_t(W)\geq (1-K\epsilon)\bar{\ell}_t(\hat{y}_t)$. 
+%\end{lemma}
+%\begin{proof}
+%By the definition of $\tilde{p}_t$, we have $1\leq \frac{\tilde{p}_t(k)}{p_t(k)}\leq \frac{1}{1-K\epsilon}$ for all $k$. Thus $1\leq \frac{\tilde{q}_t(W)}{q_t(W)}\leq \frac{1}{1-K\epsilon}$ for all $W$.  Therefore, 
+%\begin{align*}
+%    \int_{W\in\Omega}q_t(W)\hat{\ell}_t(W)dW&\geq (1-K\epsilon)\int_{W\in\Omega}\tilde{q}_t(W)\hat{\ell}_t(W)dW \\
+%    &=(1-K\epsilon)\left(\one[\hat{y}_t=y_t]\sum_{k=1}^K \tilde{p}_t(k)\bar{\ell}_t(k) + \one[\hat{y}_t\neq y_t]\sum_{k=1}^K \tilde{p}_t(k)\bar{a}_t(k)\right). 
+%\end{align*}
+%\end{proof}
+
+%\begin{lemma}
+%\label{lemma:simple}
+%The following facts hold: \\
+%(1) $ \hat{\ell}_t(W)\leq \ell_t(W)$ for all $W$. \\
+%(2) $ \hat{\ell}_t(W_t) \geq \ell_t(W_t) $. 
+%\end{lemma}
+%\begin{proof}
+%\ \\
+%(1) $ \hat{\ell}_t(W)\leq \one[\hat{y}_t=y_t]\ell_t(W)+\one[\hat{y}_t\neq y_t]\ell_t(W) = \ell_t(W)$. \\
+%(2) $ \hat{\ell}_t(W_t)\geq \one[\hat{y}_t\neq y_t]a_t(W_t)=\one[\hat{y}_t\neq y_t]=\ell_t(W_t)$. 
+%\end{proof}
+
+%By standard analysis of the exponential weight algorithm (or see page 9 of \cite{bubeck2017kernel}), we have 
+%\begin{align*}
+%\E\left[\sum_{t=1}^T\int_{W\in\Omega} q_t(W)\hat{\ell}_t(W)dW \right] &\leq \E\left[\sum_{t=1}^T\hat{\ell}_t(W^*) + \frac{\textbf{Ent}(q_1||\delta(W^*))}{\alpha} + \alpha \sum_{t=1}^T\int_{W\in\Omega} q_t(W)\hat{\ell}_t(W)^2dW\right] \\ 
+%&\leq \E\left[\sum_{t=1}^T\hat{\ell}_t(W^*) + \frac{\textbf{Ent}(q_1||\delta(W^*))}{\alpha} + \alpha \sum_{t=1}^T\int_{W\in\Omega} q_t(W)\hat{\ell}_t(W)dW \right],
+%\end{align*}
+%which implies $\E\left[\sum_{t=1}^T\hat{\ell}_t(W_t)\right]\leq  \E\left[\sum_{t=1}^T  \hat{\ell}_t(W^*) \right]+\frac{\textbf{Ent}(q_1||\delta(W^*))}{\alpha(1-\alpha)}+\frac{\alpha}{1-\alpha}\E\left[\sum_{t=1}^T\hat{\ell}_t(W^*)\right] $. Combining Lemma~\ref{lemma:simple}, we get a small-loss regret bound. 
+
+%\textbf{Note.} Considering $\delta(W^*)$ as a distribution in a region surrounding $W^*$ which has $1/(TD)^{dK}$ $\Omega$'s volume, then $\textbf{Ent}(q_1||\delta(W^*))$ should be in the order of $dK\log (TD)$. 
+
+%\textbf{Discussion.} \\
+%(1) It seems even okay to define $\hat{\ell}_s(W)=\one[\hat{y}_s\neq y_s]a_s(W)$. \\
+%(2) $q_t(\cdot)$ can be sampled when $\sum_{s=1}^{t-1}\hat{\ell}_s(W)$ is convex (not very sure, but I believe so from papers like \cite{lovasz2006fast,narayanan2013efficient,bubeck2015sampling}). The part $ \one[\hat{y}_s=y_s]\ell_s(W)$ can become convex if we define $\ell(W)$ to be the hinge loss; however, the part $\one[\hat{y}_s\neq y_s]a_s(W)$ does not seem to be easy. This corresponds to constructing a loss function when the learner is wrong, and is somewhat related to the issue we met previously: the region $\{W: \hat{y}_t\neq \argmax_r (Wx_t)_r \}$ is non-convex. 
+
+
+%\section{Continuous EXP4 for Banditron with Uniform Exploration}
+\begin{lemma}
+$\E_{\tilde{y}_t}[\hat{\ell}_t(W)] = \ell_t(W)$ for all $W$. 
+\end{lemma}
+\begin{proof}
+\begin{align*}
+\E_{\tilde{y}_t}[\hat{\ell}_t(W)] &= \E_{\tilde{y}_t}\left[ \one[\hat{y}_s=y_s] \frac{\one[\tilde{y}_s=y_s]\ell_t(W)}{1-\gamma+\frac{\gamma}{K}}   +
+\one[\hat{y}_s\neq y_s] \frac{\one[\tilde{y}_s = y_s]\ell_t(W)}{\frac{\gamma}{K}}\right] \\
+& = \one[\hat{y}_s=y_s] \ell_t(W)   +
+\one[\hat{y}_s\neq y_s] \ell_t(W) = \ell_t(W). 
+\end{align*}
+\end{proof}
+
+%\begin{lemma}
+%$\E_{\tilde{y}_t}[(\hat{\ell}_t(W))^2] \leq \frac{2K}{\gamma}(\ell_t(W))^2\leq \frac{2K}{\gamma}\ell_t(W)$ for all $W$. 
+%\end{lemma}
+
+Plugging these lemmas in the previous hedge bound, we can get \begin{align*}
+&\E\left[\sum_{t=1}^T  \ell_{t}(W_{t})  \right]\\
+&=\E\left[\sum_{t=1}^T  \int_{W\in\Omega} q_t(W)\ell_t(W)dW  \right] \\
+&=\E\left[\sum_{t=1}^T \E_{\tilde{y}_t} \left[ \int_{W\in\Omega} q_t(W)\hat{\ell}_t(W)dW \right] \right]\\
+&\leq \E\left[\sum_{t=1}^T \E_{\tilde{y}_t} \left[ \hat{\ell}_t(W^*) \right]+ \frac{\textbf{Ent}(q_1||\delta(W^*))}{\alpha} + \alpha \sum_{t=1}^T \E_{\tilde{y}_t}\left[ \int_{W\in\Omega} q_t(W)\hat{\ell}_t(W)^2dW \right] \right] \\ 
+&\leq \E\left[\sum_{t=1}^T \E_{\tilde{y}_t}\left[ \hat{\ell}_t(W^*) \right] + \frac{\textbf{Ent}(q_1||\delta(W^*))}{\alpha} + \frac{2K\alpha}{\gamma} \sum_{t=1}^T \E_{\tilde{y}_t}\left[ \int_{W\in\Omega} q_t(W)\hat{\ell}_t(W)dW \right]\right]
+\end{align*}
+
+... to bound the regret, it would be something like bounding $\frac{1}{1-\frac{K\alpha}{\gamma}}\left(\frac{1}{\alpha}+\frac{K\alpha}{\gamma}L^* + \gamma T\right)$, which gives $(L^*T)^{1/3} + \sqrt{T}$ regret bound. 
+
+
+\textbf{Discussion.} We can change $\ell_t(\cdot)$ to any reasonable convex loss (e.g., logsitic loss or second-order loss). 
+\fi
+
+%\textbf{Observation}. Alekh's paper's results can be generalized to losses with $\Phi_t$ a strongly and smoothly convex function. 
+\begin{assumption}
+$\|x_t\|_2^2\leq 1$. There is a $W^*\in\mathcal{W}$ such that $\ell_t(W^*)\leq 0$ for all $t$ ($\ell_t$ and $\mathcal{W}$ are defined below).  
+\end{assumption}
+
+\begin{algorithm}[H]
+\caption{Banditron}
+\textbf{Input}: $D\geq 2$, $\epsilon$ (picked in a later lemma). \\
+\textbf{Definition}: 
+\begin{align*}
+    \ell_t(W) &\triangleq [1-(Wx_t)_{y_t} + \max_{r\neq y_t}(Wx_t)_r]_+^2 \ \ \ \ \text{(squared hinge loss)} \\
+    & = \Phi_t(Wx_t), 
+    %\Phi_t(z) \triangleq \sum_{i\neq y_t} \psi(z_{y_t}-z_i).
+\end{align*}
+where $\Phi_t(z)\triangleq [1-\e_{y_t}^\top z + \max_{r\neq y_t} \e_r^\top z]_+^2$. \\
+Also, define $\mathcal{W}=\{W\in \mathbb{R}^{K\times d}: \|\e_i^\top W\|_2\leq D \text{\ for all }i\in[K]\}$. \\
+\textbf{Initialization}: $W_1=0, M_1=I$.\\ 
+\For{$t=1, \ldots, T$}{
+   Observe $x_t$. \\
+   \If{$ \| x_t \|_{M_t^{-1}} \geq \epsilon$ {\color{red} \text{and} $\|W_t-W^*\|_F\geq 1$}}{
+       Draw $\tilde{y}_t \sim \text{unif}([K])$. 
+   }
+   \Else{
+       Draw $\tilde{y}_t = \hat{y}_t \triangleq \argmax_{r\in[K]}(W_tx_t)_r$. 
+   }
+   \If{ $\tilde{y}_t=y_t$ }{
+       $Z_t\leftarrow 1$, \\
+       $M_{t+1}\leftarrow M_t + Z_t\ell_t(W_t)x_tx_t^\top$,\\
+       $W_{t+1} \leftarrow \Pi_{\mathcal{W}} (W_t - \eta_{t+1}\nabla \ell_t(W_t))$, \ \ \ \ \ where $\eta_{t+1} = \frac{1}{8}$. \\
+       ($\Pi_{\mathcal{W}}$ is the projection operator onto $\mathcal{W}$ w.r.t. Frobenius norm)
+   }
+   \Else{
+       $Z_t\leftarrow 0$,  \\
+       $M_{t+1}\leftarrow M_t$,\\
+       $W_{t+1}\leftarrow W_t$.
+   }
+    
+}
+\end{algorithm}
+\iffalse
+We will pick 
+\begin{align*}
+     \psi(u)=\begin{cases}
+        \frac{1}{2K(1-D)^2}(u-D)^2 - \frac{1}{2K}, & \text{if $u\geq 1$} \\
+        \left(1+\frac{1}{K(1-D)}\right)u^2 + \left(-2-\frac{1}{K(1-D)}\right)u + 1 &\text{if $u\leq 1$},  
+     \end{cases}
+\end{align*}
+It has the following properties: \\
+(1) It is continuous and differentiable. \\
+(2) It is $\frac{1}{2K(1-D)^2}$-strongly convex and $1$-smooth. \\
+(3) It decreases in $[-D,D]$, passing through $(0,1),(1,0)$, and $(D,\frac{-1}{2K})$. \\
+(4) Its minimum value $\frac{-1}{2K}$ is attained at $u=D$. 
+
+\begin{lemma} 
+ For the above specific choice of $\psi$, $\Phi_t$ is $\frac{1}{2KD^2}$-strongly convex and $2K$-smooth (i.e., its Hessian has eigenvalues all within $[\frac{1}{2KD^2}, 2K]$). 
+ 
+\end{lemma}
+\begin{proof}
+It is clear that $\frac{\partial^2}{\partial z_j\partial z_i}\Phi_t(z)=0$ for $i\neq j$. Also, $\frac{\partial^2}{\partial^2 z_i} \Phi_t(z)\geq \frac{1}{2K(1-D)^2}\geq \frac{1}{2KD^2}$ and $\frac{\partial^2}{\partial^2 z_i} \Phi_t(z)\leq K\left(1+\frac{1}{K(1-D)}\right)\leq 2K$. 
+\end{proof}
+
+\begin{lemma}
+\label{lemma:error_cond}
+If $\argmax_r (Wx_t)_r = y_t$, then $\ell_t(W) \leq K$; 
+If $\argmax_r (Wx_t)_r \neq y_t$, then $\ell_t(W) \geq 1$.  
+\end{lemma}
+\begin{proof}
+If $\argmax_r (Wx_t)_r = y_t$, then $z_{y_t}-z_i\geq 0$ for all $i$, and thus $\Phi_t(z)< K\psi(0)=K$; 
+If $\argmax_r (Wx_t)_r \triangleq j \neq y_t$, then $\Phi_t(z)\geq \psi(z_{y_t}-z_j) - K\times \frac{1}{2K}\geq \psi(0)-\frac{1}{2}=\frac{1}{2}$. 
+This is clear by the definition of $\ell_t$. 
+\end{proof}
+\fi
+%\begin{definition}
+%$\|W\|_M^2 \triangleq \sum_{i=1}^K \|\e_i^\top W\|_M^2 $.\\
+%$\gamma_\ell \triangleq \frac{1}{2KD^2}$; $\gamma_u\triangleq 2K$ (convexity and smoothity of $\Phi_t$). 
+%\end{definition}
+
+
+%\begin{lemma}
+%For any $W^*\in \mathcal{W}$, with probability at least $1-\delta$, 
+%\begin{align*} 
+%    \|W_t-W^*\|_{M_t} \leq \tilde{\mathcal{O}}\left(\frac{\sqrt{Kd}}{\gamma_\ell} + D\sqrt{\gamma}\right).
+%\end{align*}
+%(the $\tilde{\mathcal{O}}$ notation hides $\ln T$, $\ln \frac{1}{\delta}$, $\ln \frac{1}{\gamma}$ factors)
+%\end{lemma}
+%\begin{proof}
+%By the first order optimality condition, we have for all $W^*\in \mathcal{W}$, 
+%\begin{align*}
+%    \inner{\gamma W_t+\sum_{s=1}^{t-1}Z_s \nabla \ell_s(W_t), W^*-W_t}\geq 0. 
+%\end{align*}
+%Rearranging it and plugging in the property $\nb\ell_s(W)=\nb\Phi_s(Wx_s)x_s^\top$ gives 
+%\begin{align}
+%    \sum_{s=1}^{t-1} Z_s\inner{ -\nb\Phi_s(W^*x_s),W_tx_s-W^*x_s} \geq  \sum_{s=1}^{t-1} Z_s\inner{ \nb\Phi_s(W_t x_s)-\nb\Phi_s(W^*x_s),W_tx_s-W^*x_s}+\gamma\inner{W_t, W_t-W^*}. 
+%    \label{eqn:key}
+%\end{align}
+%By $\Phi_s$'s convexity and that $\norm{W}_F^2\leq KD^2$ for all $W\in \mathcal{W}$, the RHS of \eqref{eqn:key} can be lower bounded by 
+%\begin{align*}
+%    \gamma_\ell\sum_{s=1}^{t-1} Z_s\norm{W_t x_s-W^*x_s}_2^2 - 2\gamma KD^2 \geq \gamma_\ell \norm{W_t-W^*}_{M_t}^2-2\gamma KD^2. 
+%\end{align*}
+%The LHS is upper bounded by 
+%\begin{align*}
+%    \sum_{i=1}^K \sum_{s=1}^{t-1} Z_s (-\nb_i\Phi_s(W^*x_s))\inner{\e_iW_t-\e_iW^*, x_s}
+%\end{align*}
+%\end{proof}
+
+\begin{lemma}
+\label{lemma:bound_gradient}
+$\norm{\nb\ell_t(W)}_F^2 \leq 8\ell_t(W)$. 
+\end{lemma}
+\begin{proof}
+$    \|\nb\ell_t(W)\|_F^2 = \|\nb\Phi_t(Wx_t)x_t^\top\|_{F}^2 \leq \left(2\sqrt{\Phi_t(Wx_t)}\right)^2\times 2\|x_t\|_{2}^2 \leq 8\ell_t(W).  
+$
+\end{proof}
+
+\begin{lemma}
+\label{lemma:decreasing error}
+Let $L_{t+1}\triangleq \sum_{s=1}^t Z_s\ell_s(W_s)$. Then 
+$\|W_{t+1}-W^*\|_F^2 \leq \exp\left(-\frac{L_{t+1}}{32KD^2}\right)$. 
+\end{lemma}
+\begin{proof}
+Let $Z_{t}=1$. 
+\begin{align*}
+    \|W_{t+1}-W^*\|_F^2 &\leq \|W_t - \eta_{t+1}\nb\ell_t(W_t)-W^*\|_F^2 \\
+    & = \| W_t - W^* \|_F^2 - 2\eta_{t+1}\inner{\nb\ell_t(W_t),W_t-W^*}_F + \eta_{t+1}^2\|\nb\ell_t(W_t)\|_F^2.  
+\end{align*}
+By the separable assumption we have $\ell_t(W^*)\leq 0$. Since $\ell_t$ is convex, $\inner{\nb\ell_t(W_t), W_t-W^*} \geq \ell_t(W_t)-\ell_t(W^*)\geq \ell_t(W_t)$. Continuing the above calculation and using Lemma~\ref{lemma:bound_gradient}, we get 
+\begin{align*}
+    \|W_{t+1}-W^*\|_F^2 &\leq \|W_t-W^*\|_2^2 - 2\eta_{t+1}\ell_t(W_t) + 8\eta_{t+1}^2 \ell_t(W_t) \\ 
+    &\leq \|W_t-W^*\|_F^2 - \frac{1}{8}\ell_{t}(W_t) \\
+    &\leq \|W_t-W^*\|_F^2 \left(1-\frac{\ell_t(W_t)}{32KD^2}\right)  \text{\ \ \ \ because $\|W_t-W^*\|_F^2\leq 4KD^2$} \\
+    &\leq \|W_t-W^*\|_F^2 \exp\left(-\frac{\ell_t(W_t)}{32KD^2}\right)
+\end{align*}
+By induction, we can get
+\begin{align*}
+    \|W_{t+1}-W^*\|_F^2 &\leq KD^2 \exp\left( -\frac{L_{t+1}}{32KD^2} \right) 
+    %&\leq KD^2 \left(\frac{8KD^2}{A_{t+1}}\right)   %\ \ \ \ \ \text{because $\exp(-x)<1/x$ for any $x>0$} \\
+    %& = \frac{8K^2D^4}{A_{t+1}}. 
+\end{align*}
+\end{proof}
+
+\begin{definition}
+$\norm{W}_{M}^2\triangleq \sum_{i=1}^K \norm{\e_i^\top W}_{M}^2$.
+\end{definition}
+With this definition we have $\|Wx_t\|_2^2 = \sum_{i=1}^K (\e_i^\top Wx_t)^2 \leq \sum_{i=1}^K \|\e_i^\top W\|_M^2 \|x_t\|_{M^{-1}}^2\leq \|W\|_M^2 \|x_t\|_{M^{-1}}^2$
+
+\begin{lemma}
+\begin{align*}
+\|W_{t}-W^*\|_{M_{t}}^2 \leq (1+L_t)K^2D^2 \exp\left(-\frac{L_t}{32KD^2}\right) \leq 32K^3D^4. 
+\end{align*}
+\end{lemma}
+\begin{proof}
+Because we assume $\|x_t\|_2^2\leq 1$, it holds that $ M_t \preceq (1+L_t) I$. Therefore $\|W_t-W^*\|_{M_t}^2 \leq (1+L_t)\|W_t-W^*\|_I^2 =  (1+L_t) \sum_{i=1}^K \| \e_i^\top (W_t-W^*) \|_2^2 \leq (1+L_t) K \|W_t-W^*\|_F^2 $. By Lemma~\ref{lemma:decreasing error} this is bounded by $(1+L_t)K^2D^2\exp\left( -\frac{L_t}{32KD^2} \right)$, which can further be bounded by a constant related to $K$ and $D$. For example, using the property $\exp(-x)\leq \frac{1}{(1+x)^2}$ for all $x>0$, it can be upper bounded by $(1+L_t)K^2D^2 \times \frac{(32KD^2)^2}{(L_t+32KD^2)^2} \leq \frac{32^2K^4D^6}{32KD^2+L_t}\leq 32K^3D^4$.   
+\end{proof}
+
+\begin{lemma}
+\label{lemma: xbounded}
+If $\|x_t\|_{M_t^{-1}}\leq \epsilon = \frac{1}{4D\sqrt{32K^3D^4}}$, then $\hat{y}_t=y_t$. 
+\end{lemma}
+\begin{proof}
+By the convexity of $\ell_t$, 
+\begin{align*}
+    \ell_t(W_t)\leq \ell_t(W_t)-\ell_t(W^*)&\leq \inner{\nb \ell_t(W_t), W_t-W^*}\\
+     & = \inner{\nb\Phi_t(W_tx_t)x_t^\top, W_t - W^*} \\
+    & = \inner{\nb\Phi_t(W_tx_t), W_tx_t - W^*x_t} \\
+    & \leq 4D\norm{W_tx_t-W^*x_t}_2 \\
+    & \leq 4D\norm{W_t-W^*}_{M_t}\norm{x_t}_{M_t^{-1}} \leq 1.
+\end{align*}
+This implies $\hat{y}_t=y_t$. 
+\end{proof}
+
+Therefore, when we do not explore, we know $W_t$ will predict correctly! Thus we only need to bound the number of errors occurred in exploration rounds, which is calculated by the following lemma. 
+\begin{lemma}
+\label{lemma:N}
+$\sum_{t=1}^T \one[\tilde{y}_t\neq y_t] \leq ???$ with probability at least $1-\delta$. 
+\end{lemma}
+
+\begin{proof}
+By the above discussion, $\sum_{t=1}^T \one[\tilde{y}_t\neq y_t] \leq N\triangleq \sum_{t=1}^T Z_t$, the number of exploration rounds. 
+\begin{align*}
+    N &= \sum_{t=1}^T \one\left[\norm{x_t}_{M_t^{-1}}> \epsilon\right]\\
+    &\leq \left(K\ln \frac{1}{\delta}\right)\sum_{t=1}^T \one\left[\norm{x_t}_{M_t^{-1}}> \epsilon\right]Z_t \tag{when $\|x_t\|_{M_t^{-1}}\geq \epsilon$, $\tilde{y}_t=y_t$ with probability $\frac{1}{K}$} \\
+    & \leq \frac{K\ln \frac{1}{\delta}}{\epsilon^2}\sum_{t=1}^T \norm{x_t}_{M_t^{-1}}^2 Z_t \leq \max_{t\in[T]}\left(\frac{1}{\ell_{t}(W_t)}\right)\times \frac{K\ln T\ln \frac{1}{\delta}}{\epsilon^2}. 
+\end{align*}
+\end{proof}
+
+
+\textbf{Discussion}. 
+In the calculation of Lemma~\ref{lemma: xbounded},  we can actually get $\ell_t(W_t)^2 \leq \norm{\nb\Phi_t(W_tx_t)}_2^2\norm{W_t-W^*}_{M_t}^2\norm{x_t}_{M_t^{-1}}^2$. Similar to the calculation in Lemma~\ref{lemma:decreasing error}, $\norm{\nb\Phi_t(W_tx_t)}_2^2$ is bounded by constant times $\ell_t(W_t)$. So the exploration criterion could potentially become $\ell_t(W_t)\|x_t\|_{M_t^{-1}}^2\geq \frac{1}{\epsilon^2}$, which makes Lemma~\ref{lemma:N} go through. The problem is just we do not know $\ell_t(W_t)$ in general. 
+
+
+%\section{Reservoir Sampling}
+%\textbf{Observation}. In Algorithm 2 of the SOBA paper, $\tilde{\ell}$ is constructed as a $ \tilde{\mathcal{O}}(\gamma \eta)$-exp-concave function which appears at the rate of $\gamma$. What if we divide a $\tilde{\mathcal{O}}(\gamma\eta)$-exp-concave function into roughly $1/\gamma$ $\tilde{\mathcal{O}}(\eta)$-exp-concave functions?
+
+
+
+
+%\begin{algorithm}[H]
+%\caption{Banditron}
+%\textbf{Input}: $D\geq 2$, $\epsilon$, $\gamma$. \\
+%\textbf{Definition}: 
+
+%\end{algorithm}
+
+
+
+
+\newpage
+%\bibliography{adaptivity} 
+%\bibliographystyle{plain}
+
+\end{document} 
