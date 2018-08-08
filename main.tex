@@ -37,6 +37,7 @@
 \usepackage{amssymb}
 \usepackage{graphicx}
 \usepackage{enumerate}
+\usepackage{soul}
 %%%%%%%%%%%%%%%%%% toc 
 \usepackage{scrwfile}
 \TOCclone[\contentsname~(\appendixname)]{toc}{atoc}
@@ -85,6 +86,7 @@
 \newcommand{\calT}{{\mathcal{T}}}
 \newcommand{\calH}{\mathcal{H}}
 \newcommand{\avgR}{\wh{\cal{R}}}
+\newcommand{\calW}{{\mathcal{W}}}
 \newcommand{\ips}{\wh{r}}
 \newcommand{\whpi}{\wh{\pi}}
 \newcommand{\whE}{\wh{\E}}
@@ -177,12 +179,126 @@
 % \nipsfinalcopy is no longer used
 
 \maketitle
-	
-%#############################################################################
-%    Introduction
-%#############################################################################
+
+\section{Problem Statement}
+A multiclass linear classifier is defined by a matrix $W\in \mathbb{R}^{K\times d}$, where $K$ is the number of classes ($K\geq 3$) and $d$ is the dimension of the feature vector. A set of samples $\{(x_t, y_t)\}_{t=1}^T$ where $x_t\in \mathbb{R}^d$ and $y_t\in[K]$ is called \textit{linearly separable} if there exists a $W^*$ such that $ y_t= \argmax_{y\in[K]} (W^*x_t)_y $ for all $t\in[T]$. (Note that $(W^*x_t)_y$ can also be written as $\e_y^\top W^* x_t$)
+
+A set of samples $\{(x_t, y_t)\}_{t=1}^T$ is called \textit{linearly separable with a margin $\gamma$} if there exists a $W^*$ with $\|\e_i^\top W^*\|_2\leq 1$ for all $i$ and $(W^*x_t)_{y_t} \geq \max_{y\neq y_t} (W^*x_t)_{y} + \gamma$ for all $t$. For simplicity, we define the set where $W^*$ lies in as $\calW = \{W\in \mathbb{R}^{K\times d}: \|\e_i^\top W^*\|_2\leq 1\}$. 
+
+Consider the following \textit{online multiclass classification} problem: at time $t$, the environment first reveals $x_t\in \mathbb{R}^d$ (and we assume $\|x_t\|_2\leq 1$), then the learner predicts some label $\tilde{y}_t\in [K]$; finally the environment reveals the true label $y_t\in[K]$. It is known that if the samples are linearly separable, then the learner will only make constant mistakes. It is achievable with the following simple perceptron algorithm: 
+
+\begin{algorithm}[H]
+\caption{Perceptron}
+$W_1=\mathbf{0}$\\
+\For{$t=1$ to $T$}{
+   Predict $\tilde{y}_t=\argmax_y (W_tx_t)_y$ \\
+   Update $W_{t+1}\leftarrow W_t + (\e_{y_t}-\e_{\tilde{y}_t})x_t^\top$. 
+}
+\end{algorithm}
+The analysis is simple. On one hand we have (note $\langle A,B \rangle:=\text{Tr}(A^\top B)$):
+\begin{align*}
+    \langle W_t, W^* \rangle &= \langle W_{t-1}, W^* \rangle + \langle (\e_{y_t}-\e_{\tilde{y}_t})x_t^\top, W^* \rangle \\
+    &= \langle W_{t-1}, W^* \rangle + (\e_{y_t}^\top W^* x_t-\e_{\tilde{y}_t}^\top W^* x_t) \\
+    &\geq \langle W_{t-1}, W^* \rangle + \gamma\one[\tilde{y}_t\neq y_t]. 
+\end{align*}
+By induction, we get $\langle W_{T+1}, W^* \rangle \geq \gamma\sum_{t=1}^T \one[\tilde{y}_t\neq y_t]$. 
+
+On the other hand, 
+\begin{align*}
+    \langle W_{T+1}, W^* \rangle \leq \|W_{T+1}\|_F\|W^*\|_F \leq \sqrt{2K\sum_{t=1}^T \one[\tilde{y}_t \neq y_t] \|x_t\|_2^2}\times 1 \leq \sqrt{2K\sum_{t=1}^T \one[\tilde{y}_t \neq y_t] } 
+\end{align*}
+Combining the above two inequality, we get $ \sum_{t=1}^T \one[\tilde{y}_t \neq y_t] \leq \frac{4K}{\gamma^2}$. 
+
+The \textit{bandit multiclass classification} problem proceeds in a very similar way. The only difference is that the learner only knows whether she predicts \textbf{correctly or not}, rather than gets the true label (i.e., in each round, the feedback is only $\one[\tilde{y}_t=y_t]$, rather than $y_t$). Surprisingly, with this extremely limited feedback, the learner can still make only constant mistakes. It can be achieved with the following variant of \textit{halving algorithm}:  
+
+\begin{algorithm}[H]
+\caption{Halving}
+Discretize the space of $W$ (i.e., the $\calW$ as defined in the beginning) with balls of radius $\frac{1}{2\gamma}$. Let the set of discretization points be $\calS$. Then this is saying that for all $W\in \calW$, there is always a $W'\in \calS$ such that $\|W-W'\|_F\leq \frac{1}{2\gamma}$.\\
+Let $\calS_1=\calS$ \\
+\For{$t=1$ to $T$}{
+    Let $\calS_t(y) = \{W\in \calS_t: (Wx_t)_y \geq (Wx_t)_i \ \forall i\in[K]\}$ (i.e., the set of $W$'s in $\calS_t$ that predict $y$ as the label of $x_t$) \\
+    Let $\tilde{y}_t = \argmax_y |\calS_t(y)|$ (i.e., pick the majority vote)\\
+    \If{$\tilde{y}_t\neq y_t$}{
+        $\calS_{t+1}=\calS_t \backslash \calS_t(\tilde{y}_t)$ (i.e., eliminate the $W$'s that are inconsistent with the outcomes)
+    }
+    \Else{
+        $\calS_{t+1}=\calS_t$
+    }
+}
+\end{algorithm}
+\textbf{Analysis}.  The majority in $\calS_t$ always has cardinality no less than $\frac{1}{K}|\calS_t|$. So every time the learner predicts incorrectly, the size of $|\calS_t|$ shrinks by an order of $(1-\frac{1}{K})$. By our margin assumption, there is a $W'\in \calS$ which incurs no error in all samples. Therefore, $|S_t|\geq 1$ always holds. This means the number of errors is bounded by the order of $\frac{\log(|\calS|)}{-\log(1-\frac{1}{K})}\leq \mathcal{O}\left( K^2d\log \frac{1}{\gamma} \right)$. 
+
+The main issue of this halving algorithm is that it is \textbf{inefficient} in the sense that $|\calS|$ is in the order of $\frac{1}{\gamma^{Kd}}$. 
+
+Hence, we want to answer the following question: \ul{for bandit multiclass classification, can we have an efficient algorithm (time complexity polynomial in $K,d,\frac{1}{\gamma}, T$) that guarantees constant mistake bound (polynomial in $K,d,\frac{1}{\gamma}$) in the $\gamma$-separable case?} (An unsolved open problem in \cite{kakade2008efficient})
+
+\section{Naive Approaches}
+\begin{itemize}
+    \item \textbf{Exhausting the feature space}: discretize the feature space into $ \left(\frac{1}{\gamma}\right)^{\mathcal{O}(d)} $ blocks. The margin assumption guarantees that two points in a block would have the same label (so we can give every block a label). Each time a new point $x_t$ comes, see whether the learner already knows the correct label for that block. If yes, predict that label; if not, randomly choose a label that has not been chosen for that block. \\
+    $\Rightarrow $ error bound: $K\left(\frac{1}{\gamma}\right)^{\mathcal{O}(d)} $. 
+    \item \textbf{Exhausting the hypothesis space}: Discretize the hypothesis space into $\left(\frac{1}{\gamma}\right)^{Kd}$ discretization points (like in the halving algorithm). For each of them, make predictions based on it until it makes an mistake. \\
+    $\Rightarrow $ error bound: $\left(\frac{1}{\gamma}\right)^{Kd}$. 
+\end{itemize}
+
+\section{Difficulties}
+\label{section: difficulty}
+Efficient classification algorithms often optimize a convex surrogate loss rather than a 0-1 loss. Examples include: 
+\begin{itemize}
+    \item Hinge loss: $\ell_t(W) = [1-(Wx_t)_{y_t}+\max_{y\neq y_t}(Wx_t)_{y}]_+$. 
+    \item Logistic loss: $\ell_t(W)=-\ln\frac{\exp((Wx_t)_{y_t})}{\sum_{y}\exp((Wx_t)_y)}$
+    \item A family of loss that interpolates hinge loss and squared hinge loss (see \cite{beygelzimer2017efficient}'s Eq.(3))
+\end{itemize}
+In full-information setting, one can directly use online convex optimization techniques to deal with the above loss functions (learning over the space of $W$). 
+
+Many works for bandit classification reuse this kind of convex optimization schemes, together with explicit exploration and inverse propensity weighting \cite{kakade2008efficient, hazan2011newtron, beygelzimer2017efficient, foster2018logistic}. However, because it is hard to estimate these losses when the true label $y_t$ is not known, some of these algorithms \cite{beygelzimer2017efficient, foster2018logistic} simply do not update when the learner makes a mistake ($\tilde{y}_t \neq y_t$). We give this kind of algorithm an error lower bound $\Omega\left(\left(\frac{1}{\gamma}\right)^{(d-1)/2}\right)$ in Section~\ref{section: passive lower bound}. 
+
+It indeed looks hard to design a convex loss for $W$'s when the learner makes a mistake: when $\tilde{y}_t
+\neq y_t$, the set of $W$'s that we want to penalize (i.e., to assign larger loss) is $\{W: (Wx_t)_{\tilde{y}_t} \geq (Wx_t)_{y}, \forall y \}$, which is a convex cone in the space of $W$. It is impossible for a convex function to be large only in a convex subset (the case $K=2$, on the other hand, does not have this issue). Can we argue that if the learner is restricted to use convex losses in the space of $W$, she will have to suffer exponential (in $K$) errors? 
+
+\section{One-versus-all Kernel Perceptron}
+\subsection{One-versus-all Perceptron}
+Our assumption of linearly separable with a margin is 
+\begin{align}
+ (W^*x_t)_{y_t} \geq (W^*x_t)_{y} + \gamma, \ \forall y\neq y_t. \label{eqn:weaker}
+\end{align}
+As discussed in Section~\ref{section: difficulty}, it seems hard to make update when $\tilde{y}_t\neq y_t$ and achieve a constant and polynomial error bound. 
+
+For a moment, in this subsection we make the following stronger margin assumption (which we call \textit{one-versus-all separable} with a margin): 
+\begin{align}
+\begin{cases}
+    (W^*x_t)_{y_t} \geq \gamma/2 \\
+    (W^*x_t)_y \leq -\gamma/2, \forall y\neq y_t.
+\end{cases}
+\label{eqn:stronger}
+\end{align}
+Clearly, one-versus-all separability implies linearly separability, but not the other way around. With one-versus-all separability assumption, we can view the problem as $K$ parallel binary classification problem. The following algorithm achieves constant error bound: 
+\begin{algorithm}[H]
+\caption{One-versus-all Perceptron}
+\label{alg:ova}
+Initialize $w_t^{(1)}=\ldots=w_t^{(K)}=\mathbf{0}\in \mathbb{R}^d$\\
+\For{$t=1$ to $T$}{
+   \If{$\exists y$ such that $w_t^{(y)\top} x_t \geq 0$}{
+       Assign $\tilde{y}_t$ to any $y$ with $w_t^{(y)\top}  x_t \geq 0$ \\
+       Predict $\tilde{y}_t$ \\
+       \lIf{$\tilde{y}_t\neq y_t$}{ update $w_t^{(\tilde{y}_t)} \leftarrow w_t^{(\tilde{y}_t)} - x_t$ } \label{line:update1}
+   }
+   \Else{
+       Pick $\tilde{y}_t$ randomly from $
+       \text{unif}[K]$ \label{line:explore}\\
+       Predict $\tilde{y}_t$ \\
+       \lIf{$\tilde{y}_t = y_t$}{ update $w_t^{(\tilde{y}_t)} \leftarrow w_t^{(\tilde{y}_t)} + x_t$ } \label{line:update2}
+   }
+}
+\end{algorithm}
+\textbf{Analysis}. Note that when the algorithm enters Line~\ref{line:update1} or Line~\ref{line:update2}, the binary classifier $w_t^{(\tilde{y}_t)}$ is making an error. Let the number of times the algorithm enters Line~\ref{line:update1} and Line~\ref{line:update2} be $M$ and $N$ respectively. By the error bound of binary perceptron $\mathcal{O}\left(\frac{1}{\gamma^2}\right)$, we have that $M+N=\mathcal{O}\left(\frac{K}{\gamma^2}\right)$. Then note that the number of times the algorithm makes a mistake (i.e. $\tilde{y}_t\neq y_t$) is upper bounded by $M$ plus how many times the algorithm explores in Line~\ref{line:explore}; and when the algorithm explores, with probability $\frac{1}{K}$ it enters Line~\ref{line:update2}. Therefore, the number of mistakes is bounded (in expectation) by $\E[M+KN]=\mathcal{O}\left(\frac{K^2}{\gamma^2}\right)$. 
+
+\subsection{One-versus-all Kernel Perceptron}
+With the polynomial kernel defined in \cite{klivans2004learning}, we can transform the weaker assumption \eqref{eqn:weaker} in the original feature space to the stronger one \eqref{eqn:stronger} in a transformed feature space. Indeed, in the original feature space, class $i$ corresponds to an intersection of $K-1$ halfspaces: $ \{x: (w_i^*-w_j^*)^\top x \geq 0, \forall j\neq i\} $, which is the subject of \cite{klivans2004learning} (here, $w_i^{*\top}$ equals to $\e_i^\top W^*$ defined above). Directly using their kernel construction, we can have margin $ \left(\frac{\gamma}{d}\right)^{\Omega(K\log K\log (1/\gamma))} $ in the transformed feature space. Running kernelized version of Algorithm~\ref{alg:ova}, we can get $ K^2\left(\frac{d}{\gamma}\right)^{\mathcal{O}(K\log K\log (1/\gamma))} $ error bound directly. 
+
+
 
 \section{A Regret Lower Bound for A Certain Type of Algorithms}
+\label{section: passive lower bound}
 In this section, we try to construct an error lower bound for a certain type of algorithms. This type of algorithms does not make update when it makes a wrong prediction. For simplicity, we only consider binary classification.  More formally, the algorithms we consider satisfy the following assumption. 
 
 \begin{assumption}[Algorithm]
@@ -241,51 +357,9 @@ By the condition and the adversary strategy, we know that the probability of err
 \end{align*}
 \end{proof}
 
-\textbf{Discussion}. We believe that $V$ can be in the order of $\mathcal{O}\left(\gamma^d\right)$ (some weaker thing like $\mathcal{O}\left(\gamma^{d/2}\right)$ is also acceptable). Basically, we need to figure out the following question: can we construct a sequence of points $\{x_1,x_2, \ldots\}$ , such that for every $t$, $x_t$'s distance with $\text{conichull}\{x_1,\ldots, x_{t-1}\}$ is larger than $\gamma$, but the volume difference $v(\text{conichull}\{x_1,\ldots, x_{t}\}) - v(\text{conichull}\{x_1,\ldots, x_{t-1}\})$ is upper bounded by $V$?
+\textbf{Discussion}. There is a construction such that $1/V$ can be of order $\Omega\left( \left(\frac{1}{\gamma}\right)^{(d-1)/2} \right)$. 
 
-This lower bound does not rule out those algorithms that change its probability vector based on the $\textbf{count}$ of consecutive errors. This type of algorithm may still easy to be implemented (like QBC). Also it does not rule out the banditron algorithm. 
-
-\section{Biased Halving: Trading Error with Complexity}
-\begin{algorithm}[H]
-\caption{Banditron}
-\textbf{Define}: $\Omega=\{W\in \mathbb{R}^{Kd}: \|\e_i^\top W\|_2\leq D\}$.\\
-For a set $S$ of $W$'s, $S(i|x)$ is the subset of $S$ that outputs class $i$ given feature vector $x$, i.e., $S(i|x)=\{W\in S: (Wx)_i \geq (Wx)_j \ \forall j\}$\\
-$|S|$ denotes the volumn of $S$. \\
-\textbf{parameter}: $\alpha \in (0,1)$ \\
-$\Omega_1=\Omega$.  \\
-\For{$ t=1,\ldots, T $}{
-\If{$\argmax_i \frac{|\Omega_t(i|x_t)|}{|\Omega_t|} \geq 1-\alpha$}{ \label{line:case1}
-        Let $\tilde{y}_t=i$.\\ 
-        \If{$\tilde{y}_t \neq y_t$}{
-            $\Omega_{t+1}=\Omega_t \backslash \Omega_t(\tilde{y}_t|x_t)$. \label{line:cut}
-        }
-    }
-\label{line:case2}\Else{
-        Let $\tilde{y}_t\sim \text{unif}([K])$. \\
-        \If{$\tilde{y}_t=y_t$}{
-            $\Omega_{t+1}=\Omega_t(\tilde{y}_t|x_t)$. \label{line:cut2}
-        }
-    }
-}
-\end{algorithm}
-
-\textbf{Conjecture(should be true)}: If the volume of $\Omega_t$ becomes smaller than $\frac{|\Omega|}{N}$, then the algorithm won't make any error anymore. $N$ should be in the order of $\Theta(\frac{1}{\gamma^{Kd}})$.  \\
-\textbf{Rough analysis:} \\
-Each time the algorithm makes an error in Line~\ref{line:case1}, the volume becomes $\alpha$ times the original volume. So the algorithm will not make more than $ \frac{\ln N}{\ln \frac{1}{\alpha}} $ mistakes in this case. 
-
-In the case of Line~\ref{line:case2}, $K\ln \frac{1}{\delta}$ errors will accompany with a $(1-\alpha)$-factor shrinkage in the volume. Therefore, the number of errors occurred in this case is upper bounded by $ \frac{K\ln\frac{1}{\delta}\ln N}{\ln \frac{1}{1-\alpha}}\leq \frac{K\ln\frac{1}{\delta}\ln N}{\alpha} $.
-
-Now we discuss about the complexity. The main issue is how to maintain $\Omega_t$. Each time the algorithm enters Line~\ref{line:cut}, $\Omega_t$ becomes more and more fragmented. But if $\Omega_t$ can be maintained with $M$ convex cones, then $\Omega_{t+1}$ can be maintained with $(K-1)M\leq KM$ convex cones. And we assume each cone's volume can be computed in \text{poly}($T$) time. Each time the algorithm enters Line~\ref{line:cut2}, the number of convex cones does not increase. 
-
-By the above discussion, there will be no more than $K^{\frac{\ln N}{\ln \frac{1}{\alpha}}}$ convex cones to maintain. And the error bound is in the order of $\frac{K\ln\frac{1}{\delta}\ln N}{\alpha}$ for some $\alpha<\frac{1}{2}$. Let's try to balance the number of errors and computational complexity. Let
-\begin{align*}
-    &K^{\frac{\ln N}{\ln \frac{1}{\alpha}}}\approx\frac{K\ln\frac{1}{\delta}\ln N}{\alpha}\\
-    \Rightarrow &~ \frac{\ln N}{\ln\frac{1}{\alpha}} \ln K \approx  \ln\left(K\ln\frac{1}{\delta}\ln N\right) + \ln\frac{1}{\alpha}\\
-    \Rightarrow &~ \text{pick\ }\ln\frac{1}{\alpha}=\sqrt{\ln N}.
-\end{align*}
-Thus the computational complexity is in the order of $K^{\sqrt{\ln N}}\times \text{poly}(T)=K^{\sqrt{Kd\ln\frac{1}{\delta}}}$. The error bound is $\mathcal{O}\left( e^{\sqrt{Kd\ln \frac{1}{\delta}}} K^2 d \ln\frac{1}{\delta}\ln\frac{1}{\gamma} \right)$.
-
-Another viewpoint: let $\frac{1}{\alpha}=K^\beta$, then the complexity is $\left(\frac{1}{\gamma}\right)^{\frac{Kd}{\beta}}\times \text{poly}(T)$ and the error bound is $K^{\beta+1}\ln\frac{1}{\delta}\ln N$. 
+%This lower bound does not rule out those algorithms that change its probability vector based on the $\textbf{count}$ of consecutive errors. This type of algorithm may still easy to be implemented (like QBC). Also it does not rule out the banditron algorithm. 
 
 \section{How hard it is to use the feedback only from wrong guesses?}
 The halving algorithm can actually run if we can do ``uniform sampling'' over the version space. But it is even unknown whether we can efficiently pick a model from the version space. The problem is that we get a lot of feedback in the form of ``feature $x_t$ does not belong to class $\tilde{y}_t$'', which we don't know how to use. 
@@ -333,26 +407,66 @@ We can prove this equivalence considering two directions: \\
 They should be straightforward by trying some examples. 
 
 
-\section{Cone Algorithm}
+%\section{Cone Algorithm}
+%\begin{algorithm}[H]
+%\caption{Banditron}
+%\textbf{definition}: $K\triangleq$ number of classes, $\gamma\triangleq$  margin\\
+%\textbf{Initialize}: $\calS_1=\cdots=\calS_K=\phi$ (empty set) \\
+%\For{$t=1, \ldots, T$}{
+%    Receive $x_t\in \mathbb{R}^d$. \\
+%    Define the cone $\calC_i = \left\{x\in\mathbb{R}^d: x=\sum_{j=1}^{|\calS_i|} \alpha_jy_j, \text{\ where\ } y_j\in \calS_i, \alpha_j\geq 0 \right\}$ \\
+%    (that is, $\calC_i$ is the conic hull of $\calS_i$) \\
+%    Check whether $x_t$ belongs to, or has distance smaller than $\gamma$, to one of $\calC_1, \ldots, \calC_K$. \\
+%    If so, classify $x_t$ to the corresponding class (say class $i$), and let $\calS_i\leftarrow \calS_i \cup \{x_t\}$. {\color{red} This prediction will be correct for sure by our margin assumption.}\\
+%    If not, let $\tilde{y}_t\sim \text{unif}([K])$ and predict $\tilde{y}_t$. If $\tilde{y}_t=y_t$, then $\calS_{y_t}\leftarrow \calS_{y_t} \cup \{x_t\}$. 
+%}
+%\end{algorithm}
+
+
+
+
+\section{Biased Halving: Trading Error with Complexity}
 \begin{algorithm}[H]
 \caption{Banditron}
-\textbf{definition}: $K\triangleq$ number of classes, $\gamma\triangleq$  margin\\
-\textbf{Initialize}: $\calS_1=\cdots=\calS_K=\phi$ (empty set) \\
-\For{$t=1, \ldots, T$}{
-    Receive $x_t\in \mathbb{R}^d$. \\
-    Define the cone $\calC_i = \left\{x\in\mathbb{R}^d: x=\sum_{j=1}^{|\calS_i|} \alpha_jy_j, \text{\ where\ } y_j\in \calS_i, \alpha_j\geq 0 \right\}$ \\
-    (that is, $\calC_i$ is the conic hull of $\calS_i$) \\
-    Check whether $x_t$ belongs to, or has distance smaller than $\gamma$, to one of $\calC_1, \ldots, \calC_K$. \\
-    If so, classify $x_t$ to the corresponding class (say class $i$), and let $\calS_i\leftarrow \calS_i \cup \{x_t\}$. {\color{red} This prediction will be correct for sure by our margin assumption.}\\
-    If not, let $\tilde{y}_t\sim \text{unif}([K])$ and predict $\tilde{y}_t$. If $\tilde{y}_t=y_t$, then $\calS_{y_t}\leftarrow \calS_{y_t} \cup \{x_t\}$. 
+\textbf{Define}: $\Omega=\{W\in \mathbb{R}^{Kd}: \|\e_i^\top W\|_2\leq D\}$.\\
+For a set $S$ of $W$'s, $S(i|x)$ is the subset of $S$ that outputs class $i$ given feature vector $x$, i.e., $S(i|x)=\{W\in S: (Wx)_i \geq (Wx)_j \ \forall j\}$\\
+$|S|$ denotes the volumn of $S$. \\
+\textbf{parameter}: $\alpha \in (0,1)$ \\
+$\Omega_1=\Omega$.  \\
+\For{$ t=1,\ldots, T $}{
+\If{$\argmax_i \frac{|\Omega_t(i|x_t)|}{|\Omega_t|} \geq 1-\alpha$}{ \label{line:case1}
+        Let $\tilde{y}_t=i$.\\ 
+        \If{$\tilde{y}_t \neq y_t$}{
+            $\Omega_{t+1}=\Omega_t \backslash \Omega_t(\tilde{y}_t|x_t)$. \label{line:cut}
+        }
+    }
+\label{line:case2}\Else{
+        Let $\tilde{y}_t\sim \text{unif}([K])$. \\
+        \If{$\tilde{y}_t=y_t$}{
+            $\Omega_{t+1}=\Omega_t(\tilde{y}_t|x_t)$. \label{line:cut2}
+        }
+    }
 }
 \end{algorithm}
 
+\textbf{Conjecture(should be true)}: If the volume of $\Omega_t$ becomes smaller than $\frac{|\Omega|}{N}$, then the algorithm won't make any error anymore. $N$ should be in the order of $\Theta(\frac{1}{\gamma^{Kd}})$.  \\
+\textbf{Rough analysis:} \\
+Each time the algorithm makes an error in Line~\ref{line:case1}, the volume becomes $\alpha$ times the original volume. So the algorithm will not make more than $ \frac{\ln N}{\ln \frac{1}{\alpha}} $ mistakes in this case. 
 
+In the case of Line~\ref{line:case2}, $K\ln \frac{1}{\delta}$ errors will accompany with a $(1-\alpha)$-factor shrinkage in the volume. Therefore, the number of errors occurred in this case is upper bounded by $ \frac{K\ln\frac{1}{\delta}\ln N}{\ln \frac{1}{1-\alpha}}\leq \frac{K\ln\frac{1}{\delta}\ln N}{\alpha} $.
 
+Now we discuss about the complexity. The main issue is how to maintain $\Omega_t$. Each time the algorithm enters Line~\ref{line:cut}, $\Omega_t$ becomes more and more fragmented. But if $\Omega_t$ can be maintained with $M$ convex cones, then $\Omega_{t+1}$ can be maintained with $(K-1)M\leq KM$ convex cones. And we assume each cone's volume can be computed in \text{poly}($T$) time. Each time the algorithm enters Line~\ref{line:cut2}, the number of convex cones does not increase. 
 
-\section{One-against-all Perceptron}
-Same as Chicheng's writeup's Section 5: Fixed-Threshold Perceptron. 
+By the above discussion, there will be no more than $K^{\frac{\ln N}{\ln \frac{1}{\alpha}}}$ convex cones to maintain. And the error bound is in the order of $\frac{K\ln\frac{1}{\delta}\ln N}{\alpha}$ for some $\alpha<\frac{1}{2}$. Let's try to balance the number of errors and computational complexity. Let
+\begin{align*}
+    &K^{\frac{\ln N}{\ln \frac{1}{\alpha}}}\approx\frac{K\ln\frac{1}{\delta}\ln N}{\alpha}\\
+    \Rightarrow &~ \frac{\ln N}{\ln\frac{1}{\alpha}} \ln K \approx  \ln\left(K\ln\frac{1}{\delta}\ln N\right) + \ln\frac{1}{\alpha}\\
+    \Rightarrow &~ \text{pick\ }\ln\frac{1}{\alpha}=\sqrt{\ln N}.
+\end{align*}
+Thus the computational complexity is in the order of $K^{\sqrt{\ln N}}\times \text{poly}(T)=K^{\sqrt{Kd\ln\frac{1}{\delta}}}$. The error bound is $\mathcal{O}\left( e^{\sqrt{Kd\ln \frac{1}{\delta}}} K^2 d \ln\frac{1}{\delta}\ln\frac{1}{\gamma} \right)$.
+
+Another viewpoint: let $\frac{1}{\alpha}=K^\beta$, then the complexity is $\left(\frac{1}{\gamma}\right)^{\frac{Kd}{\beta}}\times \text{poly}(T)$ and the error bound is $K^{\beta+1}\ln\frac{1}{\delta}\ln N$. 
+
 
 \section{Gradient Descent {\color{red} [TODO]}}
 
@@ -670,7 +784,7 @@ Plugging these lemmas in the previous hedge bound, we can get \begin{align*}
 
 
 \newpage
-%\bibliography{adaptivity} 
-%\bibliographystyle{plain}
+\bibliography{adaptivity} 
+\bibliographystyle{plain}
 
 \end{document} 
