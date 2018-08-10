@@ -23,6 +23,7 @@
 % For citations
 \usepackage{natbib}
 \usepackage{amsthm}
+\usepackage{makecell}
 % For algorithms
 %\usepackage[algcompatible]{algpseudocode}
 %\usepackage{algorithm}
@@ -99,6 +100,7 @@
 \newcommand{\p}{\prime}
 \newcommand{\nb}{\nabla}
 \newcommand{\e}{\mathbf{e}}
+
 
 \DeclareMathOperator*{\arginf}{arginf}
 \DeclareMathOperator*{\argsup}{argsup}
@@ -255,8 +257,7 @@ Many works for bandit classification reuse this kind of convex optimization sche
 It indeed looks hard to design a convex loss for $W$'s when the learner makes a mistake: when $\tilde{y}_t
 \neq y_t$, the set of $W$'s that we want to penalize (i.e., to assign larger loss) is $\{W: (Wx_t)_{\tilde{y}_t} \geq (Wx_t)_{y}, \forall y \}$, which is a convex cone in the space of $W$. It is impossible for a convex function to be large only in a convex subset (the case $K=2$, on the other hand, does not have this issue). Can we argue that if the learner is restricted to use convex losses in the space of $W$, she will have to suffer exponential (in $K$) errors? 
 
-\section{One-versus-all Kernel Perceptron}
-\subsection{One-versus-all Perceptron}
+\section{One-versus-all Perceptron}
 Our assumption of linearly separable with a margin is 
 \begin{align}
  (W^*x_t)_{y_t} \geq (W^*x_t)_{y} + \gamma, \ \forall y\neq y_t. \label{eqn:weaker}
@@ -292,10 +293,58 @@ Initialize $w_t^{(1)}=\ldots=w_t^{(K)}=\mathbf{0}\in \mathbb{R}^d$\\
 \end{algorithm}
 \textbf{Analysis}. Note that when the algorithm enters Line~\ref{line:update1} or Line~\ref{line:update2}, the binary classifier $w_t^{(\tilde{y}_t)}$ is making an error. Let the number of times the algorithm enters Line~\ref{line:update1} and Line~\ref{line:update2} be $M$ and $N$ respectively. By the error bound of binary perceptron $\mathcal{O}\left(\frac{1}{\gamma^2}\right)$, we have that $M+N=\mathcal{O}\left(\frac{K}{\gamma^2}\right)$. Then note that the number of times the algorithm makes a mistake (i.e. $\tilde{y}_t\neq y_t$) is upper bounded by $M$ plus how many times the algorithm explores in Line~\ref{line:explore}; and when the algorithm explores, with probability $\frac{1}{K}$ it enters Line~\ref{line:update2}. Therefore, the number of mistakes is bounded (in expectation) by $\E[M+KN]=\mathcal{O}\left(\frac{K^2}{\gamma^2}\right)$. 
 
-\subsection{One-versus-all Kernel Perceptron}
+\section{One-versus-all Kernel Perceptron}
 With the polynomial kernel defined in \cite{klivans2004learning}, we can transform the weaker assumption \eqref{eqn:weaker} in the original feature space to the stronger one \eqref{eqn:stronger} in a transformed feature space. Indeed, in the original feature space, class $i$ corresponds to an intersection of $K-1$ halfspaces: $ \{x: (w_i^*-w_j^*)^\top x \geq 0, \forall j\neq i\} $, which is the subject of \cite{klivans2004learning} (here, $w_i^{*\top}$ equals to $\e_i^\top W^*$ defined above). Directly using their kernel construction, we can have margin $ \left(\frac{\gamma}{d}\right)^{\Omega(K\log K\log (1/\gamma))} $ in the transformed feature space. Running kernelized version of Algorithm~\ref{alg:ova}, we can get $ K^2\left(\frac{d}{\gamma}\right)^{\mathcal{O}(K\log K\log (1/\gamma))} $ error bound directly. 
 
+\subsection{Refinement for \cite{klivans2004learning}'s Fact 1}
+\begin{lemma}
+   For $i=1,\ldots, \ell$ let $q^{(i)}(x)=\sum_S c^{(i)}_{S} x_S $ be a polynomial over $x_1, \ldots, x_d$ with $\|q^{(i)}\|^2\leq M_i$. Then (1) if $q^{(1)}\ldots q^{(\ell)}$ has degree at most $\deg$, we have $\|q^{(1)}\ldots q^{(\ell)}\|^2 \leq (\deg)^{O(\deg)} \prod_i M_i$, and (2) we have $\|q^{(1)}+\ldots+q^{(\ell)}\|^2\leq \ell(M_1+\ldots+M_\ell)$. 
+\end{lemma}
+\begin{proof}
+For the first bound, we bound the ratio between the following two values:  $ \|q^{(1)}\ldots q^{(\ell)}\|^2 $ and $\|q^{(1)}\|^2\ldots \|q^{(\ell)}\|^2$. 
+\begin{align}
+    n_1&=\prod_{i=1}^\ell \|q^{(i)}\|^2 
+    = \prod_{i=1}^\ell \left(\sum_{S_i} \left(c^{(i)}_{S_i}\right)^2 \right)
+    = \sum_{(S_1,\ldots,S_\ell)}  \left(\prod_{i=1}^\ell \left(c^{(i)}_{S_i}\right)^2 \right)
+    = \sum_{(S_1,\ldots,S_\ell)}  \left(\prod_{i=1}^\ell c^{(i)}_{S_i}\right)^2 \nonumber\\
+    &= \sum_S \sum_{\substack{(S_1,\ldots,S_\ell): \\ S_1\times\ldots S_\ell=S}}  \left(\prod_{i=1}^\ell c^{(i)}_{S_i}\right)^2
+\end{align}
+\begin{align}
+    n_2=\|q^{(1)}\ldots q^{(\ell)}\|^2 = \sum_{S} c_S^2 
+    = \sum_S \left( \sum_{\substack{(S_1,\ldots, S_\ell): \\ S_1\times\ldots\times S_\ell=S }} \left(c_{S_1}^{(1)}\ldots c_{S_\ell}^{(\ell)} \right) \right)^2 
+    = \sum_S \left( \sum_{\substack{(S_1,\ldots, S_\ell): \\ S_1\times\ldots\times S_\ell=S }} \prod_{i=1}^\ell c_{S_i}^{(i)} \right)^2 
+\end{align}
+Let $M$ be an upper bound of the number of terms involved in the summation $ \sum_{\substack{(S_1,\ldots, S_\ell): \\ S_1\times\ldots\times S_\ell=S }} $, then by Cauchy-Schwarz's inequality we have $ n_2\leq Mn_1 $.
 
+$M$ counts the number of different $(S_1,\ldots, S_\ell)$'s with $S_1\times \ldots \times S_\ell=S$. Since $S$ has degree at most $\deg$, we can bound $M$ by $ \ell^{\deg}$.  
+
+The second bound can be obtained by applying Cauchy-Schwarz once. 
+
+\end{proof}
+
+\subsection{Refinement for \cite{klivans2004learning}'s Theorem 10}
+\begin{lemma}
+Under the same condition as in \cite{klivans2004learning}'s Theorem 10, the PTF has margin on $X$ is at least $(1/t)^{O(r\log r + r\log\log t)}$. 
+\end{lemma}
+\begin{proof}
+We simply follow the construction in the original paper. $\|1-w^i\cdot x\|^2\leq 4$ can imply $\|(1-w^i\cdot x)^j\|^2\leq j^{O(j)}4^j \leq j^{O(j)}$. Then $\|a_j(1-w^i\cdot x)^j\|^2\leq 2^{2r}r^{O(r)}=r^{O(r)}$ follows. Thus $\|T_r(1-w^i\cdot x)\|^2=\|\sum_{j=0}^r a_j (1-w^i\cdot x)^j\|^2 \leq (r+1)^2 r^{O(r)} = r^{O(r)}$. Then, $\left(P(w^i\cdot x)\right)^{\log 2t}\leq (\log t)^{O(r\log t)}\times r^{O(r\log t)}\leq (r\log t)^{O(r\log t)}$. Finally, $\|p\|^2\leq (t+1)^2 (r\log t)^{O(r\log t)} \leq (t+1)^2 \left(  t^{O(r\log r + r\log\log t)}\right) = t^{O(r\log r + r\log\log t)}$.  
+\end{proof}
+
+\subsection{Refinement for \cite{klivans2004learning}'s Theorem 7}
+\begin{lemma}
+Under the same condition as in \cite{klivans2004learning}'s Theorem 7, the PTF has margin on $X$ is at least $\left( \frac{\rho}{t\log t \log \frac{1}{\rho}} \right)^{O(t\log t\log 1/\rho)}$. 
+\end{lemma}
+\begin{proof}
+Using the same construction, we bound $\|p\|$. First, we have $\|\frac{2w^i\cdot x}{\rho}\|^2\leq \frac{4}{\rho^2}$ and $\|\left(\frac{2w^i\cdot x}{\rho}\right)^j\|^2\leq j^j\left(\frac{4}{\rho^2}\right)^j=\left(\frac{4j}{\rho^2}\right)^j$. $a(x), b(x)$ are polynomials of degree $O(\log t\log \frac{1}{\rho})$ with coefficients of magnitude $\left(\frac{1}{\rho}\right)^{O(\log t\log 1/\rho)}$. Thus 
+\begin{align*}
+    \|a(2w^i\cdot x/\rho)\|^2 &\leq 
+    \left( \frac{\log t \log \frac{1}{\rho}}{\rho} \right)^{O(\log t\log 1/\rho)}  \times  \left(\frac{1}{\rho}\right)^{O(\log t\log 1/\rho)}\\
+    &\leq \left( \frac{\log t \log \frac{1}{\rho}}{\rho} \right)^{O(\log t\log 1/\rho)}.
+\end{align*}
+Same holds for $\|b(2w^i\cdot x/\rho)\|^2$. Finally we have $\|B(x)\|^2 \leq (t)^{O(t\log t\log 1/\rho)} \times \left( \frac{\log t \log \frac{1}{\rho}}{\rho} \right)^{O(t\log t\log 1/\rho)} = \left( \frac{t\log t \log \frac{1}{\rho}}{\rho} \right)^{O(t\log t\log 1/\rho)}$
+\end{proof}
+
+\section{Regret Lower Bound for Explore-then-Exploit Algorithms {\color{red}[TODO]}}
 
 \section{A Regret Lower Bound for A Certain Type of Algorithms}
 \label{section: passive lower bound}
