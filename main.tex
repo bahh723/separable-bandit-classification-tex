@@ -345,18 +345,19 @@ Using the same construction, we bound $\|p\|$. First, we have $\|\frac{2w^i\cdot
     \left( \frac{\log t \log \frac{1}{\rho}}{\rho} \right)^{O(\log t\log 1/\rho)}  \times  \left(\frac{1}{\rho}\right)^{O(\log t\log 1/\rho)}\\
     &\leq \left( \frac{\log t \log \frac{1}{\rho}}{\rho} \right)^{O(\log t\log 1/\rho)}.
 \end{align*}
-Same holds for $\|b(2w^i\cdot x/\rho)\|^2$. Finally we have $\|B(x)\|^2 \leq (t)^{O(t\log t\log 1/\rho)} \times \left( \frac{\log t \log \frac{1}{\rho}}{\rho} \right)^{O(t\log t\log 1/\rho)} = \left( \frac{t\log t \log \frac{1}{\rho}}{\rho} \right)^{O(t\log t\log 1/\rho)}$
-
+Same holds for $\|b(2w^i\cdot x/\rho)\|^2$. Finally we have $\|B(x)\|^2 \leq (t)^{O(t\log t\log 1/\rho)} \times \left( \frac{\log t \log \frac{1}{\rho}}{\rho} \right)^{O(t\log t\log 1/\rho)} = \left( \frac{t\log t \log \frac{1}{\rho}}{\rho} \right)^{O(t\log t\log 1/\rho)}$\\ 
+\ \\ 
+{\color{red}[TODO] Refined lower bound for $|B(x)|$}
 %Another refinement is that we can show $|B(x)|\geq $
 
 \end{proof}
 
 %\subsection{Possibilities of using other kernels}
 
-\section{A Recipe of Designing Efficient Algorithms}
-We have seen that if the data is ``one-versus-all'' separable with a margin, then constant error is achievable. To have constant error, a key is that every time an error occurs, the learner should make significant progress. 
+\section{A Recipe for Designing Efficient Algorithms}
+We have seen that if the data is ``one-versus-all'' separable with a margin, then constant error is achievable. To have constant error, a key is that every time there is a mistake, the learner should make significant progress. 
 
-Besides one-versus-all separability, are there other kinds of conditions under which we can easily make progress when we make a mistake? If such condition exists, then we have the following recipe of designing algorithms that have constant error bound: 
+Besides one-versus-all separability, are there other kinds of conditions under which we can easily make progress when we make a mistake? If such condition exists, then we have the following recipe of designing algorithms that have constant mistake bound: 
 \begin{itemize}
     \item Design an algorithm that has constant mistake bound under some assumption. 
     \item Design feature transformation such that our original linear separability satisfies the above assumption in the transformed space. 
@@ -380,7 +381,7 @@ Consider the following algorithm. \\
 }
 \end{algorithm}
 \ \\
-The above algorithm is similar to banditron but only performs \textit{one-sided} update and never explicitly explores to get label. Below we check under what condition can this algorithm have constant error bound. 
+The above algorithm is similar to banditron but only performs \textit{one-sided} update and never explicitly explores to get label. Below we check under what condition can this algorithm have constant mistake bound. 
 
 Following standard analysis for online gradient descent, we have when the learner makes a mistake:
 \begin{align}
@@ -411,7 +412,7 @@ The following analysis leads to the same bound but is more standard. Let $M_t=\o
 Picking appropriate $\eta$ and solving for $\sum_{t=1}^T M_t$ we get the same error bound. 
 
 
-A candidate set of assumptions that leads to \eqref{eqn:one-sided condition} is the \textit{sum-to-zero} assumption: 
+A candidate set of assumptions that leads to \eqref{eqn:one-sided condition} is the \textit{sum-to-zero + margin} assumption: 
 \begin{itemize}
     \item $\sum_{i=1}^K \e_i^\top W^* = 0$ (so we pick $\Omega_t = \{W\in \mathbb{R}^{K\times d}: \|\e_i^\top W\|_2\leq 1, \sum_{i=1}^K \e_i^\top W=0\}$) \\
     \item $ (W^*x_t)_y \leq -\Delta $ for all $y\neq y_t$. 
@@ -429,10 +430,10 @@ Although the one-versus-all assumption is similar, there we do not perform proje
 \subsection{Algorithms that can update without true labels}
 Algorithm~\ref{alg:one-sided} can update without the information of $y_t$. One can think of Algorithm~\ref{alg:one-sided} as a gradient algorithm  on the loss function $\ell_t(W) = \one[\hat{y}_t\neq y_t](Wx_t)_{\hat{y}_t}$. As a comparison, one can think of the surrogate loss function in \cite{2018arXiv180610745F} as $\ell_t(W)=\sum_{y=1}^K \one[y\neq y_t][\Delta+(Wx_t)_y]_+ $ (some scaling and notations are changed for better comparison), whose inverse propensity weighting estimator becomes $\tilde{\ell}_t(W)= \frac{1}{p_{t,\hat{y}_t}}\one[\hat{y}_t\neq y_t][\Delta+(Wx_t)_{
 \hat{y}_t}]_+$. One can see that they are closely related, except that in~\cite{2018arXiv180610745F}
-when $(Wx_t)_{\hat{y}_t}\leq -\Delta$, the loss for $W$ is set to zero (which makes no difference under the sum-to-zero assumption). 
+when $(Wx_t)_{\hat{y}_t}\leq -\Delta$, the loss for $W$ is set to zero (which makes no difference under the sum-to-zero + margin assumption). 
 
 
-\section{Logarithmic Regret for Strongly Convex Losses}
+\section{Logarithmic Regret for Strongly Convex and Smooth Losses}
 \subsection{Gradient descent}
 In some previous works (we will visit them in the next subsection), it is assumed that the labels are generated with the following process: 
 \begin{align}
@@ -446,23 +447,26 @@ The margin assumption is defined as
 This margin assumption is a special case of the Tsybakov condition investigated in ~\cite{agarwal2013selective}. 
 Defining $\hat{y}_t = \argmax_y \nabla\Phi(W_tx_t)$ and $y^*_t = \argmax_y \nabla\Phi(W^*x_t) $ The regret is defined as
 \begin{align}
-    \Reg_T &= \sum_{t=1}^T \E\left[ \one[\hat{y}_t\neq y_t] - \one[y_t^*\neq y_t]\right] \nonumber \\
+    \Reg_T &= \sum_{t=1}^T \E\left[ \one[\hat{y}_t\neq y_t] - \one[y_t^*\neq y_t]\right] \tag{the $\E[\cdot]$ is conditioned on all history before time $t$ and the randomness is from $y_t$} \\
     &= \sum_{t=1}^T \sum_{i=1}^K \left(\one[\hat{y}_t\neq i] - \one[y^*_t\neq i]\right)\nabla_i\Phi(W^*x_t). \label{eqn:new regret}
 \end{align}
 
-Below we argue that if $\Phi$ is strongly convex and smooth, then the following algorithm (exactly the algorithm in \cite{agarwal2013selective}) achieves regret logarithmic in $T$. 
+Below we argue that if $\Phi$ is strongly convex and smooth, then the following algorithm (almost exactly the algorithm in \cite{agarwal2013selective} except that we replace label query by uniform exploration) achieves regret logarithmic in $T$. 
 
 \begin{assumption}
+For any $u,v$, 
 \begin{align*}
-     \Phi(v) + \inner{\nb\Phi(v),u-v} + \frac{\gamma_\ell}{2}\|u-v\|_2^2 \leq \Phi(u)-\Phi(v)\leq \Phi(v) + \inner{\nb\Phi(v),u-v} + \frac{\gamma_u}{2}\|u-v\|_2^2. 
+     \Phi(v) + \inner{\nb\Phi(v),u-v} + \frac{\gamma_\ell}{2}\|u-v\|_2^2 \leq \Phi(u)\leq \Phi(v) + \inner{\nb\Phi(v),u-v} + \frac{\gamma_u}{2}\|u-v\|_2^2. 
 \end{align*}
 That is, $\Phi$ is $\gamma_\ell$-strongly convex and $\gamma_u$-smooth. 
 \end{assumption}
 
 \begin{algorithm}[H]
 \caption{Selectron \cite{agarwal2013selective}}
-\textbf{Define}: $\epsilon\triangleq \Delta/(2\gamma_u C')$, where $C'$ is defined in Lemma~\ref{lem:decreasing error} $\eta\triangleq \frac{\sup_{W\in\Omega}\|W\|_F^2}{\gamma_\ell}$, $\Omega\triangleq$ a convex set where $W^*$ lies in.  \\
-\textbf{Definition}: $\ell_t(W)=\Phi(Wx_t) - (Wx_t)_{y_t}$.\\
+\textbf{Definition}: $\epsilon\triangleq \Delta/(2\gamma_u C')$, where $C'$ is defined in Lemma~\ref{lem:decreasing error}, \\
+$\eta\triangleq \frac{\sup_{W\in\Omega}\|W\|_F^2}{\gamma_\ell}$, \\
+$\Omega\triangleq$ a convex set where $W^*$ lies in.  \\
+$\ell_t(W)=\Phi(Wx_t) - (Wx_t)_{y_t}$.\\
 \textbf{Initialization}: $W_1=0, M_1=I$.\\ 
 \For{$t=1, \ldots, T$}{
    Observe $x_t$. \\
@@ -520,15 +524,15 @@ By the definition of $\ell_t$,
 \begin{align*}
     0 &\geq \inner{\frac{1}{\eta} W_{t} + \sum_{s=1}^{t-1} Z_s\nb\ell_s(W_t),  W_{t}-W^*} \\
     & = \inner{\sum_{s=1}^{t-1} Z_s\left(\nb\Phi(W_t x_s) - \e_{y_s} \right)x_s^\top,  W_{t}-W^*} + \frac{1}{\eta}\inner{W_t, W_t-W^*} \\
-    & = \inner{\sum_{s=1}^{t-1} Z_s\left(\nb\Phi(W_t x_s) - \nb\Phi(W^*x_s) + \xi_s \right)x_s^\top, W_{t}-W^*} + \frac{1}{\eta}\inner{W_t, W_t-W^*} , \tag{let $\xi_s\triangleq \nb\Phi(W^*x_s)-\e_{y_s}$} \\ 
+    & = \inner{\sum_{s=1}^{t-1} Z_s\left(\nb\Phi(W_t x_s) - \nb\Phi(W^*x_s) + \xi_s \right)x_s^\top, W_{t}-W^*} + \frac{1}{\eta}\inner{W_t, W_t-W^*} , \tag{let $\xi_s\triangleq \nb\Phi(W^*x_s)-\e_{y_s}$; note that $\E[\xi_s]=\mathbf{0}$} \\ 
     & = \inner{\sum_{s=1}^{t-1} Z_s\left(\nb\Phi(W_t x_s) - \nb\Phi(W^*x_s) + \xi_s \right), W_t x_s- W^*x_s} + \frac{1}{\eta}\inner{W_t, W_t-W^*}, \\
-    & \geq \gamma_\ell \sum_{s=1}^{t-1} Z_s\|W_tx_s-W^*x_s\|_2^2 + \sum_{s=1}^{t-1} Z_s\inner{\xi_s, W_tx_s-W^*x_s} + \frac{1}{\eta} \inner{W_t, W_t-W^*}. 
+    & \geq \gamma_\ell \sum_{s=1}^{t-1} Z_s\|W_tx_s-W^*x_s\|_2^2 + \sum_{s=1}^{t-1} Z_s\inner{\xi_s, W_tx_s-W^*x_s} + \frac{1}{\eta} \inner{W_t, W_t-W^*}. \tag{for $\gamma_\ell$-strongly convex functions, $\inner{\nb\Phi(u)-\nb\Phi(v), u-v}\geq \gamma_\ell\|u-v\|_2^2$}
 \end{align*}
 Rearranging gives 
 \begin{align}
-    \sum_{s=1}^{t-1} Z_s\inner{\xi_s, W^*x_s-W_tx_s} &\geq \gamma_\ell \sum_{s=1}^{t-1} Z_s\|W_tx_s-W^*x_s\|_2^2 + \frac{1}{\eta} \inner{W_t, W_t-W^*} \nonumber \\
-    &= \gamma_\ell \sum_{s=1}^{t-1} Z_s\sum_{i=1}^K \langle \e_iW_t-\e_iW^*, x_s\rangle^2 + \frac{1}{\eta} \inner{W_t, W_t-W^*} \nonumber \\
-    & \geq \gamma_\ell \|W_t-W^*\|_{M_t}^2 - \frac{2}{\eta} \sup_{W\in \Omega}\|W\|_F^2.  \label{eqn:lower}
+    \sum_{s=1}^{t-1} Z_s\inner{\xi_s, W^*x_s-W_tx_s} &\geq \gamma_\ell \sum_{s=1}^{t-1} Z_s\|W_tx_s-W^*x_s\|_2^2 - \frac{2}{\eta} \sup_{W\in \Omega}\|W\|_F^2 \nonumber \\
+    &= \gamma_\ell \sum_{s=1}^{t-1} Z_s\sum_{i=1}^K \langle \e_iW_t-\e_iW^*, x_s\rangle^2 - \frac{2}{\eta} \sup_{W\in \Omega}\|W\|_F^2 \nonumber \\
+    & = \gamma_\ell \|W_t-W^*\|_{M_t}^2 - \frac{2}{\eta} \sup_{W\in \Omega}\|W\|_F^2.  \label{eqn:lower}
 \end{align}
 On the other hand, 
 \begin{align}
@@ -544,7 +548,7 @@ Thus, by~\eqref{eqn:upper} we get with proability $1-\delta$
 \begin{align*}
     \sum_{s=1}^{t-1} Z_s\inner{\xi_s, W^*x_s-W_tx_s} &= C\sqrt{d}\sum_{i=1}^K \|W^*_i-W_{t,i}\|_{M_t} = C\sqrt{dK} \|W^*-W_{t}\|_{M_t}, 
 \end{align*}
-where in the last inequality we use $\sum_{i=1}^K a_i\leq \sqrt{K}\sqrt{\sum_{i=1}^K a_i^2}$. Combining with~\eqref{eqn:lower} we get 
+where in the last inequality we use $\sum_{i=1}^K a_i\leq \sqrt{K}\sqrt{\sum_{i=1}^K a_i^2}$. Combining with~\eqref{eqn:lower} and solving for $\|W_t-W^*\|_{M_t}$ we get 
 \begin{align*}
     \|W_t-W^*\|_{M_t} \leq \frac{2C\sqrt{dK}}{\gamma_\ell} + \sqrt{\frac{2}{\eta \gamma_\ell}}\sup_{W\in \Omega}\|W\|_F. 
 \end{align*}
@@ -598,11 +602,11 @@ $ \sum_{t=1}^T \one\left[\norm{x_t}_{M_t^{-1}}> \epsilon\right] \leq \frac{K\ln 
 
 
 \subsection{Revisiting the stochastic assumptions made in \cite{crammer2013multiclass} and \cite{agarwal2013selective}}
-In \cite{crammer2013multiclass} and \cite{agarwal2013selective}, the feature vectors $x_t$'s are adversarially picked, while $y_t$ is generated based on some conditional distribution based on $x_t$. For example, in \cite{crammer2013multiclass}, the label is generated through 
+In \cite{crammer2013multiclass} and \cite{agarwal2013selective}, the feature vectors $x_t$'s are adversarially picked, while $y_t$ is generated based on some conditional distribution based on $x_t$. For example, in \cite{crammer2013multiclass}, the label is generated by
 \begin{align}
     p(y_t = i | x_t) = \frac{\alpha + (W^*x_t)_i}{\alpha+1}, \label{eqn:confidit assumption}
 \end{align}
-where $W^* \in \Omega \triangleq \{W\in \mathbb{R}^{K\times d}: \sum_{i=1}^K (Wx_t)_i = \alpha+1-K\alpha \text{\ and\ } -\alpha \leq (Wx_t)_i\}$; a valid $\Phi$ is 
+where $W^* \in \Omega_t \triangleq \{W\in \mathbb{R}^{K\times d}: \sum_{i=1}^K (Wx_t)_i = \alpha+1-K\alpha \text{\ and\ } -\alpha \leq (Wx_t)_i\}$; a valid $\Phi$ that satisfies \eqref{eqn:new margin} is 
 \begin{align}
     \Phi(u) = \frac{1}{2(\alpha+1)}\|u\|_2^2 + \frac{\alpha}{\alpha+1}\sum_{i=1}^K u_i. 
 \end{align}
@@ -610,7 +614,7 @@ in \cite{agarwal2013selective}, the labels are generated by
 \begin{align}
     p(y_t = i | x_t) = \frac{\exp((W^*x_t)_i)}{\sum_{j=1}^K \exp((W^*x_t)_j) },
 \end{align}
-where $W^* \in \Omega \triangleq \{W\in \mathbb{R}^{K\times d}: \|\e_i^\top W\|_2 \leq D \}$, and $\Phi$ can be defined as
+where $W^* \in \Omega \triangleq \{W\in \mathbb{R}^{K\times d}: \|\e_i^\top W\|_2 \leq D \}$, and $\Phi$ can be chosen as
 \begin{align}
     \Phi(u) = \log\left(\sum_{i=1}^K \exp(u_i) \right). 
 \end{align}
@@ -618,8 +622,8 @@ where $W^* \in \Omega \triangleq \{W\in \mathbb{R}^{K\times d}: \|\e_i^\top W\|_
 \textbf{Discussions}:  \\
 \begin{itemize}
     \item Although \cite{hazan2011newtron, foster2018logistic} do not make stochastic assumptions, their loss functions are indeed strongly-convex and smooth (although $\gamma_u/\gamma_\ell$ can be quite large). It is worth notice that \cite{foster2018logistic} also obtained some logarithmic bound (their Theorem 3), but the bound is margin-independent. It seems that their Theorem 3 is tighter than our bound here. Not sure if it is because they use improper learning (we indeed should see whether improper learning helps in our problem). There is a $\alpha$ parameter in \cite{hazan2011newtron}, somehow it looks related to margin.
-    \item How is the assumptions in this section related to \cite{pillaud2017exponential}? 
-    \item We indeed have tried to use this kind of selective sampling idea to get finite error bound (see Section \ref{sec:kwik}). But there it seems that impossible to find a $\Phi(Wx_t)$ that is at the same time strongly convex, $\Phi(Wx_t)\geq 0$, $\Phi(W^*x_t)\leq 0$ (or other type of losses with which a logarithmic/constant regret bound implies logarithmic/constant error bound). 
+    \item How is the assumptions/algorithms/bounds introduced in this section related to \cite{pillaud2017exponential}? They are similar in that they both assume $p(y|x)$ to be defined by some function in a known function class. The margin assumption \eqref{eqn:new margin} is a generalization of \cite{pillaud2017exponential}'s to the multiclass case. One can also view the FTRL step used in Selectron as the counterpart of the ridge regression step defined in \cite{pillaud2017exponential}. 
+    \item We indeed have tried to use this kind of selective sampling idea to get finite error bound (see Section \ref{sec:kwik}). But it seems it is impossible/difficult to find a $\Phi(\cdot)$ that at the same time 1) is strongly convex, and 2) whose logarithmic/constant regret bound implies logarithmic/constant mistake bound. 
 \end{itemize}
 
 
@@ -902,7 +906,7 @@ By the condition and the adversary strategy, we know that the probability of err
 \end{align*}
 \end{proof}
 
-\textbf{Discussion}. There is a construction such that $1/V$ can be of order $\Omega\left( \left(\frac{1}{\gamma}\right)^{(d-1)/2} \right)$. 
+\textbf{Discussion}. There is a construction such that $1/V$ can be of order $\Omega\left( \left(\frac{1}{\gamma}\right)^{(d-1)/2} \right)$. {\color{red} [TODO] How to construct such points?}
 
 %This lower bound does not rule out those algorithms that change its probability vector based on the $\textbf{count}$ of consecutive errors. This type of algorithm may still easy to be implemented (like QBC). Also it does not rule out the banditron algorithm. 
 
@@ -944,13 +948,12 @@ $c_6\neq 3$ \\
 $c_7\neq 1$ \\
 $\Rightarrow$ There is no separable solution. \\
 
-It turns out this specific 1-dimensional problem is equivalent to identify a \textbf{missing permutation} of $[K]$ as a subsequence in the given sequence. In Example 1, the existing permutations are $(1,2,3), (1,3,2), (2,3,1), (3,1,2)$, the missing ones are $(2,1,3)$ and $(3,2,1)$.  So the solutions can be $(2,1,3)$ or $(3,2,1)$ (with some repetition). In Example 2, all permutations are as subsequences, so there is no solution. 
+It turns out this specific 1-dimensional problem is equivalent to identify a \textbf{missing permutation} of $[K]$ as a subsequence in the weak-label sequence. In Example 1, the existing permutations are $(1,2,3), (1,3,2), (2,3,1), (3,1,2)$, the missing ones are $(2,1,3)$ and $(3,2,1)$.  So the solutions can be $(2,1,3)$ or $(3,2,1)$ (with some repetition). In Example 2, all permutations appear in the weak-label sequence, so there is no solution. 
 
 We can prove this equivalence considering two directions: \\
-(1) If there is a solution with the class labels following a permutation, then that permutation cannot be a subsequence of the given sequence. \\
-(2) If there is a missing permutation in the given sequence, then there is a class assignment that follows this permutation.\\ 
-They should be straightforward by trying some examples. 
-
+(1) If there is a solution whose class labels follow a permutation, then that permutation cannot be a subsequence of the weak-label sequence. \\
+(2) If there is a missing permutation in the weak-label sequence, then there is a class label assignment that follows this permutation.\\ 
+{\color{red} [TODO] Proof}
 
 %\section{Cone Algorithm}
 %\begin{algorithm}[H]
