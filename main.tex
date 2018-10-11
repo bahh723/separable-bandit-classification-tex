@@ -433,7 +433,7 @@ Algorithm~\ref{alg:one-sided} can update without the information of $y_t$. One c
 when $(Wx_t)_{\hat{y}_t}\leq -\Delta$, the loss for $W$ is set to zero (which makes no difference under the sum-to-zero + margin assumption). 
 
 
-\section{Logarithmic Regret for Strongly Convex and Smooth Losses}
+\section{Logarithmic Regret for Strongly Convex Smooth Losses}
 \subsection{Gradient descent}
 In some previous works (we will visit them in the next subsection), it is assumed that the labels are generated with the following process: 
 \begin{align}
@@ -483,11 +483,11 @@ $\ell_t(W)=\Phi(Wx_t) - (Wx_t)_{y_t}$.\\
        Draw $\tilde{y}_t \sim \text{unif}([K])$. 
    }
    \Else{
-       Draw $\tilde{y}_t = \hat{y}_t \triangleq \argmax_{y\in[K]}(W_tx_t)_y$. 
+       Draw $\tilde{y}_t = \hat{y}_t \triangleq \argmax_{i\in[K]}(W_tx_t)_i$. 
    }
    \If{ $\tilde{y}_t=y_t$ }{
        $Z_t\leftarrow 1$, \\
-       $M_{t+1}\leftarrow M_t + Z_tx_tx_t^\top$,\\
+       $M_{t+1}\leftarrow M_t + x_tx_t^\top$,\\
        $W_{t+1} = \argmin_{W\in\Omega}\left\{ \sum_{s=1}^t Z_s \ell_s(W) + \frac{1}{2\eta}\|W\|_F^2 \right\}$. 
    }
    \Else{
@@ -498,6 +498,32 @@ $\ell_t(W)=\Phi(Wx_t) - (Wx_t)_{y_t}$.\\
     
 }
 \end{algorithm}
+
+\begin{algorithm}[H]
+\caption{Confidit \cite{crammer2013multiclass}}
+\textbf{Definition}: $\epsilon\triangleq \Delta/(2\gamma_u C')$, where $C'$ is defined in Lemma~\ref{lem:decreasing error}, \\
+$\eta\triangleq \frac{\sup_{W\in\Omega}\|W\|_F^2}{\gamma_\ell}$, \\
+$\Omega\triangleq$ a convex set where $W^*$ lies in.  \\
+$\ell_t(W)=\Phi(Wx_t) - (Wx_t)_{y_t}$.\\
+\textbf{Initialization}: $W_1=\mathbf{0}^{K\times d}, M_{1,i}=I^{d\times d}, \forall i\in[K]$.\\ 
+\For{$t=1, \ldots, T$}{
+   Observe $x_t$. \\
+   Draw $\tilde{y}_t = \argmax_{i\in[K]} \left\{ (W_tx_t)_i + \|x_t\|_{M_{t,i}^{-1}} \right\}$. \\
+   $M_{t+1,\tilde{y}_t}\leftarrow M_{t,\tilde{y}_t} + x_tx_t^\top$, $M_{t+1,i}\leftarrow M_{t,i}, \forall i\neq \tilde{y}_t,$\\
+   \If{ $\tilde{y}_t=y_t$ }{
+       $Z_t\leftarrow 1$, \\
+       $M_{t+1,y_t}\leftarrow M_{t,y_t} + x_tx_t^\top$, $M_{t+1,i}\leftarrow M_{t,i}, \forall i\neq y_t,$\\
+       $W_{t+1} = \argmin_{W\in\Omega}\left\{ \sum_{s=1}^t Z_s \ell_s(W) + \frac{1}{2\eta}\|W\|_F^2 \right\}$. 
+   }
+   \Else{
+       $Z_t\leftarrow 0$,  \\
+       $M_{t+1,i}\leftarrow M_{t,i}, \forall i$,\\
+       $W_{t+1}\leftarrow W_t$.
+   }
+    
+}
+\end{algorithm}
+
 
 \begin{theorem}
 \label{lemma:new main}
@@ -570,17 +596,15 @@ where in the last inequality we use $\sum_{i=1}^K a_i\leq \sqrt{K}\sqrt{\sum_{i=
 
 \end{proof}
 
-
-
 \begin{lemma}
 \label{lem: xbounded}
 If $\|x_t\|_{M_t^{-1}}\leq \epsilon = \Delta/(2\gamma_u C')$, then $\hat{y}_t=y^*_t$. {\color{blue}(For Type 2 margin assumption, we set $\epsilon=\Delta/2C'$)}
 \end{lemma}
 \begin{proof}
 \begin{align*}
-\nb \Phi_{y_t^*}(W^*x_t) - \nb\Phi_{\hat{y}_t}(W^*x_t) 
- &\leq \nb \Phi_{y_t^*}(W^*x_t) -    \nb\Phi_{\hat{y}_t}(W^*x_t) 
- - \nb \Phi_{y_t^*}(W_tx_t) + \nb \Phi_{\hat{y}_t}(W_tx_t) \\
+\nb_{y_t^*} \Phi(W^*x_t) - \nb_{\hat{y}_t} \Phi(W^*x_t) 
+ &\leq \nb_{y_t^*} \Phi(W^*x_t) -    \nb_{\hat{y}_t} \Phi(W^*x_t) 
+ - \nb_{y_t^*} \Phi(W_tx_t) + \nb_{\hat{y}_t} \Phi(W_tx_t) \\
  & \leq 2\gamma_u \|W^*x_t-W_tx_t\|_2 \\
  & \leq 2\gamma_u \|W^*-W_t\|_{M_t}\|x_2\|_{M_t^{-1}} \\
  & \leq \Delta. \tag{by Lemma~\ref{lem:decreasing error}}
@@ -1172,9 +1196,150 @@ Plugging these lemmas in the previous hedge bound, we can get \begin{align*}
 
 \textbf{Discussion.} We can change $\ell_t(\cdot)$ to any reasonable convex loss (e.g., logsitic loss or second-order loss). 
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%% !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+%%%% Below are failed attempt to prove the hardness
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\iffalse
+\section{Reduction from the 3SAT problem}
+In this section, we try to argue the hardness of the following margin-constrained weak-label learning problem: 
+\textit{
+\ \\
+Given weak-labeled samples $\{(x_t, \bar{y}_t)\}_{t=1}^T \subset \mathbb{R}^d \times [K]$, a margin parameter $\gamma$, and an absolute value bound $B$, find $W\in \mathbb{K\times d}$ such that $ \forall i,j, |W_{ij}|\leq B$ and $\forall t$,
+\begin{align*}
+(Wx_t)_{\bar{y}_t} \leq \max_{i\in [K]} (Wx_t)_i - \gamma. 
+\end{align*}
+}
+
+Below we reduce 3SAT to this problem. For an $N$-variable 3SAT problem, we construct a weak-label problem with $K=2N+1$ classes. For convenience, we give names to these $2N+1$ classes: $(1, a_1, b_1, \ldots, a_N, b_N)=(1,2,3,\ldots, 2N+1)$. 
+
+Now we construct training samples that encode this 3SAT problem. For a clause $x_{i_1}\vee \cdots \vee x_{i_p} \vee \bar{x}_{j_1}\vee \cdots \vee \bar{x}_{j_n}$, we construct the following sample: 
+\begin{align}
+    (x,\bar{y}) = \left(\e_1 + \sum_{k=1}^p \e_{a_k} + \sum_{k=1}^n \e_{b_k}, 1 \right) \label{sample1}
+\end{align}
+
+For each $i\in [K]$, we construct two samples: 
+\begin{align}
+    (x,\bar{y}) &= \left( \e_1 + \e_{a_i} + \e_{b_i}, 1 \right), \\
+    (x, \bar{y}) &= \left( -\e_1 - \e_{a_i} - \e_{b_i}, 1 \right). 
+\end{align}
 
 
 
+The ranking problem has two kinds of constraints: $(S,i)$ and $(T,j)$, where $S, T\subseteq [K]$, $i\in S$, $j\in T$. The goal is to determine whether there exists a ranking over $[K]$ such that for all constraints $(S,i)$, $i$ is not the first-ranked element in $S$; for all $(T,j)$, $j$ is not the last-ranked element in $T$. This problem is proved to be hard. 
+
+Below we prove that the weak-label learning problem is harder than the ranking problem. Thus we would try to use a weak-label learning algorithm to solve the ranking problem. Below is the algorithm: 
+
+\begin{algorithm}[H]
+\caption{Reduction from ranking problem to weak-label learning problem}
+\textbf{Parameter: $0 < \epsilon < \frac{1}{2K^2}$}, $\#$features$=\#$classes$=K$, $\delta\triangleq 1+K\epsilon$. \\
+For each $(S,i)$ in the ranking problem, construct the following feature and weak-label pair: 
+\begin{align}
+    (x,\bar{y}) = \left( \sum_{q\in S} \e_q + (K\epsilon) \e_i , i\right). \label{feat1}
+\end{align}\\
+For example, if $S=\{1,3,4\}$ and $i=3$, then we construct the following weak training sample: 
+\begin{align*}
+    ((1+ K\epsilon, 0, 1,1), 3)
+\end{align*}\\
+
+For each $(T,j)$ in the ranking problem, we construct the following $K-1$ pairs: 
+\begin{align}
+    (x,\bar{y}) = \left( \sum_{q\in T} -\e_q - \delta \e_\ell , j\right), \forall \ell\neq j. \label{feat2}
+\end{align}\\
+For example, if $T=\{1,3,4\}$ and $j=3$, then we construct the following weak training samples: 
+\begin{align*}
+    &((-1, -\delta, -1,-1), 3)\\
+    &((-1, 0, -1-\delta, -1), 3)\\
+    &((-1,0,-1,-1-\delta), 3)
+\end{align*}\\
+
+
+Besides, for every $p\in [K]$, we construct the strong-label sample: 
+\begin{align}
+    (x,y) = (\e_p, p); \label{feat3}
+\end{align}\\
+
+
+and for any $(p,q)$, $q\neq p$, we construct the strong-label sample: \begin{align}
+    (x,y) = (-\e_q + \epsilon \e_p, p). \label{feat4}
+\end{align}\\
+Input all above samples to the weak-label algorithm, and get the linear classifier $W=[w_{pq}]$. Output the ranking of $p$ based on the value of $\sum_{q=1}^{K} w_{pq}$, from larger to smaller (i.e., the ranking is based on the scores for the feature $x=\e_1+\ldots+\e_K$). 
+\end{algorithm}
+In the following two subsections, we show the correctness of the above reduction. 
+
+\subsection{Solution for weak-label implies solution for ranking}
+In this subsection, we assume we have a solution $[w_{pq}]$ for the weak-label problem. 
+\begin{lemma}
+\label{lemma:eps_bound}
+(We have shown this in our discussion) For any $p, q, r\in [K]$, $p\neq q$, 
+\begin{align}
+    w_{pq} - w_{rq} \leq \epsilon(w_{pp}-w_{rp}). \label{eqn: eps_bound}
+\end{align}
+\end{lemma}
+\begin{proof}
+    Using \eqref{feat4}, and comparing the scores between class $p$ and $r$, we get 
+    \begin{align*}
+        -w_{pq} + \epsilon w_{pp} \geq -w_{rq} + \epsilon w_{rp}.
+    \end{align*}
+    Rearranging completes the proof. 
+\end{proof}
+\begin{lemma}
+\label{lemma:dominant_diag}
+For any $p, r\in [K]$, $w_{pp}\geq w_{rp}$. 
+\end{lemma}
+\begin{proof}
+    Using \eqref{feat3} and comparing the scores between class $p$ and $r$ complete the proof. 
+\end{proof}
+\begin{lemma}
+\label{lemma:S constraint}
+    For any $(S,i)$ constraint from the ranking problem, there exists a $i'\neq i$ such that 
+    \begin{align*}
+        \sum_{q=1}^K w_{iq} < \sum_{q=1}^K w_{i'q}. 
+    \end{align*}
+\end{lemma}
+\begin{proof}
+    By the weak-label condition in \eqref{feat1}, there is a $i'\neq i$ such that 
+    \begin{align*}
+        \sum_{q\in S} w_{iq} + (K\epsilon) w_{ii} < \sum_{q\in S} w_{i'q} + (K\epsilon) w_{i'i}. 
+    \end{align*}
+    Note that $i\in S$, summing \eqref{eqn: eps_bound} over elements not in $S$ we get 
+    \begin{align*}
+        \sum_{q\notin S} (w_{iq} - w_{i'q}) \leq \sum_{q\notin S} \epsilon (w_{ii}-w_{i'i}) \leq K\epsilon(w_{ii}-w_{i'i}), 
+    \end{align*}
+    where in the last inequality we use the fact $w_{ii}-w_{i'i}\geq 0$ implied by Lemma~\ref{lemma:dominant_diag}. 
+    Combining the above two inequalities, we get $\sum_{q=1}^K (w_{iq}-w_{i'q})<(K\epsilon-K\epsilon)(w_{ii}-w_{i'i})=0$, which finishes the proof. 
+\end{proof}
+\begin{lemma}
+\label{lemma:T constraint}
+For any $(T,j)$ constraint from the ranking problem, there exists a $j'\neq j$ such that 
+\begin{align*}
+    \sum_{q=1}^K w_{jq} > \sum_{q=1}^K w_{j'q}. 
+\end{align*}
+\end{lemma}
+\begin{proof}
+By the weak label condition in \eqref{feat2}, there exists a $j'\neq j$ such that 
+\begin{align*}
+     \sum_{q\in T} w_{j'q} + \delta w_{j'j'} < \sum_{q\in T} w_{jq} + \delta w_{jj'} \tag{letting $\ell=j'$ in \eqref{feat2}}
+\end{align*}
+Consider two cases: \\
+(1) $j'\in T$, then summing \eqref{eqn: eps_bound} over elements not in $T$, we have
+\begin{align*}
+    \sum_{q\notin T} (w_{j'q}-w_{jq}) < \sum_{q\notin T} \epsilon(w_{j'j'}-w_{jj'}) \leq K\epsilon(w_{j'j'}-w_{jj'}),  
+\end{align*}
+where in the last inequality we use the fact $w_{j'j'}-w_{jj'}\geq 0$ implied by Lemma~\ref{lemma:dominant_diag}. \\
+(2) $j'\notin T$, then 
+\begin{align*}
+    \sum_{q\notin T} (w_{j'q}-w_{jq}) &= (w_{j'j'}-w_{jj'})+\sum_{q\notin T, q\neq j'}(w_{j'q}-w_{jq})\\
+    &\leq (w_{j'j'}-w_{jj'})+\sum_{q\notin T, q\neq j'}(w_{j'j'}-w_{jj'}) \tag{Lemma~\ref{lemma:eps_bound}}\\
+    &\leq (1+K\epsilon) (w_{j'j'}-w_{jj'})
+\end{align*}
+In either case, we have $\sum_{q=1}^K (w_{j'q}-w_{jq})<(1+K\epsilon-\delta)(w_{j'j'}-w_{jj'})\leq 0$, which completes the proof. 
+\end{proof}
+By Lemma~\ref{lemma:S constraint} and~\ref{lemma:T constraint}, if we rank element $p$ based on the value of $\sum_{q=1}^K w_{pq}$, then this satisfies all constraints from the ranking problem, and thus gives it the valid solution. 
+
+\subsection{Solution for ranking implies solution for weak-label}
+This direction is more straightforward. Suppose we have a solution for the ranking problem, then we create a diagonal matrix $W$ where the diagonal elements are a permutation of $\{1, (1+2K\epsilon), (1+2K\epsilon)^2, \ldots, (1+2K\epsilon)^{K-1}\}$: the first-ranked element takes the value $K$, the second takes $K-1$, and so on. It's easy to verify that \eqref{feat1}-\eqref{feat4} are all satisfied. 
+\fi
 
 \newpage
 \bibliography{adaptivity} 
