@@ -1,0 +1,280 @@
+\documentclass{article}
+
+% if you need to pass options to natbib, use, e.g.:
+% \PassOptionsToPackage{numbers, compress}{natbib}
+% before loading nips_2017
+%
+% to avoid loading the natbib package, add option nonatbib:
+% \usepackage[nonatbib]{nips_2017}
+
+%\usepackage{nips_2017}
+
+% to compile a camera-ready version, add the [final] option, e.g.:
+ \usepackage[final]{nips_2017}
+
+%\usepackage[utf8]{inputenc} % allow utf-8 input
+\usepackage[T1]{fontenc}    % use 8-bit T1 fonts
+\usepackage{hyperref}       % hyperlinks
+\usepackage{url}            % simple URL typesetting
+\usepackage{booktabs}       % professional-quality tables
+\usepackage{amsfonts}       % blackboard math symbols
+\usepackage{nicefrac}       % compact symbols for 1/2, etc.
+\usepackage{microtype}      % microtypography
+% For citations
+\usepackage{natbib}
+\usepackage{amsthm}
+\usepackage{makecell}
+% For algorithms
+%\usepackage[algcompatible]{algpseudocode}
+%\usepackage{algorithm}
+%\usepackage{algorithmicx}
+%\usepackage[noend]{algcompatible}
+\usepackage[vlined,linesnumbered,ruled]{algorithm2e}
+\usepackage{bbm}
+\usepackage{amsfonts}
+\usepackage{amsmath}
+\usepackage{mathtools}
+\usepackage{amsopn}
+\usepackage{amssymb}
+\usepackage{graphicx}
+\usepackage{enumerate}
+\usepackage{soul}
+\usepackage{commath}
+%%%%%%%%%%%%%%%%%% toc
+\usepackage{scrwfile}
+\TOCclone[\contentsname~(\appendixname)]{toc}{atoc}
+\newcommand\StartAppendixEntries{}
+\AfterTOCHead[toc]{%
+  \renewcommand\StartAppendixEntries{\value{tocdepth}=-10000\relax}%
+}
+\AfterTOCHead[atoc]{%
+  \edef\maintocdepth{\the\value{tocdepth}}%
+  \value{tocdepth}=-10000\relax%
+  \renewcommand\StartAppendixEntries{\value{tocdepth}=\maintocdepth\relax}%
+}
+\newcommand*\appendixwithtoc{%
+  \cleardoublepage
+  \appendix
+  \addtocontents{toc}{\protect\StartAppendixEntries}
+  \listofatoc
+}
+\usepackage{blindtext}
+\usepackage{color}
+%%%%%%%%%%%%%%%%%% toc
+
+%%%%%%%%%%%%%%%% HEADER
+\newcommand{\EG}{\textsc{Epoch-Greedy}\xspace}
+\newcommand{\EPG}{\textsc{$\epsilon$-Greedy}\xspace}
+\newcommand{\minimonster}{\textsc{ILOVETOCONBANDITS}\xspace}
+\newcommand{\ILTCB}{\textsc{ILTCB}\xspace}
+\newcommand{\AdaEG}{\textsc{Ada-Greedy}\xspace}
+\newcommand{\AdaILTCB}{\textsc{Ada-ILTCB}\xspace}
+\newcommand{\AdaPE}{\textsc{Ada-PE}\xspace}
+\newcommand{\corral}{\textsc{Corral}\xspace}
+\newcommand{\bistro}{\textsc{BISTRO+}\xspace}
+\newcommand{\base}[1]{{{\cal{B}}_{#1}}}
+\newcommand{\scale}{\rho}
+\newcommand{\FS}{\text{FS}}
+
+\newcommand{\calA}{{\mathcal{A}}}
+\newcommand{\calX}{{\mathcal{X}}}
+\newcommand{\calS}{{\mathcal{S}}}
+\newcommand{\calI}{{\mathcal{I}}}
+\newcommand{\calJ}{{\mathcal{J}}}
+\newcommand{\calK}{{\mathcal{K}}}
+\newcommand{\calD}{{\mathcal{D}}}
+\newcommand{\calE}{{\mathcal{E}}}
+\newcommand{\calR}{{\mathcal{R}}}
+\newcommand{\calT}{{\mathcal{T}}}
+\newcommand{\calH}{\mathcal{H}}
+\newcommand{\avgR}{\wh{\cal{R}}}
+\newcommand{\calW}{{\mathcal{W}}}
+\newcommand{\ips}{\wh{r}}
+\newcommand{\whpi}{\wh{\pi}}
+\newcommand{\whE}{\wh{\E}}
+\newcommand{\whV}{\wh{V}}
+\newcommand{\Reg}{\text{\rm Reg}}
+\newcommand{\whReg}{\wh{\text{\rm Reg}}}
+\newcommand{\flg}{\text{\rm flag}}
+\newcommand{\one}{\boldsymbol{1}}
+\newcommand{\var}{\Delta}
+\newcommand{\p}{\prime}
+\newcommand{\nb}{\nabla}
+\newcommand{\e}{\mathbf{e}}
+
+\DeclareMathOperator*{\arginf}{arginf}
+\DeclareMathOperator*{\argsup}{argsup}
+\DeclareMathOperator*{\range}{range}
+\DeclareMathOperator*{\mydet}{det_{+}}
+%\DeclarePairedDelimiter\abs{\lvert}{\rvert}
+\DeclarePairedDelimiter\bigabs{\big\lvert}{\big\rvert}
+\DeclarePairedDelimiter\ceil{\lceil}{\rceil}
+\DeclarePairedDelimiter\floor{\lfloor}{\rfloor}
+\DeclarePairedDelimiter\bigceil{\big\lceil}{\big\rceil}
+\DeclarePairedDelimiter\bigfloor{\big\lfloor}{\big\rfloor}
+
+\newcommand{\field}[1]{\mathbb{#1}}
+\newcommand{\fY}{\field{Y}}
+\newcommand{\fX}{\field{X}}
+\newcommand{\fH}{\field{H}}
+\newcommand{\fR}{\field{R}}
+\newcommand{\fN}{\field{N}}
+\newcommand{\E}{\field{E}}
+\newcommand{\err}{\text{err}}
+
+\newcommand{\theset}[2]{ \left\{ {#1} \,:\, {#2} \right\} }
+\newcommand{\inner}[1]{ \left\langle {#1} \right\rangle }
+\newcommand{\Ind}[1]{ \field{I}_{\{{#1}\}} }
+\newcommand{\eye}[1]{ \boldsymbol{I}_{#1} }
+%\newcommand{\norm}[1]{\left\|{#1}\right\|}
+%\newcommand{\trace}[1]{\text{tr}\left({#1}\right)}
+\newcommand{\trace}[1]{\textsc{tr}({#1})}
+\newcommand{\diag}[1]{\mathrm{diag}\!\left\{{#1}\right\}}
+
+\newcommand{\defeq}{\stackrel{\rm def}{=}}
+\newcommand{\sgn}{\mbox{\sc sgn}}
+\newcommand{\scI}{\mathcal{I}}
+\newcommand{\scO}{\mathcal{O}}
+\newcommand{\scN}{\mathcal{N}}
+
+\newcommand{\dt}{\displaystyle}
+\renewcommand{\ss}{\subseteq}
+\newcommand{\wh}{\widehat}
+\newcommand{\wt}{\widetilde}
+\newcommand{\ve}{\varepsilon}
+\newcommand{\hlambda}{\wh{\lambda}}
+\newcommand{\yhat}{\wh{y}}
+
+\newcommand{\hDelta}{\wh{\Delta}}
+\newcommand{\hdelta}{\wh{\delta}}
+\newcommand{\spin}{\{-1,+1\}}
+%\newcommand{\calS}{\mathcal{S}}
+\newcommand{\calC}{\mathcal{C}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%
+
+\newtheorem{assumption}{Assumption}
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem{fact}[theorem]{Fact}
+\DeclareMathOperator{\val}{val}
+\DeclareMathOperator{\spa}{sp}
+\DeclareMathOperator{\solve}{solve}
+\allowdisplaybreaks
+
+% Packages hyperref and algorithmic misbehave sometimes.  We can fix
+% this with the following command.
+%\newcommand{\theHalgorithm}{\arabic{algorithm}}
+
+\usepackage{amsmath}
+\DeclareMathOperator*{\argmin}{\arg\!\min}
+\DeclareMathOperator*{\argmax}{\arg\!\max}
+
+\title{Bandit Multiclass Classification}
+
+%\author{}
+
+\begin{document}
+% \nipsfinalcopy is no longer used
+
+\maketitle
+
+\section{Learning intersection of halfspaces with a margin}
+Suppose we are given examples $S = \cbr{(x, y)}$, where $x$ is in $\cbr{x \in \fR^d: \| x \| \leq 1}$, and $y$ is in $\cbr{-1,+1}$.
+\begin{definition}
+$S$ is said to be separable by an intersection of halfspaces with margin parameter $\gamma > 0$, if there exists $t$ linear classifiers $v_1, \ldots, v_t$ (all of which are in $\cbr{v \in \fR^d: \| v \| \leq 1}$),
+such that for every $(x,y)$ in $S$:
+\begin{enumerate}
+  \item If $y = +1$, then $v_i \cdot x \geq \gamma$ holds simultaneously for all $i$ in $[t]$.
+  \item If $y = -1$, then there exists an $i$ in $[t]$, $v_i \cdot x \leq -\gamma$.
+\end{enumerate}
+\label{def:int-margin}
+\end{definition}
+
+Given a set $S$ separable by an intersection of halfspaces with a margin $\gamma$, our goal is to find a feature map $\phi: \fR^d \to \fR^{d'}$, such that the dataset $S' = \cbr{(\phi(x), y): (x,y) \in S}$ is linearly separable by a margin $\gamma' > 0$. That is, for every $(\phi(x), y)$ in $S'$, and
+there exists a vector $u$ in $\fR^{d'}$, such that for every $(\phi(x), y)$ in $S'$, $\frac{y u \cdot \phi(x)}{\|u\|\| \phi(x)\|} \geq \gamma'$.
+In addition, we would like our feature map $\phi$ to correspond to a kernel function $k(x,x') = \inner{\phi(x), \phi(x')}$ that can be efficiently evaluated.
+
+\section{Construction of polynomials}
+Our $\phi$'s in considerations are as follows: TODO: fix the constant in phi so that it has norm at most 1.
+\begin{enumerate}
+\item $\phi(x) = (x_1^{i_1} \ldots x_d^{i_d})_{i_1 + \ldots + i_d \leq \deg, i_1, \ldots, i_d \geq 0} = (x_S)_{S \in N^d, \|S\|_1 \leq \deg}$. This corresponds to the complete symmetric kernel $K_{\deg}$.
+\item $\phi(x) = ( \sqrt{ {\deg \choose i_1+\ldots+i_d} {i_1+\ldots+i_d \choose i_1 \ldots i_d}}  x_1^{i_1} \ldots x_d^{i_d})_{i_1 + \ldots + i_d \leq \deg, i_1, \ldots, i_d \geq 0}$. This corresponds to the polynomial kernel
+$K_{\deg}'(x,x') = (1 + \inner{x, x'})^{\deg}$.
+\item $\phi(x) = ( \sqrt{ (\frac 1 2)^{i_1+\ldots+i_d} {i_1+\ldots+i_d \choose i_1 \ldots i_d}}  x_1^{i_1} \ldots x_d^{i_d})_{i_1 + \ldots + i_d \leq \deg, i_1, \ldots, i_d \geq 0}$. This coresponds to the kernel $K(x,x') = \frac{1}{1 - \frac 1 2 \inner{x,x'}}$.
+\end{enumerate}
+
+For a polynomial $p = \sum_{S \in \fN^d} c_S x_S$, define $\|p\|$, the norm of $p$, as the $\ell_2$ norm of the vector that contains its coefficients on every monomial, that is $\|p\| = \| (c_S)_{S \in \fN^d} \| = \sqrt{\sum_{S \in \fN^d} c_S^2}$. This is also the RKHS norm of $p$ wrt the complete symmetric kernel $K_{\deg}$, for $\deg \geq \deg(p)$.
+
+
+
+\subsection{Construction using rational functions}
+
+
+\subsection{Construction using Chebyshev polynomials}
+\paragraph{The construction.} Define
+\[ p(x) = t + \frac 1 2 - \sum_{i=1}^t (T_{\ceil{\sqrt{\frac 2 \gamma}}}(1 - v_i \cdot x))^{\ceil{\log 2t}}, \]
+where
+$T_r(\cdot)$ is the $r$-th order Chebyshev polynomial. Denote by $C_i(x) = (T_{\ceil{\sqrt{\frac 2 \gamma}}}(1 - v_i \cdot x))^{\ceil{\log 2t}}$. $p$ can therefore be simplified to
+\[ p(x) = t + \frac 1 2 - \sum_{i=1}^t C_i(x). \]
+
+\begin{lemma}[~\cite{klivans2004learning}]
+For all $(x,y)$ in $S$ satisfying Definition~\ref{def:int-margin}, we have that $y p(x) \geq \frac 1 2$.
+\end{lemma}
+\begin{proof}
+We consider the two cases regarding the label of the example.
+\begin{enumerate}
+\item Suppose $y = 1$, then for all $i$ in $[t]$, $v_i \cdot x \geq \gamma$. This implies that for all
+$i$ in $[t]$, $1 - v_i \cdot x \in [0, 1-\gamma]$. By item~\ref{item:bound-in} of Fact~\ref{fact:cheb}, we have that for all $i$, $|C_i(x)| \leq 1$.
+Therefore, $p(x) \geq t + \frac 1 2 - t \geq \frac 1 2$.
+
+\item Suppose $y = -1$. First observe that for all $i$, $T_{\ceil{\sqrt{\frac 2 \gamma}}}(1 - v_i \cdot x)) \geq -1$. This is because of items~\ref{item:bound-in} and~\ref{item:bound-out} of Fact~\ref{fact:cheb}.
+This implies that $C_i(x) \geq -1$.
+On the other hand, by Definition~\ref{def:int-margin}, there exists an $i_0$ in $[t]$, such that $v_{i_0} \cdot x \leq -\gamma$. By item~\ref{item:bound-out} of Fact~\ref{fact:cheb}, we have that
+$C_{i_0}(x) \geq (1 + \gamma \cdot \frac 1 \gamma)^{\ceil{\log 2t}} \geq 2t$. Therefore,
+\[ p(x) = t + \frac 1 2 - C_{i_0}(x) - \sum_{i \neq i_0} C_i(x) \leq t + \frac 1 2 - 2t + (t-1) \leq -\frac 1 2. \]
+\end{enumerate}
+\end{proof}
+
+\begin{fact}
+$T_r(\cdot)$ has the following properties:
+\begin{enumerate}
+  \item If $|z| \leq 1$, then $|T_r(z)| \leq 1$. \label{item:bound-in}
+  \item If $z > 1$, then $T_r(z) \geq 1 + r^2 (z-1)$. \label{item:bound-out}
+  \item $T_r(z)$ can be written as $\sum_{l=0}^r c_l z^l$, where coefficients $c_l$ are bounded by $2^r$ in absolute value.
+\end{enumerate}
+\label{fact:cheb}
+\end{fact}
+
+\paragraph{Norm bound.} We now bound $\| p \|$. First, for all $i$, as $v_i$ has norm at most 1,
+\[ \| (1 - v_i \cdot x) \|^2 \leq 2. \]
+Therefore, by Lemma~\ref{lem:norm-oper},
+\[ \| c_l (1 - v_i \cdot x)^l \|^2 = c_l^2 \| (1 - v_i \cdot x)^l \|_2^2 \leq 2^{2r} l^l 2^l. \]
+Hence,
+\[ \| T_r(1 - v_i \cdot x) \|^2 = \| \sum_{l=0}^r c_l (1 - v_i \cdot x)^l \|^2 \leq (r+1) \cdot \sum_{l=0}^r 2^{2r} l^l 2^l \leq (r+1)^2 (8r)^r. \]
+And by Lemma~\ref{lem:norm-oper},
+\[ \| C_r(x) \|^2 \leq (\ceil{\log 2t})^{\ceil{\log 2t} r} \cdot ((r+1)^2 (8r)^r)^{\ceil{\log 2t}}. \]
+Therefore,
+\[ \| p(x) \|^2 \leq (t+1) \cdot ((t+\frac 1 2)^2 + t (\ceil{\log 2t})^{\ceil{\log 2t} r} \cdot ((r+1)^2 (8r)^r)^{\ceil{\log 2t}}) \leq 2 \cdot (32 r \ceil{\log 2t})^{2r \ceil{\log 2t}}  \]
+where the last inequality uses the fact that $2^{2r \ceil{\log 2t}} \geq \max(2t^2, r^2)$.
+\section{Auxiliary lemmas}
+\begin{lemma}
+   For $i=1,\ldots, \ell$ let $q^{(i)}(x)=\sum_S c^{(i)}_{S} x_S $ be a polynomial over $x_1, \ldots, x_d$. Then
+   \begin{enumerate}
+     \item if $q^{(1)}\ldots q^{(\ell)}$ has degree at most $\deg$, we have $\|\prod_{i=1}^{\ell} q^{(i)}\|^2 \leq \ell^{\deg} \prod_{i=1}^{\ell} \|q^{(i)}\|^2$. Specifically, for a polynomial $p$ of degree $s$, $\|p^\ell \|^2 \leq  \ell^{\ell s} (\|p\|^2)^\ell$.
+     \item $\|\sum_{i=1}^{\ell} q^{(i)}\|^2 \leq \ell(\sum_{i=1}^{\ell} \|q^{(i)}\|^2)$.
+   \end{enumerate}
+   \label{lem:norm-oper}
+\end{lemma}
+
+
+
+\newpage
+\bibliography{adaptivity}
+\bibliographystyle{plain}
+
+\end{document}
