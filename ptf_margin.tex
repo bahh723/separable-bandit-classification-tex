@@ -213,7 +213,33 @@ For a polynomial $p = \sum_{S \in \fN^d} c_S x_S$, define $\|p\|$, the norm of $
 
 
 \subsection{Construction using rational functions}
+\paragraph{The construction.} Define
+\[
+  Q(x) = \sum_{i=1}^t S_{\ceil{\log \frac 1 \gamma}}^{2t}(\frac{v_i \cdot x}{\gamma}) - (t - \frac 1 2).
+\]
+where function
+\[
+S_n^k(x) = \frac{P_n(-x)^{h(k)} - P_n(x)^{h(k)}}{P_n(-x)^{h(k)} + P_n(x)^{h(k)}} = \frac{A_n^k(x)}{B_n^k(x)},
+\]
+$h(k)$ is the smallest odd integer greater than $\log(2k+1)$, and $P_n(x) = (x - 1) \cdot \prod_{i=1}^n (x - 2^i)^2$.
 
+\begin{lemma}[~\cite{klivans2004learning}]
+For all $(x,y)$ in $S$ satisfying Definition~\ref{def:int-margin}, we have that $y Q(x) \geq \frac 1 2$.
+\end{lemma}
+\begin{proof}
+We consider two cases regarding the label of the example.
+\end{proof}
+
+
+\begin{fact}
+$S_n^k(\cdot)$ has the following properties:
+\begin{enumerate}
+\item If $x$ is in $[1, 2^n]$, then $S_n(x)$ is in $[1, 1 + \frac 1 k]$.
+\item If $x$ is in $[2^{-n}, -1]$, then $S_n(x)$ is in $[-1 - \frac 1 k, -1]$.
+\item If $x$ is in $[-1, 1]$, then $|S_n(x)|$ is in $[-1, 1]$.
+\item For all $x$ in $\fR$, $|B_n^k(x)| \geq \frac{2k}{2k+1} 2^{\frac{n(n-1)h(k)}2}$.
+\end{enumerate}
+\end{fact}
 
 \subsection{Construction using Chebyshev polynomials}
 \paragraph{The construction.} Define
