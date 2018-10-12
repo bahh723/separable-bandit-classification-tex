@@ -213,17 +213,21 @@ For a polynomial $p = \sum_{S \in \fN^d} c_S x_S$, define $\|p\|$, the norm of $
 
 
 \subsection{Construction using rational functions}
-\paragraph{The construction.} Define
+\paragraph{The construction.} Define rational function
 \[
   Q(x) = \sum_{i=1}^t S_{\ceil{\log \frac 1 \gamma}}^{2t}(\frac{v_i \cdot x}{\gamma}) - (t - \frac 1 2).
 \]
 where function
 \[
-S_n^k(x) = \frac{P_n(-x)^{h(k)} - P_n(x)^{h(k)}}{P_n(-x)^{h(k)} + P_n(x)^{h(k)}} = \frac{A_n^k(x)}{B_n^k(x)},
+S_n^k(x) = \frac{P_n(-x)^{h(k)} - P_n(x)^{h(k)}}{P_n(-x)^{h(k)} + P_n(x)^{h(k)}},
 \]
 $h(k)$ is the smallest odd integer greater than $\log(2k+1)$, and $P_n(x) = (x - 1) \cdot \prod_{i=1}^n (x - 2^i)^2$.
-Denote by $D_i(x) = S_{\ceil{\log \frac 1 \gamma}}^{2t}(\frac{v_i \cdot x}{\gamma})$. $Q$ can therefore be simplified to
-\[ Q(x) = \sum_{i=1}^t D_i(x) - (t - \frac 1 2). \]
+
+Now denote by $A_n^k(x) = P_n(-x)^{h(k)} - P_n(x)^{h(k)}$, $B_n^k(x) = P_n(-x)^{h(k)} + P_n(x)^{h(k)}$. Define  polynomial $p$ as
+\begin{eqnarray*}
+  p(x) &=& \sum_{i=1}^t A_{\ceil{\log \frac 1 \gamma}}^{2t}(\frac{v_i \cdot x}{\gamma}) \cdot \prod_{j \neq i} B_{\ceil{\log \frac 1 \gamma}}^{2t}(\frac{v_i \cdot x}{\gamma}) - (t-\frac12) \prod_{j=1}^t B_{\ceil{\log \frac 1 \gamma}}^{2t}(\frac{v_i \cdot x}{\gamma}) \\
+  &=& \prod_{i=1}^t B_{\ceil{\log \frac 1 \gamma}}^{2t}(\frac{v_i \cdot x}\gamma) \cdot Q(x)
+\end{eqnarray*}
 
 \begin{lemma}[~\cite{klivans2004learning}]
 For all $(x,y)$ in $S$ satisfying Definition~\ref{def:int-margin}, we have that $y Q(x) \geq \frac 1 2$.
