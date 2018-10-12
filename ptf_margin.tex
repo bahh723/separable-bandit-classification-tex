@@ -151,6 +151,8 @@
 %\newcommand{\calS}{\mathcal{S}}
 \newcommand{\calC}{\mathcal{C}}
 
+\newcommand{\cz}[1]{\textcolor{blue}{Chicheng: #1}}
+
 %%%%%%%%%%%%%%%%%%%%%%%%
 
 \newtheorem{assumption}{Assumption}
@@ -202,10 +204,10 @@ In addition, we would like our feature map $\phi$ to correspond to a kernel func
 \section{Construction of polynomials}
 Our $\phi$'s in considerations are as follows: TODO: fix the constant in phi so that it has norm at most 1.
 \begin{enumerate}
-\item $\phi(x) = (x_1^{i_1} \ldots x_d^{i_d})_{i_1 + \ldots + i_d \leq \deg, i_1, \ldots, i_d \geq 0} = (x_S)_{S \in N^d, \|S\|_1 \leq \deg}$. This corresponds to the complete symmetric kernel $K_{\deg}$.
-\item $\phi(x) = ( \sqrt{ {\deg \choose i_1+\ldots+i_d} {i_1+\ldots+i_d \choose i_1 \ldots i_d}}  x_1^{i_1} \ldots x_d^{i_d})_{i_1 + \ldots + i_d \leq \deg, i_1, \ldots, i_d \geq 0}$. This corresponds to the polynomial kernel
+\item $\phi_1(x) = (x_1^{i_1} \ldots x_d^{i_d})_{i_1 + \ldots + i_d \leq \deg, i_1, \ldots, i_d \geq 0} = (x_S)_{S \in N^d, \|S\|_1 \leq \deg}$. This corresponds to the complete symmetric kernel $K_{\deg}$.
+\item $\phi_2(x) = ( \sqrt{ {\deg \choose i_1+\ldots+i_d} {i_1+\ldots+i_d \choose i_1 \ldots i_d}}  x_1^{i_1} \ldots x_d^{i_d})_{i_1 + \ldots + i_d \leq \deg, i_1, \ldots, i_d \geq 0}$. This corresponds to the polynomial kernel
 $K_{\deg}'(x,x') = (1 + \inner{x, x'})^{\deg}$.
-\item $\phi(x) = ( \sqrt{ (\frac 1 2)^{i_1+\ldots+i_d} {i_1+\ldots+i_d \choose i_1 \ldots i_d}}  x_1^{i_1} \ldots x_d^{i_d})_{i_1 + \ldots + i_d \leq \deg, i_1, \ldots, i_d \geq 0}$. This corresponds to the kernel $K(x,x') = \frac{1}{1 - \frac 1 2 \inner{x,x'}}$.
+\item $\phi_3(x) = ( \sqrt{ (\frac 1 2)^{i_1+\ldots+i_d} {i_1+\ldots+i_d \choose i_1 \ldots i_d}}  x_1^{i_1} \ldots x_d^{i_d})_{i_1 + \ldots + i_d \leq \deg, i_1, \ldots, i_d \geq 0}$. This corresponds to the kernel $K(x,x') = \frac{1}{1 - \frac 1 2 \inner{x,x'}}$.
 \end{enumerate}
 
 For a polynomial $p = \sum_{S \in \fN^d} c_S x_S$, define $\|p\|$, the norm of $p$, as the $\ell_2$ norm of the vector that contains its coefficients on every monomial, that is $\|p\| = \| (c_S)_{S \in \fN^d} \| = \sqrt{\sum_{S \in \fN^d} c_S^2}$. This is also the RKHS norm of $p$ wrt the complete symmetric kernel $K_{\deg}$, for $\deg \geq \deg(p)$.
@@ -223,14 +225,19 @@ S_n^k(x) = \frac{P_n(-x)^{h(k)} - P_n(x)^{h(k)}}{P_n(-x)^{h(k)} + P_n(x)^{h(k)}}
 \]
 $h(k)$ is the smallest odd integer greater than $\log(2k+1)$, and $P_n(x) = (x - 1) \cdot \prod_{i=1}^n (x - 2^i)^2$.
 
-Now denote by $A_n^k(x) = P_n(-x)^{h(k)} - P_n(x)^{h(k)}$, $B_n^k(x) = P_n(-x)^{h(k)} + P_n(x)^{h(k)}$. Define  polynomial $p$ as
+Now denote by $A_n^k(x) = P_n(x)^{h(k)} - P_n(-x)^{h(k)}$, $B_n^k(x) = -P_n(-x)^{h(k)} - P_n(x)^{h(k)}$.
+\cz{Note the difference between this line and KS04 - we multiply by $B_{\ceil{\log \frac 1 \gamma}}^{2t}(\frac{v_i \cdot x}\gamma)$ as opposed to its square. The latter would also work, but it will make the equations more cumbersome.}
+Define polynomial $p$ as
 \begin{eqnarray*}
-  p(x) &=& \sum_{i=1}^t A_{\ceil{\log \frac 1 \gamma}}^{2t}(\frac{v_i \cdot x}{\gamma}) \cdot \prod_{j \neq i} B_{\ceil{\log \frac 1 \gamma}}^{2t}(\frac{v_i \cdot x}{\gamma}) - (t-\frac12) \prod_{j=1}^t B_{\ceil{\log \frac 1 \gamma}}^{2t}(\frac{v_i \cdot x}{\gamma}) \\
-  &=& \prod_{i=1}^t B_{\ceil{\log \frac 1 \gamma}}^{2t}(\frac{v_i \cdot x}\gamma) \cdot Q(x)
+  p(x) &:=& \sum_{i=1}^t A_{\ceil{\log \frac 1 \gamma}}^{2t}(\frac{v_i \cdot x}{\gamma}) \cdot \prod_{j \neq i} B_{\ceil{\log \frac 1 \gamma}}^{2t}(\frac{v_i \cdot x}{\gamma}) - (t-\frac12) \prod_{j=1}^t B_{\ceil{\log \frac 1 \gamma}}^{2t}(\frac{v_i \cdot x}{\gamma})
 \end{eqnarray*}
+
+It can be seen that
+$p(x) = \prod_{i=1}^t B_{\ceil{\log \frac 1 \gamma}}^{2t}(\frac{v_i \cdot x}\gamma) \cdot Q(x)$.
 
 \begin{lemma}[~\cite{klivans2004learning}]
 For all $(x,y)$ in $S$ satisfying Definition~\ref{def:int-margin}, we have that $y Q(x) \geq \frac 1 2$.
+As a consequence, $y p(x) \geq 2^{\frac{n(n-1)h(2t)t}2 - 2}$.
 \end{lemma}
 \begin{proof}
 We consider two cases regarding the label of the example.
@@ -248,9 +255,10 @@ Hence,
 \[ Q(x) = D_{i_0}(x) + \sum_{i \neq i_0} D_i(x) - (t - \frac 1 2)
 \leq -1 + (t-1)(1 + \frac 1 {2t}) - (t - \frac 1 2) \leq - \frac 1 2. \]
 %\leq -1 + t-1 + \frac{t-1}{2t} - (t - \frac 1 2)
-
-
 \end{enumerate}
+To summarize, we have shown that for all $(x,y)$ in $S$, $y Q(x) \geq \frac 1 2$.
+Therefore,
+\[ y p(x) = y Q(x) \cdot \prod_{i=1}^t B_{\ceil{\log \frac 1 \gamma}}^{2t}(\frac{v_i \cdot x}\gamma) \geq \frac 1 2 ((1-\frac{1}{4t+1}) \cdot 2^{\frac{n(n-1)h(2t)}2})^t \geq 2^{\frac{n(n-1)h(2t)t}2 - 2}. \]
 \end{proof}
 
 
@@ -260,7 +268,7 @@ $S_n^k(\cdot)$ has the following properties:
 \item If $x$ is in $[1, 2^n]$, then $S_n^k(x)$ is in $[1, 1 + \frac 1 k]$. \label{item:sign-rt}
 \item If $x$ is in $[-2^{-n}, -1]$, then $S_n^k(x)$ is in $[-1 - \frac 1 k, -1]$. \label{item:sign-lt}
 \item If $x$ is in $[-1, 1]$, then $|S_n^k(x)|$ is in $[-1, 1]$. \label{item:sign-mid}
-\item For all $x$ in $[-2^{-n}, 2^{-n}]$, $\abs{B_n^k(x)} \geq 2^{\frac{n(n-1)h(k)}2 - 1}$. \label{item:sign-denom}
+\item For all $x$ in $[-2^{-n}, 2^{-n}]$, $B_n^k(x) \geq (1-\frac{1}{2k+1}) \cdot 2^{\frac{n(n-1)h(k)}2}$. \label{item:sign-denom}
 \end{enumerate}
 \label{fact:newman}
 \end{fact}
@@ -276,12 +284,49 @@ $S_n^k(x) = \frac{1+r}{1-r} \in [1, 1 + \frac 1 k]$.
 
 \item Note that if $x$ is in $[0, 1]$, then by item~\ref{item:x-small} of Fact~\ref{fact:pn}, $r = (-\frac{P_n(x)}{P_n(-x)})^{h(k)} \in [-1, 0]$. This implies that $S_n^k(x) = \frac{1+r}{1-r} \in [0,1]$. As $S_n^k$ is an odd function, we also have that $S_n^k(x) \in [-1, 0]$ for all $x$ in $[-1, 0]$. This proves the item.
 
-\item If $x$ is in $[1,2^n]$, then $\abs{B_n^k(x)} = \abs{P_n(-x)^{h(k)}} (1 - r) \geq \abs{P_n(-x)^{h(k)}} \cdot \frac{2k}{2k+1} \geq 2^{\frac{n(n-1)h(k)}{2}} \cdot \frac{2k}{2k+1}$.
-If $x$ is in $[0,1]$, as both $P_n(-x)$ and $-P_n(x)$ are $\leq 0$, we have $\abs{B_n^k(x)} \geq \abs{P_n(-x)^{h(k)}} \geq 2^{\frac{n(n-1)h(k)}{2}}$. Therefore, for all $x \in [0,2^n]$,
-$\abs{B_n^k(x)} \geq \frac 1 2 2^{\frac{n(n-1)h(k)}2}$. The item is concluded by noticing that $B_n^k(x)$ is an even function.
-
-
+\item Noticing that $B_n^k(x)$ is an even function, without loss of generality, suppose $x \geq 0$.
+First, note that if $x \geq 0$, then $\abs{P_n(-x)} \geq \prod_{i=1}^n 2^{2i} = 2^{n(n-1)}$.
+If $x$ is in $[1,2^n]$, then $B_n^k(x) = \abs{P_n(-x)^{h(k)}} (1 - r) \geq \abs{P_n(-x)^{h(k)}} \cdot \frac{2k}{2k+1} \geq 2^{n(n-1)h(k)} \cdot \frac{2k}{2k+1}$.
+If $x$ is in $[0,1]$, as both $P_n(-x)$ and $-P_n(x)$ are $\leq 0$, we have $B_n^k(x) \geq \abs{P_n(-x)^{h(k)}} \geq 2^{n(n-1)h(k)}$. Therefore, for all $x \in [0,2^n]$,
+$\abs{B_n^k(x)} \geq (1-\frac{1}{2k+1}) 2^{n(n-1)h(k)$.
 \end{enumerate}
+\end{proof}
+
+\paragraph{Norm bound.} We bound the norm of $p$ using the theorem below.
+\begin{theorem}
+$p(x)$ can be written as $\inner{c, \phi_1(x)}$ for some $c$ such that $\|c\| \leq$.
+\end{theorem}
+\begin{proof}
+Let $n = \ceil{\log \frac 1 \gamma}$.
+
+First, for all $i$ in $[t]$ and $l$ in $\cbr{0,1,\ldots,n}$,
+\[ \| (\frac{v_i \cdot x}{\gamma} - 2^l) \|^2 \leq \frac{1}{\gamma^2} + 2^{2l} \leq 2 \cdot 2^{2n}. \]
+This implies that
+\[ \| P_n(\frac{v_i \cdot x}{\gamma}) \|^2 \leq ((4n+2) \cdot 2^{2n})^{2n+1}. \]
+Therefore,
+\[ \| P_n(\frac{v_i \cdot x}{\gamma})^{h(k)} \|^2 \leq h(k)^{(2n+1)h(k)} \cdot ((4n+2) \cdot 2^{2n})^{(2n+1)h(k)}. \]
+%$A_n^k(x) = P_n(x)^{h(k)} - P_n(-x)^{h(k)}$, $B_n^k(x) = -P_n(-x)^{h(k)} - P_n(x)^{h(k)}$
+By the definition of $A_n^k$ and $B_n^k$, we have
+\[ \| A_n^k(\frac{v_i \cdot x}{\gamma}) \|^2,  \| B_n^k(\frac{v_i \cdot x}{\gamma}) \|^2 \leq ((8n+4) h(k) \cdot 2^{2n})^{(2n+1)h(k)}. \]
+
+%\sum_{i=1}^t A_{\ceil{\log \frac 1 \gamma}}^{2t}(\frac{v_i \cdot x}{\gamma}) \cdot \prod_{j \neq i} B_{\ceil{\log \frac 1 \gamma}}^{2t}(\frac{v_i \cdot x}{\gamma}) - (t-\frac12) \prod_{j=1}^t B_{\ceil{\log \frac 1 \gamma}}^{2t}(\frac{v_i \cdot x}{\gamma})
+Hence, for every $i$ in $[t]$,
+\[
+\| A_n^{2t}(\frac{v_i \cdot x}{\gamma}) \cdot \prod_{j \neq i} B_n^{2t}(\frac{v_j \cdot x}{\gamma}) \|^2
+\leq
+t^{(2n+1) h(k) t} \cdot ((8n+4) h(k) \cdot 2^{2n})^{(2n+1)h(k)t}.
+\]
+Similarly,
+\[
+\| \prod_{i=1}^t B_n^{2t}(\frac{v_i \cdot x}{\gamma}) \|^2 \leq t^{(2n+1) h(k) t} \cdot ((8n+4) h(k) \cdot 2^{2n})^{(2n+1)h(k)t}.
+\]
+Therefore,
+\[
+\| p(x) \|^2 \leq ((t - \frac 1 2)^2 + t) \cdot ((8n+4) h(k) t \cdot 2^{2n})^{(2n+1)h(k)t} \leq ((16n+8) h(k) t \cdot 2^{2n})^{(2n+1)h(k)t}.
+\]
+where the last inequality uses that $2^{(2n+1)h(k)t} \geq t^2 + \frac 1 4$.
+
+
 
 \end{proof}
 
