@@ -205,7 +205,7 @@ Our $\phi$'s in considerations are as follows: TODO: fix the constant in phi so 
 \item $\phi(x) = (x_1^{i_1} \ldots x_d^{i_d})_{i_1 + \ldots + i_d \leq \deg, i_1, \ldots, i_d \geq 0} = (x_S)_{S \in N^d, \|S\|_1 \leq \deg}$. This corresponds to the complete symmetric kernel $K_{\deg}$.
 \item $\phi(x) = ( \sqrt{ {\deg \choose i_1+\ldots+i_d} {i_1+\ldots+i_d \choose i_1 \ldots i_d}}  x_1^{i_1} \ldots x_d^{i_d})_{i_1 + \ldots + i_d \leq \deg, i_1, \ldots, i_d \geq 0}$. This corresponds to the polynomial kernel
 $K_{\deg}'(x,x') = (1 + \inner{x, x'})^{\deg}$.
-\item $\phi(x) = ( \sqrt{ (\frac 1 2)^{i_1+\ldots+i_d} {i_1+\ldots+i_d \choose i_1 \ldots i_d}}  x_1^{i_1} \ldots x_d^{i_d})_{i_1 + \ldots + i_d \leq \deg, i_1, \ldots, i_d \geq 0}$. This coresponds to the kernel $K(x,x') = \frac{1}{1 - \frac 1 2 \inner{x,x'}}$.
+\item $\phi(x) = ( \sqrt{ (\frac 1 2)^{i_1+\ldots+i_d} {i_1+\ldots+i_d \choose i_1 \ldots i_d}}  x_1^{i_1} \ldots x_d^{i_d})_{i_1 + \ldots + i_d \leq \deg, i_1, \ldots, i_d \geq 0}$. This corresponds to the kernel $K(x,x') = \frac{1}{1 - \frac 1 2 \inner{x,x'}}$.
 \end{enumerate}
 
 For a polynomial $p = \sum_{S \in \fN^d} c_S x_S$, define $\|p\|$, the norm of $p$, as the $\ell_2$ norm of the vector that contains its coefficients on every monomial, that is $\|p\| = \| (c_S)_{S \in \fN^d} \| = \sqrt{\sum_{S \in \fN^d} c_S^2}$. This is also the RKHS norm of $p$ wrt the complete symmetric kernel $K_{\deg}$, for $\deg \geq \deg(p)$.
@@ -213,42 +213,95 @@ For a polynomial $p = \sum_{S \in \fN^d} c_S x_S$, define $\|p\|$, the norm of $
 
 
 \subsection{Construction using rational functions}
-\paragraph{The construction.} Define rational function
+\paragraph{The construction.} Define
 \[
   Q(x) = \sum_{i=1}^t S_{\ceil{\log \frac 1 \gamma}}^{2t}(\frac{v_i \cdot x}{\gamma}) - (t - \frac 1 2).
 \]
 where function
 \[
-S_n^k(x) = \frac{P_n(-x)^{h(k)} - P_n(x)^{h(k)}}{P_n(-x)^{h(k)} + P_n(x)^{h(k)}},
+S_n^k(x) = \frac{P_n(-x)^{h(k)} - P_n(x)^{h(k)}}{P_n(-x)^{h(k)} + P_n(x)^{h(k)}} = \frac{A_n^k(x)}{B_n^k(x)},
 \]
 $h(k)$ is the smallest odd integer greater than $\log(2k+1)$, and $P_n(x) = (x - 1) \cdot \prod_{i=1}^n (x - 2^i)^2$.
-
-Now denote by $A_n^k(x) = P_n(-x)^{h(k)} - P_n(x)^{h(k)}$, $B_n^k(x) = P_n(-x)^{h(k)} + P_n(x)^{h(k)}$. Define  polynomial $p$ as
-\begin{eqnarray*}
-  p(x) &=& \sum_{i=1}^t A_{\ceil{\log \frac 1 \gamma}}^{2t}(\frac{v_i \cdot x}{\gamma}) \cdot \prod_{j \neq i} B_{\ceil{\log \frac 1 \gamma}}^{2t}(\frac{v_i \cdot x}{\gamma}) - (t-\frac12) \prod_{j=1}^t B_{\ceil{\log \frac 1 \gamma}}^{2t}(\frac{v_i \cdot x}{\gamma}) \\
-  &=& \prod_{i=1}^t B_{\ceil{\log \frac 1 \gamma}}^{2t}(\frac{v_i \cdot x}\gamma) \cdot Q(x)
-\end{eqnarray*}
-
-
-
+Denote by $D_i(x) = S_{\ceil{\log \frac 1 \gamma}}^{2t}(\frac{v_i \cdot x}{\gamma})$. $Q$ can therefore be simplified to
+\[ Q(x) = \sum_{i=1}^t D_i(x) - (t - \frac 1 2). \]
 
 \begin{lemma}[~\cite{klivans2004learning}]
 For all $(x,y)$ in $S$ satisfying Definition~\ref{def:int-margin}, we have that $y Q(x) \geq \frac 1 2$.
 \end{lemma}
 \begin{proof}
 We consider two cases regarding the label of the example.
+\begin{enumerate}
+\item Suppose $y = 1$, then for all $i$ in $[t]$, $v_i \cdot x \in [\gamma, 1]$. This implies that $\frac{v_i \cdot x}{\gamma} \in [1, \frac 1 \gamma]$.
+By item~\ref{item:sign-rt} of Fact~\ref{fact:newman}, we have that $D_i(x) \in [1, 1+ \frac 1 {2t}]$.
+Hence, $Q(x) \geq t - (t - \frac 1 2) \geq \frac 1 2$.
+
+\item Suppose $y = -1$. First observe that for all $i$ in $[t]$, $\frac{v_i \cdot x}{\gamma} \in [-\frac 1\gamma, \frac 1 \gamma]$. By items~\ref{item:sign-rt},
+~\ref{item:sign-lt} and~\ref{item:sign-mid} of Fact~\ref{fact:newman}, we have that $S_{\ceil{\log \frac 1 \gamma}}^{2t}(\frac{v_i \cdot x}{\gamma}) \leq 1+ \frac 1 {2t}$.
+In addition, by Definition~\ref{def:int-margin}, there exists an $i_0$ in $[t]$, such that $v_{i_0} \cdot x \leq -\gamma$.
+By item~\ref{item:bound-out} of Fact~\ref{fact:cheb}, we have that
+$D_{i_0}(x) \in [-1 - \frac 1 {2t}, -1]$.
+Hence,
+\[ Q(x) = D_{i_0}(x) + \sum_{i \neq i_0} D_i(x) - (t - \frac 1 2)
+\leq -1 + (t-1)(1 + \frac 1 {2t}) - (t - \frac 1 2) \leq - \frac 1 2. \]
+%\leq -1 + t-1 + \frac{t-1}{2t} - (t - \frac 1 2)
+
+
+\end{enumerate}
 \end{proof}
 
 
 \begin{fact}
 $S_n^k(\cdot)$ has the following properties:
 \begin{enumerate}
-\item If $x$ is in $[1, 2^n]$, then $S_n(x)$ is in $[1, 1 + \frac 1 k]$.
-\item If $x$ is in $[2^{-n}, -1]$, then $S_n(x)$ is in $[-1 - \frac 1 k, -1]$.
-\item If $x$ is in $[-1, 1]$, then $|S_n(x)|$ is in $[-1, 1]$.
-\item For all $x$ in $\fR$, $|B_n^k(x)| \geq \frac{2k}{2k+1} 2^{\frac{n(n-1)h(k)}2}$.
+\item If $x$ is in $[1, 2^n]$, then $S_n^k(x)$ is in $[1, 1 + \frac 1 k]$. \label{item:sign-rt}
+\item If $x$ is in $[-2^{-n}, -1]$, then $S_n^k(x)$ is in $[-1 - \frac 1 k, -1]$. \label{item:sign-lt}
+\item If $x$ is in $[-1, 1]$, then $|S_n^k(x)|$ is in $[-1, 1]$. \label{item:sign-mid}
+\item For all $x$ in $[-2^{-n}, 2^{-n}]$, $\abs{B_n^k(x)} \geq 2^{\frac{n(n-1)h(k)}2 - 1}$. \label{item:sign-denom}
 \end{enumerate}
+\label{fact:newman}
 \end{fact}
+\begin{proof}
+We prove all the items accordingly.
+\begin{enumerate}
+\item Observe that $S_n^k(x)$ can be written as:
+\[ S_n^k(x) = \frac{1 + (-\frac{P_n(x)}{P_n(-x)})^{h(k)}}{ 1 - (-\frac{P_n(x)}{P_n(-x)})^{h(k)} }.  \]
+Denote by $r = (-\frac{P_n(x)}{P_n(-x)})^{h(k)}$. By item~\ref{item:x-large} of Fact~\ref{fact:pn}, $r \in [0, \frac{1}{2k+1}]$. This implies that
+$S_n^k(x) = \frac{1+r}{1-r} \in [1, 1 + \frac 1 k]$.
+
+\item The item follows from item~\ref{item:sign-rt} and the fact that $S_n^k(\cdot)$ is an odd function.
+
+\item Note that if $x$ is in $[0, 1]$, then by item~\ref{item:x-small} of Fact~\ref{fact:pn}, $r = (-\frac{P_n(x)}{P_n(-x)})^{h(k)} \in [-1, 0]$. This implies that $S_n^k(x) = \frac{1+r}{1-r} \in [0,1]$. As $S_n^k$ is an odd function, we also have that $S_n^k(x) \in [-1, 0]$ for all $x$ in $[-1, 0]$. This proves the item.
+
+\item If $x$ is in $[1,2^n]$, then $\abs{B_n^k(x)} = \abs{P_n(-x)^{h(k)}} (1 - r) \geq \abs{P_n(-x)^{h(k)}} \cdot \frac{2k}{2k+1} \geq 2^{\frac{n(n-1)h(k)}{2}} \cdot \frac{2k}{2k+1}$.
+If $x$ is in $[0,1]$, as both $P_n(-x)$ and $-P_n(x)$ are $\leq 0$, we have $\abs{B_n^k(x)} \geq \abs{P_n(-x)^{h(k)}} \geq 2^{\frac{n(n-1)h(k)}{2}}$. Therefore, for all $x \in [0,2^n]$,
+$\abs{B_n^k(x)} \geq \frac 1 2 2^{\frac{n(n-1)h(k)}2}$. The item is concluded by noticing that $B_n^k(x)$ is an even function.
+
+
+\end{enumerate}
+
+\end{proof}
+
+
+\begin{fact}
+The following is true:
+\begin{enumerate}
+\item If $x \in [0,1]$, then $0 \leq -P_n(x) \leq -P_n(-x)$. \label{item:x-small}
+\item If $x \in [1, 2^n]$, then $0 \leq 4P_n(x) \leq -P_n(-x)$. \label{item:x-large}
+\end{enumerate}
+\label{fact:pn}
+\end{fact}
+\begin{proof}
+First, observe that for any $x \geq 0$, for all $i$, $(x+2^i)^2 \geq (x - 2^i)^2$ holds.
+
+For the first item, given that $x \in [0,1]$, $-(-x-1) \geq 1-x \geq 0$. Therefore,
+\[ \frac{-P_n(-x)}{-P_n(x)} = \frac{-(-x-1)}{1-x} \prod_{i =1}^n \frac{(x+2^i)^2}{(x - 2^i)^2}  \geq 1. \]
+
+For the second item, given that $x \geq 1$, $-(-x-1) \geq x-1 \geq 0$. In addition, as $x$ is in $[1,2^n]$, there exists an $i_0 \in [n]$ such that $2^{i_0-1} \leq x \leq 2^i_0$. Therefore,
+$(x+2^i)^2 \geq 4(x - 2^i)^2$. Hence,
+\[ \frac{-P_n(-x)}{P_n(x)} = \frac{-(-x-1)}{ x-1} \prod_{i \neq i_0} \frac{(x+2^i)^2}{(x - 2^i)^2} \frac{(x+2^{i_0})^2}{(x - 2^{i_0})^2} \geq 4. \]
+
+\end{proof}
+
 
 \subsection{Construction using Chebyshev polynomials}
 \paragraph{The construction.} Define
