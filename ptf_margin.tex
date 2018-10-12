@@ -188,7 +188,7 @@
 \section{Learning intersection of halfspaces with a margin}
 Suppose we are given examples $S = \cbr{(x, y)}$, where $x$ is in $\cbr{x \in \fR^d: \| x \| \leq 1}$, and $y$ is in $\cbr{-1,+1}$.
 \begin{definition}
-$S$ is said to be separable by an intersection of halfspaces with margin parameter $\gamma > 0$, if there exists $t$ linear classifiers $v_1, \ldots, v_t$ (all of which are in $\cbr{v \in \fR^d: \| v \| \leq 1}$),
+Dataset $S$ is said to be separable by an intersection of halfspaces with margin parameter $\gamma > 0$, if there exists $t$ linear classifiers $v_1, \ldots, v_t$ (all of which are in $\cbr{v \in \fR^d: \| v \| \leq 1}$),
 such that for every $(x,y)$ in $S$:
 \begin{enumerate}
   \item If $y = +1$, then $v_i \cdot x \geq \gamma$ holds simultaneously for all $i$ in $[t]$.
@@ -197,20 +197,56 @@ such that for every $(x,y)$ in $S$:
 \label{def:int-margin}
 \end{definition}
 
-Given a set $S$ separable by an intersection of halfspaces with a margin $\gamma$, our goal is to find a feature map $\phi: \fR^d \to \fR^{d'}$, such that the dataset $S' = \cbr{(\phi(x), y): (x,y) \in S}$ is linearly separable by a margin $\gamma' > 0$. That is, for every $(\phi(x), y)$ in $S'$, and
-there exists a vector $u$ in $\fR^{d'}$, such that for every $(\phi(x), y)$ in $S'$, $\frac{y u \cdot \phi(x)}{\|u\|\| \phi(x)\|} \geq \gamma'$.
+Given a set $S$ separable by an intersection of halfspaces with a margin $\gamma$, our goal is to find a feature map $\phi: \fR^d \to \fR^{d'}$, such that the dataset $S' = \cbr{(\phi(x), y): (x,y) \in S}$ is linearly separable by a margin $\gamma' > 0$.
+\begin{definition}
+Dataset $T$ is said to be separable by halfspace with margin parameter $\rho > 0$, if there exists a linear classifier $u$, such that,
+\[ \min_{(x,y) \in T} y u \cdot x \geq \rho \|u\| \max_{(x,y) \in T} \| x \|. \]
+\end{definition}
+
+That is,
+there exists a vector $u$ in $\fR^{d'}$, such that $\min_{(x,y) \in S} y u \cdot \phi(x) \geq \gamma' \|u\| \max_{(x,y) \in S} \| \phi(x) \|$.
 In addition, we would like our feature map $\phi$ to correspond to a kernel function $k(x,x') = \inner{\phi(x), \phi(x')}$ that can be efficiently evaluated.
 
 \section{Construction of polynomials}
-Our $\phi$'s in considerations are as follows: TODO: fix the constant in phi so that it has norm at most 1.
+Our $\phi$'s in considerations are as follows:
 \begin{enumerate}
-\item $\phi_1(x) = (x_1^{i_1} \ldots x_d^{i_d})_{i_1 + \ldots + i_d \leq \deg, i_1, \ldots, i_d \geq 0} = (x_S)_{S \in N^d, \|S\|_1 \leq \deg}$. This corresponds to the complete symmetric kernel $K_{\deg}$.
-\item $\phi_2(x) = ( \sqrt{ {\deg \choose i_1+\ldots+i_d} {i_1+\ldots+i_d \choose i_1 \ldots i_d}}  x_1^{i_1} \ldots x_d^{i_d})_{i_1 + \ldots + i_d \leq \deg, i_1, \ldots, i_d \geq 0}$. This corresponds to the polynomial kernel
-$K_{\deg}'(x,x') = (1 + \inner{x, x'})^{\deg}$.
-\item $\phi_3(x) = ( \sqrt{ (\frac 1 2)^{i_1+\ldots+i_d} {i_1+\ldots+i_d \choose i_1 \ldots i_d}}  x_1^{i_1} \ldots x_d^{i_d})_{i_1 + \ldots + i_d \leq \deg, i_1, \ldots, i_d \geq 0}$. This corresponds to the kernel $K(x,x') = \frac{1}{1 - \frac 1 2 \inner{x,x'}}$.
+%\sqrt{\frac{1}{\deg+1}}
+\item $\phi_{s}(x) = ( x_1^{i_1} \ldots x_d^{i_d})_{i_1 + \ldots + i_d \leq s, i_1, \ldots, i_d \geq 0} = (x_S)_{S \in N^d, \|S\|_1 \leq s}$. This corresponds to the complete symmetric kernel $K_s$. Note that for all $x$ such that $\| x \|_2 \leq 1$,
+$\inner{\phi_{s}(x), \phi_{s}(x)} \leq \sum_{i=0}^s \|x\|^{2i} \leq 1 + s$.
+
+%\frac{1}{2^{\deg}}
+\item $\phi_{s}'(x) = ( \sqrt{ {s \choose i_1+\ldots+i_d} {i_1+\ldots+i_d \choose i_1 \ldots i_d}}  x_1^{i_1} \ldots x_d^{i_d})_{i_1 + \ldots + i_d \leq s, i_1, \ldots, i_d \geq 0}$. This corresponds to the polynomial kernel
+$K_s'(x,x') = (1 + \inner{x, x'})^s$. Note that for all $x$ such that $\| x \|_2 \leq 1$,
+$\inner{\phi_s'(x), \phi_s'(x)} = K_s'(x,x) = (1 + \|x\|^2)^s \leq 2^s$.
+
+\item $\phi_0(x) = ( \sqrt{ (\frac 1 2)^{i_1+\ldots+i_d} {i_1+\ldots+i_d \choose i_1 \ldots i_d}}  x_1^{i_1} \ldots x_d^{i_d})_{i_1, \ldots, i_d \geq 0}$. This corresponds to the kernel $K(x,x') = \frac{1}{1 - \frac 1 2 \inner{x,x'}}$.
+Note that for all $x$ such that $\| x \|_2 \leq 1$,
+$\inner{\phi_0(x), \phi_0(x)} = K(x,x) \leq 2$.
 \end{enumerate}
 
-For a polynomial $p = \sum_{S \in \fN^d} c_S x_S$, define $\|p\|$, the norm of $p$, as the $\ell_2$ norm of the vector that contains its coefficients on every monomial, that is $\|p\| = \| (c_S)_{S \in \fN^d} \| = \sqrt{\sum_{S \in \fN^d} c_S^2}$. This is also the RKHS norm of $p$ wrt the complete symmetric kernel $K_{\deg}$, for $\deg \geq \deg(p)$.
+For a polynomial $p = \sum_{S \in \fN^d} c_S x_S$, define $\|p\|$, the norm of $p$, as the $\ell_2$ norm of the vector that contains its coefficients on every monomial, that is $\|p\| = \| (c_S)_{S \in \fN^d} \| = \sqrt{\sum_{S \in \fN^d} c_S^2}$. We have the following simple result.
+\begin{lemma}
+Suppose polynomial $p$ has degree $\deg$, and has norm $\|p\|$. Then
+\begin{enumerate}
+\item For any degree $s \geq \deg$, $p$ can be written as $\inner{c, \phi_s(x)}$, where $\|c\| = \|p\|$.
+\item For any degree $s \geq \deg$, $p$ can be written as $\inner{c', \phi_s'(x)}$, where $\|c_0\| \leq \|p\|$.
+\item $p$ can be written as $\inner{c_0, \phi_0(x)}$, where $\|c_0\| \leq 2^{\frac{\deg}{2}} \|p\|$.
+\end{enumerate}
+\end{lemma}
+\begin{proof}
+Note that $p(x)$ can be written as $\sum_{i_1,\ldots,i_d \in \fN} c_{i_1,\ldots,i_d} x_1^{i_1} \ldots x_d^{i_d}$. As $p$ has degree $\deg$, $c_{i_1,\ldots,i_d} = 0$ for $i_1 + \ldots + i_d > \deg$.
+
+The first item follows as $\phi_s(x)$ contains all monomials in $p$.
+
+For the second item, we define $(c')_{i_1,\ldots,i_d} = \frac{c_{i_1,\ldots,i_d}}{\sqrt{ {s \choose i_1+\ldots+i_d} {i_1+\ldots+i_d \choose i_1 \ldots i_d}}}$ for all $(i_1,\ldots,i_d) \in \fN, i_1+\ldots+i_d \leq s$. It can be seen that $\inner{c', \phi_s'(x)} = \inner{c, \phi_s(x)}$, and
+$\| c' \| \leq \| c \| = \| p \|$.
+
+For the third item, we define $(c_0)_{i_1,\ldots,i_d} = \frac{c_{i_1,\ldots,i_d}}{\sqrt{ (\frac 1 2)^{i_1+\ldots+i_d} {i_1+\ldots+i_d \choose i_1 \ldots i_d}}}$ for all $(i_1,\ldots,i_d) \in \fN$. As $c_{i_1,\ldots,i_d} = 0$ for $i_1 + \ldots + i_d > \deg$, $|(c_0)_{i_1,\ldots,i_d}| \leq 2^{\frac{\deg}{2}} |c_{i_1,\ldots,i_d}|$.
+This implies that
+$\| c_0 \| \leq 2^{\frac{\deg}{2}} \| c \| = 2^{\frac{\deg}{2}} \| p \| $.
+\end{proof}
+
+%This is also the RKHS norm of $p$ wrt the complete symmetric kernel $K_{\deg}$, for $\deg \geq \deg(p)$.
 
 
 
@@ -237,7 +273,7 @@ $p(x) = \prod_{i=1}^t B_{\ceil{\log \frac 1 \gamma}}^{2t}(\frac{v_i \cdot x}\gam
 
 \begin{lemma}[~\cite{klivans2004learning}]
 For all $(x,y)$ in $S$ satisfying Definition~\ref{def:int-margin}, we have that $y Q(x) \geq \frac 1 2$.
-As a consequence, $y p(x) \geq 2^{\frac{n(n-1)h(2t)t}2 - 2}$.
+As a consequence, $y p(x) \geq 2^{n(n-1)h(2t)t - 2}$.
 \end{lemma}
 \begin{proof}
 We consider two cases regarding the label of the example.
@@ -258,7 +294,7 @@ Hence,
 \end{enumerate}
 To summarize, we have shown that for all $(x,y)$ in $S$, $y Q(x) \geq \frac 1 2$.
 Therefore,
-\[ y p(x) = y Q(x) \cdot \prod_{i=1}^t B_{\ceil{\log \frac 1 \gamma}}^{2t}(\frac{v_i \cdot x}\gamma) \geq \frac 1 2 ((1-\frac{1}{4t+1}) \cdot 2^{\frac{n(n-1)h(2t)}2})^t \geq 2^{\frac{n(n-1)h(2t)t}2 - 2}. \]
+\[ y p(x) = y Q(x) \cdot \prod_{i=1}^t B_{\ceil{\log \frac 1 \gamma}}^{2t}(\frac{v_i \cdot x}\gamma) \geq \frac 1 2 ((1-\frac{1}{4t+1}) \cdot 2^{n(n-1)h(2t)})^t \geq 2^{n(n-1)h(2t)t - 2}. \]
 \end{proof}
 
 
@@ -268,7 +304,7 @@ $S_n^k(\cdot)$ has the following properties:
 \item If $x$ is in $[1, 2^n]$, then $S_n^k(x)$ is in $[1, 1 + \frac 1 k]$. \label{item:sign-rt}
 \item If $x$ is in $[-2^{-n}, -1]$, then $S_n^k(x)$ is in $[-1 - \frac 1 k, -1]$. \label{item:sign-lt}
 \item If $x$ is in $[-1, 1]$, then $|S_n^k(x)|$ is in $[-1, 1]$. \label{item:sign-mid}
-\item For all $x$ in $[-2^{-n}, 2^{-n}]$, $B_n^k(x) \geq (1-\frac{1}{2k+1}) \cdot 2^{\frac{n(n-1)h(k)}2}$. \label{item:sign-denom}
+\item For all $x$ in $[-2^{-n}, 2^{-n}]$, $B_n^k(x) \geq (1-\frac{1}{2k+1}) \cdot 2^{n(n-1)h(k)}$. \label{item:sign-denom}
 \end{enumerate}
 \label{fact:newman}
 \end{fact}
@@ -288,15 +324,16 @@ $S_n^k(x) = \frac{1+r}{1-r} \in [1, 1 + \frac 1 k]$.
 First, note that if $x \geq 0$, then $\abs{P_n(-x)} \geq \prod_{i=1}^n 2^{2i} = 2^{n(n-1)}$.
 If $x$ is in $[1,2^n]$, then $B_n^k(x) = \abs{P_n(-x)^{h(k)}} (1 - r) \geq \abs{P_n(-x)^{h(k)}} \cdot \frac{2k}{2k+1} \geq 2^{n(n-1)h(k)} \cdot \frac{2k}{2k+1}$.
 If $x$ is in $[0,1]$, as both $P_n(-x)$ and $-P_n(x)$ are $\leq 0$, we have $B_n^k(x) \geq \abs{P_n(-x)^{h(k)}} \geq 2^{n(n-1)h(k)}$. Therefore, for all $x \in [0,2^n]$,
-$\abs{B_n^k(x)} \geq (1-\frac{1}{2k+1}) 2^{n(n-1)h(k)$.
+$\abs{B_n^k(x)} \geq (1-\frac{1}{2k+1}) 2^{n(n-1)h(k)}$.
 \end{enumerate}
 \end{proof}
 
-\paragraph{Norm bound.} We bound the norm of $p$ using the theorem below.
+\paragraph{Norm bound.} We bound the norm of $p$ in the theorem below.
 \begin{theorem}
-$p(x)$ can be written as $\inner{c, \phi_1(x)}$ for some $c$ such that $\|c\| \leq$.
+$p(x)$ has degree $\deg = (2\ceil{\log \frac 1 \gamma}+1)h(2t)t$, and has norm $\|p\| \leq ((16\ceil{\log \frac 1 \gamma}+8) h(2t) t \cdot \frac 1 \gamma)^{(2\ceil{\log \frac 1 \gamma}+1)h(2t)t}$.
 \end{theorem}
 \begin{proof}
+The degree of $p$ follows from the
 Let $n = \ceil{\log \frac 1 \gamma}$.
 
 First, for all $i$ in $[t]$ and $l$ in $\cbr{0,1,\ldots,n}$,
@@ -304,30 +341,29 @@ First, for all $i$ in $[t]$ and $l$ in $\cbr{0,1,\ldots,n}$,
 This implies that
 \[ \| P_n(\frac{v_i \cdot x}{\gamma}) \|^2 \leq ((4n+2) \cdot 2^{2n})^{2n+1}. \]
 Therefore,
-\[ \| P_n(\frac{v_i \cdot x}{\gamma})^{h(k)} \|^2 \leq h(k)^{(2n+1)h(k)} \cdot ((4n+2) \cdot 2^{2n})^{(2n+1)h(k)}. \]
+\[ \| P_n(\frac{v_i \cdot x}{\gamma})^{h(2t)} \|^2 \leq h(2t)^{(2n+1)h(2t)} \cdot ((4n+2) \cdot 2^{2n})^{(2n+1)h(2t)}. \]
 %$A_n^k(x) = P_n(x)^{h(k)} - P_n(-x)^{h(k)}$, $B_n^k(x) = -P_n(-x)^{h(k)} - P_n(x)^{h(k)}$
 By the definition of $A_n^k$ and $B_n^k$, we have
-\[ \| A_n^k(\frac{v_i \cdot x}{\gamma}) \|^2,  \| B_n^k(\frac{v_i \cdot x}{\gamma}) \|^2 \leq ((8n+4) h(k) \cdot 2^{2n})^{(2n+1)h(k)}. \]
+\[ \| A_n^{2t}(\frac{v_i \cdot x}{\gamma}) \|^2,  \| B_n^{2t}(\frac{v_i \cdot x}{\gamma}) \|^2 \leq ((8n+4) h(2t) \cdot 2^{2n})^{(2n+1)h(2t)}. \]
 
 %\sum_{i=1}^t A_{\ceil{\log \frac 1 \gamma}}^{2t}(\frac{v_i \cdot x}{\gamma}) \cdot \prod_{j \neq i} B_{\ceil{\log \frac 1 \gamma}}^{2t}(\frac{v_i \cdot x}{\gamma}) - (t-\frac12) \prod_{j=1}^t B_{\ceil{\log \frac 1 \gamma}}^{2t}(\frac{v_i \cdot x}{\gamma})
 Hence, for every $i$ in $[t]$,
 \[
 \| A_n^{2t}(\frac{v_i \cdot x}{\gamma}) \cdot \prod_{j \neq i} B_n^{2t}(\frac{v_j \cdot x}{\gamma}) \|^2
 \leq
-t^{(2n+1) h(k) t} \cdot ((8n+4) h(k) \cdot 2^{2n})^{(2n+1)h(k)t}.
+t^{(2n+1) h(2t) t} \cdot ((8n+4) h(2t) \cdot 2^{2n})^{(2n+1)h(2t)t}.
 \]
 Similarly,
 \[
-\| \prod_{i=1}^t B_n^{2t}(\frac{v_i \cdot x}{\gamma}) \|^2 \leq t^{(2n+1) h(k) t} \cdot ((8n+4) h(k) \cdot 2^{2n})^{(2n+1)h(k)t}.
+\| \prod_{i=1}^t B_n^{2t}(\frac{v_i \cdot x}{\gamma}) \|^2 \leq t^{(2n+1) h(2t) t} \cdot ((8n+4) h(2t) \cdot 2^{2n})^{(2n+1)h(2t)t}.
 \]
 Therefore,
 \[
-\| p(x) \|^2 \leq ((t - \frac 1 2)^2 + t) \cdot ((8n+4) h(k) t \cdot 2^{2n})^{(2n+1)h(k)t} \leq ((16n+8) h(k) t \cdot 2^{2n})^{(2n+1)h(k)t}.
+\| p(x) \|^2 \leq ((t - \frac 1 2)^2 + t) \cdot ((8n+4) h(2t) t \cdot 2^{2n})^{(2n+1)h(2t)t} \leq ((16n+8) h(2t) t \cdot 2^{2n})^{(2n+1)h(2t)t}.
 \]
-where the last inequality uses that $2^{(2n+1)h(k)t} \geq t^2 + \frac 1 4$.
-
-
-
+where the second inequality uses that $2^{(2n+1)h(2t)t} \geq t^2 + \frac 1 4$.
+This implies that $p(x)$ can be written as $\inner{c, \phi_1(x)}$, where $\| c \|_2^2 \leq ((16n+8) h(2t) t \cdot 2^{2n})^{(2n+1)h(2t)t}$. Taking square roots on both sides, the theorem follows from algebra.
+%Hence, $\| c \|_2 \leq ((16n+8) h(2t) t \cdot 2^n)^{(2n+1)h(2t)t}$.
 \end{proof}
 
 
@@ -342,21 +378,21 @@ The following is true:
 \begin{proof}
 First, observe that for any $x \geq 0$, for all $i$, $(x+2^i)^2 \geq (x - 2^i)^2$ holds.
 
-For the first item, given that $x \in [0,1]$, $-(-x-1) \geq 1-x \geq 0$. Therefore,
-\[ \frac{-P_n(-x)}{-P_n(x)} = \frac{-(-x-1)}{1-x} \prod_{i =1}^n \frac{(x+2^i)^2}{(x - 2^i)^2}  \geq 1. \]
+For the first item, given that $x \in [0,1]$, $1+x \geq 1-x \geq 0$. Therefore,
+\[ \frac{-P_n(-x)}{-P_n(x)} = \frac{1+x}{1-x} \prod_{i =1}^n \frac{(x+2^i)^2}{(x - 2^i)^2}  \geq 1. \]
 
-For the second item, given that $x \geq 1$, $-(-x-1) \geq x-1 \geq 0$. In addition, as $x$ is in $[1,2^n]$, there exists an $i_0 \in [n]$ such that $2^{i_0-1} \leq x \leq 2^i_0$. Therefore,
+For the second item, given that $x \geq 1$, $1+x \geq x-1 \geq 0$. In addition, as $x$ is in $[1,2^n]$, there exists an $i_0 \in [n]$ such that $2^{i_0-1} \leq x \leq 2^i_0$. Therefore,
 $(x+2^i)^2 \geq 4(x - 2^i)^2$. Hence,
-\[ \frac{-P_n(-x)}{P_n(x)} = \frac{-(-x-1)}{ x-1} \prod_{i \neq i_0} \frac{(x+2^i)^2}{(x - 2^i)^2} \frac{(x+2^{i_0})^2}{(x - 2^{i_0})^2} \geq 4. \]
+\[ \frac{-P_n(-x)}{P_n(x)} = \frac{1+x}{ x-1} \prod_{i \neq i_0} \frac{(x+2^i)^2}{(x - 2^i)^2} \frac{(x+2^{i_0})^2}{(x - 2^{i_0})^2} \geq 4. \]
 
 \end{proof}
 
 
 \subsection{Construction using Chebyshev polynomials}
 \paragraph{The construction.} Define
-\[ p(x) = t + \frac 1 2 - \sum_{i=1}^t (T_{\ceil{\sqrt{\frac 2 \gamma}}}(1 - v_i \cdot x))^{\ceil{\log 2t}}, \]
+\[ p(x) = t + \frac 1 2 - \sum_{i=1}^t (T_{\ceil{\sqrt{\frac 1 \gamma}}}(1 - v_i \cdot x))^{\ceil{\log 2t}}, \]
 where
-$T_r(\cdot)$ is the $r$-th order Chebyshev polynomial. Denote by $C_i(x) = (T_{\ceil{\sqrt{\frac 2 \gamma}}}(1 - v_i \cdot x))^{\ceil{\log 2t}}$. $p$ can therefore be simplified to
+$T_r(\cdot)$ is the $r$-th order Chebyshev polynomial. Denote by $C_i(x) = (T_{\ceil{\sqrt{\frac 1 \gamma}}}(1 - v_i \cdot x))^{\ceil{\log 2t}}$. $p$ can therefore be simplified to
 \[ p(x) = t + \frac 1 2 - \sum_{i=1}^t C_i(x). \]
 
 \begin{lemma}[~\cite{klivans2004learning}]
@@ -369,7 +405,7 @@ We consider the two cases regarding the label of the example.
 $i$ in $[t]$, $1 - v_i \cdot x \in [0, 1-\gamma]$. By item~\ref{item:bound-in} of Fact~\ref{fact:cheb}, we have that for all $i$, $|C_i(x)| \leq 1$.
 Therefore, $p(x) \geq t + \frac 1 2 - t \geq \frac 1 2$.
 
-\item Suppose $y = -1$. First observe that for all $i$, $T_{\ceil{\sqrt{\frac 2 \gamma}}}(1 - v_i \cdot x)) \geq -1$. This is because of items~\ref{item:bound-in} and~\ref{item:bound-out} of Fact~\ref{fact:cheb}.
+\item Suppose $y = -1$. First observe that for all $i$, $T_{\ceil{\sqrt{\frac 1 \gamma}}}(1 - v_i \cdot x)) \geq -1$. This is because of items~\ref{item:bound-in} and~\ref{item:bound-out} of Fact~\ref{fact:cheb}.
 This implies that $C_i(x) \geq -1$.
 On the other hand, by Definition~\ref{def:int-margin}, there exists an $i_0$ in $[t]$, such that $v_{i_0} \cdot x \leq -\gamma$. By item~\ref{item:bound-out} of Fact~\ref{fact:cheb}, we have that
 $C_{i_0}(x) \geq (1 + \gamma \cdot \frac 1 \gamma)^{\ceil{\log 2t}} \geq 2t$. Therefore,
@@ -387,17 +423,61 @@ $T_r(\cdot)$ has the following properties:
 \label{fact:cheb}
 \end{fact}
 
-\paragraph{Norm bound.} We now bound $\| p \|$. First, for all $i$, as $v_i$ has norm at most 1,
+\paragraph{Norm bound.} We bound the norm of $p$ in the theorem below.
+\begin{theorem}
+$p(x)$ has degree $\deg = \ceil{\sqrt{\frac1\gamma}} \cdot \ceil{\log(2t)}$, and has norm $\|p\| \leq 2 \cdot (256 \ceil{\sqrt{\frac1\gamma}} \ceil{\log 2t})^{\ceil{\sqrt{\frac1\gamma}} \ceil{\log 2t}}$.
+\end{theorem}
+\begin{proof}
+Denote by $r = \ceil{\sqrt{\frac1\gamma}}$.
+First, for all $i$, as $v_i$ has norm at most 1,
 \[ \| (1 - v_i \cdot x) \|^2 \leq 2. \]
 Therefore, by Lemma~\ref{lem:norm-oper},
 \[ \| c_l (1 - v_i \cdot x)^l \|^2 = c_l^2 \| (1 - v_i \cdot x)^l \|_2^2 \leq 2^{2r} l^l 2^l. \]
 Hence,
-\[ \| T_r(1 - v_i \cdot x) \|^2 = \| \sum_{l=0}^r c_l (1 - v_i \cdot x)^l \|^2 \leq (r+1) \cdot \sum_{l=0}^r 2^{2r} l^l 2^l \leq (r+1)^2 (8r)^r. \]
+\[ \| T_r(1 - v_i \cdot x) \|^2 = \| \sum_{l=0}^r c_l (1 - v_i \cdot x)^l \|^2 \leq (r+1) \cdot \sum_{l=0}^r 2^{2r} l^l 2^l \leq (r+1)^2 (8r)^r \leq (32r)^r. \]
+where the last inequality uses the fact that $(r+1)^2 \leq 2^r$.
 And by Lemma~\ref{lem:norm-oper},
-\[ \| C_r(x) \|^2 \leq (\ceil{\log 2t})^{\ceil{\log 2t} r} \cdot ((r+1)^2 (8r)^r)^{\ceil{\log 2t}}. \]
+\[ \| C_r(x) \|^2 \leq (\ceil{\log 2t})^{\ceil{\log 2t} r} \cdot ((32r)^r)^{\ceil{\log 2t}}. \]
 Therefore,
-\[ \| p(x) \|^2 \leq (t+1) \cdot ((t+\frac 1 2)^2 + t (\ceil{\log 2t})^{\ceil{\log 2t} r} \cdot ((r+1)^2 (8r)^r)^{\ceil{\log 2t}}) \leq 2 \cdot (32 r \ceil{\log 2t})^{2r \ceil{\log 2t}}  \]
-where the last inequality uses the fact that $2^{2r \ceil{\log 2t}} \geq \max(2t^2, r^2)$.
+\[ \| p(x) \|^2 \leq (t+1) \cdot ((t+\frac 1 2)^2 + t (32 r\ceil{\log 2t})^{\ceil{\log 2t} r}) \leq 2 \cdot (256 r \ceil{\log 2t})^{r \ceil{\log 2t}}  \]
+where the last inequality uses the fact that $(t+1)((t+\frac12)^2+t) \leq 2 \cdot 8^{\ceil{\log 2t}}$ and algebra.
+%$2^{2r \ceil{\log 2t}} \geq \max(2t^2, r^2)$.
+\end{proof}
+
+\section{Margin lower bounds on respective feature maps}
+\paragraph{Margin bounds using non-adaptive feature maps.}
+\begin{theorem}
+Suppose we are given an integer $s$, and a set of examples $S$ separable by an intersection of halfspaces by margin $\gamma$. Define the mapped dataset $S'=\cbr{(\phi_s(x),y): (x,y) \in S}$. Then,
+\begin{enumerate}
+\item If $s \geq (2\ceil{\log \frac 1 \gamma}+1) h(2t) t$, then $S'$ is separable by a halfspace with margin
+\[
+\gamma' = \frac{1}{ ( (16 \ceil{\log \frac 1 \gamma} + 8 ) h(2t) t 2^{\ceil{\log \frac 1 \gamma}})^{(2\ceil{\log \frac 1 \gamma} + 1 ) h(2t) t} }.
+\]
+\item If $s \geq \ceil{\sqrt{\frac1\gamma}} \cdot \ceil{\log(2t)}$, then $S'$ is separable by a halfspace with margin
+\[
+\gamma' = \frac{1}{4 \cdot (256 \ceil{\sqrt{\frac1\gamma}} \ceil{\log 2t})^{\ceil{\sqrt{\frac1\gamma}} \ceil{\log 2t}}}.
+\]
+\end{enumerate}
+\end{theorem}
+
+\paragraph{Margin bounds using adaptive-degree feature map.}
+\begin{theorem}
+Suppose we are given a set of examples $S$ separable by an intersection of halfspaces by margin $\gamma$. Define the mapped dataset $S'=\cbr{(\phi_0(x),y): (x,y) \in S}$. Then, $S'$ is separable by some halfspace with margin
+\[
+\gamma' =
+\max(
+\frac{1}{ \sqrt{2} ( (32 \ceil{\log \frac 1 \gamma} + 16 ) h(2t) t 2^{\ceil{\log \frac 1 \gamma}})^{(2\ceil{\log \frac 1 \gamma} + 1 ) h(2t) t} },
+\frac{1}{4 \sqrt{2} \cdot (512 \ceil{\sqrt{\frac1\gamma}} \ceil{\log 2t})^{\ceil{\sqrt{\frac1\gamma}} \ceil{\log 2t}}}
+)
+\]
+\end{theorem}
+
+%\ceil{\log \frac 1 \gamma} + 1 ) h(2t) t
+%2^\ceil{\log \frac 1 \gamma} )^{ (2  }
+
+%and has norm $\|p\| \leq ((16\ceil{\log \frac 1 \gamma}+8) h(2t) t \cdot \frac 1 \gamma)^{(2\ceil{\log \frac 1 \gamma}+1)h(2t)t}$.
+
+
 \section{Auxiliary lemmas}
 \begin{lemma}
    For $i=1,\ldots, \ell$ let $q^{(i)}(x)=\sum_S c^{(i)}_{S} x_S $ be a polynomial over $x_1, \ldots, x_d$. Then
