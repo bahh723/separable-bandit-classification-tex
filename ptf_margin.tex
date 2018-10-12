@@ -196,6 +196,7 @@ such that for every $(x,y)$ in $S$:
 \end{enumerate}
 \label{def:int-margin}
 \end{definition}
+\cz{Looking at~\cite{klivans2004learning} and its proof, it assumes that for all $(x,y)$ in $S$, $|v_i \cdot x| \geq \gamma$. In our subsequent proofs, we show that it can be in fact weakened to the condition above, which is also more suitable for online bandit multiclass linear classification.}
 
 Given a set $S$ separable by an intersection of halfspaces with a margin $\gamma$, our goal is to find a feature map $\phi: \fR^d \to \fR^{d'}$, such that the dataset $S' = \cbr{(\phi(x), y): (x,y) \in S}$ is linearly separable by a margin $\gamma' > 0$.
 \begin{definition}
@@ -304,7 +305,11 @@ $S_n^k(\cdot)$ has the following properties:
 \item If $x$ is in $[1, 2^n]$, then $S_n^k(x)$ is in $[1, 1 + \frac 1 k]$. \label{item:sign-rt}
 \item If $x$ is in $[-2^{-n}, -1]$, then $S_n^k(x)$ is in $[-1 - \frac 1 k, -1]$. \label{item:sign-lt}
 \item If $x$ is in $[-1, 1]$, then $|S_n^k(x)|$ is in $[-1, 1]$. \label{item:sign-mid}
-\item For all $x$ in $[-2^{-n}, 2^{-n}]$, $B_n^k(x) \geq (1-\frac{1}{2k+1}) \cdot 2^{n(n-1)h(k)}$. \label{item:sign-denom}
+\cz{This fact is based on discussions with Chen-Yu, which we found important but was omitted by~\cite{klivans2004learning}.}
+\item For all $x$ in $[-2^{-n}, 2^{-n}]$, $B_n^k(x) \geq (1-\frac{1}{2k+1}) \cdot 2^{n(n-1)h(k)}$.
+\cz{This is a refined lower bound of Lemma 6 of~\cite{klivans2004learning}; we got rid of the weird
+requirement that ``the fractional part of $x$ is at least $2^{-n}$''.}
+\label{item:sign-denom}
 \end{enumerate}
 \label{fact:newman}
 \end{fact}
@@ -383,8 +388,7 @@ For the first item, given that $x \in [0,1]$, $1+x \geq 1-x \geq 0$. Therefore,
 
 For the second item, given that $x \geq 1$, $1+x \geq x-1 \geq 0$. In addition, as $x$ is in $[1,2^n]$, there exists an $i_0 \in [n]$ such that $2^{i_0-1} \leq x \leq 2^i_0$. Therefore,
 $(x+2^i)^2 \geq 4(x - 2^i)^2$. Hence,
-\[ \frac{-P_n(-x)}{P_n(x)} = \frac{1+x}{ x-1} \prod_{i \neq i_0} \frac{(x+2^i)^2}{(x - 2^i)^2} \frac{(x+2^{i_0})^2}{(x - 2^{i_0})^2} \geq 4. \]
-
+\[ \frac{-P_n(-x)}{P_n(x)} = \frac{1+x}{ x-1} \frac{(x+2^{i_0})^2}{(x - 2^{i_0})^2} \prod_{i \neq i_0} \frac{(x+2^i)^2}{(x - 2^i)^2} \geq 4. \]
 \end{proof}
 
 
