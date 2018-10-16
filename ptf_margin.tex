@@ -208,11 +208,11 @@ That is,
 there exists a vector $u$ in $\fR^{d'}$, such that $\min_{(x,y) \in S} y u \cdot \phi(x) \geq \gamma' \|u\| \max_{(x,y) \in S} \| \phi(x) \|$.
 In addition, we would like our feature map $\phi$ to correspond to a kernel function $k(x,x') = \inner{\phi(x), \phi(x')}$ that can be efficiently evaluated.
 
-\section{Construction of polynomials}
+\section{Construction of large margin feature mappings using polynomials}
 Our $\phi$'s in considerations are as follows:
 \begin{enumerate}
 %\sqrt{\frac{1}{\deg+1}}
-\item $\phi_{s}(x) = ( x_1^{i_1} \ldots x_d^{i_d})_{i_1 + \ldots + i_d \leq s, i_1, \ldots, i_d \geq 0} = (x_S)_{S \in N^d, \|S\|_1 \leq s}$. This corresponds to the complete symmetric kernel $K_s$. Note that for all $x$ such that $\| x \|_2 \leq 1$,
+\item $\phi_{s}(x) = ( x_1^{i_1} \ldots x_d^{i_d})_{i_1 + \ldots + i_d \leq s, i_1, \ldots, i_d \geq 0} = (x_S)_{S \in \fN^d, \|S\|_1 \leq s}$. This corresponds to the complete symmetric kernel $K_s$. Note that for all $x$ such that $\| x \|_2 \leq 1$,
 $\inner{\phi_{s}(x), \phi_{s}(x)} \leq \sum_{i=0}^s \|x\|^{2i} \leq 1 + s$.
 
 %\frac{1}{2^{\deg}}
@@ -230,16 +230,17 @@ For a polynomial $p = \sum_{S \in \fN^d} c_S x_S$, define $\|p\|$, the norm of $
 Suppose polynomial $p$ has degree $\deg$, and has norm $\|p\|$. Then
 \begin{enumerate}
 \item For any degree $s \geq \deg$, $p$ can be written as $\inner{c, \phi_s(x)}$, where $\|c\| = \|p\|$.
-\item For any degree $s \geq \deg$, $p$ can be written as $\inner{c', \phi_s'(x)}$, where $\|c_0\| \leq \|p\|$.
+\item For any degree $s \geq \deg$, $p$ can be written as $\inner{c', \phi_s'(x)}$, where $\|c'\| \leq \|p\|$.
 \item $p$ can be written as $\inner{c_0, \phi_0(x)}$, where $\|c_0\| \leq 2^{\frac{\deg}{2}} \|p\|$.
 \end{enumerate}
 \end{lemma}
+\label{lem:fm-convert}
 \begin{proof}
 Note that $p(x)$ can be written as $\sum_{i_1,\ldots,i_d \in \fN} c_{i_1,\ldots,i_d} x_1^{i_1} \ldots x_d^{i_d}$. As $p$ has degree $\deg$, $c_{i_1,\ldots,i_d} = 0$ for $i_1 + \ldots + i_d > \deg$.
 
-The first item follows as $\phi_s(x)$ contains all monomials in $p$.
+The first item follows as $\phi_s(x)$ contains all monomials of degree at most $s$, which in turn contains all monomials in $p$.
 
-For the second item, we define $(c')_{i_1,\ldots,i_d} = \frac{c_{i_1,\ldots,i_d}}{\sqrt{ {s \choose i_1+\ldots+i_d} {i_1+\ldots+i_d \choose i_1 \ldots i_d}}}$ for all $(i_1,\ldots,i_d) \in \fN, i_1+\ldots+i_d \leq s$. It can be seen that $\inner{c', \phi_s'(x)} = \inner{c, \phi_s(x)}$, and
+For the second item, we define $(c')_{i_1,\ldots,i_d} = \frac{c_{i_1,\ldots,i_d}}{\sqrt{ {s \choose i_1+\ldots+i_d} {i_1+\ldots+i_d \choose i_1 \ldots i_d}}}$ for all $(i_1,\ldots,i_d) \in \fN$. It can be seen that $\inner{c', \phi_s'(x)} = \inner{c, \phi_s(x)}$, and
 $\| c' \| \leq \| c \| = \| p \|$.
 
 For the third item, we define $(c_0)_{i_1,\ldots,i_d} = \frac{c_{i_1,\ldots,i_d}}{\sqrt{ (\frac 1 2)^{i_1+\ldots+i_d} {i_1+\ldots+i_d \choose i_1 \ldots i_d}}}$ for all $(i_1,\ldots,i_d) \in \fN$. As $c_{i_1,\ldots,i_d} = 0$ for $i_1 + \ldots + i_d > \deg$, $|(c_0)_{i_1,\ldots,i_d}| \leq 2^{\frac{\deg}{2}} |c_{i_1,\ldots,i_d}|$.
@@ -251,18 +252,20 @@ $\| c_0 \| \leq 2^{\frac{\deg}{2}} \| c \| = 2^{\frac{\deg}{2}} \| p \| $.
 
 
 
-\subsection{Construction using rational functions}
+\subsection{Large margin polynomial via rational functions}
 \paragraph{The construction.} Define rational function
 \[
   Q(x) = \sum_{i=1}^t S_{\ceil{\log \frac 1 \gamma}}^{2t}(\frac{v_i \cdot x}{\gamma}) - (t - \frac 1 2).
 \]
-where function
+where for $k,n$ in $\fN$, function
 \[
 S_n^k(x) = \frac{P_n(-x)^{h(k)} - P_n(x)^{h(k)}}{P_n(-x)^{h(k)} + P_n(x)^{h(k)}},
 \]
 $h(k)$ is the smallest odd integer greater than $\log(2k+1)$, and $P_n(x) = (x - 1) \cdot \prod_{i=1}^n (x - 2^i)^2$.
 
 Now denote by $A_n^k(x) = P_n(x)^{h(k)} - P_n(-x)^{h(k)}$, $B_n^k(x) = -P_n(-x)^{h(k)} - P_n(x)^{h(k)}$.
+Also, define $D_i(x) = S_{\ceil{\log \frac 1 \gamma}}^{2t}(\frac{v_i \cdot x}{\gamma})$.
+
 \cz{Note the difference between this line and KS04 - we multiply by $B_{\ceil{\log \frac 1 \gamma}}^{2t}(\frac{v_i \cdot x}\gamma)$ as opposed to its square. The latter would also work, but it will make the equations more cumbersome.}
 Define polynomial $p$ as
 \begin{eqnarray*}
@@ -272,9 +275,10 @@ Define polynomial $p$ as
 It can be seen that
 $p(x) = \prod_{i=1}^t B_{\ceil{\log \frac 1 \gamma}}^{2t}(\frac{v_i \cdot x}\gamma) \cdot Q(x)$.
 
-\begin{lemma}[~\cite{klivans2004learning}]
+\begin{lemma}[\cite{klivans2004learning}]
 For all $(x,y)$ in $S$ satisfying Definition~\ref{def:int-margin}, we have that $y Q(x) \geq \frac 1 2$.
-As a consequence, $y p(x) \geq 2^{n(n-1)h(2t)t - 2}$.
+As a consequence, $y p(x) \geq 2^{\ceil{\log \frac 1 \gamma}(\ceil{\log \frac 1 \gamma}-1)h(2t)t - 2}$.
+\label{lem:rational-margin}
 \end{lemma}
 \begin{proof}
 We consider two cases regarding the label of the example.
@@ -286,7 +290,7 @@ Hence, $Q(x) \geq t - (t - \frac 1 2) \geq \frac 1 2$.
 \item Suppose $y = -1$. First observe that for all $i$ in $[t]$, $\frac{v_i \cdot x}{\gamma} \in [-\frac 1\gamma, \frac 1 \gamma]$. By items~\ref{item:sign-rt},
 ~\ref{item:sign-lt} and~\ref{item:sign-mid} of Fact~\ref{fact:newman}, we have that $S_{\ceil{\log \frac 1 \gamma}}^{2t}(\frac{v_i \cdot x}{\gamma}) \leq 1+ \frac 1 {2t}$.
 In addition, by Definition~\ref{def:int-margin}, there exists an $i_0$ in $[t]$, such that $v_{i_0} \cdot x \leq -\gamma$.
-By item~\ref{item:bound-out} of Fact~\ref{fact:cheb}, we have that
+By item~\ref{item:sign-lt} of Fact~\ref{fact:newman}, we have that
 $D_{i_0}(x) \in [-1 - \frac 1 {2t}, -1]$.
 Hence,
 \[ Q(x) = D_{i_0}(x) + \sum_{i \neq i_0} D_i(x) - (t - \frac 1 2)
@@ -294,19 +298,19 @@ Hence,
 %\leq -1 + t-1 + \frac{t-1}{2t} - (t - \frac 1 2)
 \end{enumerate}
 To summarize, we have shown that for all $(x,y)$ in $S$, $y Q(x) \geq \frac 1 2$.
-Therefore,
+Therefore, by item~\ref{item:sign-denom} of Fact~\ref{fact:newman}, 
 \[ y p(x) = y Q(x) \cdot \prod_{i=1}^t B_{\ceil{\log \frac 1 \gamma}}^{2t}(\frac{v_i \cdot x}\gamma) \geq \frac 1 2 ((1-\frac{1}{4t+1}) \cdot 2^{n(n-1)h(2t)})^t \geq 2^{n(n-1)h(2t)t - 2}. \]
 \end{proof}
 
 
 \begin{fact}
-$S_n^k(\cdot)$ has the following properties:
+For $k, n$ in $\fN$, $S_n^k(\cdot)$ has the following properties:
 \begin{enumerate}
 \item If $x$ is in $[1, 2^n]$, then $S_n^k(x)$ is in $[1, 1 + \frac 1 k]$. \label{item:sign-rt}
 \item If $x$ is in $[-2^{-n}, -1]$, then $S_n^k(x)$ is in $[-1 - \frac 1 k, -1]$. \label{item:sign-lt}
 \item If $x$ is in $[-1, 1]$, then $|S_n^k(x)|$ is in $[-1, 1]$. \label{item:sign-mid}
 \cz{This fact is based on discussions with Chen-Yu, which we found important but was omitted by~\cite{klivans2004learning}.}
-\item For all $x$ in $[-2^{-n}, 2^{-n}]$, $B_n^k(x) \geq (1-\frac{1}{2k+1}) \cdot 2^{n(n-1)h(k)}$.
+\item For all $x$ in $[-2^{n}, 2^{n}]$, $B_n^k(x) \geq (1-\frac{1}{2k+1}) \cdot 2^{n(n-1)h(k)}$.
 \cz{This is a refined lower bound of Lemma 6 of~\cite{klivans2004learning}; we got rid of the weird
 requirement that ``the fractional part of $x$ is at least $2^{-n}$''.}
 \label{item:sign-denom}
@@ -327,15 +331,35 @@ $S_n^k(x) = \frac{1+r}{1-r} \in [1, 1 + \frac 1 k]$.
 
 \item Noticing that $B_n^k(x)$ is an even function, without loss of generality, suppose $x \geq 0$.
 First, note that if $x \geq 0$, then $\abs{P_n(-x)} \geq \prod_{i=1}^n 2^{2i} = 2^{n(n-1)}$.
-If $x$ is in $[1,2^n]$, then $B_n^k(x) = \abs{P_n(-x)^{h(k)}} (1 - r) \geq \abs{P_n(-x)^{h(k)}} \cdot \frac{2k}{2k+1} \geq 2^{n(n-1)h(k)} \cdot \frac{2k}{2k+1}$.
-If $x$ is in $[0,1]$, as both $P_n(-x)$ and $-P_n(x)$ are $\leq 0$, we have $B_n^k(x) \geq \abs{P_n(-x)^{h(k)}} \geq 2^{n(n-1)h(k)}$. Therefore, for all $x \in [0,2^n]$,
-$\abs{B_n^k(x)} \geq (1-\frac{1}{2k+1}) 2^{n(n-1)h(k)}$.
+If $x$ is in $[1,2^n]$, then $B_n^k(x) = (-P_n(-x))^{h(k)} (1 - r) \geq (-P_n(-x))^{h(k)} \cdot \frac{2k}{2k+1} \geq 2^{n(n-1)h(k)} \cdot \frac{2k}{2k+1}$.
+If $x$ is in $[0,1]$, as both $P_n(-x)$ and $-P_n(x)$ are $\leq 0$, we have $B_n^k(x) \geq (-P_n(-x))^{h(k)} \geq 2^{n(n-1)h(k)}$. Therefore, for all $x \in [0,2^n]$,
+$B_n^k(x) \geq (1-\frac{1}{2k+1}) 2^{n(n-1)h(k)}$.
 \end{enumerate}
+\end{proof}
+
+\begin{fact}
+The following are true:
+\begin{enumerate}
+\item If $x \in [0,1]$, then $0 \leq -P_n(x) \leq -P_n(-x)$. \label{item:x-small}
+\item If $x \in [1, 2^n]$, then $0 \leq 4P_n(x) \leq -P_n(-x)$. \label{item:x-large}
+\end{enumerate}
+\label{fact:pn}
+\end{fact}
+\begin{proof}
+First, observe that for any $x \geq 0$, for all $i$, $(x+2^i)^2 \geq (x - 2^i)^2$ holds.
+
+For the first item, given that $x \in [0,1]$, $1+x \geq 1-x \geq 0$. Therefore,
+\[ \frac{-P_n(-x)}{-P_n(x)} = \frac{1+x}{1-x} \cdot \prod_{i =1}^n \frac{(x+2^i)^2}{(x - 2^i)^2}  \geq 1. \]
+
+For the second item, given that $x \geq 1$, $1+x \geq x-1 \geq 0$. In addition, as $x$ is in $[1,2^n]$, there exists an $i_0 \in [n]$ such that $2^{i_0-1} \leq x \leq 2^i_0$. Therefore,
+$(x+2^i)^2 \geq 4(x - 2^i)^2$. Hence,
+\[ \frac{-P_n(-x)}{P_n(x)} = \frac{1+x}{ x-1} \cdot \frac{(x+2^{i_0})^2}{(x - 2^{i_0})^2} \cdot \prod_{i \neq i_0} \frac{(x+2^i)^2}{(x - 2^i)^2} \geq 4. \]
 \end{proof}
 
 \paragraph{Norm bound.} We bound the norm of $p$ in the theorem below.
 \begin{theorem}
 $p(x)$ has degree $\deg = (2\ceil{\log \frac 1 \gamma}+1)h(2t)t$, and has norm $\|p\| \leq ((16\ceil{\log \frac 1 \gamma}+8) h(2t) t \cdot \frac 1 \gamma)^{(2\ceil{\log \frac 1 \gamma}+1)h(2t)t}$.
+\label{thm:rational-norm}
 \end{theorem}
 \begin{proof}
 The degree of $p$ follows from the
@@ -372,35 +396,17 @@ This implies that $p(x)$ can be written as $\inner{c, \phi_1(x)}$, where $\| c \
 \end{proof}
 
 
-\begin{fact}
-The following is true:
-\begin{enumerate}
-\item If $x \in [0,1]$, then $0 \leq -P_n(x) \leq -P_n(-x)$. \label{item:x-small}
-\item If $x \in [1, 2^n]$, then $0 \leq 4P_n(x) \leq -P_n(-x)$. \label{item:x-large}
-\end{enumerate}
-\label{fact:pn}
-\end{fact}
-\begin{proof}
-First, observe that for any $x \geq 0$, for all $i$, $(x+2^i)^2 \geq (x - 2^i)^2$ holds.
 
-For the first item, given that $x \in [0,1]$, $1+x \geq 1-x \geq 0$. Therefore,
-\[ \frac{-P_n(-x)}{-P_n(x)} = \frac{1+x}{1-x} \prod_{i =1}^n \frac{(x+2^i)^2}{(x - 2^i)^2}  \geq 1. \]
-
-For the second item, given that $x \geq 1$, $1+x \geq x-1 \geq 0$. In addition, as $x$ is in $[1,2^n]$, there exists an $i_0 \in [n]$ such that $2^{i_0-1} \leq x \leq 2^i_0$. Therefore,
-$(x+2^i)^2 \geq 4(x - 2^i)^2$. Hence,
-\[ \frac{-P_n(-x)}{P_n(x)} = \frac{1+x}{ x-1} \frac{(x+2^{i_0})^2}{(x - 2^{i_0})^2} \prod_{i \neq i_0} \frac{(x+2^i)^2}{(x - 2^i)^2} \geq 4. \]
-\end{proof}
-
-
-\subsection{Construction using Chebyshev polynomials}
+\subsection{Large margin polynomials via Chebyshev polynomials}
 \paragraph{The construction.} Define
 \[ p(x) = t + \frac 1 2 - \sum_{i=1}^t (T_{\ceil{\sqrt{\frac 1 \gamma}}}(1 - v_i \cdot x))^{\ceil{\log 2t}}, \]
 where
 $T_r(\cdot)$ is the $r$-th order Chebyshev polynomial. Denote by $C_i(x) = (T_{\ceil{\sqrt{\frac 1 \gamma}}}(1 - v_i \cdot x))^{\ceil{\log 2t}}$. $p$ can therefore be simplified to
 \[ p(x) = t + \frac 1 2 - \sum_{i=1}^t C_i(x). \]
 
-\begin{lemma}[~\cite{klivans2004learning}]
+\begin{lemma}[\cite{klivans2004learning}]
 For all $(x,y)$ in $S$ satisfying Definition~\ref{def:int-margin}, we have that $y p(x) \geq \frac 1 2$.
+\label{lem:cheb-margin}
 \end{lemma}
 \begin{proof}
 We consider the two cases regarding the label of the example.
@@ -409,7 +415,7 @@ We consider the two cases regarding the label of the example.
 $i$ in $[t]$, $1 - v_i \cdot x \in [0, 1-\gamma]$. By item~\ref{item:bound-in} of Fact~\ref{fact:cheb}, we have that for all $i$, $|C_i(x)| \leq 1$.
 Therefore, $p(x) \geq t + \frac 1 2 - t \geq \frac 1 2$.
 
-\item Suppose $y = -1$. First observe that for all $i$, $T_{\ceil{\sqrt{\frac 1 \gamma}}}(1 - v_i \cdot x)) \geq -1$. This is because of items~\ref{item:bound-in} and~\ref{item:bound-out} of Fact~\ref{fact:cheb}.
+\item Suppose $y = -1$. First observe that for all $i$, $T_{\ceil{\sqrt{\frac 1 \gamma}}}(1 - v_i \cdot x) \geq -1$. This is because of items~\ref{item:bound-in} and~\ref{item:bound-out} of Fact~\ref{fact:cheb}, and that $1 - v_i \cdot x \geq 0$.
 This implies that $C_i(x) \geq -1$.
 On the other hand, by Definition~\ref{def:int-margin}, there exists an $i_0$ in $[t]$, such that $v_{i_0} \cdot x \leq -\gamma$. By item~\ref{item:bound-out} of Fact~\ref{fact:cheb}, we have that
 $C_{i_0}(x) \geq (1 + \gamma \cdot \frac 1 \gamma)^{\ceil{\log 2t}} \geq 2t$. Therefore,
@@ -430,13 +436,14 @@ $T_r(\cdot)$ has the following properties:
 \paragraph{Norm bound.} We bound the norm of $p$ in the theorem below.
 \begin{theorem}
 $p(x)$ has degree $\deg = \ceil{\sqrt{\frac1\gamma}} \cdot \ceil{\log(2t)}$, and has norm $\|p\| \leq 2 \cdot (256 \ceil{\sqrt{\frac1\gamma}} \ceil{\log 2t})^{\ceil{\sqrt{\frac1\gamma}} \ceil{\log 2t}}$.
+\label{thm:cheb-norm}
 \end{theorem}
 \begin{proof}
 Denote by $r = \ceil{\sqrt{\frac1\gamma}}$.
 First, for all $i$, as $v_i$ has norm at most 1,
 \[ \| (1 - v_i \cdot x) \|^2 \leq 2. \]
 Therefore, by Lemma~\ref{lem:norm-oper},
-\[ \| c_l (1 - v_i \cdot x)^l \|^2 = c_l^2 \| (1 - v_i \cdot x)^l \|_2^2 \leq 2^{2r} l^l 2^l. \]
+\[ \| c_l (1 - v_i \cdot x)^l \|^2 = c_l^2 \| (1 - v_i \cdot x)^l \|^2 \leq 2^{2r} l^l 2^l. \]
 Hence,
 \[ \| T_r(1 - v_i \cdot x) \|^2 = \| \sum_{l=0}^r c_l (1 - v_i \cdot x)^l \|^2 \leq (r+1) \cdot \sum_{l=0}^r 2^{2r} l^l 2^l \leq (r+1)^2 (8r)^r \leq (32r)^r. \]
 where the last inequality uses the fact that $(r+1)^2 \leq 2^r$.
@@ -464,6 +471,22 @@ Suppose we are given an integer $s$, and a set of examples $S$ separable by an i
 \end{enumerate}
 \end{theorem}
 
+\begin{proof}
+\begin{enumerate}
+\item From Lemma~\ref{lem:rational-margin} and Theorem~\ref{thm:rational-norm}, 
+along with the fact that $s \geq (2\ceil{\log \frac 1 \gamma}+1) h(2t) t$,
+we know that there exists some polynomial $p = \inner{c, \phi_s(x)}$, such that
+$y \inner{c, \phi_s(x)} \geq  2^{\ceil{\log \frac 1 \gamma}(\ceil{\log \frac 1 \gamma}-1)h(2t)t - 2}$ and 
+$\|c\| \leq ((16\ceil{\log \frac 1 \gamma}+8) h(2t) t \cdot \frac 1 \gamma)^{(2\ceil{\log \frac 1 \gamma}+1)h(2t)t}$. This implies that $S'$ is separable by a halfspace with the desired margin.
+
+\item From Lemma~\ref{lem:cheb-margin} and Theorem~\ref{thm:cheb-norm},
+along with the fact that $s \geq \ceil{\sqrt{\frac1\gamma}} \cdot \ceil{\log(2t)}$, we know that there exists some polynomial $p = \inner{c, \phi_s(x)}$, such that
+$y \inner{c, \phi_s(x)} \geq \frac 1 2$ and
+$\| c \| \leq 2 \cdot (256 \ceil{\sqrt{\frac1\gamma}} \ceil{\log 2t})^{\ceil{\sqrt{\frac1\gamma}} \ceil{\log 2t}}$. This implies that $S'$ is separable by a halfspace with the desired margin.
+\end{enumerate}
+\end{proof}
+
+
 \paragraph{Margin bounds using adaptive-degree feature map.}
 \begin{theorem}
 Suppose we are given a set of examples $S$ separable by an intersection of halfspaces by margin $\gamma$. Define the mapped dataset $S'=\cbr{(\phi_0(x),y): (x,y) \in S}$. Then, $S'$ is separable by some halfspace with margin
@@ -475,6 +498,26 @@ Suppose we are given a set of examples $S$ separable by an intersection of halfs
 )
 \]
 \end{theorem}
+
+\begin{proof}
+%The proof the essentially the same as the proof of 
+\begin{enumerate}
+\item From Lemma~\ref{lem:rational-margin} and Theorem~\ref{thm:rational-norm}, 
+we know that there exists some polynomial $p(x)$ of degree at most $(2\ceil{\log \frac 1 \gamma}+1) h(2t) t$, such that
+$y p(x) \geq  2^{\ceil{\log \frac 1 \gamma}(\ceil{\log \frac 1 \gamma}-1)h(2t)t - 2}$ and 
+$\|p\| \leq ((16\ceil{\log \frac 1 \gamma}+8) h(2t) t \cdot \frac 1 \gamma)^{(2\ceil{\log \frac 1 \gamma}+1)h(2t)t}$. 
+By Lemma~\ref{lem:fm-convert}, there is some vector $c$, such that $y \inner{c, \phi_0(x)} = y p(x)$ for all $(x,y)$ in $S$	, and $\| c \| \leq 2^{\frac 1 2 \cdot (2\ceil{\log \frac 1 \gamma}+1) h(2t) t} \| p \|$.
+This implies that $S'$ is separable by a halfspace with the desired margin.
+
+\item From Lemma~\ref{lem:cheb-margin} and Theorem~\ref{thm:cheb-norm}, we know that there exists some polynomial $p(x)$ of degree $\ceil{\sqrt{\frac1\gamma}} \cdot \ceil{\log(2t)}$ such that
+$y p(x) \geq \frac 1 2$ and
+$\| p \| \leq 2 \cdot (256 \ceil{\sqrt{\frac1\gamma}} \ceil{\log 2t})^{\ceil{\sqrt{\frac1\gamma}} \ceil{\log 2t}}$. 
+By Lemma~\ref{lem:fm-convert}, there is some vector $c$, such that $y \inner{c, \phi_0(x)} = y p(x)$ for all $(x,y)$ in $S,$ and $\| c \| \leq 2^{\frac 1 2 \cdot \ceil{\sqrt{\frac1\gamma}} \cdot \ceil{\log(2t)}} \| p \|$.	
+This implies that $S'$ is separable by a halfspace with the desired margin.
+\end{enumerate}
+
+
+\end{proof}
 
 %\ceil{\log \frac 1 \gamma} + 1 ) h(2t) t
 %2^\ceil{\log \frac 1 \gamma} )^{ (2  }
