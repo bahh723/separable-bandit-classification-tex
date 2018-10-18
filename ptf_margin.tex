@@ -204,9 +204,9 @@ holds simultaneously for all $y' \neq y$.
 \label{def:mc-ova-margin}
 \end{definition}
 
-For every example $(x, y)$, denote by 
-\[ b_y^i = \begin{cases} +1  & y_t = i \\ -1 & y_t \neq i \end{cases} \]
-its one-versus-all label. The above definition is equivalent to: there exists a $W$ in $\fR^{K \times d}$ ($\|W\|_F \leq 1$),
+For every example $(x, y)$, and a label $i$ in $[K]$, denote by 
+\[ b_y^i = \begin{cases} +1  & y = i \\ -1 & y \neq i \end{cases} \]
+its one-versus-all label for problem $i$. The above definition is equivalent to: there exists a $W$ in $\fR^{K \times d}$ ($\|W\|_F \leq 1$),
 for every $i$ in $[K]$,
 for every $(x, y)$ in $S$,
 \[ 
@@ -258,8 +258,10 @@ Suppose feature map $\phi$ is such that \cbr{(\phi(x_t), y_t): t \in [T]} is OvA
 \end{corollary}
 
 \begin{proof}
-Denote by $U_{t,1}$ (resp. $U_{t,2}$) the indicator in the ``if'' branch (resp. ``else'' branch) at time $t$. In addition, denote by $U_t^y$ the indicator of $w_t^{(y)}$ gets updated at 
-round $t$. It can be easily seen that $U_{t,1} + U_{t,2} = \sum_{y=1}^k U_t^y = U_t^{\tilde{y}_t}$, which is equal to the indicator of Algorithm~\ref{alg:ova} making an update at iteration $t$. Let $N_{t,2}$ be the indicator of Algorithm~\ref{alg:ova} encounters the ``else'' branch at time $t$. Throughout, we also use the shorthand that $b_{t,i} = b_{y_t}^i$.
+Denote by $U_{t,1}$ (resp. $U_{t,2}$) the indicator in the ``if'' branch (resp. ``else'' branch) at time $t$. Let $U_t = U_{t,1} + U_{t,2}$ be the indicator of Algorithm~\ref{alg:ova} making an update at iteration $t$.
+% In addition, denote by $U_t^y$ the indicator of $w_t^{(y)}$ gets updated at 
+%round $t$. It can be easily seen that $U_{t,1} + U_{t,2} = \sum_{y=1}^k U_t^y = U_t^{\tilde{y}_t} = U_t$, which is equal to the . 
+Let $N_{t,2}$ be the indicator of Algorithm~\ref{alg:ova} encounters the ``else'' branch at time $t$. Throughout, we also use the shorthand that $b_{t,i} = b_{y_t}^i$.
 
 
 
@@ -274,12 +276,13 @@ round $t$. It can be easily seen that $U_{t,1} + U_{t,2} = \sum_{y=1}^k U_t^y = 
 %
 %Summing over all $y$ in $[K]$ and doing some algebra, 
 
-By standard analysis of the Perceptron algorithm, we have that for all $W \in \fR^{K \times d}$, and all $\rho > 0$,
+Conceptually, Algorithm~\ref{alg:ova} is equivalent to Perceptron over examples $(\phi(x_t) \otimes e_{\tilde{y}_t}, b_{t, \tilde{y}_t})$.
+Therefore, by standard analysis of the Perceptron algorithm, we have that for all $W \in \fR^{K \times d}$, and all $\rho > 0$,
 \begin{equation}
-\sum_{t=1}^T U_t^{\tilde{y}_t} 
+\sum_{t=1}^T U_t 
 \leq 
-\sum_{t=1}^T  U_t^{\tilde{y}_t} (1 - \frac{b_{t,y} w_{\tilde{y}_t} \phi(x_t)}{\rho})_+ 
-+ \sqrt{(\sum_{t=1}^T  U_t^{\tilde{y}_t} (1 - \frac{b_{t,y} w_{\tilde{y}_t} \phi(x_t)}{\rho})_+) \cdot \frac{\|W\|_F^2 R^2}{\rho^2} } 
+\sum_{t=1}^T  U_t (1 - \frac{b_{t,\tilde{y}_t} w_{\tilde{y}_t} \phi(x_t)}{\rho})_+ 
++ \sqrt{(\sum_{t=1}^T  U_t (1 - \frac{b_{t,y} w_{\tilde{y}_t} \phi(x_t)}{\rho})_+) \cdot \frac{\|W\|_F^2 R^2}{\rho^2} } 
 + \frac{\|W\|_F^2 R^2}{\rho^2},
 \label{eqn:perceptron-mb}
 \end{equation}
@@ -287,12 +290,12 @@ where $R = \max_{t=1}^T \| \phi(x_t)\|$.
 
 Denote by $S_{\sep}$ the indices of examples in $\cbr{(x_t, y_t)}_{t=1}^T$ that is separable by a margin $\gamma$.
 Take $W = W^*$, and $\rho = \gamma' \max_{t=1}^T \| \phi(x_t) \|_2$, we have that for all $t$ in $S_{\sep}$, for all $y$ in $[K]$, $(1 - \frac{b_{t,y} W^*_y \phi(x_t)}{\rho})_+ = 0$. For $t$ not in $S_{\sep}$,
-$\sum_{y=1}^K U_t^y (1 - \frac{b_{t,y} W^*_y \phi(x_t)}{\rho})_+ \leq (1 + \frac{1}{\gamma'})$. 
-This implies that $\sum_{t=1}^T  \sum_{y=1}^K U_t^y (1 - \frac{b_{t,y} w_y \phi(x_t)}{\rho})_+ \leq N(1 + \frac 1 {\gamma'})$.
+$U_t (1 - \frac{b_{t,\tilde{y}_t} W^*_{\tilde{y}_t} \phi(x_t)}{\rho})_+ \leq (1 + \frac{1}{\gamma'})$. 
+This implies that $\sum_{t=1}^T  U_t (1 - \frac{b_{t,\tilde{y}_t} W^*_{\tilde{y}_t} \phi(x_t)}{\rho})_+ \leq N(1 + \frac 1 {\gamma'})$.
 
 Combining with Equation~\eqref{eqn:perceptron-mb}, we get 
 \[
-\sum_{t=1}^T U_t^{\tilde{y}_t}  \leq (1 + \frac 1 {\gamma'}) N + \sqrt{ (1 + \frac 1 {\gamma'}) N \cdot \frac{1}{\gamma'^2} } + \frac{1}{\gamma'^2}.
+\sum_{t=1}^T U_t  \leq (1 + \frac 1 {\gamma'}) N + \sqrt{ (1 + \frac 1 {\gamma'}) N \cdot \frac{1}{\gamma'^2} } + \frac{1}{\gamma'^2}.
 \]
 
 Now, observe that $M_t$, the mistake indicator at time $t$ is at most $U_{t,1} + N_{t,2}$. Also, note that $\E[U_{t,2} | N_{t,2}] \geq \frac 1 K \cdot N_{t,2}$, as conditioned on $N_{t,2} = 1$, with probability $\frac 1 K$, $U_{t,2} = 1$ . This implies that
@@ -303,12 +306,11 @@ Now, observe that $M_t$, the mistake indicator at time $t$ is at most $U_{t,1} +
 
 
 %\section{Learning intersection of halfspaces with a margin}
-
-
 \section{Feature mappings that induce OvA linear separability from linear separability}
 
-How do we come up with a feature map that maps a linearly separable dataset to a OvA linearly separable dataset? Recall Definition~\ref{def:mc-ova-margin}, it suffices to give a feature map $\phi$ that for every $i$ in $K$, dataset $S_i = \cbr{(x, b_y^i): (x,y) \in S}$ is separable after the transformation. What property does dataset $S^i$ possess? Observe that for all examples $(x,y)$ in $S$ such that $b_y^i = +1$ (i.e. $y = i$), $x$ is such that $(w_i - w_{y'}) \cdot x \geq \gamma$ for all $y' \neq i$. For all examples $(x,y)$ in $S$ such that $b_y^i = -1$ (i.e. $y \neq i$), $x$ is such that 
-$(w_y - w_i) \cdot x \geq \gamma$, specifically, $(w_i - w_{y'}) \cdot x \leq -\gamma$ for some $y' \neq i$. This motivates the following definition.
+How do we come up with a feature map that maps a linearly separable dataset to a OvA linearly separable dataset? Recall Definition~\ref{def:mc-ova-margin}, it suffices to give a feature map $\phi$ that for every $i$ in $K$, dataset $S_i = \cbr{(x, b_y^i): (x,y) \in S}$ is separable after the transformation. What property does dataset $S^i$ possess? Observe that for all examples $(x,b_y^i)$ in $S_i$ such that $b_y^i = +1$, $x$ lies in the region $\cbr{x: (w_i - w_{y'}) \cdot x \geq \gamma, \text{ for all } y' \neq i}$. For all examples $(x,b_y^i)$ in $S_i$ such that $b_y^i = -1$, $x$ lies in the region $\cbr{x: (w_i - w_{y'}) \cdot x \leq -\gamma, \text{ for some } y' \neq i}$.
+%$(w_y - w_i) \cdot x \geq \gamma$, specifically, $(w_i - w_{y'}) \cdot x \leq -\gamma$ for some $y' \neq i$. 
+This motivates the following definition.
 
 %Suppose we are given examples 
 \begin{definition}
