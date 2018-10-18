@@ -32,14 +32,14 @@
 \usepackage[vlined,linesnumbered,ruled]{algorithm2e}
 \usepackage{bbm}
 \usepackage{amsfonts}
-\usepackage{amsmath}           
-\usepackage{mathtools}    
+\usepackage{amsmath}
+\usepackage{mathtools}
 \usepackage{amsopn}
 \usepackage{amssymb}
 \usepackage{graphicx}
 \usepackage{enumerate}
 \usepackage{soul}
-%%%%%%%%%%%%%%%%%% toc 
+%%%%%%%%%%%%%%%%%% toc
 \usepackage{scrwfile}
 \TOCclone[\contentsname~(\appendixname)]{toc}{atoc}
 \newcommand\StartAppendixEntries{}
@@ -61,7 +61,7 @@
 \usepackage{color}
 %%%%%%%%%%%%%%%%%% toc
 
-%%%%%%%%%%%%%%%% HEADER 
+%%%%%%%%%%%%%%%% HEADER
 \newcommand{\EG}{\textsc{Epoch-Greedy}\xspace}
 \newcommand{\EPG}{\textsc{$\epsilon$-Greedy}\xspace}
 \newcommand{\minimonster}{\textsc{ILOVETOCONBANDITS}\xspace}
@@ -183,11 +183,11 @@
 \maketitle
 
 \section{Problem Statement}
-A multiclass linear classifier is defined by a set of $K$ vectors $w^{(1)}, \ldots, w^{(K)}\in \mathbb{R}^d$ (or a compact matrix form $W = [w^{(1)}\ w^{(2)}\  \cdots\  w^{(K)}]^\top \in \mathbb{R}^{K\times d}$), where $K$ is the number of classes ($K\geq 3$) and $d$ is the dimension of the feature vector. A set of samples $\{(x_t, y_t)\}_{t=1}^T$ where $x_t\in \mathbb{R}^d$ and $y_t\in[K]$ is called \textit{linearly separable} if there exists a $w_*^{(1)}, \ldots, w_*^{(K)}$ (or simply $W_*$) such that $ y_t= \argmax_{y\in[K]} (W_{*}x_t)_y $ for all $t\in[T]$. 
+A multiclass linear classifier is defined by a set of $K$ vectors $w^{(1)}, \ldots, w^{(K)}\in \mathbb{R}^d$ (or a compact matrix form $W = [w^{(1)}\ w^{(2)}\  \cdots\  w^{(K)}]^\top \in \mathbb{R}^{K\times d}$), where $K$ is the number of classes ($K\geq 3$) and $d$ is the dimension of the feature vector. A set of samples $\{(x_t, y_t)\}_{t=1}^T$ where $x_t\in \mathbb{R}^d$ and $y_t\in[K]$ is called \textit{linearly separable} if there exists a $w_*^{(1)}, \ldots, w_*^{(K)}$ (or simply $W_*$) such that $ y_t= \argmax_{y\in[K]} (W_{*}x_t)_y $ for all $t\in[T]$.
 
-A set of samples $\{(x_t, y_t)\}_{t=1}^T$ is called \textit{linearly separable with a margin $\gamma$} if there exists $W_*$ with $\|w^{(i)}_*\|_2\leq 1$ for all $i$ and $(W_{*}x_t)_{y_t} \geq \max_{y\neq y_t} (W_*x_t)_y + \gamma$ for all $t$. We define the set $\calW = \{W\in \mathbb{R}^{K\times d}: \|\e_i^\top W^*\|_2\leq 1\}$. Therefore, $W_*\in \calW$. 
+A set of samples $\{(x_t, y_t)\}_{t=1}^T$ is called \textit{linearly separable with a margin $\gamma$} if there exists $W_*$ with $\|w^{(i)}_*\|_2\leq 1$ for all $i$ and $(W_{*}x_t)_{y_t} \geq \max_{y\neq y_t} (W_*x_t)_y + \gamma$ for all $t$. We define the set $\calW = \{W\in \mathbb{R}^{K\times d}: \|\e_i^\top W^*\|_2\leq 1\}$. Therefore, $W_*\in \calW$.
 
-Consider the following \textit{online multiclass classification} problem: at time $t$, the environment first reveals $x_t\in \mathbb{R}^d$ (and we assume $\|x_t\|_2\leq 1$), then the learner predicts some label $\tilde{y}_t\in [K]$; finally the environment reveals the true label $y_t\in[K]$. It is known that if the samples are linearly separable, then the learner will only make constant mistakes. It is achievable with the following simple perceptron algorithm: 
+Consider the following \textit{online multiclass classification} problem: at time $t$, the environment first reveals $x_t\in \mathbb{R}^d$ (and we assume $\|x_t\|_2\leq 1$), then the learner predicts some label $\tilde{y}_t\in [K]$; finally the environment reveals the true label $y_t\in[K]$. It is known that if the samples are linearly separable, then the learner will only make constant mistakes. It is achievable with the following simple perceptron algorithm:
 
 \begin{algorithm}[H]
 \caption{Perceptron}
@@ -195,24 +195,24 @@ $W_1=\mathbf{0}$\\
 \For{$t=1$ to $T$}{
    Predict $\tilde{y}_t=\argmax_y (W_tx_t)_y$ \\
    Update $W_{t+1}\leftarrow W_t + (\e_{y_t}-\e_{\tilde{y}_t})x_t^\top$ \\
-   (same as updating $w^{(y_t)}_{t+1} \leftarrow w^{(y_t)}_t + x_t$ and $w^{(\hat{y}_t)}_{t+1} \leftarrow w^{(\hat{y}_t)}_t - x_t$ when $\hat{y}_t\neq y_t$). 
+   (same as updating $w^{(y_t)}_{t+1} \leftarrow w^{(y_t)}_t + x_t$ and $w^{(\hat{y}_t)}_{t+1} \leftarrow w^{(\hat{y}_t)}_t - x_t$ when $\hat{y}_t\neq y_t$).
 }
 \end{algorithm}
 The analysis is simple. On one hand we have (note $\langle A,B \rangle:=\text{Tr}(A^\top B)$):
 \begin{align*}
     \langle W_t, W_* \rangle &= \langle W_{t-1}, W_* \rangle + \langle (\e_{y_t}-\e_{\tilde{y}_t})x_t^\top, W_* \rangle \\
     &= \langle W_{t-1}, W_* \rangle + (\e_{y_t}^\top W_* x_t-\e_{\tilde{y}_t}^\top W_* x_t) \\
-    &\geq \langle W_{t-1}, W_* \rangle + \gamma\one[\tilde{y}_t\neq y_t]. 
+    &\geq \langle W_{t-1}, W_* \rangle + \gamma\one[\tilde{y}_t\neq y_t].
 \end{align*}
-By induction, we get $\langle W_{T+1}, W_* \rangle \geq \gamma\sum_{t=1}^T \one[\tilde{y}_t\neq y_t]$. 
+By induction, we get $\langle W_{T+1}, W_* \rangle \geq \gamma\sum_{t=1}^T \one[\tilde{y}_t\neq y_t]$.
 
-On the other hand, 
+On the other hand,
 \begin{align*}
-    \langle W_{T+1}, W_* \rangle \leq \|W_{T+1}\|_F\|W_*\|_F \leq \sqrt{2K\sum_{t=1}^T \one[\tilde{y}_t \neq y_t] \|x_t\|_2^2}\times 1 \leq \sqrt{2K\sum_{t=1}^T \one[\tilde{y}_t \neq y_t] } 
+    \langle W_{T+1}, W_* \rangle \leq \|W_{T+1}\|_F\|W_*\|_F \leq \sqrt{2K\sum_{t=1}^T \one[\tilde{y}_t \neq y_t] \|x_t\|_2^2}\times 1 \leq \sqrt{2K\sum_{t=1}^T \one[\tilde{y}_t \neq y_t] }
 \end{align*}
-Combining the above two inequality, we get $ \sum_{t=1}^T \one[\tilde{y}_t \neq y_t] \leq \frac{4K}{\gamma^2}$. 
+Combining the above two inequality, we get $ \sum_{t=1}^T \one[\tilde{y}_t \neq y_t] \leq \frac{4K}{\gamma^2}$.
 
-The \textit{bandit multiclass classification} problem proceeds in a very similar way. The only difference is that the learner only knows whether she predicts \textbf{correctly or not}, rather than gets the true label (i.e., in each round, the feedback is only $\one[\tilde{y}_t=y_t]$, rather than $y_t$). Surprisingly, with this extremely limited feedback, the learner can still make only constant mistakes. It can be achieved with the following variant of \textit{halving algorithm}:  
+The \textit{bandit multiclass classification} problem proceeds in a very similar way. The only difference is that the learner only knows whether she predicts \textbf{correctly or not}, rather than gets the true label (i.e., in each round, the feedback is only $\one[\tilde{y}_t=y_t]$, rather than $y_t$). Surprisingly, with this extremely limited feedback, the learner can still make only constant mistakes. It can be achieved with the following variant of \textit{halving algorithm}:
 
 \begin{algorithm}[H]
 \caption{Halving}
@@ -229,44 +229,44 @@ Let $\calS_1=\calS$ \\
     }
 }
 \end{algorithm}
-\textbf{Analysis}.  The majority in $\calS_t$ always has cardinality no less than $\frac{1}{K}|\calS_t|$. So every time the learner predicts incorrectly, the size of $|\calS_t|$ shrinks by an order of $(1-\frac{1}{K})$. By our margin assumption, there is a $W'\in \calS$ which incurs no error in all samples. Therefore, $|S_t|\geq 1$ always holds. This means the number of errors is bounded by the order of $\frac{\log(|\calS|)}{-\log(1-\frac{1}{K})}\leq \mathcal{O}\left( K^2d\log \frac{1}{\gamma} \right)$. 
+\textbf{Analysis}.  The majority in $\calS_t$ always has cardinality no less than $\frac{1}{K}|\calS_t|$. So every time the learner predicts incorrectly, the size of $|\calS_t|$ shrinks by an order of $(1-\frac{1}{K})$. By our margin assumption, there is a $W'\in \calS$ which incurs no error in all samples. Therefore, $|S_t|\geq 1$ always holds. This means the number of errors is bounded by the order of $\frac{\log(|\calS|)}{-\log(1-\frac{1}{K})}\leq \mathcal{O}\left( K^2d\log \frac{1}{\gamma} \right)$.
 
-The main issue of this halving algorithm is that it is \textbf{inefficient} in the sense that $|\calS|$ is in the order of $\frac{1}{\gamma^{Kd}}$. 
+The main issue of this halving algorithm is that it is \textbf{inefficient} in the sense that $|\calS|$ is in the order of $\frac{1}{\gamma^{Kd}}$.
 
 Hence, we want to answer the following question: \ul{for bandit multiclass classification, can we have an efficient algorithm (time complexity polynomial in $K,d,\frac{1}{\gamma}, T$) that guarantees constant mistake bound (polynomial in $K,d,\frac{1}{\gamma}$) in the $\gamma$-separable case?} (An unsolved open problem in \cite{kakade2008efficient})
 
 \section{Naive Approaches}
 \begin{itemize}
     \item \textbf{Exhausting the feature space}: discretize the feature space into $ \left(\frac{1}{\gamma}\right)^{\mathcal{O}(d)} $ blocks. The margin assumption guarantees that two points in a block would have the same label (so we can give every block a label). Each time a new point $x_t$ comes, see whether the learner already knows the correct label for that block. If yes, predict that label; if not, randomly choose a label that has not been chosen for that block. \\
-    $\Rightarrow $ error bound: $K\left(\frac{1}{\gamma}\right)^{\mathcal{O}(d)} $. 
+    $\Rightarrow $ error bound: $K\left(\frac{1}{\gamma}\right)^{\mathcal{O}(d)} $.
     \item \textbf{Exhausting the hypothesis space}: Discretize the hypothesis space into $\left(\frac{1}{\gamma}\right)^{Kd}$ discretization points (like in the halving algorithm). For each of them, make predictions based on it until it makes an mistake. \\
-    $\Rightarrow $ error bound: $\left(\frac{1}{\gamma}\right)^{Kd}$. 
+    $\Rightarrow $ error bound: $\left(\frac{1}{\gamma}\right)^{Kd}$.
 \end{itemize}
 
 \section{Difficulties}
 \label{section: difficulty}
-Efficient classification algorithms often optimize a convex surrogate loss rather than a 0-1 loss. Examples include: 
+Efficient classification algorithms often optimize a convex surrogate loss rather than a 0-1 loss. Examples include:
 \begin{itemize}
-    \item Hinge loss: $\ell_t(W) = [1-(Wx_t)_{y_t}+\max_{y\neq y_t}(Wx_t)_{y}]_+$. 
+    \item Hinge loss: $\ell_t(W) = [1-(Wx_t)_{y_t}+\max_{y\neq y_t}(Wx_t)_{y}]_+$.
     \item Logistic loss: $\ell_t(W)=-\ln\frac{\exp((Wx_t)_{y_t})}{\sum_{y}\exp((Wx_t)_y)}$
     \item A family of loss that interpolates hinge loss and squared hinge loss (see \cite{beygelzimer2017efficient}'s Eq.(3))
 \end{itemize}
-In full-information setting, one can directly use online convex optimization techniques to deal with the above loss functions (learning over the space of $W$). 
+In full-information setting, one can directly use online convex optimization techniques to deal with the above loss functions (learning over the space of $W$).
 
-Many works for bandit classification reuse this kind of convex optimization schemes, together with explicit exploration and inverse propensity weighting \cite{kakade2008efficient, hazan2011newtron, beygelzimer2017efficient, foster2018logistic}. However, because it is hard to estimate these losses when the true label $y_t$ is not known, some of these algorithms \cite{beygelzimer2017efficient, foster2018logistic} simply do not update when the learner makes a mistake ($\tilde{y}_t \neq y_t$). We give this kind of algorithm an error lower bound $\Omega\left(\left(\frac{1}{\gamma}\right)^{(d-1)/2}\right)$ in Section~\ref{section: passive lower bound}. 
+Many works for bandit classification reuse this kind of convex optimization schemes, together with explicit exploration and inverse propensity weighting \cite{kakade2008efficient, hazan2011newtron, beygelzimer2017efficient, foster2018logistic}. However, because it is hard to estimate these losses when the true label $y_t$ is not known, some of these algorithms \cite{beygelzimer2017efficient, foster2018logistic} simply do not update when the learner makes a mistake ($\tilde{y}_t \neq y_t$). We give this kind of algorithm an error lower bound $\Omega\left(\left(\frac{1}{\gamma}\right)^{(d-1)/2}\right)$ in Section~\ref{section: passive lower bound}.
 
 It indeed looks hard to design a convex loss for $W$'s when the learner makes a mistake: when $\tilde{y}_t
-\neq y_t$, the set of $W$'s that we want to penalize (i.e., to assign larger loss) is $\{W: (Wx_t)_{\tilde{y}_t} \geq (Wx_t)_{y}, \forall y \}$, which is a convex cone in the space of $W$. It is impossible for a convex function to be large only in a convex subset (the case $K=2$, on the other hand, does not have this issue). Can we argue that if the learner is restricted to use convex losses in the space of $W$, she will have to suffer exponential (in $K$) errors? 
+\neq y_t$, the set of $W$'s that we want to penalize (i.e., to assign larger loss) is $\{W: (Wx_t)_{\tilde{y}_t} \geq (Wx_t)_{y}, \forall y \}$, which is a convex cone in the space of $W$. It is impossible for a convex function to be large only in a convex subset (the case $K=2$, on the other hand, does not have this issue). Can we argue that if the learner is restricted to use convex losses in the space of $W$, she will have to suffer exponential (in $K$) errors?
 
 \section{One-versus-all Perceptron}
 \label{sec:ova}
-Our assumption of linearly separable with a margin is 
+Our assumption of linearly separable with a margin is
 \begin{align}
  (W_*x_t)_{y_t} \geq (W_*x_t)_{y} + \gamma, \ \forall y\neq y_t. \label{eqn:weaker}
 \end{align}
-As discussed in Section~\ref{section: difficulty}, it seems hard to make update when $\tilde{y}_t\neq y_t$ and achieve a constant and polynomial error bound. 
+As discussed in Section~\ref{section: difficulty}, it seems hard to make update when $\tilde{y}_t\neq y_t$ and achieve a constant and polynomial error bound.
 
-For a moment, in this section we make the following stronger margin assumption (which we call \textit{one-versus-all separable} with a margin): 
+For a moment, in this section we make the following stronger margin assumption (which we call \textit{one-versus-all separable} with a margin):
 \begin{align}
 \begin{cases}
     (W_*x_t)_{y_t} \geq \gamma/2 \\
@@ -274,7 +274,7 @@ For a moment, in this section we make the following stronger margin assumption (
 \end{cases}
 \label{eqn:stronger}
 \end{align}
-Clearly, one-versus-all separability implies linearly separability, but not the other way around. With one-versus-all separability assumption, we can view the problem as $K$ parallel binary classification problem. The following algorithm achieves constant error bound: 
+Clearly, one-versus-all separability implies linearly separability, but not the other way around. With one-versus-all separability assumption, we can view the problem as $K$ parallel binary classification problem. The following algorithm achieves constant error bound:
 \begin{algorithm}[H]
 \caption{One-versus-all Perceptron}
 \label{alg:ova}
@@ -293,60 +293,63 @@ Initialize $w_t^{(1)}=\ldots=w_t^{(K)}=\mathbf{0}\in \mathbb{R}^d$\\
    }
 }
 \end{algorithm}
-\textbf{Analysis}. Note that when the algorithm enters Line~\ref{line:update1} or Line~\ref{line:update2}, the binary classifier $w_t^{(\tilde{y}_t)}$ is making an error. Let the number of times the algorithm enters Line~\ref{line:update1} and Line~\ref{line:update2} be $M$ and $N$ respectively. By the error bound of binary perceptron $\mathcal{O}\left(\frac{1}{\gamma^2}\right)$, we have that $M+N=\mathcal{O}\left(\frac{K}{\gamma^2}\right)$. Then note that the number of times the algorithm makes a mistake (i.e. $\tilde{y}_t\neq y_t$) is upper bounded by $M$ plus how many times the algorithm explores in Line~\ref{line:explore}; and when the algorithm explores, with probability $\frac{1}{K}$ it enters Line~\ref{line:update2}. Therefore, the number of mistakes is bounded (in expectation) by $\E[M+KN]=\mathcal{O}\left(\frac{K^2}{\gamma^2}\right)$. 
+\textbf{Analysis}. Note that when the algorithm enters Line~\ref{line:update1} or Line~\ref{line:update2}, the binary classifier $w_t^{(\tilde{y}_t)}$ is making an error. Let the number of times the algorithm enters Line~\ref{line:update1} and Line~\ref{line:update2} be $M$ and $N$ respectively. By the error bound of binary perceptron $\mathcal{O}\left(\frac{1}{\gamma^2}\right)$, we have that $M+N=\mathcal{O}\left(\frac{K}{\gamma^2}\right)$. Then note that the number of times the algorithm makes a mistake (i.e. $\tilde{y}_t\neq y_t$) is upper bounded by $M$ plus how many times the algorithm explores in Line~\ref{line:explore}; and when the algorithm explores, with probability $\frac{1}{K}$ it enters Line~\ref{line:update2}. Therefore, the number of mistakes is bounded (in expectation) by $\E[M+KN]=\mathcal{O}\left(\frac{K^2}{\gamma^2}\right)$.
 
 \section{One-versus-all Kernel Perceptron}
-%With the polynomial kernel defined in \cite{klivans2004learning}, we can transform the weaker assumption \eqref{eqn:weaker} in the original feature space to the stronger one \eqref{eqn:stronger} in a transformed feature space. Indeed, in the original feature space, class $i$ corresponds to an intersection of $K-1$ halfspaces: $ \{x: (w_i^*-w_j^*)^\top x \geq 0, \forall j\neq i\} $, which is the subject of \cite{klivans2004learning} (here, $w_i^{*\top}$ equals to $\e_i^\top W^*$ defined above). Directly using their kernel construction, we can have margin $ \left(\frac{\gamma}{d}\right)^{\Omega(K\log K\log (1/\gamma))} $ in the transformed feature space. Running kernelized version of Algorithm~\ref{alg:ova}, we can get $ K^2\left(\frac{d}{\gamma}\right)^{\mathcal{O}(K\log K\log (1/\gamma))} $ error bound directly. 
-The idea here is to do a feature transformation such that if the original assumption \eqref{eqn:weaker} is satisfied, then in the transformed feature space, \eqref{eqn:stronger} will be satisfied, then we can run the one-versus-all perceptron given in \ref{sec:ova}. Under the original assumption, each class corresponds to an intersection of $K-1$ halfspaces in the feature spaces (i.e., class $i$ corresponds to $\{x\in\mathbb{R}^d: w_*^{(i)\top}x \geq w_*^{(j)\top}x, \ \forall j\neq i\}$). We want this region to become a halfspace in the transformed space. Fortunately, this is possible when there is a margin, and is exactly what is done in \cite{klivans2004learning}. 
+%With the polynomial kernel defined in \cite{klivans2004learning}, we can transform the weaker assumption \eqref{eqn:weaker} in the original feature space to the stronger one \eqref{eqn:stronger} in a transformed feature space. Indeed, in the original feature space, class $i$ corresponds to an intersection of $K-1$ halfspaces: $ \{x: (w_i^*-w_j^*)^\top x \geq 0, \forall j\neq i\} $, which is the subject of \cite{klivans2004learning} (here, $w_i^{*\top}$ equals to $\e_i^\top W^*$ defined above). Directly using their kernel construction, we can have margin $ \left(\frac{\gamma}{d}\right)^{\Omega(K\log K\log (1/\gamma))} $ in the transformed feature space. Running kernelized version of Algorithm~\ref{alg:ova}, we can get $ K^2\left(\frac{d}{\gamma}\right)^{\mathcal{O}(K\log K\log (1/\gamma))} $ error bound directly.
+The idea here is to do a feature transformation such that if the original assumption \eqref{eqn:weaker} is satisfied, then in the transformed feature space, \eqref{eqn:stronger} will be satisfied, then we can run the one-versus-all perceptron given in \ref{sec:ova}. Under the original assumption, each class corresponds to an intersection of $K-1$ halfspaces in the feature spaces (i.e., class $i$ corresponds to $\{x\in\mathbb{R}^d: w_*^{(i)\top}x \geq w_*^{(j)\top}x, \ \forall j\neq i\}$). We want this region to become a halfspace in the transformed space. Fortunately, this is possible when there is a margin, and is exactly what is done in \cite{klivans2004learning}.
 
 
 \subsection{Refinement for \cite{klivans2004learning}'s Fact 1}
 \begin{lemma}
-   For $i=1,\ldots, \ell$ let $q^{(i)}(x)=\sum_S c^{(i)}_{S} x_S $ be a polynomial over $x_1, \ldots, x_d$ with $\|q^{(i)}\|^2\leq M_i$. Then (1) if $q^{(1)}\ldots q^{(\ell)}$ has degree at most $\deg$, we have $\|q^{(1)}\ldots q^{(\ell)}\|^2 \leq \ell^{\deg} \prod_i M_i$, and (2) we have $\|q^{(1)}+\ldots+q^{(\ell)}\|^2\leq \ell(M_1+\ldots+M_\ell)$. 
+   For $i=1,\ldots, \ell$ let $q^{(i)}(x)=\sum_S c^{(i)}_{S} x_S $ be a polynomial over $x_1, \ldots, x_d$ with $\|q^{(i)}\|^2\leq M_i$. Then (1) if $q^{(1)}\ldots q^{(\ell)}$ has degree at most $\deg$, we have $\|q^{(1)}\ldots q^{(\ell)}\|^2 \leq \ell^{\deg} \prod_i M_i$, and (2) we have $\|q^{(1)}+\ldots+q^{(\ell)}\|^2\leq \ell(M_1+\ldots+M_\ell)$.
 \end{lemma}
 \begin{proof}
-For the first bound, we bound the ratio between the following two values:  $ \|q^{(1)}\ldots q^{(\ell)}\|^2 $ and $\|q^{(1)}\|^2\ldots \|q^{(\ell)}\|^2$. 
+For the first bound, we bound the ratio between the following two values:  $ \|q^{(1)}\ldots q^{(\ell)}\|^2 $ and $\|q^{(1)}\|^2\ldots \|q^{(\ell)}\|^2$.
 \begin{align}
-    n_1&=\prod_{i=1}^\ell \|q^{(i)}\|^2 
+    n_1&=\prod_{i=1}^\ell \|q^{(i)}\|^2
     = \prod_{i=1}^\ell \left(\sum_{S_i} \left(c^{(i)}_{S_i}\right)^2 \right)
     = \sum_{(S_1,\ldots,S_\ell)}  \left(\prod_{i=1}^\ell \left(c^{(i)}_{S_i}\right)^2 \right)
     = \sum_{(S_1,\ldots,S_\ell)}  \left(\prod_{i=1}^\ell c^{(i)}_{S_i}\right)^2 \nonumber\\
     &= \sum_S \sum_{\substack{(S_1,\ldots,S_\ell): \\ S_1\times\ldots S_\ell=S}}  \left(\prod_{i=1}^\ell c^{(i)}_{S_i}\right)^2
 \end{align}
 \begin{align}
-    n_2=\|q^{(1)}\ldots q^{(\ell)}\|^2 = \sum_{S} c_S^2 
-    = \sum_S \left( \sum_{\substack{(S_1,\ldots, S_\ell): \\ S_1\times\ldots\times S_\ell=S }} \left(c_{S_1}^{(1)}\ldots c_{S_\ell}^{(\ell)} \right) \right)^2 
-    = \sum_S \left( \sum_{\substack{(S_1,\ldots, S_\ell): \\ S_1\times\ldots\times S_\ell=S }} \prod_{i=1}^\ell c_{S_i}^{(i)} \right)^2 
+    n_2=\|q^{(1)}\ldots q^{(\ell)}\|^2 = \sum_{S} c_S^2
+    = \sum_S \left( \sum_{\substack{(S_1,\ldots, S_\ell): \\ S_1\times\ldots\times S_\ell=S }} \left(c_{S_1}^{(1)}\ldots c_{S_\ell}^{(\ell)} \right) \right)^2
+    = \sum_S \left( \sum_{\substack{(S_1,\ldots, S_\ell): \\ S_1\times\ldots\times S_\ell=S }} \prod_{i=1}^\ell c_{S_i}^{(i)} \right)^2
 \end{align}
 Let $M$ be an upper bound of the number of terms involved in the summation $ \sum_{\substack{(S_1,\ldots, S_\ell): \\ S_1\times\ldots\times S_\ell=S }} $, then by Cauchy-Schwarz's inequality we have $ n_2\leq Mn_1 $.
 
-$M$ counts the number of different $(S_1,\ldots, S_\ell)$'s with $S_1\times \ldots \times S_\ell=S$. Since $S$ has degree at most $\deg$, we can bound $M$ by $ \ell^{\deg}$.  
+$M$ counts the number of different $(S_1,\ldots, S_\ell)$'s with $S_1\times \ldots \times S_\ell=S$. Since $S$ has degree at most $\deg$, we can bound $M$ by $ \ell^{\deg}$. \footnote{This can be seen in two ways. First, we can think of ``assigning'' elements in $S$ to one of $(S_1,\ldots, S_\ell)$; every partition $S_1,\ldots,S_\ell$ can be achieved by some assignment - this can have at most $\ell^{\deg}$ ways. Second, consider $S = (s_1, \ldots, s_d)$.
+Consider decomposing each coordinate of $S$ - coordinate $i$ has ${s_i + \ell - 1 \choose \ell - 1}$ ways to partition to $\ell$ parts. Therefore the total number of possible partitions is $\prod_{i=1}^d {s_i + \ell - 1 \choose \ell - 1} \leq \prod_{i=1}^d \ell^{s_i} \leq \ell^{\deg}$.}
 
-The second bound can be obtained by applying Cauchy-Schwarz once. 
+
+
+The second bound can be obtained by applying Cauchy-Schwarz once.
 
 \end{proof}
 
 \subsection{Refinement for \cite{klivans2004learning}'s Theorem 10}
 \begin{lemma}
-Under the same condition as in \cite{klivans2004learning}'s Theorem 10, the PTF has margin on $X$ is at least $(1/t)^{O(r\log r + r\log\log t)}$. 
+Under the same condition as in \cite{klivans2004learning}'s Theorem 10, the PTF has margin on $X$ is at least $(1/t)^{O(r\log r + r\log\log t)}$.
 \end{lemma}
 \begin{proof}
-We simply follow the construction in the original paper. $\|1-w^i\cdot x\|^2\leq 4$ can imply $\|(1-w^i\cdot x)^j\|^2\leq j^{O(j)}4^j \leq j^{O(j)}$. Then $\|a_j(1-w^i\cdot x)^j\|^2\leq 2^{2r}r^{O(r)}=r^{O(r)}$ follows. Thus $\|T_r(1-w^i\cdot x)\|^2=\|\sum_{j=0}^r a_j (1-w^i\cdot x)^j\|^2 \leq (r+1)^2 r^{O(r)} = r^{O(r)}$. Then, $\left(P(w^i\cdot x)\right)^{\log 2t}\leq (\log t)^{O(r\log t)}\times r^{O(r\log t)}\leq (r\log t)^{O(r\log t)}$. Finally, $\|p\|^2\leq (t+1)^2 (r\log t)^{O(r\log t)} \leq (t+1)^2 \left(  t^{O(r\log r + r\log\log t)}\right) = t^{O(r\log r + r\log\log t)}$.  
+We simply follow the construction in the original paper. $\|1-w^i\cdot x\|^2\leq 4$ can imply $\|(1-w^i\cdot x)^j\|^2\leq j^{O(j)}4^j \leq j^{O(j)}$. Then $\|a_j(1-w^i\cdot x)^j\|^2\leq 2^{2r}r^{O(r)}=r^{O(r)}$ follows. Thus $\|T_r(1-w^i\cdot x)\|^2=\|\sum_{j=0}^r a_j (1-w^i\cdot x)^j\|^2 \leq (r+1)^2 r^{O(r)} = r^{O(r)}$. Then, $\left(P(w^i\cdot x)\right)^{\log 2t}\leq (\log t)^{O(r\log t)}\times r^{O(r\log t)}\leq (r\log t)^{O(r\log t)}$. Finally, $\|p\|^2\leq (t+1)^2 (r\log t)^{O(r\log t)} \leq (t+1)^2 \left(  t^{O(r\log r + r\log\log t)}\right) = t^{O(r\log r + r\log\log t)}$.
 \end{proof}
 
 \subsection{Refinement for \cite{klivans2004learning}'s Theorem 7}
 \begin{lemma}
-Under the same condition as in \cite{klivans2004learning}'s Theorem 7, the PTF has margin on $X$ is at least $\left( \frac{\rho}{t\log t \log \frac{1}{\rho}} \right)^{O(t\log t\log 1/\rho)}$. 
+Under the same condition as in \cite{klivans2004learning}'s Theorem 7, the PTF has margin on $X$ is at least $\left( \frac{\rho}{t\log t \log \frac{1}{\rho}} \right)^{O(t\log t\log 1/\rho)}$.
 \end{lemma}
 \begin{proof}
-Using the same construction, we bound $\|p\|$. First, we have $\|\frac{2w^i\cdot x}{\rho}\|^2\leq \frac{4}{\rho^2}$ and $\|\left(\frac{2w^i\cdot x}{\rho}\right)^j\|^2\leq j^j\left(\frac{4}{\rho^2}\right)^j=\left(\frac{4j}{\rho^2}\right)^j$. $a(x), b(x)$ are polynomials of degree $O(\log t\log \frac{1}{\rho})$ with coefficients of magnitude $\left(\frac{1}{\rho}\right)^{O(\log t\log 1/\rho)}$. Thus 
+Using the same construction, we bound $\|p\|$. First, we have $\|\frac{2w^i\cdot x}{\rho}\|^2\leq \frac{4}{\rho^2}$ and $\|\left(\frac{2w^i\cdot x}{\rho}\right)^j\|^2\leq j^j\left(\frac{4}{\rho^2}\right)^j=\left(\frac{4j}{\rho^2}\right)^j$. $a(x), b(x)$ are polynomials of degree $O(\log t\log \frac{1}{\rho})$ with coefficients of magnitude $\left(\frac{1}{\rho}\right)^{O(\log t\log 1/\rho)}$. Thus
 \begin{align*}
-    \|a(2w^i\cdot x/\rho)\|^2 &\leq 
+    \|a(2w^i\cdot x/\rho)\|^2 &\leq
     \left( \frac{\log t \log \frac{1}{\rho}}{\rho} \right)^{O(\log t\log 1/\rho)}  \times  \left(\frac{1}{\rho}\right)^{O(\log t\log 1/\rho)}\\
     &\leq \left( \frac{\log t \log \frac{1}{\rho}}{\rho} \right)^{O(\log t\log 1/\rho)}.
 \end{align*}
-Same holds for $\|b(2w^i\cdot x/\rho)\|^2$. Finally we have $\|B(x)\|^2 \leq (t)^{O(t\log t\log 1/\rho)} \times \left( \frac{\log t \log \frac{1}{\rho}}{\rho} \right)^{O(t\log t\log 1/\rho)} = \left( \frac{t\log t \log \frac{1}{\rho}}{\rho} \right)^{O(t\log t\log 1/\rho)}$\\ 
-\ \\ 
+Same holds for $\|b(2w^i\cdot x/\rho)\|^2$. Finally we have $\|B(x)\|^2 \leq (t)^{O(t\log t\log 1/\rho)} \times \left( \frac{\log t \log \frac{1}{\rho}}{\rho} \right)^{O(t\log t\log 1/\rho)} = \left( \frac{t\log t \log \frac{1}{\rho}}{\rho} \right)^{O(t\log t\log 1/\rho)}$\\
+\ \\
 {\color{red}[TODO] Refined lower bound for $|B(x)|$}
 %Another refinement is that we can show $|B(x)|\geq $
 
@@ -355,14 +358,14 @@ Same holds for $\|b(2w^i\cdot x/\rho)\|^2$. Finally we have $\|B(x)\|^2 \leq (t)
 %\subsection{Possibilities of using other kernels}
 
 \section{A Recipe for Designing Efficient Algorithms}
-We have seen that if the data is ``one-versus-all'' separable with a margin, then constant error is achievable. To have constant error, a key is that every time there is a mistake, the learner should make significant progress. 
+We have seen that if the data is ``one-versus-all'' separable with a margin, then constant error is achievable. To have constant error, a key is that every time there is a mistake, the learner should make significant progress.
 
-Besides one-versus-all separability, are there other kinds of conditions under which we can easily make progress when we make a mistake? If such condition exists, then we have the following recipe of designing algorithms that have constant mistake bound: 
+Besides one-versus-all separability, are there other kinds of conditions under which we can easily make progress when we make a mistake? If such condition exists, then we have the following recipe of designing algorithms that have constant mistake bound:
 \begin{itemize}
-    \item Design an algorithm that has constant mistake bound under some assumption. 
-    \item Design feature transformation such that our original linear separability satisfies the above assumption in the transformed space. 
+    \item Design an algorithm that has constant mistake bound under some assumption.
+    \item Design feature transformation such that our original linear separability satisfies the above assumption in the transformed space.
 \end{itemize}
-Our kernel perceptron exactly follows the above procedure. Following is another example. 
+Our kernel perceptron exactly follows the above procedure. Following is another example.
 
 \subsection{One-sided banditron}
 Consider the following algorithm. \\
@@ -376,32 +379,32 @@ Consider the following algorithm. \\
    Predict $\hat{y}_t = \argmax_{y\in[K]} (W_tx_t)_y$. \\
    \If{$\hat{y}_t \neq y_t$}{
        $W_{t+1}'\leftarrow W_t - \eta\e_{\hat{y}_t} x_t^\top$.\\
-       $W_{t+1}=\Pi_{\Omega_{t+1}}(W_{t+1}') \triangleq \argmin_{W\in\Omega_{t+1}}\|W-W_{t+1}'\|_F$. 
+       $W_{t+1}=\Pi_{\Omega_{t+1}}(W_{t+1}') \triangleq \argmin_{W\in\Omega_{t+1}}\|W-W_{t+1}'\|_F$.
    }
 }
 \end{algorithm}
 \ \\
-The above algorithm is similar to banditron but only performs \textit{one-sided} update and never explicitly explores to get label. Below we check under what condition can this algorithm have constant mistake bound. 
+The above algorithm is similar to banditron but only performs \textit{one-sided} update and never explicitly explores to get label. Below we check under what condition can this algorithm have constant mistake bound.
 
 Following standard analysis for online gradient descent, we have when the learner makes a mistake:
 \begin{align}
     \|W_{t+1}-W^*\|_F^2 &\leq \|W_{t+1}'-W^*\|_F^2 = \|W_t - W^* - \eta \e_{\hat{y}_t}x_t^\top \|_F^2 \nonumber \\
-    &= \|W_t-W^*\|_F^2 - 2\eta ((W_tx_t)_{\hat{y}_t} - (W^*x_t)_{\hat{y}_t}) + \eta^2\|x_t\|_2^2 
+    &= \|W_t-W^*\|_F^2 - 2\eta ((W_tx_t)_{\hat{y}_t} - (W^*x_t)_{\hat{y}_t}) + \eta^2\|x_t\|_2^2
     \label{eqn:update_rule}
-    %&\leq \|W_t-W^*\|_F^2 - 2\eta ((W_tx_t)_{\hat{y}_t} - (W^*x_t)_{\hat{y}_t}) + \eta^2. 
+    %&\leq \|W_t-W^*\|_F^2 - 2\eta ((W_tx_t)_{\hat{y}_t} - (W^*x_t)_{\hat{y}_t}) + \eta^2.
 \end{align}
 
-We see that if the condition 
+We see that if the condition
 \begin{align}
     (W_tx_t)_{\hat{y}_t} - (W^*x_t)_{\hat{y}_t} \geq \Delta  \label{eqn:one-sided condition}
 \end{align}
 holds whenever $\hat{y}_t\neq y_t$ and we pick $\eta = \Delta/\sup_\tau\|x_\tau\|_2^2$, then we always have
 \begin{align*}
-    \|W_{t+1}-W^*\|_F^2 \leq \|W_{t}-W^*\|_F^2 -\frac{2\Delta^2}{\sup_\tau\|x_\tau\|_2^2} + \frac{\Delta^2}{\sup_\tau\|x_\tau\|_2^2} = \|W_{t}-W^*\|_F^2 - \frac{\Delta^2}{\sup_\tau\|x_\tau\|_2^2} 
+    \|W_{t+1}-W^*\|_F^2 \leq \|W_{t}-W^*\|_F^2 -\frac{2\Delta^2}{\sup_\tau\|x_\tau\|_2^2} + \frac{\Delta^2}{\sup_\tau\|x_\tau\|_2^2} = \|W_{t}-W^*\|_F^2 - \frac{\Delta^2}{\sup_\tau\|x_\tau\|_2^2}
 \end{align*}
-whenever $\hat{y}_t\neq y_t$. Then we have the error bound 
+whenever $\hat{y}_t\neq y_t$. Then we have the error bound
 \begin{align*}
-    \sum_{t=1}^T \one[\hat{y}_t\neq y_t] \leq \frac{\|W^*\|_F^2 \sup_{\tau}\|x_\tau\|_2^2}{\Delta^2}   
+    \sum_{t=1}^T \one[\hat{y}_t\neq y_t] \leq \frac{\|W^*\|_F^2 \sup_{\tau}\|x_\tau\|_2^2}{\Delta^2}
 \end{align*}
 because $\|W_t - W^*\|_F^2$ is always non-negative and $\|W_1-W^*\|_F^2=\|W^*\|_F^2$. \\
 
@@ -409,65 +412,65 @@ The following analysis leads to the same bound but is more standard. Let $M_t=\o
 \begin{align*}
     \Delta \sum_{t=1}^T M_t  \leq \sum_{t=1}^T M_t\left((W_tx_t)_{\hat{y}_t} - (W^*x_t)_{\hat{y}_t}\right) \leq \frac{\|W^*\|_F^2}{2\eta} + \frac{\eta}{2}\sup_\tau\|x_\tau\|_2^2\sum_{t=1}^T M_t
 \end{align*}
-Picking appropriate $\eta$ and solving for $\sum_{t=1}^T M_t$ we get the same error bound. 
+Picking appropriate $\eta$ and solving for $\sum_{t=1}^T M_t$ we get the same error bound.
 
 
-A candidate set of assumptions that leads to \eqref{eqn:one-sided condition} is the \textit{sum-to-zero + margin} assumption: 
+A candidate set of assumptions that leads to \eqref{eqn:one-sided condition} is the \textit{sum-to-zero + margin} assumption:
 \begin{itemize}
     \item $\sum_{i=1}^K \e_i^\top W^* = 0$ (so we pick $\Omega_t = \{W\in \mathbb{R}^{K\times d}: \|\e_i^\top W\|_2\leq 1, \sum_{i=1}^K \e_i^\top W=0\}$) \\
-    \item $ (W^*x_t)_y \leq -\Delta $ for all $y\neq y_t$. 
+    \item $ (W^*x_t)_y \leq -\Delta $ for all $y\neq y_t$.
 \end{itemize}
-They are similar to the assumptions made in \cite{2018arXiv180610745F}. We see that the above two conditions indeed lead to~\eqref{eqn:one-sided condition}: $(W_tx_t)_{\hat{y}_t} = \max_y (W_tx_t)_y \geq \frac{1}{K}\sum_{i=1}^K (W_tx_t)_i =0 $ (recall that we always project $W_t$ back to $\Omega_t$), and when $\hat{y}_t\neq y_t$ we have $(W^*x_t)_{\hat{y}_t}\leq -\Delta$. Unfortunately, this set of assumptions is even stronger than the one-versus-all separable assumption. 
+They are similar to the assumptions made in \cite{2018arXiv180610745F}. We see that the above two conditions indeed lead to~\eqref{eqn:one-sided condition}: $(W_tx_t)_{\hat{y}_t} = \max_y (W_tx_t)_y \geq \frac{1}{K}\sum_{i=1}^K (W_tx_t)_i =0 $ (recall that we always project $W_t$ back to $\Omega_t$), and when $\hat{y}_t\neq y_t$ we have $(W^*x_t)_{\hat{y}_t}\leq -\Delta$. Unfortunately, this set of assumptions is even stronger than the one-versus-all separable assumption.
 
 Although the one-versus-all assumption is similar, there we do not perform projection for $W_t$, so it is possible that $\max_y (W_tx_t)_y < 0$. It that case, what we do is uniformly sample a label.\\
 
 \textbf{Questions}:
 \begin{itemize}
 \item Can we avoid the projection step for one-sided banditron (just like perceptron)?
-\item Are there other natural assumptions that guarantee \eqref{eqn:one-sided condition}? 
+\item Are there other natural assumptions that guarantee \eqref{eqn:one-sided condition}?
 \end{itemize}
 
 \subsection{Algorithms that can update without true labels}
 Algorithm~\ref{alg:one-sided} can update without the information of $y_t$. One can think of Algorithm~\ref{alg:one-sided} as a gradient algorithm  on the loss function $\ell_t(W) = \one[\hat{y}_t\neq y_t](Wx_t)_{\hat{y}_t}$. As a comparison, one can think of the surrogate loss function in \cite{2018arXiv180610745F} as $\ell_t(W)=\sum_{y=1}^K \one[y\neq y_t][\Delta+(Wx_t)_y]_+ $ (some scaling and notations are changed for better comparison), whose inverse propensity weighting estimator becomes $\tilde{\ell}_t(W)= \frac{1}{p_{t,\hat{y}_t}}\one[\hat{y}_t\neq y_t][\Delta+(Wx_t)_{
 \hat{y}_t}]_+$. One can see that they are closely related, except that in~\cite{2018arXiv180610745F}
-when $(Wx_t)_{\hat{y}_t}\leq -\Delta$, the loss for $W$ is set to zero (which makes no difference under the sum-to-zero + margin assumption). 
+when $(Wx_t)_{\hat{y}_t}\leq -\Delta$, the loss for $W$ is set to zero (which makes no difference under the sum-to-zero + margin assumption).
 
 
 \section{Logarithmic Regret for Strongly Convex Smooth Losses}
 \subsection{Gradient descent}
-In some previous works (we will visit them in the next subsection), it is assumed that the labels are generated with the following process: 
+In some previous works (we will visit them in the next subsection), it is assumed that the labels are generated with the following process:
 \begin{align}
-    p(y|x) = \nabla_y\Phi(W^*x), 
+    p(y|x) = \nabla_y\Phi(W^*x),
 \end{align}
-with some $\Phi: \mathbb{R}^K \rightarrow \mathbb{R}$. This is a \textit{generalized linear model}.  
-The margin assumption is defined as 
+with some $\Phi: \mathbb{R}^K \rightarrow \mathbb{R}$. This is a \textit{generalized linear model}.
+The margin assumption is defined as
 \begin{align}
     p(y_t|x_t) - \max_{y\neq y_t}p(y|x_t) \geq \Delta, \forall t.  \label{eqn:new margin}
 \end{align}
 
 {\color{blue} Type 2 margin assumption: }\\
-{\color{blue} 
+{\color{blue}
 \begin{align}
-    (W^*x_t)_{y_t} - \max_{y\neq y_t}(W^*x_t)_{y} \geq \Delta. 
+    (W^*x_t)_{y_t} - \max_{y\neq y_t}(W^*x_t)_{y} \geq \Delta.
 \end{align}
 
 }
 
-This margin assumption is a special case of the Tsybakov condition investigated in ~\cite{agarwal2013selective}. 
+This margin assumption is a special case of the Tsybakov condition investigated in ~\cite{agarwal2013selective}.
 Defining $\hat{y}_t = \argmax_y \nabla\Phi(W_tx_t)$ and $y^*_t = \argmax_y \nabla\Phi(W^*x_t) $ The regret is defined as
 \begin{align}
     \Reg_T &= \sum_{t=1}^T \E\left[ \one[\hat{y}_t\neq y_t] - \one[y_t^*\neq y_t]\right] \tag{the $\E[\cdot]$ is conditioned on all history before time $t$ and the randomness is from $y_t$} \\
     &= \sum_{t=1}^T \sum_{i=1}^K \left(\one[\hat{y}_t\neq i] - \one[y^*_t\neq i]\right)\nabla_i\Phi(W^*x_t). \label{eqn:new regret}
 \end{align}
 
-Below we argue that if $\Phi$ is strongly convex and smooth, then the following algorithm (almost exactly the algorithm in \cite{agarwal2013selective} except that we replace label query by uniform exploration) achieves regret logarithmic in $T$. 
+Below we argue that if $\Phi$ is strongly convex and smooth, then the following algorithm (almost exactly the algorithm in \cite{agarwal2013selective} except that we replace label query by uniform exploration) achieves regret logarithmic in $T$.
 
 \begin{assumption}
-For any $u,v$, 
+For any $u,v$,
 \begin{align*}
-     \Phi(v) + \inner{\nb\Phi(v),u-v} + \frac{\gamma_\ell}{2}\|u-v\|_2^2 \leq \Phi(u)\leq \Phi(v) + \inner{\nb\Phi(v),u-v} + \frac{\gamma_u}{2}\|u-v\|_2^2. 
+     \Phi(v) + \inner{\nb\Phi(v),u-v} + \frac{\gamma_\ell}{2}\|u-v\|_2^2 \leq \Phi(u)\leq \Phi(v) + \inner{\nb\Phi(v),u-v} + \frac{\gamma_u}{2}\|u-v\|_2^2.
 \end{align*}
-That is, $\Phi$ is $\gamma_\ell$-strongly convex and $\gamma_u$-smooth. 
+That is, $\Phi$ is $\gamma_\ell$-strongly convex and $\gamma_u$-smooth.
 \end{assumption}
 
 \begin{algorithm}[H]
@@ -476,26 +479,26 @@ That is, $\Phi$ is $\gamma_\ell$-strongly convex and $\gamma_u$-smooth.
 $\eta\triangleq \frac{\sup_{W\in\Omega}\|W\|_F^2}{\gamma_\ell}$, \\
 $\Omega\triangleq$ a convex set where $W^*$ lies in.  \\
 $\ell_t(W)=\Phi(Wx_t) - (Wx_t)_{y_t}$.\\
-\textbf{Initialization}: $W_1=0, M_1=I$.\\ 
+\textbf{Initialization}: $W_1=0, M_1=I$.\\
 \For{$t=1, \ldots, T$}{
    Observe $x_t$. \\
    \If{$ \| x_t \|_{M_t^{-1}} \geq \epsilon$}{
-       Draw $\tilde{y}_t \sim \text{unif}([K])$. 
+       Draw $\tilde{y}_t \sim \text{unif}([K])$.
    }
    \Else{
-       Draw $\tilde{y}_t = \hat{y}_t \triangleq \argmax_{i\in[K]}(W_tx_t)_i$. 
+       Draw $\tilde{y}_t = \hat{y}_t \triangleq \argmax_{i\in[K]}(W_tx_t)_i$.
    }
    \If{ $\tilde{y}_t=y_t$ }{
        $Z_t\leftarrow 1$, \\
        $M_{t+1}\leftarrow M_t + x_tx_t^\top$,\\
-       $W_{t+1} = \argmin_{W\in\Omega}\left\{ \sum_{s=1}^t Z_s \ell_s(W) + \frac{1}{2\eta}\|W\|_F^2 \right\}$. 
+       $W_{t+1} = \argmin_{W\in\Omega}\left\{ \sum_{s=1}^t Z_s \ell_s(W) + \frac{1}{2\eta}\|W\|_F^2 \right\}$.
    }
    \Else{
        $Z_t\leftarrow 0$,  \\
        $M_{t+1}\leftarrow M_t$,\\
        $W_{t+1}\leftarrow W_t$.
    }
-    
+
 }
 \end{algorithm}
 
@@ -505,7 +508,7 @@ $\ell_t(W)=\Phi(Wx_t) - (Wx_t)_{y_t}$.\\
 $\eta\triangleq \frac{\sup_{W\in\Omega}\|W\|_F^2}{\gamma_\ell}$, \\
 $\Omega\triangleq$ a convex set where $W^*$ lies in.  \\
 $\ell_t(W)=\Phi(Wx_t) - (Wx_t)_{y_t}$.\\
-\textbf{Initialization}: $W_1=\mathbf{0}^{K\times d}, M_{1,i}=I^{d\times d}, \forall i\in[K]$.\\ 
+\textbf{Initialization}: $W_1=\mathbf{0}^{K\times d}, M_{1,i}=I^{d\times d}, \forall i\in[K]$.\\
 \For{$t=1, \ldots, T$}{
    Observe $x_t$. \\
    Draw $\tilde{y}_t = \argmax_{i\in[K]} \left\{ (W_tx_t)_i + \|x_t\|_{M_{t,i}^{-1}} \right\}$. \\
@@ -513,14 +516,14 @@ $\ell_t(W)=\Phi(Wx_t) - (Wx_t)_{y_t}$.\\
    \If{ $\tilde{y}_t=y_t$ }{
        $Z_t\leftarrow 1$, \\
        $M_{t+1,y_t}\leftarrow M_{t,y_t} + x_tx_t^\top$, $M_{t+1,i}\leftarrow M_{t,i}, \forall i\neq y_t,$\\
-       $W_{t+1} = \argmin_{W\in\Omega}\left\{ \sum_{s=1}^t Z_s \ell_s(W) + \frac{1}{2\eta}\|W\|_F^2 \right\}$. 
+       $W_{t+1} = \argmin_{W\in\Omega}\left\{ \sum_{s=1}^t Z_s \ell_s(W) + \frac{1}{2\eta}\|W\|_F^2 \right\}$.
    }
    \Else{
        $Z_t\leftarrow 0$,  \\
        $M_{t+1,i}\leftarrow M_{t,i}, \forall i$,\\
        $W_{t+1}\leftarrow W_t$.
    }
-    
+
 }
 \end{algorithm}
 
@@ -529,7 +532,7 @@ $\ell_t(W)=\Phi(Wx_t) - (Wx_t)_{y_t}$.\\
 \label{lemma:new main}
 The selective sampling algorithm achieves
 \begin{align*}
-    \Reg_T\leq \tilde{O}\left( \frac{\gamma_u^2}{\gamma_\ell^2}\frac{K^2d}{\Delta^2} \right). 
+    \Reg_T\leq \tilde{O}\left( \frac{\gamma_u^2}{\gamma_\ell^2}\frac{K^2d}{\Delta^2} \right).
 \end{align*}
 {\color{blue} For Type 2 margin assumption, the bound is
 \begin{align*}
@@ -539,7 +542,7 @@ The selective sampling algorithm achieves
 }
 \end{theorem}
 
-The proof of this theorem is decomposed to the following three lemmas. 
+The proof of this theorem is decomposed to the following three lemmas.
 
 \begin{definition}
 $\norm{W}_{M}^2\triangleq \sum_{i=1}^K \norm{\e_i^\top W}_{M}^2$.
@@ -551,31 +554,31 @@ With this definition we have $\|Wx_t\|_2^2 = \sum_{i=1}^K (\e_i^\top Wx_t)^2 \le
 \label{lem:decreasing error}
 With probability at least $1-\delta$,
 \begin{align*}
-\|W_t-W^*\|_{M_t} \leq C' \triangleq \frac{2C\sqrt{dK}}{\gamma_\ell} + \sqrt{\frac{2}{\eta \gamma_\ell}}\sup_{W\in \Omega}\|W\|_F, 
+\|W_t-W^*\|_{M_t} \leq C' \triangleq \frac{2C\sqrt{dK}}{\gamma_\ell} + \sqrt{\frac{2}{\eta \gamma_\ell}}\sup_{W\in \Omega}\|W\|_F,
 \end{align*}
-where $C$ hides some $\log t$ and $\log(1/\delta)$ terms (defined in the proof). 
+where $C$ hides some $\log t$ and $\log(1/\delta)$ terms (defined in the proof).
 \end{lemma}
 
 \begin{proof}
 By the first-order optimality condition on $W_{t}$ we have
 \begin{align*}
-    0\geq \inner{\frac{1}{\eta} W_{t} + \sum_{s=1}^{t-1} Z_s\nb\ell_s(W_t), W_{t}-W^*}. 
+    0\geq \inner{\frac{1}{\eta} W_{t} + \sum_{s=1}^{t-1} Z_s\nb\ell_s(W_t), W_{t}-W^*}.
 \end{align*}
-By the definition of $\ell_t$, 
+By the definition of $\ell_t$,
 \begin{align*}
     0 &\geq \inner{\frac{1}{\eta} W_{t} + \sum_{s=1}^{t-1} Z_s\nb\ell_s(W_t),  W_{t}-W^*} \\
     & = \inner{\sum_{s=1}^{t-1} Z_s\left(\nb\Phi(W_t x_s) - \e_{y_s} \right)x_s^\top,  W_{t}-W^*} + \frac{1}{\eta}\inner{W_t, W_t-W^*} \\
-    & = \inner{\sum_{s=1}^{t-1} Z_s\left(\nb\Phi(W_t x_s) - \nb\Phi(W^*x_s) + \xi_s \right)x_s^\top, W_{t}-W^*} + \frac{1}{\eta}\inner{W_t, W_t-W^*} , \tag{let $\xi_s\triangleq \nb\Phi(W^*x_s)-\e_{y_s}$; note that $\E[\xi_s]=\mathbf{0}$} \\ 
+    & = \inner{\sum_{s=1}^{t-1} Z_s\left(\nb\Phi(W_t x_s) - \nb\Phi(W^*x_s) + \xi_s \right)x_s^\top, W_{t}-W^*} + \frac{1}{\eta}\inner{W_t, W_t-W^*} , \tag{let $\xi_s\triangleq \nb\Phi(W^*x_s)-\e_{y_s}$; note that $\E[\xi_s]=\mathbf{0}$} \\
     & = \inner{\sum_{s=1}^{t-1} Z_s\left(\nb\Phi(W_t x_s) - \nb\Phi(W^*x_s) + \xi_s \right), W_t x_s- W^*x_s} + \frac{1}{\eta}\inner{W_t, W_t-W^*}, \\
     & \geq \gamma_\ell \sum_{s=1}^{t-1} Z_s\|W_tx_s-W^*x_s\|_2^2 + \sum_{s=1}^{t-1} Z_s\inner{\xi_s, W_tx_s-W^*x_s} + \frac{1}{\eta} \inner{W_t, W_t-W^*}. \tag{for $\gamma_\ell$-strongly convex functions, $\inner{\nb\Phi(u)-\nb\Phi(v), u-v}\geq \gamma_\ell\|u-v\|_2^2$}
 \end{align*}
-Rearranging gives 
+Rearranging gives
 \begin{align}
     \sum_{s=1}^{t-1} Z_s\inner{\xi_s, W^*x_s-W_tx_s} &\geq \gamma_\ell \sum_{s=1}^{t-1} Z_s\|W_tx_s-W^*x_s\|_2^2 - \frac{2}{\eta} \sup_{W\in \Omega}\|W\|_F^2 \nonumber \\
     &= \gamma_\ell \sum_{s=1}^{t-1} Z_s\sum_{i=1}^K \langle \e_iW_t-\e_iW^*, x_s\rangle^2 - \frac{2}{\eta} \sup_{W\in \Omega}\|W\|_F^2 \nonumber \\
     & = \gamma_\ell \|W_t-W^*\|_{M_t}^2 - \frac{2}{\eta} \sup_{W\in \Omega}\|W\|_F^2.  \label{eqn:lower}
 \end{align}
-On the other hand, 
+On the other hand,
 \begin{align}
     \sum_{s=1}^{t-1} Z_s\inner{\xi_s, W^*x_s-W_tx_s} &= \sum_{i=1}^K  \sum_{s=1}^{t-1} Z_s\xi_{s,i} ((W^*x_s)_i-(W_tx_s)_i) \nonumber \\
     & = \sum_{i=1}^K  \sum_{s=1}^{t-1} Z_s\xi_{s,i} \langle W^*_i-W_{t,i}, x_s\rangle \nonumber \\
@@ -587,11 +590,11 @@ Note that $\{\xi_{s,i}\}_{s}$ is a martingale difference sequence. Using \cite{f
 \end{align*}
 Thus, by~\eqref{eqn:upper} we get with proability $1-\delta$
 \begin{align*}
-    \sum_{s=1}^{t-1} Z_s\inner{\xi_s, W^*x_s-W_tx_s} &= C\sqrt{d}\sum_{i=1}^K \|W^*_i-W_{t,i}\|_{M_t} = C\sqrt{dK} \|W^*-W_{t}\|_{M_t}, 
+    \sum_{s=1}^{t-1} Z_s\inner{\xi_s, W^*x_s-W_tx_s} &= C\sqrt{d}\sum_{i=1}^K \|W^*_i-W_{t,i}\|_{M_t} = C\sqrt{dK} \|W^*-W_{t}\|_{M_t},
 \end{align*}
-where in the last inequality we use $\sum_{i=1}^K a_i\leq \sqrt{K}\sqrt{\sum_{i=1}^K a_i^2}$. Combining with~\eqref{eqn:lower} and solving for $\|W_t-W^*\|_{M_t}$ we get 
+where in the last inequality we use $\sum_{i=1}^K a_i\leq \sqrt{K}\sqrt{\sum_{i=1}^K a_i^2}$. Combining with~\eqref{eqn:lower} and solving for $\|W_t-W^*\|_{M_t}$ we get
 \begin{align*}
-    \|W_t-W^*\|_{M_t} \leq \frac{2C\sqrt{dK}}{\gamma_\ell} + \sqrt{\frac{2}{\eta \gamma_\ell}}\sup_{W\in \Omega}\|W\|_F. 
+    \|W_t-W^*\|_{M_t} \leq \frac{2C\sqrt{dK}}{\gamma_\ell} + \sqrt{\frac{2}{\eta \gamma_\ell}}\sup_{W\in \Omega}\|W\|_F.
 \end{align*}
 
 \end{proof}
@@ -602,17 +605,17 @@ If $\|x_t\|_{M_t^{-1}}\leq \epsilon = \Delta/(2\gamma_u C')$, then $\hat{y}_t=y^
 \end{lemma}
 \begin{proof}
 \begin{align*}
-\nb_{y_t^*} \Phi(W^*x_t) - \nb_{\hat{y}_t} \Phi(W^*x_t) 
- &\leq \nb_{y_t^*} \Phi(W^*x_t) -    \nb_{\hat{y}_t} \Phi(W^*x_t) 
+\nb_{y_t^*} \Phi(W^*x_t) - \nb_{\hat{y}_t} \Phi(W^*x_t)
+ &\leq \nb_{y_t^*} \Phi(W^*x_t) -    \nb_{\hat{y}_t} \Phi(W^*x_t)
  - \nb_{y_t^*} \Phi(W_tx_t) + \nb_{\hat{y}_t} \Phi(W_tx_t) \\
  & \leq 2\gamma_u \|W^*x_t-W_tx_t\|_2 \\
  & \leq 2\gamma_u \|W^*-W_t\|_{M_t}\|x_2\|_{M_t^{-1}} \\
  & \leq \Delta. \tag{by Lemma~\ref{lem:decreasing error}}
 \end{align*}
-By the margin assumption \eqref{eqn:new margin}, $\hat{y}_t = y_t^*$. 
+By the margin assumption \eqref{eqn:new margin}, $\hat{y}_t = y_t^*$.
 \end{proof}
 
-{\color{blue} For Type 2 margin assumption, the proof is following:  
+{\color{blue} For Type 2 margin assumption, the proof is following:
 \begin{proof}
 \begin{align*}
     (W^*x_t)_{y_t^*} - (W^*x_t)_{\hat{y}_t} &\leq (W^*x_t)_{y_t^*} - (W^*x_t)_{\hat{y}_t} - (W_tx_t)_{y_t^*} + (W_tx_t)_{\hat{y}_t} \\
@@ -627,26 +630,26 @@ From Lemma~\ref{lem: xbounded} and the regret definition~\eqref{eqn:new regret},
 
 \begin{lemma}
 \label{lem:N}
-$ \sum_{t=1}^T \one\left[\norm{x_t}_{M_t^{-1}}> \epsilon\right] \leq \frac{K\ln T\ln \frac{1}{\delta}}{\epsilon^2}$ with probability at least $1-\delta$. 
+$ \sum_{t=1}^T \one\left[\norm{x_t}_{M_t^{-1}}> \epsilon\right] \leq \frac{K\ln T\ln \frac{1}{\delta}}{\epsilon^2}$ with probability at least $1-\delta$.
 \end{lemma}
 
 \begin{proof}
 \begin{align*}
     &~ \sum_{t=1}^T \one\left[\norm{x_t}_{M_t^{-1}}> \epsilon\right]\\
     &\leq \left(K\ln \frac{1}{\delta}\right)\sum_{t=1}^T \one\left[\norm{x_t}_{M_t^{-1}}> \epsilon\right]Z_t \tag{when $\|x_t\|_{M_t^{-1}}\geq \epsilon$, $\tilde{y}_t=y_t$ with probability $\frac{1}{K}$} \\
-    & \leq \frac{K\ln \frac{1}{\delta}}{\epsilon^2}\sum_{t=1}^T \norm{x_t}_{M_t^{-1}}^2 Z_t \leq \frac{K\ln T\ln \frac{1}{\delta}}{\epsilon^2}. 
+    & \leq \frac{K\ln \frac{1}{\delta}}{\epsilon^2}\sum_{t=1}^T \norm{x_t}_{M_t^{-1}}^2 Z_t \leq \frac{K\ln T\ln \frac{1}{\delta}}{\epsilon^2}.
 \end{align*}
 \end{proof}
 
 \begin{proof}[Proof of Theorem~\ref{lemma:new main}]
-    By Lemma~\ref{lem: xbounded} and~\ref{lem:N}, 
+    By Lemma~\ref{lem: xbounded} and~\ref{lem:N},
     \begin{align*}
         \Reg_T &= \sum_{t=1}^T \sum_{i=1}^K \left(\one[\hat{y}_t\neq i] - \one[y^*_t\neq i]\right)\nabla_i\Phi(W^*x_t) \\
         & \leq \sum_{t=1}^T \left(\one\left[\|x_t\|_{M_t^{-1}}>\epsilon\right]\right) \sum_{i=1}^K \nabla_i\Phi(W^*x_t) \\
         & \leq \sum_{t=1}^T \left(\one\left[\|x_t\|_{M_t^{-1}}>\epsilon\right]\right) \\
-        & \leq \tilde{O}\left( \frac{K\gamma_u^2C'^2}{\Delta^2} \right). 
+        & \leq \tilde{O}\left( \frac{K\gamma_u^2C'^2}{\Delta^2} \right).
     \end{align*}
-    Using the definition of $C'$ we get the final bound. 
+    Using the definition of $C'$ we get the final bound.
 \end{proof}
 
 
@@ -656,86 +659,86 @@ In \cite{crammer2013multiclass} and \cite{agarwal2013selective}, the feature vec
 \begin{align}
     p(y_t = i | x_t) = \frac{\alpha + (W^*x_t)_i}{\alpha+1}, \label{eqn:confidit assumption}
 \end{align}
-where $W^* \in \Omega_t \triangleq \{W\in \mathbb{R}^{K\times d}: \sum_{i=1}^K (Wx_t)_i = \alpha+1-K\alpha \text{\ and\ } -\alpha \leq (Wx_t)_i\}$; a valid $\Phi$ that satisfies \eqref{eqn:new margin} is 
+where $W^* \in \Omega_t \triangleq \{W\in \mathbb{R}^{K\times d}: \sum_{i=1}^K (Wx_t)_i = \alpha+1-K\alpha \text{\ and\ } -\alpha \leq (Wx_t)_i\}$; a valid $\Phi$ that satisfies \eqref{eqn:new margin} is
 \begin{align}
-    \Phi(u) = \frac{1}{2(\alpha+1)}\|u\|_2^2 + \frac{\alpha}{\alpha+1}\sum_{i=1}^K u_i. 
+    \Phi(u) = \frac{1}{2(\alpha+1)}\|u\|_2^2 + \frac{\alpha}{\alpha+1}\sum_{i=1}^K u_i.
 \end{align}
-in \cite{agarwal2013selective}, the labels are generated by 
+in \cite{agarwal2013selective}, the labels are generated by
 \begin{align}
     p(y_t = i | x_t) = \frac{\exp(\beta(W^*x_t)_i)}{\sum_{j=1}^K \exp(\beta(W^*x_t)_j) },
 \end{align}
 where $W^* \in \Omega \triangleq \{W\in \mathbb{R}^{K\times d}: \|\e_i^\top W\|_2 \leq 1 \}$, and $\Phi$ can be chosen as
 \begin{align}
-    \Phi(u) = \frac{1}{\beta}\log\left(\sum_{i=1}^K \exp(\beta u_i) \right). 
+    \Phi(u) = \frac{1}{\beta}\log\left(\sum_{i=1}^K \exp(\beta u_i) \right).
 \end{align}
 
-If we want, we can also cast our original linear separability to this framework: 
+If we want, we can also cast our original linear separability to this framework:
 \begin{align}
-    p(y_t=i|x_t) = \one\left[(W^*x_t)_i \geq (W^*x_t)_j, \forall j\neq i\right]. 
+    p(y_t=i|x_t) = \one\left[(W^*x_t)_i \geq (W^*x_t)_j, \forall j\neq i\right].
 \end{align}
 A natural definition of $\Phi$ is
 \begin{align}
-    \Phi(u) = \max_i u_i. 
+    \Phi(u) = \max_i u_i.
 \end{align}
 
 \textbf{Discussions}:  \\
 \begin{itemize}
     \item Although \cite{hazan2011newtron, foster2018logistic} do not make stochastic assumptions, their loss functions are indeed strongly-convex and smooth (although $\gamma_u/\gamma_\ell$ can be quite large). It is worth notice that \cite{foster2018logistic} also obtained some logarithmic bound (their Theorem 3), but the bound is margin-independent. It seems that their Theorem 3 is tighter than our bound here. Not sure if it is because they use improper learning (we indeed should see whether improper learning helps in our problem). There is a $\alpha$ parameter in \cite{hazan2011newtron}, somehow it looks related to margin.
-    \item How is the assumptions/algorithms/bounds introduced in this section related to \cite{pillaud2017exponential}? They are similar in that they both assume $p(y|x)$ to be defined by some function in a known function class. The margin assumption \eqref{eqn:new margin} is a generalization of \cite{pillaud2017exponential}'s to the multiclass case. One can also view the FTRL step used in Selectron as the counterpart of the ridge regression step defined in \cite{pillaud2017exponential}. 
-    \item We indeed have tried to use this kind of selective sampling idea to get finite error bound (see Section \ref{sec:kwik}). But it seems it is impossible/difficult to find a $\Phi(\cdot)$ that at the same time 1) is strongly convex, and 2) whose logarithmic/constant regret bound implies logarithmic/constant mistake bound. 
+    \item How is the assumptions/algorithms/bounds introduced in this section related to \cite{pillaud2017exponential}? They are similar in that they both assume $p(y|x)$ to be defined by some function in a known function class. The margin assumption \eqref{eqn:new margin} is a generalization of \cite{pillaud2017exponential}'s to the multiclass case. One can also view the FTRL step used in Selectron as the counterpart of the ridge regression step defined in \cite{pillaud2017exponential}.
+    \item We indeed have tried to use this kind of selective sampling idea to get finite error bound (see Section \ref{sec:kwik}). But it seems it is impossible/difficult to find a $\Phi(\cdot)$ that at the same time 1) is strongly convex, and 2) whose logarithmic/constant regret bound implies logarithmic/constant mistake bound.
 \end{itemize}
 
 
 
-%For simplicity, now we focus on the model assumed in \cite{crammer2013multiclass}. Besides the model, we assume the following ``margin assumption'' that is suitable for this kind of stochastic model: 
+%For simplicity, now we focus on the model assumed in \cite{crammer2013multiclass}. Besides the model, we assume the following ``margin assumption'' that is suitable for this kind of stochastic model:
 %\begin{align}
-%p(y_t|x_t) > \max_{y\neq y_t} p(y|x_t) + \gamma. 
+%p(y_t|x_t) > \max_{y\neq y_t} p(y|x_t) + \gamma.
 %\end{align} \label{eqn:stochastic margin}
-%This is also similar to the gap condition in \cite{pillaud2017exponential}. When this margin assumption is applied to the model assumption~\eqref{eqn:confidit assumption}, we get 
+%This is also similar to the gap condition in \cite{pillaud2017exponential}. When this margin assumption is applied to the model assumption~\eqref{eqn:confidit assumption}, we get
 %\begin{align}
-%    (W^*x_t)_{y_t} \geq \max_{y\neq y_t} (W^*x_t)_{y} + (\alpha+1)\gamma. 
+%    (W^*x_t)_{y_t} \geq \max_{y\neq y_t} (W^*x_t)_{y} + (\alpha+1)\gamma.
 %\end{align}
-%This is similar to the linear separability in the non-stochastic case. But this is not enough for~\eqref{eqn:one-sided condition}. To make \eqref{eqn:one-sided condition} holds, we can 
+%This is similar to the linear separability in the non-stochastic case. But this is not enough for~\eqref{eqn:one-sided condition}. To make \eqref{eqn:one-sided condition} holds, we can
 
 
 
-%Below is a set of assumptions that is sufficient for \eqref{eqn:one-sided condition}: 
+%Below is a set of assumptions that is sufficient for \eqref{eqn:one-sided condition}:
 %\begin{itemize}
-%    \item $\|\e_i^\top W^*\|_2\leq 1$ for all $i$ and $ \|x\|_2\leq 1 $ 
-%    \item $W^*_{ij} \geq 0, x_j \geq 0, \forall i,j$ (which implies $(W^*x)_y\geq 0$ for all $x$ and $y$) \\ 
-%    \item $(W^*x_t)_{y_t} \geq K\max_{y\neq y_t}(W^*x_t)_{y}  + 2K\Delta$ 
-%    \item Pick $\Omega_t = \{W\in \mathbb{R}^{K\times d}: \|\e_i^\top W\|_2\leq 1, W_{ij}\geq 0, \sum_{i=1}^K (Wx_t)_i \geq 2K\Delta \}$ (one can verify that $\Omega_t$ is convex, and $W^*\in \Omega_t$ if $W^*$ satisfies the above three assumptions). 
+%    \item $\|\e_i^\top W^*\|_2\leq 1$ for all $i$ and $ \|x\|_2\leq 1 $
+%    \item $W^*_{ij} \geq 0, x_j \geq 0, \forall i,j$ (which implies $(W^*x)_y\geq 0$ for all $x$ and $y$) \\
+%    \item $(W^*x_t)_{y_t} \geq K\max_{y\neq y_t}(W^*x_t)_{y}  + 2K\Delta$
+%    \item Pick $\Omega_t = \{W\in \mathbb{R}^{K\times d}: \|\e_i^\top W\|_2\leq 1, W_{ij}\geq 0, \sum_{i=1}^K (Wx_t)_i \geq 2K\Delta \}$ (one can verify that $\Omega_t$ is convex, and $W^*\in \Omega_t$ if $W^*$ satisfies the above three assumptions).
 %\end{itemize}
-%To see why these assumptions imply \eqref{eqn:one-sided condition}, suppose that $\hat{y}_t\neq y_t$. Note that $(W_tx_t)_{\hat{y}_t} \geq \frac{1}{K}\sum_{i=1}^K (W_tx_t)_i\geq 2\Delta$, where the first inequality is because $\hat{y}_t=\argmax_y(W_tx_t)_i$ and the second inequality is because $W_t\in\Omega_t$. On the other hand, 
+%To see why these assumptions imply \eqref{eqn:one-sided condition}, suppose that $\hat{y}_t\neq y_t$. Note that $(W_tx_t)_{\hat{y}_t} \geq \frac{1}{K}\sum_{i=1}^K (W_tx_t)_i\geq 2\Delta$, where the first inequality is because $\hat{y}_t=\argmax_y(W_tx_t)_i$ and the second inequality is because $W_t\in\Omega_t$. On the other hand,
 
 
 
 \section{A KWIK Algorithm {\color{red} [TODO]}}
 \label{sec:kwik}
-%\textbf{Observation}. Alekh's paper's results can be generalized to losses with $\Phi_t$ a strongly and smoothly convex function. 
+%\textbf{Observation}. Alekh's paper's results can be generalized to losses with $\Phi_t$ a strongly and smoothly convex function.
 \begin{assumption}
-$\|x_t\|_2^2\leq 1$. There is a $W^*\in\mathcal{W}$ such that $\ell_t(W^*)\leq 0$ for all $t$ ($\ell_t$ and $\mathcal{W}$ are defined below).  
+$\|x_t\|_2^2\leq 1$. There is a $W^*\in\mathcal{W}$ such that $\ell_t(W^*)\leq 0$ for all $t$ ($\ell_t$ and $\mathcal{W}$ are defined below).
 \end{assumption}
 
 \begin{algorithm}[H]
 \caption{KWIK Banditron}
 \textbf{Input}: $D\geq 2$, $\epsilon$ (picked in a later lemma). \\
-\textbf{Definition}: 
+\textbf{Definition}:
 \begin{align*}
     \ell_t(W) &\triangleq [1-(Wx_t)_{y_t} + \max_{r\neq y_t}(Wx_t)_r]_+^2 \ \ \ \ \text{(squared hinge loss)} \\
-    & = \Phi_t(Wx_t), 
+    & = \Phi_t(Wx_t),
     %\Phi_t(z) \triangleq \sum_{i\neq y_t} \psi(z_{y_t}-z_i).
 \end{align*}
 where $\Phi_t(z)\triangleq [1-\e_{y_t}^\top z + \max_{r\neq y_t} \e_r^\top z]_+^2$. \\
 Also, define $\mathcal{W}=\{W\in \mathbb{R}^{K\times d}: \|\e_i^\top W\|_2\leq D \text{\ for all }i\in[K]\}$. \\
-\textbf{Initialization}: $W_1=0, M_1=I$.\\ 
+\textbf{Initialization}: $W_1=0, M_1=I$.\\
 \For{$t=1, \ldots, T$}{
    Observe $x_t$. \\
    \If{$ \| x_t \|_{M_t^{-1}} \geq \epsilon$ {\color{red} \text{and} $\|W_t-W^*\|_F\geq 1$}}{
-       Draw $\tilde{y}_t \sim \text{unif}([K])$. 
+       Draw $\tilde{y}_t \sim \text{unif}([K])$.
    }
    \Else{
-       Draw $\tilde{y}_t = \hat{y}_t \triangleq \argmax_{r\in[K]}(W_tx_t)_r$. 
+       Draw $\tilde{y}_t = \hat{y}_t \triangleq \argmax_{r\in[K]}(W_tx_t)_r$.
    }
    \If{ $\tilde{y}_t=y_t$ }{
        $Z_t\leftarrow 1$, \\
@@ -748,70 +751,70 @@ Also, define $\mathcal{W}=\{W\in \mathbb{R}^{K\times d}: \|\e_i^\top W\|_2\leq D
        $M_{t+1}\leftarrow M_t$,\\
        $W_{t+1}\leftarrow W_t$.
    }
-    
+
 }
 \end{algorithm}
 \iffalse
-We will pick 
+We will pick
 \begin{align*}
      \psi(u)=\begin{cases}
         \frac{1}{2K(1-D)^2}(u-D)^2 - \frac{1}{2K}, & \text{if $u\geq 1$} \\
-        \left(1+\frac{1}{K(1-D)}\right)u^2 + \left(-2-\frac{1}{K(1-D)}\right)u + 1 &\text{if $u\leq 1$},  
+        \left(1+\frac{1}{K(1-D)}\right)u^2 + \left(-2-\frac{1}{K(1-D)}\right)u + 1 &\text{if $u\leq 1$},
      \end{cases}
 \end{align*}
 It has the following properties: \\
 (1) It is continuous and differentiable. \\
 (2) It is $\frac{1}{2K(1-D)^2}$-strongly convex and $1$-smooth. \\
 (3) It decreases in $[-D,D]$, passing through $(0,1),(1,0)$, and $(D,\frac{-1}{2K})$. \\
-(4) Its minimum value $\frac{-1}{2K}$ is attained at $u=D$. 
+(4) Its minimum value $\frac{-1}{2K}$ is attained at $u=D$.
 
-\begin{lemma} 
- For the above specific choice of $\psi$, $\Phi_t$ is $\frac{1}{2KD^2}$-strongly convex and $2K$-smooth (i.e., its Hessian has eigenvalues all within $[\frac{1}{2KD^2}, 2K]$). 
- 
+\begin{lemma}
+ For the above specific choice of $\psi$, $\Phi_t$ is $\frac{1}{2KD^2}$-strongly convex and $2K$-smooth (i.e., its Hessian has eigenvalues all within $[\frac{1}{2KD^2}, 2K]$).
+
 \end{lemma}
 \begin{proof}
-It is clear that $\frac{\partial^2}{\partial z_j\partial z_i}\Phi_t(z)=0$ for $i\neq j$. Also, $\frac{\partial^2}{\partial^2 z_i} \Phi_t(z)\geq \frac{1}{2K(1-D)^2}\geq \frac{1}{2KD^2}$ and $\frac{\partial^2}{\partial^2 z_i} \Phi_t(z)\leq K\left(1+\frac{1}{K(1-D)}\right)\leq 2K$. 
+It is clear that $\frac{\partial^2}{\partial z_j\partial z_i}\Phi_t(z)=0$ for $i\neq j$. Also, $\frac{\partial^2}{\partial^2 z_i} \Phi_t(z)\geq \frac{1}{2K(1-D)^2}\geq \frac{1}{2KD^2}$ and $\frac{\partial^2}{\partial^2 z_i} \Phi_t(z)\leq K\left(1+\frac{1}{K(1-D)}\right)\leq 2K$.
 \end{proof}
 
 \begin{lemma}
 \label{lemma:error_cond}
-If $\argmax_r (Wx_t)_r = y_t$, then $\ell_t(W) \leq K$; 
-If $\argmax_r (Wx_t)_r \neq y_t$, then $\ell_t(W) \geq 1$.  
+If $\argmax_r (Wx_t)_r = y_t$, then $\ell_t(W) \leq K$;
+If $\argmax_r (Wx_t)_r \neq y_t$, then $\ell_t(W) \geq 1$.
 \end{lemma}
 \begin{proof}
-If $\argmax_r (Wx_t)_r = y_t$, then $z_{y_t}-z_i\geq 0$ for all $i$, and thus $\Phi_t(z)< K\psi(0)=K$; 
-If $\argmax_r (Wx_t)_r \triangleq j \neq y_t$, then $\Phi_t(z)\geq \psi(z_{y_t}-z_j) - K\times \frac{1}{2K}\geq \psi(0)-\frac{1}{2}=\frac{1}{2}$. 
-This is clear by the definition of $\ell_t$. 
+If $\argmax_r (Wx_t)_r = y_t$, then $z_{y_t}-z_i\geq 0$ for all $i$, and thus $\Phi_t(z)< K\psi(0)=K$;
+If $\argmax_r (Wx_t)_r \triangleq j \neq y_t$, then $\Phi_t(z)\geq \psi(z_{y_t}-z_j) - K\times \frac{1}{2K}\geq \psi(0)-\frac{1}{2}=\frac{1}{2}$.
+This is clear by the definition of $\ell_t$.
 \end{proof}
 \fi
 %\begin{definition}
 %$\|W\|_M^2 \triangleq \sum_{i=1}^K \|\e_i^\top W\|_M^2 $.\\
-%$\gamma_\ell \triangleq \frac{1}{2KD^2}$; $\gamma_u\triangleq 2K$ (convexity and smoothity of $\Phi_t$). 
+%$\gamma_\ell \triangleq \frac{1}{2KD^2}$; $\gamma_u\triangleq 2K$ (convexity and smoothity of $\Phi_t$).
 %\end{definition}
 
 
 %\begin{lemma}
-%For any $W^*\in \mathcal{W}$, with probability at least $1-\delta$, 
-%\begin{align*} 
+%For any $W^*\in \mathcal{W}$, with probability at least $1-\delta$,
+%\begin{align*}
 %    \|W_t-W^*\|_{M_t} \leq \tilde{\mathcal{O}}\left(\frac{\sqrt{Kd}}{\gamma_\ell} + D\sqrt{\gamma}\right).
 %\end{align*}
 %(the $\tilde{\mathcal{O}}$ notation hides $\ln T$, $\ln \frac{1}{\delta}$, $\ln \frac{1}{\gamma}$ factors)
 %\end{lemma}
 %\begin{proof}
-%By the first order optimality condition, we have for all $W^*\in \mathcal{W}$, 
+%By the first order optimality condition, we have for all $W^*\in \mathcal{W}$,
 %\begin{align*}
-%    \inner{\gamma W_t+\sum_{s=1}^{t-1}Z_s \nabla \ell_s(W_t), W^*-W_t}\geq 0. 
+%    \inner{\gamma W_t+\sum_{s=1}^{t-1}Z_s \nabla \ell_s(W_t), W^*-W_t}\geq 0.
 %\end{align*}
-%Rearranging it and plugging in the property $\nb\ell_s(W)=\nb\Phi_s(Wx_s)x_s^\top$ gives 
+%Rearranging it and plugging in the property $\nb\ell_s(W)=\nb\Phi_s(Wx_s)x_s^\top$ gives
 %\begin{align}
-%    \sum_{s=1}^{t-1} Z_s\inner{ -\nb\Phi_s(W^*x_s),W_tx_s-W^*x_s} \geq  \sum_{s=1}^{t-1} Z_s\inner{ \nb\Phi_s(W_t x_s)-\nb\Phi_s(W^*x_s),W_tx_s-W^*x_s}+\gamma\inner{W_t, W_t-W^*}. 
+%    \sum_{s=1}^{t-1} Z_s\inner{ -\nb\Phi_s(W^*x_s),W_tx_s-W^*x_s} \geq  \sum_{s=1}^{t-1} Z_s\inner{ \nb\Phi_s(W_t x_s)-\nb\Phi_s(W^*x_s),W_tx_s-W^*x_s}+\gamma\inner{W_t, W_t-W^*}.
 %    \label{eqn:key}
 %\end{align}
-%By $\Phi_s$'s convexity and that $\norm{W}_F^2\leq KD^2$ for all $W\in \mathcal{W}$, the RHS of \eqref{eqn:key} can be lower bounded by 
+%By $\Phi_s$'s convexity and that $\norm{W}_F^2\leq KD^2$ for all $W\in \mathcal{W}$, the RHS of \eqref{eqn:key} can be lower bounded by
 %\begin{align*}
-%    \gamma_\ell\sum_{s=1}^{t-1} Z_s\norm{W_t x_s-W^*x_s}_2^2 - 2\gamma KD^2 \geq \gamma_\ell \norm{W_t-W^*}_{M_t}^2-2\gamma KD^2. 
+%    \gamma_\ell\sum_{s=1}^{t-1} Z_s\norm{W_t x_s-W^*x_s}_2^2 - 2\gamma KD^2 \geq \gamma_\ell \norm{W_t-W^*}_{M_t}^2-2\gamma KD^2.
 %\end{align*}
-%The LHS is upper bounded by 
+%The LHS is upper bounded by
 %\begin{align*}
 %    \sum_{i=1}^K \sum_{s=1}^{t-1} Z_s (-\nb_i\Phi_s(W^*x_s))\inner{\e_iW_t-\e_iW^*, x_s}
 %\end{align*}
@@ -819,36 +822,36 @@ This is clear by the definition of $\ell_t$.
 
 \begin{lemma}
 \label{lemma:bound_gradient}
-$\norm{\nb\ell_t(W)}_F^2 \leq 8\ell_t(W)$. 
+$\norm{\nb\ell_t(W)}_F^2 \leq 8\ell_t(W)$.
 \end{lemma}
 \begin{proof}
-$    \|\nb\ell_t(W)\|_F^2 = \|\nb\Phi_t(Wx_t)x_t^\top\|_{F}^2 \leq \left(2\sqrt{\Phi_t(Wx_t)}\right)^2\times 2\|x_t\|_{2}^2 \leq 8\ell_t(W).  
+$    \|\nb\ell_t(W)\|_F^2 = \|\nb\Phi_t(Wx_t)x_t^\top\|_{F}^2 \leq \left(2\sqrt{\Phi_t(Wx_t)}\right)^2\times 2\|x_t\|_{2}^2 \leq 8\ell_t(W).
 $
 \end{proof}
 
 \begin{lemma}
 \label{lemma:decreasing error}
-Let $L_{t+1}\triangleq \sum_{s=1}^t Z_s\ell_s(W_s)$. Then 
-$\|W_{t+1}-W^*\|_F^2 \leq \exp\left(-\frac{L_{t+1}}{32KD^2}\right)$. 
+Let $L_{t+1}\triangleq \sum_{s=1}^t Z_s\ell_s(W_s)$. Then
+$\|W_{t+1}-W^*\|_F^2 \leq \exp\left(-\frac{L_{t+1}}{32KD^2}\right)$.
 \end{lemma}
 \begin{proof}
-Let $Z_{t}=1$. 
+Let $Z_{t}=1$.
 \begin{align*}
     \|W_{t+1}-W^*\|_F^2 &\leq \|W_t - \eta_{t+1}\nb\ell_t(W_t)-W^*\|_F^2 \\
-    & = \| W_t - W^* \|_F^2 - 2\eta_{t+1}\inner{\nb\ell_t(W_t),W_t-W^*}_F + \eta_{t+1}^2\|\nb\ell_t(W_t)\|_F^2.  
+    & = \| W_t - W^* \|_F^2 - 2\eta_{t+1}\inner{\nb\ell_t(W_t),W_t-W^*}_F + \eta_{t+1}^2\|\nb\ell_t(W_t)\|_F^2.
 \end{align*}
-By the separable assumption we have $\ell_t(W^*)\leq 0$. Since $\ell_t$ is convex, $\inner{\nb\ell_t(W_t), W_t-W^*} \geq \ell_t(W_t)-\ell_t(W^*)\geq \ell_t(W_t)$. Continuing the above calculation and using Lemma~\ref{lemma:bound_gradient}, we get 
+By the separable assumption we have $\ell_t(W^*)\leq 0$. Since $\ell_t$ is convex, $\inner{\nb\ell_t(W_t), W_t-W^*} \geq \ell_t(W_t)-\ell_t(W^*)\geq \ell_t(W_t)$. Continuing the above calculation and using Lemma~\ref{lemma:bound_gradient}, we get
 \begin{align*}
-    \|W_{t+1}-W^*\|_F^2 &\leq \|W_t-W^*\|_2^2 - 2\eta_{t+1}\ell_t(W_t) + 8\eta_{t+1}^2 \ell_t(W_t) \\ 
+    \|W_{t+1}-W^*\|_F^2 &\leq \|W_t-W^*\|_2^2 - 2\eta_{t+1}\ell_t(W_t) + 8\eta_{t+1}^2 \ell_t(W_t) \\
     &\leq \|W_t-W^*\|_F^2 - \frac{1}{8}\ell_{t}(W_t) \\
     &\leq \|W_t-W^*\|_F^2 \left(1-\frac{\ell_t(W_t)}{32KD^2}\right)  \text{\ \ \ \ because $\|W_t-W^*\|_F^2\leq 4KD^2$} \\
     &\leq \|W_t-W^*\|_F^2 \exp\left(-\frac{\ell_t(W_t)}{32KD^2}\right)
 \end{align*}
 By induction, we can get
 \begin{align*}
-    \|W_{t+1}-W^*\|_F^2 &\leq KD^2 \exp\left( -\frac{L_{t+1}}{32KD^2} \right) 
+    \|W_{t+1}-W^*\|_F^2 &\leq KD^2 \exp\left( -\frac{L_{t+1}}{32KD^2} \right)
     %&\leq KD^2 \left(\frac{8KD^2}{A_{t+1}}\right)   %\ \ \ \ \ \text{because $\exp(-x)<1/x$ for any $x>0$} \\
-    %& = \frac{8K^2D^4}{A_{t+1}}. 
+    %& = \frac{8K^2D^4}{A_{t+1}}.
 \end{align*}
 \end{proof}
 
@@ -859,19 +862,19 @@ With this definition we have $\|Wx_t\|_2^2 = \sum_{i=1}^K (\e_i^\top Wx_t)^2 \le
 
 \begin{lemma}
 \begin{align*}
-\|W_{t}-W^*\|_{M_{t}}^2 \leq (1+L_t)K^2D^2 \exp\left(-\frac{L_t}{32KD^2}\right) \leq 32K^3D^4. 
+\|W_{t}-W^*\|_{M_{t}}^2 \leq (1+L_t)K^2D^2 \exp\left(-\frac{L_t}{32KD^2}\right) \leq 32K^3D^4.
 \end{align*}
 \end{lemma}
 \begin{proof}
-Because we assume $\|x_t\|_2^2\leq 1$, it holds that $ M_t \preceq (1+L_t) I$. Therefore $\|W_t-W^*\|_{M_t}^2 \leq (1+L_t)\|W_t-W^*\|_I^2 =  (1+L_t) \sum_{i=1}^K \| \e_i^\top (W_t-W^*) \|_2^2 \leq (1+L_t) K \|W_t-W^*\|_F^2 $. By Lemma~\ref{lemma:decreasing error} this is bounded by $(1+L_t)K^2D^2\exp\left( -\frac{L_t}{32KD^2} \right)$, which can further be bounded by a constant related to $K$ and $D$. For example, using the property $\exp(-x)\leq \frac{1}{(1+x)^2}$ for all $x>0$, it can be upper bounded by $(1+L_t)K^2D^2 \times \frac{(32KD^2)^2}{(L_t+32KD^2)^2} \leq \frac{32^2K^4D^6}{32KD^2+L_t}\leq 32K^3D^4$.   
+Because we assume $\|x_t\|_2^2\leq 1$, it holds that $ M_t \preceq (1+L_t) I$. Therefore $\|W_t-W^*\|_{M_t}^2 \leq (1+L_t)\|W_t-W^*\|_I^2 =  (1+L_t) \sum_{i=1}^K \| \e_i^\top (W_t-W^*) \|_2^2 \leq (1+L_t) K \|W_t-W^*\|_F^2 $. By Lemma~\ref{lemma:decreasing error} this is bounded by $(1+L_t)K^2D^2\exp\left( -\frac{L_t}{32KD^2} \right)$, which can further be bounded by a constant related to $K$ and $D$. For example, using the property $\exp(-x)\leq \frac{1}{(1+x)^2}$ for all $x>0$, it can be upper bounded by $(1+L_t)K^2D^2 \times \frac{(32KD^2)^2}{(L_t+32KD^2)^2} \leq \frac{32^2K^4D^6}{32KD^2+L_t}\leq 32K^3D^4$.
 \end{proof}
 
 \begin{lemma}
 \label{lemma: xbounded}
-If $\|x_t\|_{M_t^{-1}}\leq \epsilon = \frac{1}{4D\sqrt{32K^3D^4}}$, then $\hat{y}_t=y_t$. 
+If $\|x_t\|_{M_t^{-1}}\leq \epsilon = \frac{1}{4D\sqrt{32K^3D^4}}$, then $\hat{y}_t=y_t$.
 \end{lemma}
 \begin{proof}
-By the convexity of $\ell_t$, 
+By the convexity of $\ell_t$,
 \begin{align*}
     \ell_t(W_t)\leq \ell_t(W_t)-\ell_t(W^*)&\leq \inner{\nb \ell_t(W_t), W_t-W^*}\\
      & = \inner{\nb\Phi_t(W_tx_t)x_t^\top, W_t - W^*} \\
@@ -879,50 +882,50 @@ By the convexity of $\ell_t$,
     & \leq 4D\norm{W_tx_t-W^*x_t}_2 \\
     & \leq 4D\norm{W_t-W^*}_{M_t}\norm{x_t}_{M_t^{-1}} \leq 1.
 \end{align*}
-This implies $\hat{y}_t=y_t$. 
+This implies $\hat{y}_t=y_t$.
 \end{proof}
 
-Therefore, when we do not explore, we know $W_t$ will predict correctly! Thus we only need to bound the number of errors occurred in exploration rounds, which is calculated by the following lemma. 
+Therefore, when we do not explore, we know $W_t$ will predict correctly! Thus we only need to bound the number of errors occurred in exploration rounds, which is calculated by the following lemma.
 
 \begin{lemma}[{\color{blue} The conclusion is not meaningful}]
 \label{lemma:N}
-$\sum_{t=1}^T \one[\tilde{y}_t\neq y_t] \leq \max_{t\in[T]}\left(\frac{1}{\ell_{t}(W_t)}\right)\times \frac{K\ln T\ln \frac{1}{\delta}}{\epsilon^2}$ with probability at least $1-\delta$. 
+$\sum_{t=1}^T \one[\tilde{y}_t\neq y_t] \leq \max_{t\in[T]}\left(\frac{1}{\ell_{t}(W_t)}\right)\times \frac{K\ln T\ln \frac{1}{\delta}}{\epsilon^2}$ with probability at least $1-\delta$.
 \end{lemma}
 
 \begin{proof}
-By the above discussion, $\sum_{t=1}^T \one[\tilde{y}_t\neq y_t] \leq N\triangleq \sum_{t=1}^T Z_t$, the number of exploration rounds. 
+By the above discussion, $\sum_{t=1}^T \one[\tilde{y}_t\neq y_t] \leq N\triangleq \sum_{t=1}^T Z_t$, the number of exploration rounds.
 \begin{align*}
     N &= \sum_{t=1}^T \one\left[\norm{x_t}_{M_t^{-1}}> \epsilon\right]\\
     &\leq \left(K\ln \frac{1}{\delta}\right)\sum_{t=1}^T \one\left[\norm{x_t}_{M_t^{-1}}> \epsilon\right]Z_t \tag{when $\|x_t\|_{M_t^{-1}}\geq \epsilon$, $\tilde{y}_t=y_t$ with probability $\frac{1}{K}$} \\
-    & \leq \frac{K\ln \frac{1}{\delta}}{\epsilon^2}\sum_{t=1}^T \norm{x_t}_{M_t^{-1}}^2 Z_t \leq \max_{t\in[T]}\left(\frac{1}{\ell_{t}(W_t)}\right)\times \frac{K\ln T\ln \frac{1}{\delta}}{\epsilon^2}. 
+    & \leq \frac{K\ln \frac{1}{\delta}}{\epsilon^2}\sum_{t=1}^T \norm{x_t}_{M_t^{-1}}^2 Z_t \leq \max_{t\in[T]}\left(\frac{1}{\ell_{t}(W_t)}\right)\times \frac{K\ln T\ln \frac{1}{\delta}}{\epsilon^2}.
 \end{align*}
 \end{proof}
 
 
-\textbf{Discussion}. 
-In the calculation of Lemma~\ref{lemma: xbounded},  we can actually get $\ell_t(W_t)^2 \leq \norm{\nb\Phi_t(W_tx_t)}_2^2\norm{W_t-W^*}_{M_t}^2\norm{x_t}_{M_t^{-1}}^2$. Similar to the calculation in Lemma~\ref{lemma:decreasing error}, $\norm{\nb\Phi_t(W_tx_t)}_2^2$ is bounded by constant times $\ell_t(W_t)$. So the exploration criterion could potentially become $\ell_t(W_t)\|x_t\|_{M_t^{-1}}^2\geq \frac{1}{\epsilon^2}$, which makes Lemma~\ref{lemma:N} go through. The problem is we do not know $\ell_t(W_t)$ in general. 
+\textbf{Discussion}.
+In the calculation of Lemma~\ref{lemma: xbounded},  we can actually get $\ell_t(W_t)^2 \leq \norm{\nb\Phi_t(W_tx_t)}_2^2\norm{W_t-W^*}_{M_t}^2\norm{x_t}_{M_t^{-1}}^2$. Similar to the calculation in Lemma~\ref{lemma:decreasing error}, $\norm{\nb\Phi_t(W_tx_t)}_2^2$ is bounded by constant times $\ell_t(W_t)$. So the exploration criterion could potentially become $\ell_t(W_t)\|x_t\|_{M_t^{-1}}^2\geq \frac{1}{\epsilon^2}$, which makes Lemma~\ref{lemma:N} go through. The problem is we do not know $\ell_t(W_t)$ in general.
 
 
 \section{Regret Lower Bound for Explore-then-Exploit Algorithms {\color{red}[TODO]}}
 
 \section{A Regret Lower Bound for A Certain Type of Algorithms}
 \label{section: passive lower bound}
-In this section, we try to construct an error lower bound for a certain type of algorithms. This type of algorithms does not make update when it makes a wrong prediction. For simplicity, we only consider binary classification.  More formally, the algorithms we consider satisfy the following assumption. 
+In this section, we try to construct an error lower bound for a certain type of algorithms. This type of algorithms does not make update when it makes a wrong prediction. For simplicity, we only consider binary classification.  More formally, the algorithms we consider satisfy the following assumption.
 
 \begin{assumption}[Algorithm]
-Let $p_t(x)$ be the algorithm's probability of predicting class $1$ (recall we consider binary classification) at round $t$ if it receives the feature vector $x\in \calX \subset \mathbb{R}^d$. We assume $p_t(\cdot)$ is totally determined by all previous \textbf{correct} examples. In other words, $p_t(\cdot)$ is determined by the tuple $((x_{\tau_1}, y_{\tau_1}), \ldots, (x_{\tau_N}, y_{\tau_N}))$ where $1\leq \tau_1 < \tau_2 \ldots < \tau_N < t$ are the rounds that the learner makes correct prediction. 
+Let $p_t(x)$ be the algorithm's probability of predicting class $1$ (recall we consider binary classification) at round $t$ if it receives the feature vector $x\in \calX \subset \mathbb{R}^d$. We assume $p_t(\cdot)$ is totally determined by all previous \textbf{correct} examples. In other words, $p_t(\cdot)$ is determined by the tuple $((x_{\tau_1}, y_{\tau_1}), \ldots, (x_{\tau_N}, y_{\tau_N}))$ where $1\leq \tau_1 < \tau_2 \ldots < \tau_N < t$ are the rounds that the learner makes correct prediction.
 \end{assumption}
 
 \begin{assumption}[linearly separable with a margin]
-We assume the samples are linearly separable with margin $\gamma$ (i.e., any two points with different labels have distance no less than $\gamma$). 
+We assume the samples are linearly separable with margin $\gamma$ (i.e., any two points with different labels have distance no less than $\gamma$).
 \end{assumption}
 
 \begin{definition}[Free space]
-The free space at time $t$ is the set of points whose label is still underdetermined given $(x_1, y_1), \ldots, (x_{t-1},y_{t-1})$. For example, the $\gamma$-ball centered around any already presented point is excluded from the free space. Denote the free space at time $t$ by $\FS_t$.  
+The free space at time $t$ is the set of points whose label is still underdetermined given $(x_1, y_1), \ldots, (x_{t-1},y_{t-1})$. For example, the $\gamma$-ball centered around any already presented point is excluded from the free space. Denote the free space at time $t$ by $\FS_t$.
 \end{definition}
-The free space's definition simply means that at time $t$, the adversary can pick any point $x_t$ in $\FS_t$ and assign the label $y_t$ to either $1$ or $2$ without violating the linearly separable and the $\gamma$-margin assumption. 
+The free space's definition simply means that at time $t$, the adversary can pick any point $x_t$ in $\FS_t$ and assign the label $y_t$ to either $1$ or $2$ without violating the linearly separable and the $\gamma$-margin assumption.
 
-Below we present the Adversary's strategy of constructing $(x_t, y_t)$. 
+Below we present the Adversary's strategy of constructing $(x_t, y_t)$.
 
 \begin{algorithm}[H]
 \caption{Adversary's strategy}
@@ -933,25 +936,25 @@ Pick $x_1$ randomly from $\calX$, and let $y_1=1$. \\
     }
     \ElseIf{$\FS_{t}$ is not empty}{
         Pick $x_t\in \FS_{t}$. Because of this $x_t$, the free space's volume is reduced. We denote the reduction amount by $V_t=v(\FS_{t+1})-v(\FS_{t})\leq V$. (i.e., $V$ is a global upper bound of $V_t$) \\
-        If $p_t(x_t)\geq 1-\max\left\{\sqrt{V},\frac{1}{\sqrt{T}}\right\}$, then label $y_t=2$; otherwise, label $y_t=1$. 
+        If $p_t(x_t)\geq 1-\max\left\{\sqrt{V},\frac{1}{\sqrt{T}}\right\}$, then label $y_t=2$; otherwise, label $y_t=1$.
     }
     \Else{
-        Randomly assign $(x_t,y_t)$ with some value that does not violate the assumption. 
+        Randomly assign $(x_t,y_t)$ with some value that does not violate the assumption.
     }
 }
 \end{algorithm}
 
-%\textbf{Analysis}. We assume that in the ``else'' case in the above algorithm, we can always pick $x_t$ such that $V_t\leq V$ (we will show how to pick such $x_t$ later). 
+%\textbf{Analysis}. We assume that in the ``else'' case in the above algorithm, we can always pick $x_t$ such that $V_t\leq V$ (we will show how to pick such $x_t$ later).
 
 \begin{definition}[history]
-Let $\calH_t$ be the history before time $t$: $\calH_t=\{ (x_s, y_s, \tilde{y}_s) \}_{s=1}^{t-1}$. We use $\E_t[\cdot]$ to denote $\E[\cdot | \calH_t]$. 
+Let $\calH_t$ be the history before time $t$: $\calH_t=\{ (x_s, y_s, \tilde{y}_s) \}_{s=1}^{t-1}$. We use $\E_t[\cdot]$ to denote $\E[\cdot | \calH_t]$.
 \end{definition}
 
 \begin{lemma}
 If $\exists t$ such $p_t(x_t)\geq 1-\max\left\{ \sqrt{V}, \frac{1}{\sqrt{T}} \right\}$, then $\E_t\left[ \sum_{s=t}^T  \one[\tilde{y}_s\neq y_s] \right] \geq \Omega\left(\min\left\{\frac{1}{\sqrt{V}},\sqrt{T}\right\}\right)$.
 \end{lemma}
 \begin{proof}
-By of the condition and the adversary strategy, we have $y_t=2$. Therefore, the learner will predict the true label with probability $\leq \max \left\{ \sqrt{V}, \frac{1}{\sqrt{T}} \right\}$. And note that if the learner predicts incorrectly at time $t$, then at time $t+1$ the feature vector remains the same $(x_{t+1}=x_t)$ , and the learner's probability of prediction also remains the same $(p_{t+1}(\cdot)=p_t(\cdot))$. Therefore, the expected number of mistakes before the first correct guess is (roughly) larger than  $\frac{1}{\max\left\{\sqrt{V}, \frac{1}{\sqrt{T}}\right\}}=\min\left\{\frac{1}{\sqrt{V}}, \sqrt{T}\right\}$. 
+By of the condition and the adversary strategy, we have $y_t=2$. Therefore, the learner will predict the true label with probability $\leq \max \left\{ \sqrt{V}, \frac{1}{\sqrt{T}} \right\}$. And note that if the learner predicts incorrectly at time $t$, then at time $t+1$ the feature vector remains the same $(x_{t+1}=x_t)$ , and the learner's probability of prediction also remains the same $(p_{t+1}(\cdot)=p_t(\cdot))$. Therefore, the expected number of mistakes before the first correct guess is (roughly) larger than  $\frac{1}{\max\left\{\sqrt{V}, \frac{1}{\sqrt{T}}\right\}}=\min\left\{\frac{1}{\sqrt{V}}, \sqrt{T}\right\}$.
 \end{proof}
 
 \begin{lemma}
@@ -959,27 +962,27 @@ If $\forall s$, $p_s(x_s)\leq 1-\max\left\{\sqrt{V}, \frac{1}{\sqrt{T}}\right\}$
 \end{lemma}
 
 \begin{proof}
-By the condition and the adversary strategy, we know that the probability of error is larger than $\max\left\{\sqrt{V},\frac{1}{\sqrt{T}}\right\}$ at all time $t$ \textit{before the free space is used up}. Since each time the free space only reduces by $V$, in the first $\frac{1}{V}$ rounds (assume the total volume is $1$), the free space is still all available. Therefore, 
+By the condition and the adversary strategy, we know that the probability of error is larger than $\max\left\{\sqrt{V},\frac{1}{\sqrt{T}}\right\}$ at all time $t$ \textit{before the free space is used up}. Since each time the free space only reduces by $V$, in the first $\frac{1}{V}$ rounds (assume the total volume is $1$), the free space is still all available. Therefore,
 \begin{align*}
-    \sum_{s=1}^T \E_s[\one[\tilde{y}_s\neq y_s]] \geq \min\left\{ T,\frac{1}{V} \right\}\times \max\left\{ \sqrt{V}, \frac{1}{\sqrt{T}} \right\}=\min\left\{\sqrt{T}, \frac{1}{\sqrt{V}}\right\}. 
+    \sum_{s=1}^T \E_s[\one[\tilde{y}_s\neq y_s]] \geq \min\left\{ T,\frac{1}{V} \right\}\times \max\left\{ \sqrt{V}, \frac{1}{\sqrt{T}} \right\}=\min\left\{\sqrt{T}, \frac{1}{\sqrt{V}}\right\}.
 \end{align*}
 \end{proof}
 
 \textbf{Discussion}. There is a construction such that $1/V$ can be of order $\Omega\left( \left(\frac{1}{\gamma}\right)^{(d-1)/2} \right)$. {\color{red} [TODO] How to construct such points?}
 
-%This lower bound does not rule out those algorithms that change its probability vector based on the $\textbf{count}$ of consecutive errors. This type of algorithm may still easy to be implemented (like QBC). Also it does not rule out the banditron algorithm. 
+%This lower bound does not rule out those algorithms that change its probability vector based on the $\textbf{count}$ of consecutive errors. This type of algorithm may still easy to be implemented (like QBC). Also it does not rule out the banditron algorithm.
 
 \section{How Hard It Is Only Using The Weak Labels?}
-The halving algorithm can actually run if we can do ``uniform sampling'' over the version space. But it is even unknown whether we can efficiently pick a model from the version space. The problem is that we get a lot of feedback in the form of ``feature $x_t$ does not belong to class $\tilde{y}_t$'', which we don't know how to use. 
+The halving algorithm can actually run if we can do ``uniform sampling'' over the version space. But it is even unknown whether we can efficiently pick a model from the version space. The problem is that we get a lot of feedback in the form of ``feature $x_t$ does not belong to class $\tilde{y}_t$'', which we don't know how to use.
 
-The following is just an attempt (not successful but might be interesting...) to say that it might be not easy to figure out a model if the learner is only presented with this kind of ``error message''. 
+The following is just an attempt (not successful but might be interesting...) to say that it might be not easy to figure out a model if the learner is only presented with this kind of ``error message''.
 
-The problem is formulated as follows. 
-Given $N$ points in a row, each one with a class $c_i\in [K]$, $\forall i\in [N]$. We call these $N$ points \textit{separable} if the following statement holds: 
+The problem is formulated as follows.
+Given $N$ points in a row, each one with a class $c_i\in [K]$, $\forall i\in [N]$. We call these $N$ points \textit{separable} if the following statement holds:
 \begin{center}
     If $c_i=c_j$ for some $i\leq j$, then $c_i=c_{i+1}=\cdots=c_j$.
 \end{center}
-For example, if $N=5, K=3$, then $(c_1,c_2, c_3, c_4,c_5)=(3,3,1,1,1)$ is separable, but $(c_1,c_2,c_3,c_4,c_5)=(2,1,2,2,2)$ is not. 
+For example, if $N=5, K=3$, then $(c_1,c_2, c_3, c_4,c_5)=(3,3,1,1,1)$ is separable, but $(c_1,c_2,c_3,c_4,c_5)=(2,1,2,2,2)$ is not.
 \ \\
 \ \\
 Now you have $N$ conditions, in which the $i$-th condition only says something like ``$c_i\neq k$'' for some $k$. \\
@@ -1007,11 +1010,11 @@ $c_6\neq 3$ \\
 $c_7\neq 1$ \\
 $\Rightarrow$ There is no separable solution. \\
 
-It turns out this specific 1-dimensional problem is equivalent to identify a \textbf{missing permutation} of $[K]$ as a subsequence in the weak-label sequence. In Example 1, the existing permutations are $(1,2,3), (1,3,2), (2,3,1), (3,1,2)$, the missing ones are $(2,1,3)$ and $(3,2,1)$.  So the solutions can be $(2,1,3)$ or $(3,2,1)$ (with some repetition). In Example 2, all permutations appear in the weak-label sequence, so there is no solution. 
+It turns out this specific 1-dimensional problem is equivalent to identify a \textbf{missing permutation} of $[K]$ as a subsequence in the weak-label sequence. In Example 1, the existing permutations are $(1,2,3), (1,3,2), (2,3,1), (3,1,2)$, the missing ones are $(2,1,3)$ and $(3,2,1)$.  So the solutions can be $(2,1,3)$ or $(3,2,1)$ (with some repetition). In Example 2, all permutations appear in the weak-label sequence, so there is no solution.
 
 We can prove this equivalence considering two directions: \\
 (1) If there is a solution whose class labels follow a permutation, then that permutation cannot be a subsequence of the weak-label sequence. \\
-(2) If there is a missing permutation in the weak-label sequence, then there is a class label assignment that follows this permutation.\\ 
+(2) If there is a missing permutation in the weak-label sequence, then there is a class label assignment that follows this permutation.\\
 {\color{red} [TODO] Proof}
 
 %\section{Cone Algorithm}
@@ -1025,7 +1028,7 @@ We can prove this equivalence considering two directions: \\
 %    (that is, $\calC_i$ is the conic hull of $\calS_i$) \\
 %    Check whether $x_t$ belongs to, or has distance smaller than $\gamma$, to one of $\calC_1, \ldots, \calC_K$. \\
 %    If so, classify $x_t$ to the corresponding class (say class $i$), and let $\calS_i\leftarrow \calS_i \cup \{x_t\}$. {\color{red} This prediction will be correct for sure by our margin assumption.}\\
-%    If not, let $\tilde{y}_t\sim \text{unif}([K])$ and predict $\tilde{y}_t$. If $\tilde{y}_t=y_t$, then $\calS_{y_t}\leftarrow \calS_{y_t} \cup \{x_t\}$. 
+%    If not, let $\tilde{y}_t\sim \text{unif}([K])$ and predict $\tilde{y}_t$. If $\tilde{y}_t=y_t$, then $\calS_{y_t}\leftarrow \calS_{y_t} \cup \{x_t\}$.
 %}
 %\end{algorithm}
 
@@ -1042,7 +1045,7 @@ $|S|$ denotes the volumn of $S$. \\
 $\Omega_1=\Omega$.  \\
 \For{$ t=1,\ldots, T $}{
 \If{$\argmax_i \frac{|\Omega_t(i|x_t)|}{|\Omega_t|} \geq 1-\alpha$}{ \label{line:case1}
-        Let $\tilde{y}_t=i$.\\ 
+        Let $\tilde{y}_t=i$.\\
         \If{$\tilde{y}_t \neq y_t$}{
             $\Omega_{t+1}=\Omega_t \backslash \Omega_t(\tilde{y}_t|x_t)$. \label{line:cut}
         }
@@ -1058,11 +1061,11 @@ $\Omega_1=\Omega$.  \\
 
 \textbf{Conjecture(should be true)}: If the volume of $\Omega_t$ becomes smaller than $\frac{|\Omega|}{N}$, then the algorithm won't make any error anymore. $N$ should be in the order of $\Theta(\frac{1}{\gamma^{Kd}})$.  \\
 \textbf{Rough analysis:} \\
-Each time the algorithm makes an error in Line~\ref{line:case1}, the volume becomes $\alpha$ times the original volume. So the algorithm will not make more than $ \frac{\ln N}{\ln \frac{1}{\alpha}} $ mistakes in this case. 
+Each time the algorithm makes an error in Line~\ref{line:case1}, the volume becomes $\alpha$ times the original volume. So the algorithm will not make more than $ \frac{\ln N}{\ln \frac{1}{\alpha}} $ mistakes in this case.
 
 In the case of Line~\ref{line:case2}, $K\ln \frac{1}{\delta}$ errors will accompany with a $(1-\alpha)$-factor shrinkage in the volume. Therefore, the number of errors occurred in this case is upper bounded by $ \frac{K\ln\frac{1}{\delta}\ln N}{\ln \frac{1}{1-\alpha}}\leq \frac{K\ln\frac{1}{\delta}\ln N}{\alpha} $.
 
-Now we discuss about the complexity. The main issue is how to maintain $\Omega_t$. Each time the algorithm enters Line~\ref{line:cut}, $\Omega_t$ becomes more and more fragmented. But if $\Omega_t$ can be maintained with $M$ convex cones, then $\Omega_{t+1}$ can be maintained with $(K-1)M\leq KM$ convex cones. And we assume each cone's volume can be computed in \text{poly}($T$) time. Each time the algorithm enters Line~\ref{line:cut2}, the number of convex cones does not increase. 
+Now we discuss about the complexity. The main issue is how to maintain $\Omega_t$. Each time the algorithm enters Line~\ref{line:cut}, $\Omega_t$ becomes more and more fragmented. But if $\Omega_t$ can be maintained with $M$ convex cones, then $\Omega_{t+1}$ can be maintained with $(K-1)M\leq KM$ convex cones. And we assume each cone's volume can be computed in \text{poly}($T$) time. Each time the algorithm enters Line~\ref{line:cut2}, the number of convex cones does not increase.
 
 By the above discussion, there will be no more than $K^{\frac{\ln N}{\ln \frac{1}{\alpha}}}$ convex cones to maintain. And the error bound is in the order of $\frac{K\ln\frac{1}{\delta}\ln N}{\alpha}$ for some $\alpha<\frac{1}{2}$. Let's try to balance the number of errors and computational complexity. Let
 \begin{align*}
@@ -1072,7 +1075,7 @@ By the above discussion, there will be no more than $K^{\frac{\ln N}{\ln \frac{1
 \end{align*}
 Thus the computational complexity is in the order of $K^{\sqrt{\ln N}}\times \text{poly}(T)=K^{\sqrt{Kd\ln\frac{1}{\delta}}}$. The error bound is $\mathcal{O}\left( e^{\sqrt{Kd\ln \frac{1}{\delta}}} K^2 d \ln\frac{1}{\delta}\ln\frac{1}{\gamma} \right)$.
 
-Another viewpoint: let $\frac{1}{\alpha}=K^\beta$, then the complexity is $\left(\frac{1}{\gamma}\right)^{\frac{Kd}{\beta}}\times \text{poly}(T)$ and the error bound is $K^{\beta+1}\ln\frac{1}{\delta}\ln N$. 
+Another viewpoint: let $\frac{1}{\alpha}=K^\beta$, then the complexity is $\left(\frac{1}{\gamma}\right)^{\frac{Kd}{\beta}}\times \text{poly}(T)$ and the error bound is $K^{\beta+1}\ln\frac{1}{\delta}\ln N$.
 
 
 
@@ -1086,7 +1089,7 @@ Another viewpoint: let $\frac{1}{\alpha}=K^\beta$, then the complexity is $\left
 %\begin{algorithm}[H]
 %\caption{Banditron}
 %\textbf{Input}: $D\geq 2$, $\epsilon$, $\gamma$. \\
-%\textbf{Definition}: 
+%\textbf{Definition}:
 
 %\end{algorithm}
 
@@ -1104,39 +1107,39 @@ Another viewpoint: let $\frac{1}{\alpha}=K^\beta$, then the complexity is $\left
 \textbf{Definitions}: $\ell_t(W)\triangleq [1-(Wx_t)_{y_t}+\max_{r\in[K]}(Wx_t)_r]_+$ (hinge loss)\\
 \For{$t=1, \ldots, T$}{
     Receive $x_t\in \mathbb{R}^d$. \\
-    Define 
+    Define
     \begin{gather*}
-    q_t(W)=\frac{\exp(-\alpha \sum_{s=1}^{t-1} \hat{\ell}_s(W))}{\int_{U\in \Omega} \exp(-\alpha \sum_{s=1}^{t-1} \hat{\ell}_s(U))dU }, \ \ \ \ \forall W\in\Omega, 
+    q_t(W)=\frac{\exp(-\alpha \sum_{s=1}^{t-1} \hat{\ell}_s(W))}{\int_{U\in \Omega} \exp(-\alpha \sum_{s=1}^{t-1} \hat{\ell}_s(U))dU }, \ \ \ \ \forall W\in\Omega,
     %\Omega_k^t\triangleq\{W\in\Omega: k=\argmax_{r\in[K]} (Wx_t)_r\} \ \ \ \text{i.e., the set of $W$'s that predict class $k$ at time $t$}\\
     %p_t(k)=\int_{W\in \Omega_k^t} q_t(W)dW, \ \ \ \ \forall k\in[K], \\
     %\tilde{p}_t(k) \propto p_t(k)\one[p_t(k)\geq \epsilon]
-    \end{gather*} 
+    \end{gather*}
     where $\hat{\ell}_s(W)=\one[\tilde{y}_s=y_s]\left(\frac{\one[\hat{y}_s= y_s]\ell_s(W)}{1-\gamma+\frac{\gamma}{K}} + \frac{\one[\hat{y}_s\neq y_s]\ell_s(W)}{\frac{\gamma}{K}}\right)$.\\
     Sample $W_t\sim q_t$, and let $\hat{y}_t = \argmax_{r\in[K]}(W_tx_t)_r$.\\
-    Let $\tilde{y}_t=\hat{y}_t$ with probability $1-\gamma$, and $\tilde{y}_t\sim \text{unif}([K])$ with probability $\gamma$. 
+    Let $\tilde{y}_t=\hat{y}_t$ with probability $1-\gamma$, and $\tilde{y}_t\sim \text{unif}([K])$ with probability $\gamma$.
 }
 \end{algorithm}
 
 %\begin{assumption}
 %\label{assump:zero}
-%   Assume we know there exists a $W^*\in \Omega$ having zero loss (i.e., $\ell_t(W^*)=0$ for all $t$). 
+%   Assume we know there exists a $W^*\in \Omega$ having zero loss (i.e., $\ell_t(W^*)=0$ for all $t$).
 %\end{assumption}
 
 %\begin{definition}
-%Define $\tilde{q}_t(W) = q_t(W)\times \frac{\tilde{p}_t(k')}{p_t(k')}$ with $k' = \argmax_r(Wx_t)_r$ (i.e., letting $\tilde{q}_t$ scales with $\tilde{p}_t$). 
+%Define $\tilde{q}_t(W) = q_t(W)\times \frac{\tilde{p}_t(k')}{p_t(k')}$ with $k' = \argmax_r(Wx_t)_r$ (i.e., letting $\tilde{q}_t$ scales with $\tilde{p}_t$).
 %\end{definition}
 %\begin{definition}
-%Define $\bar{\ell}_t(k)=\int_{W\in\Omega_k^t} \tilde{q}_t(W)\ell_t(W)dW \big/ \int_{W\in\Omega_k^t} \tilde{q}_t(W)dW $, that is, the average loss over $W$'s that predicts class $k$. Defining this is because our problem is slightly different from traditional contextual bandit formulation: with hinge loss, the loss received by different experts may be different even if they predict the same class/action. Note that while $\ell_t(\cdot), \hat{\ell}_t(\cdot)$ are losses for experts, $\bar{\ell}_t(\cdot)$ is loss for actions. 
+%Define $\bar{\ell}_t(k)=\int_{W\in\Omega_k^t} \tilde{q}_t(W)\ell_t(W)dW \big/ \int_{W\in\Omega_k^t} \tilde{q}_t(W)dW $, that is, the average loss over $W$'s that predicts class $k$. Defining this is because our problem is slightly different from traditional contextual bandit formulation: with hinge loss, the loss received by different experts may be different even if they predict the same class/action. Note that while $\ell_t(\cdot), \hat{\ell}_t(\cdot)$ are losses for experts, $\bar{\ell}_t(\cdot)$ is loss for actions.
 %\end{definition}
 
 %\begin{lemma}
-%$\int_{W\in\Omega}q_t(W)\hat{\ell}_t(W)\geq (1-K\epsilon)\bar{\ell}_t(\hat{y}_t)$. 
+%$\int_{W\in\Omega}q_t(W)\hat{\ell}_t(W)\geq (1-K\epsilon)\bar{\ell}_t(\hat{y}_t)$.
 %\end{lemma}
 %\begin{proof}
-%By the definition of $\tilde{p}_t$, we have $1\leq \frac{\tilde{p}_t(k)}{p_t(k)}\leq \frac{1}{1-K\epsilon}$ for all $k$. Thus $1\leq \frac{\tilde{q}_t(W)}{q_t(W)}\leq \frac{1}{1-K\epsilon}$ for all $W$.  Therefore, 
+%By the definition of $\tilde{p}_t$, we have $1\leq \frac{\tilde{p}_t(k)}{p_t(k)}\leq \frac{1}{1-K\epsilon}$ for all $k$. Thus $1\leq \frac{\tilde{q}_t(W)}{q_t(W)}\leq \frac{1}{1-K\epsilon}$ for all $W$.  Therefore,
 %\begin{align*}
 %    \int_{W\in\Omega}q_t(W)\hat{\ell}_t(W)dW&\geq (1-K\epsilon)\int_{W\in\Omega}\tilde{q}_t(W)\hat{\ell}_t(W)dW \\
-%    &=(1-K\epsilon)\left(\one[\hat{y}_t=y_t]\sum_{k=1}^K \tilde{p}_t(k)\bar{\ell}_t(k) + \one[\hat{y}_t\neq y_t]\sum_{k=1}^K \tilde{p}_t(k)\bar{a}_t(k)\right). 
+%    &=(1-K\epsilon)\left(\one[\hat{y}_t=y_t]\sum_{k=1}^K \tilde{p}_t(k)\bar{\ell}_t(k) + \one[\hat{y}_t\neq y_t]\sum_{k=1}^K \tilde{p}_t(k)\bar{a}_t(k)\right).
 %\end{align*}
 %\end{proof}
 
@@ -1144,57 +1147,57 @@ Another viewpoint: let $\frac{1}{\alpha}=K^\beta$, then the complexity is $\left
 %\label{lemma:simple}
 %The following facts hold: \\
 %(1) $ \hat{\ell}_t(W)\leq \ell_t(W)$ for all $W$. \\
-%(2) $ \hat{\ell}_t(W_t) \geq \ell_t(W_t) $. 
+%(2) $ \hat{\ell}_t(W_t) \geq \ell_t(W_t) $.
 %\end{lemma}
 %\begin{proof}
 %\ \\
 %(1) $ \hat{\ell}_t(W)\leq \one[\hat{y}_t=y_t]\ell_t(W)+\one[\hat{y}_t\neq y_t]\ell_t(W) = \ell_t(W)$. \\
-%(2) $ \hat{\ell}_t(W_t)\geq \one[\hat{y}_t\neq y_t]a_t(W_t)=\one[\hat{y}_t\neq y_t]=\ell_t(W_t)$. 
+%(2) $ \hat{\ell}_t(W_t)\geq \one[\hat{y}_t\neq y_t]a_t(W_t)=\one[\hat{y}_t\neq y_t]=\ell_t(W_t)$.
 %\end{proof}
 
-%By standard analysis of the exponential weight algorithm (or see page 9 of \cite{bubeck2017kernel}), we have 
+%By standard analysis of the exponential weight algorithm (or see page 9 of \cite{bubeck2017kernel}), we have
 %\begin{align*}
-%\E\left[\sum_{t=1}^T\int_{W\in\Omega} q_t(W)\hat{\ell}_t(W)dW \right] &\leq \E\left[\sum_{t=1}^T\hat{\ell}_t(W^*) + \frac{\textbf{Ent}(q_1||\delta(W^*))}{\alpha} + \alpha \sum_{t=1}^T\int_{W\in\Omega} q_t(W)\hat{\ell}_t(W)^2dW\right] \\ 
+%\E\left[\sum_{t=1}^T\int_{W\in\Omega} q_t(W)\hat{\ell}_t(W)dW \right] &\leq \E\left[\sum_{t=1}^T\hat{\ell}_t(W^*) + \frac{\textbf{Ent}(q_1||\delta(W^*))}{\alpha} + \alpha \sum_{t=1}^T\int_{W\in\Omega} q_t(W)\hat{\ell}_t(W)^2dW\right] \\
 %&\leq \E\left[\sum_{t=1}^T\hat{\ell}_t(W^*) + \frac{\textbf{Ent}(q_1||\delta(W^*))}{\alpha} + \alpha \sum_{t=1}^T\int_{W\in\Omega} q_t(W)\hat{\ell}_t(W)dW \right],
 %\end{align*}
-%which implies $\E\left[\sum_{t=1}^T\hat{\ell}_t(W_t)\right]\leq  \E\left[\sum_{t=1}^T  \hat{\ell}_t(W^*) \right]+\frac{\textbf{Ent}(q_1||\delta(W^*))}{\alpha(1-\alpha)}+\frac{\alpha}{1-\alpha}\E\left[\sum_{t=1}^T\hat{\ell}_t(W^*)\right] $. Combining Lemma~\ref{lemma:simple}, we get a small-loss regret bound. 
+%which implies $\E\left[\sum_{t=1}^T\hat{\ell}_t(W_t)\right]\leq  \E\left[\sum_{t=1}^T  \hat{\ell}_t(W^*) \right]+\frac{\textbf{Ent}(q_1||\delta(W^*))}{\alpha(1-\alpha)}+\frac{\alpha}{1-\alpha}\E\left[\sum_{t=1}^T\hat{\ell}_t(W^*)\right] $. Combining Lemma~\ref{lemma:simple}, we get a small-loss regret bound.
 
-%\textbf{Note.} Considering $\delta(W^*)$ as a distribution in a region surrounding $W^*$ which has $1/(TD)^{dK}$ $\Omega$'s volume, then $\textbf{Ent}(q_1||\delta(W^*))$ should be in the order of $dK\log (TD)$. 
+%\textbf{Note.} Considering $\delta(W^*)$ as a distribution in a region surrounding $W^*$ which has $1/(TD)^{dK}$ $\Omega$'s volume, then $\textbf{Ent}(q_1||\delta(W^*))$ should be in the order of $dK\log (TD)$.
 
 %\textbf{Discussion.} \\
 %(1) It seems even okay to define $\hat{\ell}_s(W)=\one[\hat{y}_s\neq y_s]a_s(W)$. \\
-%(2) $q_t(\cdot)$ can be sampled when $\sum_{s=1}^{t-1}\hat{\ell}_s(W)$ is convex (not very sure, but I believe so from papers like \cite{lovasz2006fast,narayanan2013efficient,bubeck2015sampling}). The part $ \one[\hat{y}_s=y_s]\ell_s(W)$ can become convex if we define $\ell(W)$ to be the hinge loss; however, the part $\one[\hat{y}_s\neq y_s]a_s(W)$ does not seem to be easy. This corresponds to constructing a loss function when the learner is wrong, and is somewhat related to the issue we met previously: the region $\{W: \hat{y}_t\neq \argmax_r (Wx_t)_r \}$ is non-convex. 
+%(2) $q_t(\cdot)$ can be sampled when $\sum_{s=1}^{t-1}\hat{\ell}_s(W)$ is convex (not very sure, but I believe so from papers like \cite{lovasz2006fast,narayanan2013efficient,bubeck2015sampling}). The part $ \one[\hat{y}_s=y_s]\ell_s(W)$ can become convex if we define $\ell(W)$ to be the hinge loss; however, the part $\one[\hat{y}_s\neq y_s]a_s(W)$ does not seem to be easy. This corresponds to constructing a loss function when the learner is wrong, and is somewhat related to the issue we met previously: the region $\{W: \hat{y}_t\neq \argmax_r (Wx_t)_r \}$ is non-convex.
 
 
 %\section{Continuous EXP4 for Banditron with Uniform Exploration}
 \begin{lemma}
-$\E_{\tilde{y}_t}[\hat{\ell}_t(W)] = \ell_t(W)$ for all $W$. 
+$\E_{\tilde{y}_t}[\hat{\ell}_t(W)] = \ell_t(W)$ for all $W$.
 \end{lemma}
 \begin{proof}
 \begin{align*}
 \E_{\tilde{y}_t}[\hat{\ell}_t(W)] &= \E_{\tilde{y}_t}\left[ \one[\hat{y}_s=y_s] \frac{\one[\tilde{y}_s=y_s]\ell_t(W)}{1-\gamma+\frac{\gamma}{K}}   +
 \one[\hat{y}_s\neq y_s] \frac{\one[\tilde{y}_s = y_s]\ell_t(W)}{\frac{\gamma}{K}}\right] \\
 & = \one[\hat{y}_s=y_s] \ell_t(W)   +
-\one[\hat{y}_s\neq y_s] \ell_t(W) = \ell_t(W). 
+\one[\hat{y}_s\neq y_s] \ell_t(W) = \ell_t(W).
 \end{align*}
 \end{proof}
 
 %\begin{lemma}
-%$\E_{\tilde{y}_t}[(\hat{\ell}_t(W))^2] \leq \frac{2K}{\gamma}(\ell_t(W))^2\leq \frac{2K}{\gamma}\ell_t(W)$ for all $W$. 
+%$\E_{\tilde{y}_t}[(\hat{\ell}_t(W))^2] \leq \frac{2K}{\gamma}(\ell_t(W))^2\leq \frac{2K}{\gamma}\ell_t(W)$ for all $W$.
 %\end{lemma}
 
 Plugging these lemmas in the previous hedge bound, we can get \begin{align*}
 &\E\left[\sum_{t=1}^T  \ell_{t}(W_{t})  \right]\\
 &=\E\left[\sum_{t=1}^T  \int_{W\in\Omega} q_t(W)\ell_t(W)dW  \right] \\
 &=\E\left[\sum_{t=1}^T \E_{\tilde{y}_t} \left[ \int_{W\in\Omega} q_t(W)\hat{\ell}_t(W)dW \right] \right]\\
-&\leq \E\left[\sum_{t=1}^T \E_{\tilde{y}_t} \left[ \hat{\ell}_t(W^*) \right]+ \frac{\textbf{Ent}(q_1||\delta(W^*))}{\alpha} + \alpha \sum_{t=1}^T \E_{\tilde{y}_t}\left[ \int_{W\in\Omega} q_t(W)\hat{\ell}_t(W)^2dW \right] \right] \\ 
+&\leq \E\left[\sum_{t=1}^T \E_{\tilde{y}_t} \left[ \hat{\ell}_t(W^*) \right]+ \frac{\textbf{Ent}(q_1||\delta(W^*))}{\alpha} + \alpha \sum_{t=1}^T \E_{\tilde{y}_t}\left[ \int_{W\in\Omega} q_t(W)\hat{\ell}_t(W)^2dW \right] \right] \\
 &\leq \E\left[\sum_{t=1}^T \E_{\tilde{y}_t}\left[ \hat{\ell}_t(W^*) \right] + \frac{\textbf{Ent}(q_1||\delta(W^*))}{\alpha} + \frac{2K\alpha}{\gamma} \sum_{t=1}^T \E_{\tilde{y}_t}\left[ \int_{W\in\Omega} q_t(W)\hat{\ell}_t(W)dW \right]\right]
 \end{align*}
 
-... to bound the regret, it would be something like bounding $\frac{1}{1-\frac{K\alpha}{\gamma}}\left(\frac{1}{\alpha}+\frac{K\alpha}{\gamma}L^* + \gamma T\right)$, which gives $(L^*T)^{1/3} + \sqrt{T}$ regret bound. 
+... to bound the regret, it would be something like bounding $\frac{1}{1-\frac{K\alpha}{\gamma}}\left(\frac{1}{\alpha}+\frac{K\alpha}{\gamma}L^* + \gamma T\right)$, which gives $(L^*T)^{1/3} + \sqrt{T}$ regret bound.
 
 
-\textbf{Discussion.} We can change $\ell_t(\cdot)$ to any reasonable convex loss (e.g., logsitic loss or second-order loss). 
+\textbf{Discussion.} We can change $\ell_t(\cdot)$ to any reasonable convex loss (e.g., logsitic loss or second-order loss).
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%% !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
@@ -1202,51 +1205,51 @@ Plugging these lemmas in the previous hedge bound, we can get \begin{align*}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \iffalse
 \section{Reduction from the 3SAT problem}
-In this section, we try to argue the hardness of the following margin-constrained weak-label learning problem: 
+In this section, we try to argue the hardness of the following margin-constrained weak-label learning problem:
 \textit{
 \ \\
 Given weak-labeled samples $\{(x_t, \bar{y}_t)\}_{t=1}^T \subset \mathbb{R}^d \times [K]$, a margin parameter $\gamma$, and an absolute value bound $B$, find $W\in \mathbb{K\times d}$ such that $ \forall i,j, |W_{ij}|\leq B$ and $\forall t$,
 \begin{align*}
-(Wx_t)_{\bar{y}_t} \leq \max_{i\in [K]} (Wx_t)_i - \gamma. 
+(Wx_t)_{\bar{y}_t} \leq \max_{i\in [K]} (Wx_t)_i - \gamma.
 \end{align*}
 }
 
-Below we reduce 3SAT to this problem. For an $N$-variable 3SAT problem, we construct a weak-label problem with $K=2N+1$ classes. For convenience, we give names to these $2N+1$ classes: $(1, a_1, b_1, \ldots, a_N, b_N)=(1,2,3,\ldots, 2N+1)$. 
+Below we reduce 3SAT to this problem. For an $N$-variable 3SAT problem, we construct a weak-label problem with $K=2N+1$ classes. For convenience, we give names to these $2N+1$ classes: $(1, a_1, b_1, \ldots, a_N, b_N)=(1,2,3,\ldots, 2N+1)$.
 
-Now we construct training samples that encode this 3SAT problem. For a clause $x_{i_1}\vee \cdots \vee x_{i_p} \vee \bar{x}_{j_1}\vee \cdots \vee \bar{x}_{j_n}$, we construct the following sample: 
+Now we construct training samples that encode this 3SAT problem. For a clause $x_{i_1}\vee \cdots \vee x_{i_p} \vee \bar{x}_{j_1}\vee \cdots \vee \bar{x}_{j_n}$, we construct the following sample:
 \begin{align}
     (x,\bar{y}) = \left(\e_1 + \sum_{k=1}^p \e_{a_k} + \sum_{k=1}^n \e_{b_k}, 1 \right) \label{sample1}
 \end{align}
 
-For each $i\in [K]$, we construct two samples: 
+For each $i\in [K]$, we construct two samples:
 \begin{align}
     (x,\bar{y}) &= \left( \e_1 + \e_{a_i} + \e_{b_i}, 1 \right), \\
-    (x, \bar{y}) &= \left( -\e_1 - \e_{a_i} - \e_{b_i}, 1 \right). 
+    (x, \bar{y}) &= \left( -\e_1 - \e_{a_i} - \e_{b_i}, 1 \right).
 \end{align}
 
 
 
-The ranking problem has two kinds of constraints: $(S,i)$ and $(T,j)$, where $S, T\subseteq [K]$, $i\in S$, $j\in T$. The goal is to determine whether there exists a ranking over $[K]$ such that for all constraints $(S,i)$, $i$ is not the first-ranked element in $S$; for all $(T,j)$, $j$ is not the last-ranked element in $T$. This problem is proved to be hard. 
+The ranking problem has two kinds of constraints: $(S,i)$ and $(T,j)$, where $S, T\subseteq [K]$, $i\in S$, $j\in T$. The goal is to determine whether there exists a ranking over $[K]$ such that for all constraints $(S,i)$, $i$ is not the first-ranked element in $S$; for all $(T,j)$, $j$ is not the last-ranked element in $T$. This problem is proved to be hard.
 
-Below we prove that the weak-label learning problem is harder than the ranking problem. Thus we would try to use a weak-label learning algorithm to solve the ranking problem. Below is the algorithm: 
+Below we prove that the weak-label learning problem is harder than the ranking problem. Thus we would try to use a weak-label learning algorithm to solve the ranking problem. Below is the algorithm:
 
 \begin{algorithm}[H]
 \caption{Reduction from ranking problem to weak-label learning problem}
 \textbf{Parameter: $0 < \epsilon < \frac{1}{2K^2}$}, $\#$features$=\#$classes$=K$, $\delta\triangleq 1+K\epsilon$. \\
-For each $(S,i)$ in the ranking problem, construct the following feature and weak-label pair: 
+For each $(S,i)$ in the ranking problem, construct the following feature and weak-label pair:
 \begin{align}
     (x,\bar{y}) = \left( \sum_{q\in S} \e_q + (K\epsilon) \e_i , i\right). \label{feat1}
 \end{align}\\
-For example, if $S=\{1,3,4\}$ and $i=3$, then we construct the following weak training sample: 
+For example, if $S=\{1,3,4\}$ and $i=3$, then we construct the following weak training sample:
 \begin{align*}
     ((1+ K\epsilon, 0, 1,1), 3)
 \end{align*}\\
 
-For each $(T,j)$ in the ranking problem, we construct the following $K-1$ pairs: 
+For each $(T,j)$ in the ranking problem, we construct the following $K-1$ pairs:
 \begin{align}
     (x,\bar{y}) = \left( \sum_{q\in T} -\e_q - \delta \e_\ell , j\right), \forall \ell\neq j. \label{feat2}
 \end{align}\\
-For example, if $T=\{1,3,4\}$ and $j=3$, then we construct the following weak training samples: 
+For example, if $T=\{1,3,4\}$ and $j=3$, then we construct the following weak training samples:
 \begin{align*}
     &((-1, -\delta, -1,-1), 3)\\
     &((-1, 0, -1-\delta, -1), 3)\\
@@ -1254,7 +1257,7 @@ For example, if $T=\{1,3,4\}$ and $j=3$, then we construct the following weak tr
 \end{align*}\\
 
 
-Besides, for every $p\in [K]$, we construct the strong-label sample: 
+Besides, for every $p\in [K]$, we construct the strong-label sample:
 \begin{align}
     (x,y) = (\e_p, p); \label{feat3}
 \end{align}\\
@@ -1263,86 +1266,86 @@ Besides, for every $p\in [K]$, we construct the strong-label sample:
 and for any $(p,q)$, $q\neq p$, we construct the strong-label sample: \begin{align}
     (x,y) = (-\e_q + \epsilon \e_p, p). \label{feat4}
 \end{align}\\
-Input all above samples to the weak-label algorithm, and get the linear classifier $W=[w_{pq}]$. Output the ranking of $p$ based on the value of $\sum_{q=1}^{K} w_{pq}$, from larger to smaller (i.e., the ranking is based on the scores for the feature $x=\e_1+\ldots+\e_K$). 
+Input all above samples to the weak-label algorithm, and get the linear classifier $W=[w_{pq}]$. Output the ranking of $p$ based on the value of $\sum_{q=1}^{K} w_{pq}$, from larger to smaller (i.e., the ranking is based on the scores for the feature $x=\e_1+\ldots+\e_K$).
 \end{algorithm}
-In the following two subsections, we show the correctness of the above reduction. 
+In the following two subsections, we show the correctness of the above reduction.
 
 \subsection{Solution for weak-label implies solution for ranking}
-In this subsection, we assume we have a solution $[w_{pq}]$ for the weak-label problem. 
+In this subsection, we assume we have a solution $[w_{pq}]$ for the weak-label problem.
 \begin{lemma}
 \label{lemma:eps_bound}
-(We have shown this in our discussion) For any $p, q, r\in [K]$, $p\neq q$, 
+(We have shown this in our discussion) For any $p, q, r\in [K]$, $p\neq q$,
 \begin{align}
     w_{pq} - w_{rq} \leq \epsilon(w_{pp}-w_{rp}). \label{eqn: eps_bound}
 \end{align}
 \end{lemma}
 \begin{proof}
-    Using \eqref{feat4}, and comparing the scores between class $p$ and $r$, we get 
+    Using \eqref{feat4}, and comparing the scores between class $p$ and $r$, we get
     \begin{align*}
         -w_{pq} + \epsilon w_{pp} \geq -w_{rq} + \epsilon w_{rp}.
     \end{align*}
-    Rearranging completes the proof. 
+    Rearranging completes the proof.
 \end{proof}
 \begin{lemma}
 \label{lemma:dominant_diag}
-For any $p, r\in [K]$, $w_{pp}\geq w_{rp}$. 
+For any $p, r\in [K]$, $w_{pp}\geq w_{rp}$.
 \end{lemma}
 \begin{proof}
-    Using \eqref{feat3} and comparing the scores between class $p$ and $r$ complete the proof. 
+    Using \eqref{feat3} and comparing the scores between class $p$ and $r$ complete the proof.
 \end{proof}
 \begin{lemma}
 \label{lemma:S constraint}
-    For any $(S,i)$ constraint from the ranking problem, there exists a $i'\neq i$ such that 
+    For any $(S,i)$ constraint from the ranking problem, there exists a $i'\neq i$ such that
     \begin{align*}
-        \sum_{q=1}^K w_{iq} < \sum_{q=1}^K w_{i'q}. 
+        \sum_{q=1}^K w_{iq} < \sum_{q=1}^K w_{i'q}.
     \end{align*}
 \end{lemma}
 \begin{proof}
-    By the weak-label condition in \eqref{feat1}, there is a $i'\neq i$ such that 
+    By the weak-label condition in \eqref{feat1}, there is a $i'\neq i$ such that
     \begin{align*}
-        \sum_{q\in S} w_{iq} + (K\epsilon) w_{ii} < \sum_{q\in S} w_{i'q} + (K\epsilon) w_{i'i}. 
+        \sum_{q\in S} w_{iq} + (K\epsilon) w_{ii} < \sum_{q\in S} w_{i'q} + (K\epsilon) w_{i'i}.
     \end{align*}
-    Note that $i\in S$, summing \eqref{eqn: eps_bound} over elements not in $S$ we get 
+    Note that $i\in S$, summing \eqref{eqn: eps_bound} over elements not in $S$ we get
     \begin{align*}
-        \sum_{q\notin S} (w_{iq} - w_{i'q}) \leq \sum_{q\notin S} \epsilon (w_{ii}-w_{i'i}) \leq K\epsilon(w_{ii}-w_{i'i}), 
+        \sum_{q\notin S} (w_{iq} - w_{i'q}) \leq \sum_{q\notin S} \epsilon (w_{ii}-w_{i'i}) \leq K\epsilon(w_{ii}-w_{i'i}),
     \end{align*}
-    where in the last inequality we use the fact $w_{ii}-w_{i'i}\geq 0$ implied by Lemma~\ref{lemma:dominant_diag}. 
-    Combining the above two inequalities, we get $\sum_{q=1}^K (w_{iq}-w_{i'q})<(K\epsilon-K\epsilon)(w_{ii}-w_{i'i})=0$, which finishes the proof. 
+    where in the last inequality we use the fact $w_{ii}-w_{i'i}\geq 0$ implied by Lemma~\ref{lemma:dominant_diag}.
+    Combining the above two inequalities, we get $\sum_{q=1}^K (w_{iq}-w_{i'q})<(K\epsilon-K\epsilon)(w_{ii}-w_{i'i})=0$, which finishes the proof.
 \end{proof}
 \begin{lemma}
 \label{lemma:T constraint}
-For any $(T,j)$ constraint from the ranking problem, there exists a $j'\neq j$ such that 
+For any $(T,j)$ constraint from the ranking problem, there exists a $j'\neq j$ such that
 \begin{align*}
-    \sum_{q=1}^K w_{jq} > \sum_{q=1}^K w_{j'q}. 
+    \sum_{q=1}^K w_{jq} > \sum_{q=1}^K w_{j'q}.
 \end{align*}
 \end{lemma}
 \begin{proof}
-By the weak label condition in \eqref{feat2}, there exists a $j'\neq j$ such that 
+By the weak label condition in \eqref{feat2}, there exists a $j'\neq j$ such that
 \begin{align*}
      \sum_{q\in T} w_{j'q} + \delta w_{j'j'} < \sum_{q\in T} w_{jq} + \delta w_{jj'} \tag{letting $\ell=j'$ in \eqref{feat2}}
 \end{align*}
 Consider two cases: \\
 (1) $j'\in T$, then summing \eqref{eqn: eps_bound} over elements not in $T$, we have
 \begin{align*}
-    \sum_{q\notin T} (w_{j'q}-w_{jq}) < \sum_{q\notin T} \epsilon(w_{j'j'}-w_{jj'}) \leq K\epsilon(w_{j'j'}-w_{jj'}),  
+    \sum_{q\notin T} (w_{j'q}-w_{jq}) < \sum_{q\notin T} \epsilon(w_{j'j'}-w_{jj'}) \leq K\epsilon(w_{j'j'}-w_{jj'}),
 \end{align*}
 where in the last inequality we use the fact $w_{j'j'}-w_{jj'}\geq 0$ implied by Lemma~\ref{lemma:dominant_diag}. \\
-(2) $j'\notin T$, then 
+(2) $j'\notin T$, then
 \begin{align*}
     \sum_{q\notin T} (w_{j'q}-w_{jq}) &= (w_{j'j'}-w_{jj'})+\sum_{q\notin T, q\neq j'}(w_{j'q}-w_{jq})\\
     &\leq (w_{j'j'}-w_{jj'})+\sum_{q\notin T, q\neq j'}(w_{j'j'}-w_{jj'}) \tag{Lemma~\ref{lemma:eps_bound}}\\
     &\leq (1+K\epsilon) (w_{j'j'}-w_{jj'})
 \end{align*}
-In either case, we have $\sum_{q=1}^K (w_{j'q}-w_{jq})<(1+K\epsilon-\delta)(w_{j'j'}-w_{jj'})\leq 0$, which completes the proof. 
+In either case, we have $\sum_{q=1}^K (w_{j'q}-w_{jq})<(1+K\epsilon-\delta)(w_{j'j'}-w_{jj'})\leq 0$, which completes the proof.
 \end{proof}
-By Lemma~\ref{lemma:S constraint} and~\ref{lemma:T constraint}, if we rank element $p$ based on the value of $\sum_{q=1}^K w_{pq}$, then this satisfies all constraints from the ranking problem, and thus gives it the valid solution. 
+By Lemma~\ref{lemma:S constraint} and~\ref{lemma:T constraint}, if we rank element $p$ based on the value of $\sum_{q=1}^K w_{pq}$, then this satisfies all constraints from the ranking problem, and thus gives it the valid solution.
 
 \subsection{Solution for ranking implies solution for weak-label}
-This direction is more straightforward. Suppose we have a solution for the ranking problem, then we create a diagonal matrix $W$ where the diagonal elements are a permutation of $\{1, (1+2K\epsilon), (1+2K\epsilon)^2, \ldots, (1+2K\epsilon)^{K-1}\}$: the first-ranked element takes the value $K$, the second takes $K-1$, and so on. It's easy to verify that \eqref{feat1}-\eqref{feat4} are all satisfied. 
+This direction is more straightforward. Suppose we have a solution for the ranking problem, then we create a diagonal matrix $W$ where the diagonal elements are a permutation of $\{1, (1+2K\epsilon), (1+2K\epsilon)^2, \ldots, (1+2K\epsilon)^{K-1}\}$: the first-ranked element takes the value $K$, the second takes $K-1$, and so on. It's easy to verify that \eqref{feat1}-\eqref{feat4} are all satisfied.
 \fi
 
 \newpage
-\bibliography{adaptivity} 
+\bibliography{adaptivity}
 \bibliographystyle{plain}
 
-\end{document} 
+\end{document}
