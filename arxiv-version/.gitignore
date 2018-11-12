@@ -1,0 +1,15 @@
+# LaTeX files
+*.aux
+*.bbl
+*.blg
+*.log
+*.nav
+*.idx
+*.toc
+
+main.pdf
+
+# Vim backup and temporary files
+*~
+*.swp
+*.swo
