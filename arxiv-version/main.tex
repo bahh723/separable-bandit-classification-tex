@@ -1,5 +1,13 @@
 \documentclass[12pt]{article}
 
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsthm}
+\usepackage{fullpage}
+\usepackage[colorlinks=true,citecolor=blue,linkcolor=blue]{hyperref}
+\usepackage{natbib}
+
+
 \title{Online Multiclass Linear Classification with Bandit Feedback}
 
 \author{
@@ -14,5 +22,60 @@ Chicheng Zhang
 \begin{document}
 
 \maketitle
+
+\begin{abstract}
+TODO
+\end{abstract}
+
+\section{Introduction}
+
+We study the online multiclass classification problem with bandit feedback. The
+problem was initially proposed by \cite{Kakade-Shalev-Shwartz-Tewari-2008}. The
+corresponding problem with full information feedback is solved by the classical
+\textsc{Multiclass Perceptron} algorithm and its variants (see e.g.
+\cite{Crammer-Dekel-Keshet-Shalev-Shwartz-Singer-2006}). The problem is quite
+natural and potential applications include online advertising and online content
+optimization.
+
+In this paper, we focus on the special case when the data is \emph{linearly
+separable with a margin}. In the full-information feedback setting, it is well
+know that if the data set lies in the ball of radius $R$ centered at the origin
+and is linearly separable with a margin $\gamma$ then the \textsc{Multiclass
+Perceptron} algorithm makes at most $(R/\gamma)^2$ mistakes. This result very
+satisfactory since the upper bound on the number of mistakes is
+information-theoretically optimal and at the same time the \textsc{Multiclass
+Perceptron} algorithm has low time and memory complexity.
+
+The bandit feedback setting, however, is much more challenging. We propose three
+algorithms with various time-complexity-versus-mistake-bound trade-offs. Two of
+these algorithms map the data into a high-dimensional space induced by a kernel.
+In this space the data become so called \emph{strongly separable} making the
+learning essentially trivial. The two algorithms differ by the choice of the
+kernel. The crux of the problem is th analysis of approximation properties of
+these kernels and has been studied previously by \cite{???} in the context of
+learning intersection of halfspaces. The third algorithm is based on the obvious
+idea that two points that are close enough must have the same label. Here, close
+enough means that they cannot be separated from each other by a linear separator
+with a margin.
+
+All three algorithms run in time that is polynomial in the dimension of the
+feature vectors, the number of classes and the number of rounds. At the same
+time, all three algorithms make number of mistakes that does \emph{not} depend
+on the number of rounds only on the margin, number of classes, dimension of the
+feature vectors, and the radius of the ball in which the data lie.
+
+Finally, we study two questions related to the computational and
+information-theoretic hardness of the problem. Any algorithm for the bandit
+setting collects information in the form of so called \emph{strongly labeled}
+and \emph{weakly labeled} examples. Strongly-labeled examples are those for
+which we know the class label. Weakly labeled example is an example for which we
+know that class label can be anything except for a particular one class. First,
+we show the offline problem of finding any linear separator consistent with
+given set of strongly- and weakly-labeled examples is NP-hard. Second, we show
+that any algorithm that ignores weakly labeled examples must make at least
+$\Omega(???)$ mistakes.
+
+\bibliographystyle{plainnat}
+\bibliography{biblio}
 
 \end{document}

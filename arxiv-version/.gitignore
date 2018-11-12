@@ -4,6 +4,7 @@
 *.blg
 *.log
 *.nav
+*.out
 *.idx
 *.toc
 
