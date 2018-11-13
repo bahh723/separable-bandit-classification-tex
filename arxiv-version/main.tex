@@ -1,11 +1,17 @@
 \documentclass[12pt]{article}
 
+% LaTeX packages
+\usepackage{algorithm}
+\usepackage{algorithmic}
 \usepackage{amsmath}
 \usepackage{amssymb}
 \usepackage{amsthm}
 \usepackage{fullpage}
 \usepackage[colorlinks=true,citecolor=blue,linkcolor=blue]{hyperref}
 \usepackage{natbib}
+
+% Math commands
+\newcommand{\indicator}[1]{\mathbf{1}\left[#1 \right]}
 
 
 \title{Online Multiclass Linear Classification with Bandit Feedback}
@@ -31,38 +37,60 @@ TODO
 \label{section:introduction}
 
 We study the online multiclass classification problem with bandit feedback. The
-problem was initially proposed by \cite{Kakade-Shalev-Shwartz-Tewari-2008}. The
-corresponding problem with full information feedback is solved by the classical
-\textsc{Multiclass Perceptron} algorithm and its variants (see e.g.
+protocol of the problem is stated below. The problem was initially proposed by
+\cite{Kakade-Shalev-Shwartz-Tewari-2008}. The corresponding problem with full
+information feedback is solved by the classical \textsc{Multiclass Perceptron}
+algorithm and its variants (see e.g.
 \cite{Crammer-Dekel-Keshet-Shalev-Shwartz-Singer-2006}). The problem is quite
 natural and potential applications include online advertising and online content
-optimization.
+optimization where the feedback corresponds to a user's click.
+
+\begin{algorithm}[h]
+\caption{Online multiclass classification with bandit feedback
+\label{algorithm:game-protocol}}
+\begin{algorithmic}[1]
+{
+\REQUIRE{Number of classes $K$}
+\FOR{$t=1,2,\dots$}
+\STATE{Receive feature vector $x_t$}
+\STATE{Environment \emph{secretly} chooses correct class label $y_t \in \{1,2,\dots,K\}$}
+\STATE{Predict class label $\widehat y_t \in \{1,2,\dots,K\}$}
+\STATE{Receive feedback $z_t \in \{0,1\}$ where $z_t = \begin{cases}
+1 & \text{if $\widehat y_t = y_t$,} \\
+0 & \text{if $\widehat y_t \neq y_t$.}
+\end{cases}$
+}
+\ENDFOR
+}
+\end{algorithmic}
+\end{algorithm}
 
 In this paper, we focus on the special case when the examples are \emph{linearly
 separable with a margin}. In the full-information feedback setting, it is well
-know that if the examples lie in the ball of radius $R$ centered at the origin
-and is linearly separable with a margin $\gamma$ then the \textsc{Multiclass
-Perceptron} algorithm makes at most $(R/\gamma)^2$ mistakes. This result is very
-satisfactory since the upper bound on the number of mistakes is
-information-theoretically optimal and at the same time the \textsc{Multiclass
-Perceptron} algorithm has low time and memory complexity.
+know that if the examples have norm at most $R$ and are linearly separable with
+a margin $\gamma$ then the \textsc{Multiclass Perceptron} algorithm makes at
+most $(R/\gamma)^2$ mistakes. This result is very satisfactory since the upper
+bound on the number of mistakes is information-theoretically optimal and at the
+same time the \textsc{Multiclass Perceptron} algorithm has low time and memory
+complexity.
 
 The bandit feedback setting, however, is much more challenging. We start by
 dissecting the notion of linear separability. We define two notions of linear
-separability for multiclass classification. the ``standard'' linear separability
+separability for multiclass classification: the standard linear separability
 and \emph{strong linear separability}. For binary classification, these two
 definitions are identical. However, they differ for multiclass classification.
-For multiclass classification with $K$ clases the standard notion of linear
+For multiclass classification with $K$ classes the standard notion of linear
 separability means that the examples from each class lie in an intersection of
 $K-1$ halfspaces and the examples outside the class lie in the complement of the
 intersection of the halfspaces. Strong linear separability means that examples
 from each class can be separated from the remaining examples by a \emph{single}
-hyperplane. We will give a more precise definition
+hyperplane. We state the definitions precisely
 in Section~\ref{section:notions-of-linear-separability}.
 
-We provide a simple and efficient algorithm for the bandit feedback setting if
-the examples are strongly linearly separable. The algorithm runs $K$ copies a
-\textsc{Binary Perceptron} algorithm.
+If the examples are strongly linearly separable, there is a simple and efficient
+algorithm for the bandit feedback setting that makes at most $?/\gamma^2$
+mistakes. The algorithm runs $K$ copies of the \textsc{Binary Perceptron}
+algorithm.
 
 For the standard notion of linear separability, we propose three algorithms with
 various time-complexity-versus-mistake-bound trade-offs. Two of these algorithms
@@ -97,9 +125,11 @@ and \emph{weakly labeled} examples. Strongly-labeled examples are those for
 which we know the class label. Weakly labeled example is an example for which we
 know that class label can be anything except for a particular one class. First,
 we show the offline problem of determining if a linear multiclass separator
-exists for a set of strongly- and weakly-labeled examples is NP-complete.
-Second, we show that any algorithm that uses only strongly-labeled examples and
-ignores weakly labeled examples makes at least $\Omega(???)$ mistakes.
+exists for a set of strongly- and weakly-labeled examples is NP-complete. This
+result is a simple consequence of the fact learning intersection of halfspaces
+is NP-complete~\citep{Blum-Rivest-1993}. Second, we show that any algorithm that
+uses only strongly-labeled examples and ignores weakly labeled examples makes at
+least $\Omega(???)$ mistakes.
 
 
 \section{Related work}
