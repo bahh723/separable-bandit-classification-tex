@@ -224,11 +224,12 @@ on Figure~\ref{figure:linearly-separable-examples-with-margin}.
 \begin{center}
 \input{figures/linearly-separable-examples-with-margin}
 \end{center}
-\caption{The figure shows labeled examples in $\R^2$ that are linearly separable with a
-positive margin $\gamma$. There are $K=3$ classes. The examples of each class
-are colored white, gray and black respectively. All examples lie in the ball of
-radius $R$ centered at the origin. However, the examples are \emph{not} strongly
-linearly separable for any positive margin $\gamma$.
+\caption{The figure shows labeled examples in $\R^2$. There are $K=3$ classes. The
+examples of each class are colored white, gray and black respectively. All
+examples lie in the ball of radius $R$ centered at the origin. While the
+examples are linearly separable with a positive margin $\gamma$, they are
+\emph{not} strongly linearly separable for any positive margin $\gamma$,
+however.
 }
 \label{figure:linearly-separable-examples-with-margin}
 \end{figure}
@@ -236,7 +237,46 @@ linearly separable for any positive margin $\gamma$.
 \section{Algorithm for strongly linearly separable data}
 \label{section:algorithm-for-strongly-linearly-separable-data}
 
+\begin{algorithm}[h]
+\caption{Algorithm for strongly linearly separable examples
+\label{algorithm:algorithm-for-strongly-linearly-separable-examples}}
+\begin{algorithmic}[1]
+{
+\REQUIRE{Number of classes $K$}
+\STATE{Initialize $w_1^{(1)} = w_2^{(1)} = \dots = w_K^{(1)} = 0$}
+\FOR{$t=1,2,\dots$}
+\STATE{Receive feature vector $x_t$}
+\STATE{Compute $S_t = \{ i ~:~ \ip{w_i^{(t)}}{x_t} > 0 \}$}
+\IF{$|S_t| = 1$}
+\STATE{Predict $\widehat y_t$ where $\widehat y_t \in S_t$}
+\ELSE
+\STATE{Predict $\widehat y_t \sim \text{Uniform}(\{1,2,\dots,K\})$}
+\ENDIF
+\STATE{Receive feedback $z_t \in \{0,1\}$ where $z_t = \indicator{\widehat y_t = y_t}$}
+\STATE{Update $w_i^{(t+1)} = w_i^{(t)}$ for all $i \in \{1,2,\dots,K\} \setminus \{\widehat y_t\}$}
+\IF{$z_t = 0$}
+\STATE{Update $w_{\widehat y_t}^{(t+1)} = w_{\widehat y_t}^{(t)} - x_t$}
+\ELSE
+\STATE{Update $w_{\widehat y_t}^{(t+1)} = w_{\widehat y_t}^{(t)}$}
+\ENDIF
+\ENDFOR
+}
+\end{algorithmic}
+\end{algorithm}
+
+\begin{theorem}
+Let $(V, \ip{\cdot}{\cdot})$ be any inner product space, let $K$ be a positive
+integer, $\gamma$ a positive real number, $R$ be a non-negative real number
+If $(x_1, y_1), (x_2, y_2), \dots, (x_T, y_T)$ is a sequence of labeled examples
+in $V \times \{1,2,\dots,K\}$ such that the examples are strongly separable with
+margin $\gamma$ and $\norm{x_1}, \norm{x_2}, \dots, \norm{x_T} \le R$ then
+Algorithm~\ref{algorithm:algorithm-for-strongly-linearly-separable-examples}
+makes at most $K (R/\gamma)^2$ mistakes.
+\end{theorem}
+
+\begin{proof}
 TODO
+\end{proof}
 
 
 \section{Converting linear separability to strong linear separability}
