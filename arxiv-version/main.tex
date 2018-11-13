@@ -10,8 +10,18 @@
 \usepackage[colorlinks=true,citecolor=blue,linkcolor=blue]{hyperref}
 \usepackage{natbib}
 
-% Math commands
-\newcommand{\indicator}[1]{\mathbf{1}\left[#1 \right]}
+% Math environments
+\newtheorem{definition}{Definition}
+\newtheorem{proposition}[definition]{Proposition}
+\newtheorem{lemma}[definition]{Lemma}
+\newtheorem{theorem}[definition]{Theorem}
+\newtheorem{corollary}[definition]{Corollary}
+
+% Math symbols and commands
+\newcommand{\R}{\mathbb{R}}  % set of real numbers
+\newcommand{\indicator}[1]{\mathbf{1}\left[#1 \right]} % indicator
+\newcommand{\ip}[2]{\left\langle #1, #2 \right\rangle} % inner product
+\newcommand{\norm}[1]{\left\| #1 \right\|}  % norm of a vector or a matrix
 
 
 \title{Online Multiclass Linear Classification with Bandit Feedback}
@@ -141,10 +151,60 @@ TODO
 \section{Notions of linear separability}
 \label{section:notions-of-linear-separability}
 
+We define two notions of linear separability for multiclass classification. The
+first notion is the standard notion of linear separability used in the proof of
+mistake bound for the \textsc{Multiclass Perceptron} algorithm. The second
+notion is stronger, i.e. more restrictive. However, it is more suitable for the
+bandit setting, since it allows for a simple and efficient algorithm; see
+Section~\ref{section:algorithm-for-strongly-linearly-separable-data}.
+
+\begin{definition}
+Let $(V,\ip{\cdot}{\cdot})$ be an inner product space, let $K$ be a positive
+integer, and let $\gamma$ be a positive real number. Let $(x_1, y_1), (x_2,
+y_2), \dots, (x_T, y_T)$ labeled examples in $V \times \{1,2,\dots,K\}$.
+
+The examples are said to be \emph{linearly separable with a
+margin $\gamma$} if there exist vectors $w_1, w_2, \dots, w_K \in V$ such
+that
+\begin{align}
+\label{equation:linear-separability-1}
+& \sum_{i=1}^K \norm{w_i}^2 = 1 \; , \\
+\label{equation:linear-separability-2}
+& \forall t \in \{1,2,\dots,T\} \quad \forall i \in \{1,2,\dots, K\} \setminus \{y_t\} \qquad \qquad \ip{x_t}{w_{y_t}} \ge \ip{x_t}{w_i} + \gamma \; .
+\end{align}
+
+The examples are said to be \emph{strongly linearly separable with a
+margin $\gamma$} if there exist vectors $w_1, w_2, \dots, w_K \in V$ such
+that
+\begin{align}
+\label{equation:strong-linear-separability-1}
+\forall i \in \{1,2,\dots,K\} \qquad \qquad \norm{w_i}^2 & = 1 \; , \\
+\label{equation:strong-linear-separability-2}
+\forall t \in \{1,2,\dots,T\} \qquad \qquad \ip{x_t}{w_{y_t}} &\ge \gamma \; , \\
+\label{equation:strong-linear-separability-3}
+\forall t \in \{1,2,\dots,T\} \qquad \forall i \in \{1,2,\dots, K\} \setminus \{y_t\} \qquad \qquad \ip{x_t}{w_i} & \le - \gamma \; .
+\end{align}
+\end{definition}
+
+It is easy to see that if labeled examples are strongly linearly
+separable with margin $\gamma$ then they are linearly separable with margin
+$2\gamma/\sqrt{K}$. Indeed, if $w_1, w_2, \dots, w_K \in V$
+satisfy \eqref{equation:strong-linear-separability-1},
+\eqref{equation:strong-linear-separability-2},
+\eqref{equation:strong-linear-separability-3} then $w_1' = w_1/\sqrt{K}, w_2' =
+w_2/\sqrt{K}, \dots, w_K' = w_K/\sqrt{K}$ satisfy
+\eqref{equation:linear-separability-1} and
+\eqref{equation:linear-separability-2} with margin $\gamma' = 2\gamma/\sqrt{K}$.
+
+Similarly, if $K=2$ and labeled examples are linearly separable
+with a margin $\gamma$ then they are strongly linear separable with margin $??$.
+Indeed, if $w_1, w_2$ satisfy \eqref{equation:linear-separability-1}
+and \eqref{equation:linear-separability-2} then \dots
+
 TODO
 
-
 \section{Algorithm for strongly linearly separable data}
+\label{section:algorithm-for-strongly-linearly-separable-data}
 
 TODO
 
