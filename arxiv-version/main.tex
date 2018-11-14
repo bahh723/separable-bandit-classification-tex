@@ -189,7 +189,7 @@ margin $\gamma$} if there exist vectors $w_1, w_2, \dots, w_K \in V$ such
 that
 \begin{align}
 \label{equation:strong-linear-separability-1}
-\forall i \in \{1,2,\dots,K\} \qquad \qquad \norm{w_i}^2 & \le 1 \; , \\
+\sum_{i=1}^K \norm{w_i}^2 & \le 1 \; , \\
 \label{equation:strong-linear-separability-2}
 \forall t \in \{1,2,\dots,T\} \qquad \qquad \ip{x_t}{w_{y_t}} &\ge \gamma \; , \\
 \label{equation:strong-linear-separability-3}
@@ -215,10 +215,10 @@ w_2 - w_1$ satisfy \eqref{equation:strong-linear-separability-1},
 \eqref{equation:strong-linear-separability-2},
 \eqref{equation:strong-linear-separability-3}.
 
-However, if $K=3$ there exists a set of labeled examples in an inner product
+However, if $K \ge 3$ there exists a set of labeled examples in an inner product
 space that is linearly separable with a positive margin $\gamma$ but it is not
-strongly linearly separable for any positive $\gamma$. This is best illustrated
-on Figure~\ref{figure:linearly-separable-examples-with-margin}.
+strongly linearly separable for any positive $\gamma$. Such set of examples is
+shown in Figure~\ref{figure:linearly-separable-examples-with-margin}.
 
 \begin{figure}
 \begin{center}
