@@ -33,6 +33,9 @@
 \newcommand{\indicator}[1]{\mathbf{1}\left[#1 \right]} % indicator
 \newcommand{\ip}[2]{\left\langle #1, #2 \right\rangle} % inner product
 \newcommand{\norm}[1]{\left\| #1 \right\|}  % norm of a vector or a matrix
+\DeclareMathOperator*{\argmax}{argmax}
+\DeclareMathOperator*{\argmin}{argmin}
+\DeclareMathOperator*{\Exp}{\mathbf{E}}  % expected value
 
 
 \title{Online Multiclass Linear Classification with Bandit Feedback}
@@ -57,8 +60,10 @@ TODO
 \section{Introduction}
 \label{section:introduction}
 
-We study the online multiclass classification problem with bandit feedback. The
-protocol of the problem is stated below. The problem was initially proposed by
+We study the \textsc{Online Multiclass Classification with Bandit Feedback}
+problem. The protocol of the problem is stated below. The goal is to design an
+algorithm that makes small number of mistakes $\sum_{t=1}^T z_t = \sum_{t=1}^T
+\indicator{\widehat y_t \neq y_t}$. The problem was initially proposed by
 \cite{Kakade-Shalev-Shwartz-Tewari-2008}. The corresponding problem with full
 information feedback is solved by the classical \textsc{Multiclass Perceptron}
 algorithm and its variants (see e.g.
@@ -67,18 +72,18 @@ natural and potential applications include online advertising and online content
 optimization where the feedback corresponds to a user's click.
 
 \begin{algorithm}[h]
-\caption{Online multiclass classification with bandit feedback
+\caption{\textsc{Online Multiclass Classification with Bandit Feedback}
 \label{algorithm:game-protocol}}
 \begin{algorithmic}[1]
 {
-\REQUIRE{Number of classes $K$}
-\FOR{$t=1,2,\dots$}
-\STATE{Receive feature vector $x_t$}
+\REQUIRE{Number of classes $K$. Number of rounds $T$.}
+\FOR{$t=1,2,\dots,T$}
+\STATE{Observe feature vector $x_t$}
 \STATE{Environment \emph{secretly} chooses correct class label $y_t \in \{1,2,\dots,K\}$}
 \STATE{Predict class label $\widehat y_t \in \{1,2,\dots,K\}$}
-\STATE{Receive feedback $z_t \in \{0,1\}$ where $z_t = \begin{cases}
-1 & \text{if $\widehat y_t = y_t$,} \\
-0 & \text{if $\widehat y_t \neq y_t$.}
+\STATE{Observe feedback $z_t \in \{0,1\}$ where $z_t = \begin{cases}
+0 & \text{if $\widehat y_t = y_t$,} \\
+1 & \text{if $\widehat y_t \neq y_t$.}
 \end{cases}$
 }
 \ENDFOR
@@ -90,10 +95,10 @@ In this paper, we focus on the special case when the examples are \emph{linearly
 separable with a margin}. In the full-information feedback setting, it is well
 know that if the examples have norm at most $R$ and are linearly separable with
 a margin $\gamma$ then the \textsc{Multiclass Perceptron} algorithm makes at
-most $(R/\gamma)^2$ mistakes. This result is very satisfactory since the upper
-bound on the number of mistakes is information-theoretically optimal and at the
-same time the \textsc{Multiclass Perceptron} algorithm has low time and memory
-complexity.
+most $\lfloor 2(R/\gamma)^2 \rfloor$ mistakes. This result is very satisfactory
+since the upper bound on the number of mistakes is information-theoretically
+optimal and at the same time the \textsc{Multiclass Perceptron} algorithm has
+low time and memory complexity.
 
 The bandit feedback setting, however, is much more challenging. We start by
 dissecting the notion of linear separability. We define two notions of linear
@@ -109,14 +114,14 @@ hyperplane. We state the definitions precisely
 in Section~\ref{section:notions-of-linear-separability}.
 
 If the examples are strongly linearly separable, there is a simple and efficient
-algorithm for the bandit feedback setting that makes at most $?/\gamma^2$
-mistakes. The algorithm runs $K$ copies of the \textsc{Binary Perceptron}
-algorithm.
+algorithm for the bandit feedback setting with expected number of mistakes
+at most $K (R/\gamma)^2$. The algorithm can be viewed as running $K$ copies of
+the \textsc{Binary Perceptron} algorithm, one copy for each class.
 
 For the standard notion of linear separability, we propose three algorithms with
 various time-complexity-versus-mistake-bound trade-offs. Two of these algorithms
 map the examples into a high-dimensional vector space induced by a kernel. In
-this space the examples become \emph{strongly linearly separable}. This allows
+this space the examples become \emph{strongly} linearly separable. This allows
 us to run a kernelized version of the algorithm for the strongly linearly
 separable case.
 
@@ -179,9 +184,9 @@ margin $\gamma$} if there exist vectors $w_1, w_2, \dots, w_K \in V$ such
 that
 \begin{align}
 \label{equation:linear-separability-1}
-& \sum_{i=1}^K \norm{w_i}^2 \le 1 \; , \\
+\sum_{i=1}^K \norm{w_i}^2 & \le 1 \; , \\
 \label{equation:linear-separability-2}
-& \forall t \in \{1,2,\dots,T\} \quad \forall i \in \{1,2,\dots, K\} \setminus \{y_t\} \qquad \qquad \ip{x_t}{w_{y_t}} \ge \ip{x_t}{w_i} + \gamma \; .
+\forall t \in \{1,2,\dots,T\} \quad \forall i \in \{1,2,\dots, K\} \setminus \{y_t\} \qquad \qquad \ip{x_t}{w_{y_t}} & \ge \ip{x_t}{w_i} + \gamma \; .
 \end{align}
 
 The examples are said to be \emph{strongly linearly separable with a
@@ -199,40 +204,77 @@ that
 
 It is easy to see that if labeled examples are strongly linearly
 separable with margin $\gamma$ then they are linearly separable with margin
-$2\gamma/\sqrt{K}$. Indeed, if $w_1, w_2, \dots, w_K \in V$
+$2\gamma$. Indeed, if $w_1, w_2, \dots, w_K \in V$
 satisfy \eqref{equation:strong-linear-separability-1},
 \eqref{equation:strong-linear-separability-2},
-\eqref{equation:strong-linear-separability-3} then $w_1' = w_1/\sqrt{K}, w_2' =
-w_2/\sqrt{K}, \dots, w_K' = w_K/\sqrt{K}$ satisfy
+\eqref{equation:strong-linear-separability-3} then they satisfy
 \eqref{equation:linear-separability-1} and
-\eqref{equation:linear-separability-2} with margin $\gamma' = 2\gamma/\sqrt{K}$.
+\eqref{equation:linear-separability-2} with margin $\gamma' = 2\gamma$.
 
 Similarly, if $K=2$ and labeled examples are linearly separable with a margin
-$\gamma$ then they are strongly linearly separable with the same margin
-$\gamma$. Indeed, if $w_1, w_2$ satisfy \eqref{equation:linear-separability-1}
-and \eqref{equation:linear-separability-2} then $w_1' = w_1 - w_2$ and $w_2' =
-w_2 - w_1$ satisfy \eqref{equation:strong-linear-separability-1},
+$\gamma$ then they are strongly linearly separable with margin $\gamma/2$.
+Indeed, if $w_1, w_2$ satisfy \eqref{equation:linear-separability-1} and
+\eqref{equation:linear-separability-2} then $w_1' = \frac{w_1 - w_2}{2}$,
+$w_2' = \frac{w_2 - w_1}{2}$ and $\gamma'=\gamma/2$ satisfy
+\eqref{equation:strong-linear-separability-1},
 \eqref{equation:strong-linear-separability-2},
-\eqref{equation:strong-linear-separability-3}.
+\eqref{equation:strong-linear-separability-3} since $\norm{w_i'}^2 \le
+(\frac{1}{2} \norm{w_1} + \frac{1}{2} \norm{w_2})^2 \le \frac{1}{2}\norm{w_1}^2 +
+\frac{1}{2}\norm{w_2}^2$ for $i=1,2$.
 
-However, if $K \ge 3$ there exists a set of labeled examples in an inner product
+However, for $K \ge 3$ there exists a set of labeled examples in an inner product
 space that is linearly separable with a positive margin $\gamma$ but it is not
-strongly linearly separable for any positive $\gamma$. Such set of examples is
-shown in Figure~\ref{figure:linearly-separable-examples-with-margin}.
+strongly linearly separable with any positive margin $\gamma$. Such set of labeled
+examples is shown in
+Figure~\ref{figure:linearly-separable-examples-with-margin}.
 
 \begin{figure}
 \begin{center}
 \input{figures/linearly-separable-examples-with-margin}
 \end{center}
-\caption{The figure shows labeled examples in $\R^2$. There are $K=3$ classes. The
-examples of each class are colored white, gray and black respectively. All
-examples lie in the ball of radius $R$ centered at the origin. While the
-examples are linearly separable with a positive margin $\gamma$, they are
-\emph{not} strongly linearly separable for any positive margin $\gamma$,
-however.
+\caption{The figure shows labeled examples in $\R^2$. The examples belong to
+$K=3$ classes colored white, gray and black respectively. Each class lies in a
+$120^\circ$ wedge. While the examples are linearly separable with a positive
+margin $\gamma$, they are \emph{not} strongly linearly separable for any
+positive margin $\gamma$.
 }
 \label{figure:linearly-separable-examples-with-margin}
 \end{figure}
+
+The notion of linear separability with a margin is standard. It used in the
+full-information setting to upper bound the number of mistakes of the
+\textsc{Multiclass Perceptron} algorithm. For completeness, we state the
+algorithm below. It is a folklore result that if a set of labeled examples is
+separable with a margin $\gamma$ and the norm of the examples is bounded by $R$
+then \textsc{Multiclass Perceptron} algorithm makes at most $\left\lfloor
+(R/\gamma)^2 \right \rfloor$ mistakes. Another folklore result is that
+\textsc{Multiclass Perceptron} is an optimal algorithm in the sense that any
+deterministic algorithm makes $\left\lfloor (R/\gamma)^2 \right \rfloor$
+mistakes in the worst case. For completeness, we give proofs  in
+Section~\ref{section:multiclass-perceptron-proofs} for both of these results.
+
+\begin{algorithm}[h]
+\caption{\textsc{Multiclass Perceptron}
+\label{algorithm:mutliclass-perceptron}}
+\begin{algorithmic}[1]
+{
+\REQUIRE{Number of classes $K$. Number of rounds $T$.}
+\STATE{Initialize $w_1^{(1)} = w_2^{(1)} = \dots = w_K^{(1)} = 0$}
+\FOR{$t=1,2,\dots,T$}
+\STATE{Observe feature vector $x_t$}
+\STATE{Predict $\widehat y_t = \argmax_{i \in \{1,2,\dots,K\}} \ip{w_t^{(i)}}{x_t}$}
+\STATE{Observe $y_t \in \{1,2,\dots,K\}$}
+\IF{$\widehat y_t \neq y_t$}
+\STATE{Set $w_i^{(t+1)} = w_i^{(t)}$ for all $i \in \{1,2,\dots,K\} \setminus \{y_t, \widehat y_t\}$}
+\STATE{Update $w_{y_t}^{(t+1)} = w_{y_t}^{(t)} + x_t$}
+\STATE{Update $w_{\widehat y_t}^{(t+1)} = w_{\widehat y_t}^{(t)} - x_t$}
+\ELSE
+\STATE{Set $w_i^{(t+1)} = w_i^{(t)}$ for all $i \in \{1,2,\dots,K\}$}
+\ENDIF
+\ENDFOR
+}
+\end{algorithmic}
+\end{algorithm}
 
 \section{Algorithm for strongly linearly separable data}
 \label{section:algorithm-for-strongly-linearly-separable-data}
@@ -242,22 +284,31 @@ however.
 \label{algorithm:algorithm-for-strongly-linearly-separable-examples}}
 \begin{algorithmic}[1]
 {
-\REQUIRE{Number of classes $K$}
+\REQUIRE{Number of classes $K$. Number of rounds $T$.}
 \STATE{Initialize $w_1^{(1)} = w_2^{(1)} = \dots = w_K^{(1)} = 0$}
-\FOR{$t=1,2,\dots$}
+\FOR{$t=1,2,\dots,T$}
 \STATE{Receive feature vector $x_t$}
-\STATE{Compute $S_t = \{ i ~:~ \ip{w_i^{(t)}}{x_t} > 0 \}$}
-\IF{$|S_t| = 1$}
-\STATE{Predict $\widehat y_t$ where $\widehat y_t \in S_t$}
-\ELSE
+\STATE{Compute $S_t = \left\{ i ~:~ 1 \le i \le K, \ \ip{w_i^{(t)}}{x_t} \ge 0 \right\}$}
+\IF{$S_t = \emptyset$}
 \STATE{Predict $\widehat y_t \sim \text{Uniform}(\{1,2,\dots,K\})$}
+\ELSE
+\STATE{Predict $\widehat y_t \sim \text{Uniform}(S_t)$}
 \ENDIF
-\STATE{Receive feedback $z_t \in \{0,1\}$ where $z_t = \indicator{\widehat y_t = y_t}$}
-\STATE{Update $w_i^{(t+1)} = w_i^{(t)}$ for all $i \in \{1,2,\dots,K\} \setminus \{\widehat y_t\}$}
-\IF{$z_t = 0$}
+\STATE{Receive feedback $z_t \in \{0,1\}$ where $z_t = \indicator{\widehat y_t \neq y_t}$}
+\IF{$S_t = \emptyset$}
+\IF{$z_t = 1$}
+\STATE{Set $w_i^{(t+1)} = w_i^{(t)}$ for all $i \in \{1,2,\dots,K\}$}
+\ELSE
+\STATE{Set $w_i^{(t+1)} = w_i^{(t)}$ for all $i \in \{1,2,\dots,K\} \setminus \{\widehat y_t\}$}
+\STATE{Update $w_{\widehat y_t}^{(t+1)} = w_{\widehat y_t}^{(t)} + x_t$}
+\ENDIF
+\ELSE
+\IF{$z_t = 1$}
+\STATE{Set $w_i^{(t+1)} = w_i^{(t)}$ for all $i \in \{1,2,\dots,K\} \setminus \{\widehat y_t\}$}
 \STATE{Update $w_{\widehat y_t}^{(t+1)} = w_{\widehat y_t}^{(t)} - x_t$}
 \ELSE
-\STATE{Update $w_{\widehat y_t}^{(t+1)} = w_{\widehat y_t}^{(t)}$}
+\STATE{Set $w_i^{(t+1)} = w_i^{(t)}$ for all $i \in \{1,2,\dots,K\}$}
+\ENDIF
 \ENDIF
 \ENDFOR
 }
@@ -298,9 +349,85 @@ TODO
 
 TODO
 
-
-
 \bibliographystyle{plainnat}
 \bibliography{biblio}
+
+\appendix
+
+\section{Multiclass Perceptron}
+\label{section:multiclass-perceptron-proofs}
+
+\begin{theorem}[Upper bound]
+Let $(V, \ip{\cdot}{\cdot})$ be an inner product space, let $K$ be a positive
+integer, let $\gamma$ be a positive real number and let $R$ be a non-negative real
+number. If $(x_1, y_1), (x_2, y_2), \dots, (x_T, y_T)$ is a sequence of labeled
+examples in $V \times \{1,2,\dots,K\}$ that are linearly separable with margin
+$\gamma$ and $\norm{x_1}, \norm{x_2}, \dots, \norm{x_T} \le R$
+then \textsc{Multiclass Perceptron} algorithm makes at most $\lfloor
+2(R/\gamma)^2 \rfloor$ mistakes.
+\end{theorem}
+
+\begin{proof}
+Let $M = \sum_{t=1}^T \indicator{\widehat y_t \neq y_t}$ be the number of
+mistakes the algorithm makes. Since the $K$-tuple $(w_1^{(t)}, w_2^{(t)}, \dots,
+w_K^{(t)})$ changes only if a mistake is made, we can upper bound $\sum_{i=1}^K
+\norm{w_i^{(t)}}^2$ in terms of number of mistakes.
+If a mistake happens in round $t$,
+\begin{align*}
+\sum_{i=1}^K \norm{w_i^{(t+1)}}^2
+& = \left(\sum_{i \in \{1,2,\dots,K\} \setminus \{y_t, \widehat y_t\} } \norm{w_i^{(t)}}^2 \right) + \norm{w_{y_t}^{(t)} + x_t}^2 + \norm{w_{\widehat y_t}^{(t)} - x_t}^2 \\
+& = \left(\sum_{i \in \{1,2,\dots,K\} \setminus \{y_t, \widehat y_t\} } \norm{w_i^{(t)}}^2 \right) + \norm{w_{y_t}^{(t)}}^2 + \norm{w_{\widehat y_t}^{(t)}}^2 + 2 \norm{x_t}^2 + 2 \ip{w_{y_t}^{(t)} - w_{\widehat y_t}^{(t)}}{x_t} \\
+& = \left(\sum_{i=1}^K \norm{w_i^{(t)}}^2 \right) + 2 \norm{x_t}^2 + 2 \ip{w_{y_t}^{(t)} - w_{\widehat y_t}^{(t)}}{x_t} \\
+& \le \left(\sum_{i=1}^K \norm{w_i^{(t)}}^2 \right) + 2 \norm{x_t}^2 \\
+& \le \left(\sum_{i=1}^K \norm{w_i^{(t)}}^2 \right) + 2 R^2 \; .
+\end{align*}
+So each time a mistake happens, $\sum_{i=1}^K \norm{w_i^{(t)}}^2$ increases by at most $2R^2$. Thus,
+$$
+\sum_{i=1}^K \norm{w_i^{(T+1)}}^2 \le 2R^2 M \; .
+$$
+Let $w_1^*, w_2^*, \dots, w_K^* \in V$ be vectors satisfying the
+\eqref{equation:linear-separability-1} and
+\eqref{equation:linear-separability-2}. We lower bound $\sum_{i=1}^K \ip{w_i^*}{w_i^{(t)}}$. This quantity changes
+only when a mistakes happens. If mistake happens in round $t$, we have
+\begin{align*}
+\sum_{i=1}^K \ip{w_i^*}{w_i^{(t+1)}}
+& = \left( \sum_{i \in \{1,2,\dots,K\} \setminus {y_t, \widehat y_t}} \ip{w_i^*}{w_i^{(t)}} \right) + \ip{w_{y_t}^*}{w_{y_t}^{(t)} + x_t} + \ip{w_{\widehat y_t}^*}{w_{\widehat y_t}^{(t)} - x_t} \\
+& = \left( \sum_{i=1}^K \ip{w_i^*}{w_i^{(t)}} \right) + \ip{w_{y_t}^* - w_{\widehat y_t}^*}{x_t} \\
+& \ge  \left( \sum_{i=1}^K \ip{w_i^*}{w_i^{(t)}} \right) + \gamma \; .
+\end{align*}
+Thus, after $M$ mistakes,
+$$
+\sum_{i=1}^K \ip{w_i^*}{w_i^{(T+1)}} \ge \gamma M \; .
+$$
+We upper bound the left hand side by using Cauchy-Schwartz inequality twice and
+the condition \eqref{equation:linear-separability-1} on $w_1^*, w_2^*, \dots,
+w_K^*$. We have
+$$
+\sum_{i=1}^K \ip{w_i^*}{w_i^{(T+1)}}
+\le \sum_{i=1}^K \norm{w_i^*} \cdot \norm{w_i^{(T+1)}}
+\le \sqrt{\sum_{i=1}^K \norm{w_i^*}^2} \sqrt{\sum_{i=1}^K \norm{w_i^{(T+1)}}^2}
+\le \sqrt{\sum_{i=1}^K \norm{w_i^{(T+1)}}^2} \; .
+$$
+Combining all inequalities, we get
+$$
+(\gamma M)^2 \le \sum_{i=1}^K \norm{w_i^{(T+1)}}^2 \le 2R^2 M \; .
+$$
+We conclude that $M \le 2(R/\gamma)^2$. Since $M$ is an integer, $M \le \lfloor 2(R/\gamma)^2 \rfloor$.
+\end{proof}
+
+\begin{theorem}[Lower bound]
+Let $K$ be a positive integer, let $\gamma$ be a positive real number and let
+$R$ be a non-negative real number. For any deterministic algorithm for the
+full-information multiclass classification there exists an inner product space
+$(V, \ip{\cdot}{\cdot})$, a non-negative integer $T$ and a sequence of labeled
+examples $(x_1, y_1), (x_2, y_2), \dots, (x_T, y_T)$ examples in $V \times
+\{1,2,\dots,K\}$ that are linearly separable with margin $\gamma$, the norms
+satisfy $\norm{x_1}, \norm{x_2}, \dots, \norm{x_T} \le R$ and the algorithm
+makes at least $\lfloor 2(R/\gamma)^2 \rfloor$ mistakes.
+\end{theorem}
+
+\begin{proof}
+TODO
+\end{proof}
 
 \end{document}
