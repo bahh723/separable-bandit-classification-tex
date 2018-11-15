@@ -91,39 +91,41 @@ optimization where the feedback corresponds to a user's click.
 \end{algorithmic}
 \end{algorithm}
 
-In this paper, we focus on the special case when the examples are \emph{linearly
-separable with a margin}. In the full-information feedback setting, it is well
-know that if the examples have norm at most $R$ and are linearly separable with
-a margin $\gamma$ then the \textsc{Multiclass Perceptron} algorithm makes at
-most $\lfloor 2(R/\gamma)^2 \rfloor$ mistakes. This result is very satisfactory
-since the upper bound on the number of mistakes is information-theoretically
-optimal and at the same time the \textsc{Multiclass Perceptron} algorithm has
-low time and memory complexity.
+In this paper, we focus on the special case when the examples lie in $\R^d$ and
+are \emph{linearly separable with a margin}. In the full-information feedback
+setting, it is well know that if the examples have norm at most $R$ and are
+linearly separable with a margin $\gamma$ then the \textsc{Multiclass
+Perceptron} algorithm makes at most $\lfloor 2(R/\gamma)^2 \rfloor$ mistakes.
+This result is very satisfactory since the upper bound on the number of mistakes
+is information-theoretically optimal and at the same time the \textsc{Multiclass
+Perceptron} algorithm has low time and memory complexity.
 
 The bandit feedback setting, however, is much more challenging. We start by
-dissecting the notion of linear separability. We define two notions of linear
-separability for multiclass classification: the standard linear separability
-and \emph{strong linear separability}. For binary classification, these two
-definitions are identical. However, they differ for multiclass classification.
-For multiclass classification with $K$ classes the standard notion of linear
-separability means that the examples from each class lie in an intersection of
-$K-1$ halfspaces and the examples outside the class lie in the complement of the
-intersection of the halfspaces. Strong linear separability means that examples
-from each class can be separated from the remaining examples by a \emph{single}
-hyperplane. We state the definitions precisely
-in Section~\ref{section:notions-of-linear-separability}.
+dissecting the notion of linear separability in the multiclass setting. Beside
+the standard notion of linear separability, we define also and \emph{strong
+linear separability}. For binary classification, these two definitions are
+identical. However, they differ for multiclass classification. For multiclass
+classification with $K$ classes the standard notion of linear separability means
+that the examples from each class lie in an intersection of $K-1$ halfspaces and
+the examples outside of the class lie in the complement of the intersection of
+the halfspaces. Strong linear separability means that examples from each class
+can be separated from the remaining examples by a \emph{single} hyperplane. We
+state the definitions precisely in
+Section~\ref{section:notions-of-linear-separability}.
 
-If the examples are strongly linearly separable, there is a simple and efficient
-algorithm for the bandit feedback setting with expected number of mistakes
-at most $K (R/\gamma)^2$. The algorithm can be viewed as running $K$ copies of
-the \textsc{Binary Perceptron} algorithm, one copy for each class.
+For the case when the examples are strongly linearly separable, we design a
+simple and efficient algorithm with expected number of mistakes at most $K
+(R/\gamma)^2$. The algorithm can be viewed as running $K$ copies of the
+\textsc{Binary Perceptron} algorithm, one copy for each class. Intuitively
+speaking, the factor $K$ is the price we pay for the bandit feedback,
+or more precisely, the lack of full-information feedback.
 
 For the standard notion of linear separability, we propose three algorithms with
 various time-complexity-versus-mistake-bound trade-offs. Two of these algorithms
-map the examples into a high-dimensional vector space induced by a kernel. In
-this space the examples become \emph{strongly} linearly separable. This allows
-us to run a kernelized version of the algorithm for the strongly linearly
-separable case.
+map the examples into a high-dimensional inner product space induced by a
+kernel. In this space the examples become \emph{strongly} linearly separable.
+This allows us to run a kernelized version of the algorithm for the strongly
+linearly separable case.
 
 The two kernel-based algorithms differ by the choice of the kernel. The crux of
 the problem is the analysis of the approximation properties of these kernels and
@@ -247,9 +249,9 @@ full-information setting to upper bound the number of mistakes of the
 algorithm below. It is a folklore result that if a set of labeled examples is
 separable with a margin $\gamma$ and the norm of the examples is bounded by $R$
 then \textsc{Multiclass Perceptron} algorithm makes at most $\left\lfloor
-(R/\gamma)^2 \right \rfloor$ mistakes. Another folklore result is that
+2(R/\gamma)^2 \right \rfloor$ mistakes. Another folklore result is that
 \textsc{Multiclass Perceptron} is an optimal algorithm in the sense that any
-deterministic algorithm makes $\left\lfloor (R/\gamma)^2 \right \rfloor$
+deterministic algorithm makes $\left\lfloor 2(R/\gamma)^2 \right \rfloor$
 mistakes in the worst case. For completeness, we give proofs  in
 Section~\ref{section:multiclass-perceptron-proofs} for both of these results.
 
@@ -258,10 +260,10 @@ Section~\ref{section:multiclass-perceptron-proofs} for both of these results.
 \label{algorithm:mutliclass-perceptron}}
 \begin{algorithmic}[1]
 {
-\REQUIRE{Number of classes $K$. Number of rounds $T$.}
+\REQUIRE{Number of classes $K$. Number of rounds $T$. Inner product space $(V,\ip{\cdot}{\cdot})$.}
 \STATE{Initialize $w_1^{(1)} = w_2^{(1)} = \dots = w_K^{(1)} = 0$}
 \FOR{$t=1,2,\dots,T$}
-\STATE{Observe feature vector $x_t$}
+\STATE{Observe feature vector $x_t \in V$}
 \STATE{Predict $\widehat y_t = \argmax_{i \in \{1,2,\dots,K\}} \ip{w_t^{(i)}}{x_t}$}
 \STATE{Observe $y_t \in \{1,2,\dots,K\}$}
 \IF{$\widehat y_t \neq y_t$}
@@ -280,21 +282,21 @@ Section~\ref{section:multiclass-perceptron-proofs} for both of these results.
 \label{section:algorithm-for-strongly-linearly-separable-data}
 
 \begin{algorithm}[h]
-\caption{Algorithm for strongly linearly separable examples
+\caption{\textsc{Bandit Algorithm for Strongly Linearly Separable Examples}
 \label{algorithm:algorithm-for-strongly-linearly-separable-examples}}
 \begin{algorithmic}[1]
 {
-\REQUIRE{Number of classes $K$. Number of rounds $T$.}
+\REQUIRE{Number of classes $K$. Number of rounds $T$. Inner product space $(V,\ip{\cdot}{\cdot})$.}
 \STATE{Initialize $w_1^{(1)} = w_2^{(1)} = \dots = w_K^{(1)} = 0$}
 \FOR{$t=1,2,\dots,T$}
-\STATE{Receive feature vector $x_t$}
+\STATE{Observe feature vector $x_t \in V$}
 \STATE{Compute $S_t = \left\{ i ~:~ 1 \le i \le K, \ \ip{w_i^{(t)}}{x_t} \ge 0 \right\}$}
 \IF{$S_t = \emptyset$}
 \STATE{Predict $\widehat y_t \sim \text{Uniform}(\{1,2,\dots,K\})$}
 \ELSE
 \STATE{Predict $\widehat y_t \sim \text{Uniform}(S_t)$}
 \ENDIF
-\STATE{Receive feedback $z_t \in \{0,1\}$ where $z_t = \indicator{\widehat y_t \neq y_t}$}
+\STATE{Observe feedback $z_t \in \{0,1\}$ where $z_t = \indicator{\widehat y_t \neq y_t}$}
 \IF{$S_t = \emptyset$}
 \IF{$z_t = 1$}
 \STATE{Set $w_i^{(t+1)} = w_i^{(t)}$ for all $i \in \{1,2,\dots,K\}$}
@@ -357,7 +359,7 @@ TODO
 \section{Multiclass Perceptron}
 \label{section:multiclass-perceptron-proofs}
 
-\begin{theorem}[Upper bound]
+\begin{theorem}[Mistake upper bound]
 Let $(V, \ip{\cdot}{\cdot})$ be an inner product space, let $K$ be a positive
 integer, let $\gamma$ be a positive real number and let $R$ be a non-negative real
 number. If $(x_1, y_1), (x_2, y_2), \dots, (x_T, y_T)$ is a sequence of labeled
@@ -415,19 +417,71 @@ $$
 We conclude that $M \le 2(R/\gamma)^2$. Since $M$ is an integer, $M \le \lfloor 2(R/\gamma)^2 \rfloor$.
 \end{proof}
 
-\begin{theorem}[Lower bound]
+\begin{algorithm}[h]
+\caption{\textsc{Full-Information Multiclass Classification}
+\label{algorithm:mutliclass-classification}}
+\begin{algorithmic}[1]
+{
+\REQUIRE{Number of classes $K$. Number of rounds $T$.}
+\FOR{$t=1,2,\dots,T$}
+\STATE{Observe feature vector $x_t$}
+\STATE{Predict $\widehat y_t \in \{1,2,\dots,K\}$}
+\STATE{Observe $y_t \in \{1,2,\dots,K\}$}
+\ENDFOR
+}
+\end{algorithmic}
+\end{algorithm}
+
+
+\begin{theorem}[Mistake lower bound]
 Let $K$ be a positive integer, let $\gamma$ be a positive real number and let
 $R$ be a non-negative real number. For any deterministic algorithm for the
-full-information multiclass classification there exists an inner product space
-$(V, \ip{\cdot}{\cdot})$, a non-negative integer $T$ and a sequence of labeled
-examples $(x_1, y_1), (x_2, y_2), \dots, (x_T, y_T)$ examples in $V \times
-\{1,2,\dots,K\}$ that are linearly separable with margin $\gamma$, the norms
-satisfy $\norm{x_1}, \norm{x_2}, \dots, \norm{x_T} \le R$ and the algorithm
-makes at least $\lfloor 2(R/\gamma)^2 \rfloor$ mistakes.
+\textsc{Full-Information Multiclass Classification} problem there exists an
+inner product space $(V, \ip{\cdot}{\cdot})$, a non-negative integer $T$ and a
+sequence of labeled examples $(x_1, y_1), (x_2, y_2), \dots, (x_T, y_T)$
+examples in $V \times \{1,2,\dots,K\}$ that are linearly separable with margin
+$\gamma$, the norms satisfy $\norm{x_1}, \norm{x_2}, \dots, \norm{x_T} \le R$
+and the algorithm makes at least $\lfloor (R/\gamma)^2 \rfloor$ mistakes.
 \end{theorem}
 
 \begin{proof}
-TODO
+Let $T = \lfloor (R/\gamma)^2 \rfloor$ and let $x_1, x_2, \dots, x_T$ be the
+orthogonal vectors such that $\norm{x_t} = R$ for all $t=1,2,\dots,T$. For
+example, we can take $V = \R^T$ and $x_t = R e_t$ where $e_t$ is $t$-th element
+of the standard orthonormal basis of $\R^T$.
+
+Since the algorithm is deterministic, we can construct the sequence of labels
+$y_1, y_2, \dots, y_T$ adaptively based on the predictions $\widehat y_1,
+\widehat y_2, \dots, \widehat y_T$ of the algorithm. We define $y_t$ to be any
+element of $\{1,2,\dots,K\}$ not equal to $\widehat y_t$. This way the algorithm
+makes a mistake in every round $t=1,2,\dots,T$.
+
+It remains to show that the examples we have constructed are linearly separable
+with margin $\gamma$. To prove that we demostrate vectors $w_1, w_2, \dots, w_K$
+satisfying conditions \eqref{equation:linear-separability-1} and
+\eqref{equation:linear-separability-2}. We define
+$$
+w_i = \frac{1}{R\sqrt{T}} \sum_{\substack{t : 1 \le t \le T \\ y_t = i}} x_t \qquad \qquad \text{for $i=1,2,\dots,K$.}
+$$
+Let $a_i = |\{ t ~:~ 1 \le t \le T, \ y_t = i \}|$ be the number of occurences of label $i$.
+It is easy to see that
+$$
+\norm{w_i}^2 = \frac{1}{R^2 T} \sum_{\substack{t : 1 \le t \le T \\ y_t = i}} \norm{x_t}^2 = \frac{a_i}{T} \qquad \qquad \text{for $i=1,2,\dots,K$.}
+$$
+Since $\sum_{i=1}^K a_i = T$, the condition
+\eqref{equation:linear-separability-1} holds. To verify condition
+\eqref{equation:linear-separability-2} consider any labeled example $(x_t,
+y_t)$. Then, by definition of $w_{y_t}$ we have
+$$
+\ip{w_{y_t}}{x_t}
+= \frac{1}{R\sqrt{T}} \sum_{\substack{s : 1 \le s \le T \\ y_s = y_t}} \ip{x_s}{x_t}
+= \frac{1}{R\sqrt{T}} \norm{x_t}^2
+= \frac{R}{\sqrt{T}}
+\ge \frac{R}{R/\gamma}
+= \gamma \; .
+$$
+and for any $i \in \{1,2,\dots,K\} \setminus \{y_t\}$ we have
+$\ip{w_i}{x_t} = 0$. Therefore, condition \eqref{equation:linear-separability-2} holds.
 \end{proof}
 
 \end{document}
