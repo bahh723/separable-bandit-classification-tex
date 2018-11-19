@@ -6,6 +6,7 @@
 \usepackage{amsmath}
 \usepackage{amssymb}
 \usepackage{amsthm}
+\usepackage{caption}
 \usepackage{fullpage}
 \usepackage[colorlinks=true,citecolor=blue,linkcolor=blue]{hyperref}
 \usepackage{natbib}
@@ -61,16 +62,20 @@ TODO
 \section{Introduction}
 \label{section:introduction}
 
-We study the \textsc{Online Multiclass Classification with Bandit Feedback}
-problem. The protocol of the problem is stated below. The goal is to design an
-algorithm that makes small number of mistakes $\sum_{t=1}^T z_t = \sum_{t=1}^T
-\indicator{\widehat y_t \neq y_t}$. The problem was initially proposed by
-\cite{Kakade-Shalev-Shwartz-Tewari-2008}. The corresponding problem with full
-information feedback is solved by the classical \textsc{Multiclass Perceptron}
-algorithm and its variants (see e.g.
-\cite{Crammer-Dekel-Keshet-Shalev-Shwartz-Singer-2006}). The problem is quite
-natural and potential applications include online advertising and online content
-optimization where the feedback corresponds to a user's click.
+We design new algorithms for the problem of \textsc{Online Multiclass
+Classification with Bandit Feedback}. In this problem, in each round $t$, the
+algorithm receives a feature vector $x_t$ and algorithm has to predict one of
+$K$ possible classes. Imediately after the algorithm makes its prediction, it
+receives feedback whether the prediction was correct or not. However, in
+contrast with the standard, so called full information setting, the algorithm
+does \emph{not} receive the correct label. In other words, the feedback is
+purely binary (correct prediction or incorrect prediction). To allow for
+meaningful randomized strategies, we assume that the correct label for round $t$
+is chosen prior to algorithm's prediction in that round.\footnote{The reader can
+assume throughout the paper a simpler model of the so called \emph{oblivious
+adversary} where the whole sequence of labeled examples $(x_1, y_1), (x_2, y_2),
+\dots, (x_T, y_T)$ is chosen before the first round of the game.} The protocol
+of the problem is stated below.
 
 \begin{algorithm}[h]
 \caption{\textsc{Online Multiclass Classification with Bandit Feedback}
@@ -92,6 +97,15 @@ optimization where the feedback corresponds to a user's click.
 \end{algorithmic}
 \end{algorithm}
 
+The goal is to design an algorithm that makes small number of mistakes
+$\sum_{t=1}^T z_t = \sum_{t=1}^T \indicator{\widehat y_t \neq y_t}$. The problem
+was initially proposed by \cite{Kakade-Shalev-Shwartz-Tewari-2008}. The
+corresponding problem with full information feedback is solved by the classical
+\textsc{Multiclass Perceptron} algorithm and its variants (see e.g.
+\cite{Crammer-Dekel-Keshet-Shalev-Shwartz-Singer-2006}). The problem is quite
+natural and potential applications include online advertising and online content
+optimization where the feedback corresponds to a user's click.
+
 In this paper, we focus on the special case when the examples lie in $\R^d$ and
 are \emph{linearly separable with a margin}. In the full-information feedback
 setting, it is well know that if the examples have norm at most $R$ and are
@@ -101,25 +115,25 @@ This result is very satisfactory since the upper bound on the number of mistakes
 is information-theoretically optimal and at the same time the \textsc{Multiclass
 Perceptron} algorithm has low time and memory complexity.
 
-The bandit feedback setting, however, is much more challenging. We start by
-dissecting the notion of linear separability in the multiclass setting. Beside
-the standard notion of linear separability, we define also and \emph{strong
-linear separability}. For binary classification, these two definitions are
-identical. However, they differ for multiclass classification. For multiclass
-classification with $K$ classes the standard notion of linear separability means
-that the examples from each class lie in an intersection of $K-1$ halfspaces and
-the examples outside of the class lie in the complement of the intersection of
-the halfspaces. Strong linear separability means that examples from each class
-can be separated from the remaining examples by a \emph{single} hyperplane. We
-state the definitions precisely in
+The bandit feedback setting, however, is much more challenging. To understand
+the differences, we dissect the notion of linear separability in the multiclass
+setting. Beside the standard notion of linear separability, we define also
+\emph{strong linear separability}. For binary classification, these two
+definitions are identical. However, they differ for multiclass classification.
+For multiclass classification with $K$ classes the standard notion of linear
+separability means that the examples from each class lie in an intersection of
+$K-1$ halfspaces and the examples outside of the class lie in the complement of
+the intersection of the halfspaces. Strong linear separability means that
+examples from each class can be separated from the remaining examples by a
+\emph{single} hyperplane. We state the definitions precisely in
 Section~\ref{section:notions-of-linear-separability}.
 
 For the case when the examples are strongly linearly separable, we design a
-simple and efficient algorithm with expected number of mistakes at most $K
-(R/\gamma)^2$. The algorithm can be viewed as running $K$ copies of the
-\textsc{Binary Perceptron} algorithm, one copy for each class. Intuitively
-speaking, the factor $K$ is the price we pay for the bandit feedback,
-or more precisely, the lack of full-information feedback.
+simple and efficient algorithm with expected number of mistakes at most $K(K-1)
+\lfloor (R/\gamma)^2 \rfloor$. The algorithm can be viewed as running $K$ copies
+of the \textsc{Binary Perceptron} algorithm, one copy for each class.
+Intuitively speaking, the factor $K(K-1)$ is the price we pay for the bandit
+feedback, or more precisely, the lack of full-information feedback.
 
 For the standard notion of linear separability, we propose three algorithms with
 various time-complexity-versus-mistake-bound trade-offs. Two of these algorithms
@@ -155,10 +169,10 @@ which we know the class label. Weakly labeled example is an example for which we
 know that class label can be anything except for a particular one class. First,
 we show the offline problem of determining if a linear multiclass separator
 exists for a set of strongly- and weakly-labeled examples is NP-complete. This
-result is a simple consequence of the fact learning intersection of halfspaces
-is NP-complete~\citep{Blum-Rivest-1993}. Second, we show that any algorithm that
-uses only strongly-labeled examples and ignores weakly labeled examples makes at
-least $\Omega(???)$ mistakes.
+result is a simple consequence of the fact that learning intersection of
+halfspaces is NP-complete~\citep{Blum-Rivest-1993}. Second, we show that any
+algorithm that uses only strongly-labeled examples and ignores weakly labeled
+examples makes at least $\Omega(???)$ mistakes.
 
 
 \section{Related work}
@@ -180,7 +194,7 @@ Section~\ref{section:algorithm-for-strongly-linearly-separable-data}.
 \begin{definition}
 Let $(V,\ip{\cdot}{\cdot})$ be an inner product space, let $K$ be a positive
 integer, and let $\gamma$ be a positive real number. Let $(x_1, y_1), (x_2,
-y_2), \dots, (x_T, y_T)$ labeled examples in $V \times \{1,2,\dots,K\}$.
+y_2), \dots, (x_T, y_T)$ be labeled examples in $V \times \{1,2,\dots,K\}$.
 
 The examples are said to be \emph{linearly separable with a
 margin $\gamma$} if there exist vectors $w_1, w_2, \dots, w_K \in V$ such
@@ -250,11 +264,13 @@ Figure~\ref{figure:linearly-separable-examples-with-margin}.
 \begin{center}
 \input{figures/linearly-separable-examples-with-margin}
 \end{center}
-\caption{The figure shows labeled examples in $\R^2$. The examples belong to
+\caption[]{The figure shows labeled examples in $\R^2$. The examples belong to
 $K=3$ classes colored white, gray and black respectively. Each class lies in a
-$120^\circ$ wedge. While the examples are linearly separable with a positive
-margin $\gamma$, they are \emph{not} strongly linearly separable for any
-positive margin $\gamma$.
+$120^\circ$ wedge. In other words, each class lies in an intersection of two
+halfspaces.
+
+While the examples are linearly separable with a positive margin $\gamma$, they
+are \emph{not} strongly linearly separable for any positive margin $\gamma$.
 }
 \label{figure:linearly-separable-examples-with-margin}
 \end{figure}
@@ -262,6 +278,22 @@ positive margin $\gamma$.
 
 \section{Algorithm for strongly linearly separable data}
 \label{section:algorithm-for-strongly-linearly-separable-data}
+
+In this section, we present an algorithm for \textsc{Online Multiclass
+Classification with Bandit Feedback} and prove an upper bound on the number of
+mistakes under the assumption that the examples are strongly linearly separable
+with a margin. The algorithm is stated
+Algorithm~\eqref{algorithm:algorithm-for-strongly-linearly-separable-examples}
+below and the mistake upper bound is stated as
+\autoref{theorem:stronglys-separable-example-mistake-upper-bound}.
+
+The idea behind the algorithm is to use $K$ copies of the \textsc{Binary
+Perceptron} algorithm. Each copy corresponds to a class. In each round, each
+copy makes a binary decision whether the feature vector belongs their respective
+class or not. If at least one copy makes a positive prediction, the algorithm
+predicts accordingly. If multiple copies make positive predictions, the
+algorithm chooses one of them at random. If all copies make negative
+predictions, the algorithms makes a blind guess.
 
 \begin{algorithm}[h]
 \caption{\textsc{Bandit Algorithm for Strongly Linearly Separable Examples}
@@ -300,6 +332,7 @@ positive margin $\gamma$.
 \end{algorithm}
 
 \begin{theorem}
+\label{theorem:stronglys-separable-example-mistake-upper-bound}
 Let $(V, \ip{\cdot}{\cdot})$ be any inner product space, let $K$ be a positive
 integer, $\gamma$ a positive real number, $R$ be a non-negative real number If
 $(x_1, y_1), (x_2, y_2), \dots, (x_T, y_T)$ is a sequence of labeled examples in
@@ -318,13 +351,14 @@ number of mistakes in the rounds when $S_t = \emptyset$. Obviously, $M = A + B$.
 We upper bound $A$ and $B$ separately.
 
 Let $C$ be the number of times line 16 gets executed. Let $U$ be the number of
-times line 16 or line 21 get executed. In other words, $U$ the number of times
-the weight vectors are updated. Clearly, $U = A + C$. We know that $U \le
-\frac{K} \lfloor (R/\gamma)^2 \rfloor$.
+times line 16 or line 21 get executed. In other words, $U$ is the number of
+times the weight vectors are updated. Clearly, $U = A + C$. We know that $U \le
+K \lfloor (R/\gamma)^2 \rfloor$.
 
-The key observation is that $\Exp[B] = (K-1) \Exp[C]$ since there the $1/K$
-probability that the algorithm guesses the correct label correctly if $S_t =
-\emptyset$. Putting all the information together, we get that
+The key observation is that $\Exp[B] = (K-1) \Exp[C]$ since if $S_t =
+\emptyset$, there is $1/K$ probability that the algorithm guesses the correct
+label correctly and $(K-1)/K$ probability that it guesses is incorrectly.
+Putting all the information together, we get that
 \begin{align*}
 \Exp[M]
 & = \Exp[A] + \Exp[B] \\
