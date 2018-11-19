@@ -9,6 +9,7 @@
 \usepackage{fullpage}
 \usepackage[colorlinks=true,citecolor=blue,linkcolor=blue]{hyperref}
 \usepackage{natbib}
+\usepackage{thmtools}
 \usepackage{tikz}
 
 % TikZ packages
@@ -204,6 +205,21 @@ that
 \end{align}
 \end{definition}
 
+The notion of linear separability with a margin is standard. It used in the
+full-information setting to upper bound the number of mistakes of the
+\textsc{Multiclass Perceptron} algorithm. For completeness, we state the
+algorithm in Appendix~\ref{section:multiclass-perceptron-proofs}. It is a
+folklore result that if a set of labeled examples is separable with a margin
+$\gamma$ and the norm of the examples is bounded by $R$ then \textsc{Multiclass
+Perceptron} algorithm makes at most $\left\lfloor 2(R/\gamma)^2 \right \rfloor$
+mistakes. Another folklore result is that \textsc{Multiclass Perceptron} is
+essentially optimal in the sense that any deterministic algorithm must make
+$\left\lfloor (R/\gamma)^2 \right \rfloor$ mistakes in the worst case. For
+completeness, we give proofs of both of these results in
+Section~\ref{section:multiclass-perceptron-proofs}.
+
+The notion of strong linear separability is new.
+
 It is easy to see that if labeled examples are strongly linearly
 separable with margin $\gamma$ then they are linearly separable with margin
 $2\gamma$. Indeed, if $w_1, w_2, \dots, w_K \in V$
@@ -243,40 +259,6 @@ positive margin $\gamma$.
 \label{figure:linearly-separable-examples-with-margin}
 \end{figure}
 
-The notion of linear separability with a margin is standard. It used in the
-full-information setting to upper bound the number of mistakes of the
-\textsc{Multiclass Perceptron} algorithm. For completeness, we state the
-algorithm below. It is a folklore result that if a set of labeled examples is
-separable with a margin $\gamma$ and the norm of the examples is bounded by $R$
-then \textsc{Multiclass Perceptron} algorithm makes at most $\left\lfloor
-2(R/\gamma)^2 \right \rfloor$ mistakes. Another folklore result is that
-\textsc{Multiclass Perceptron} is an optimal algorithm in the sense that any
-deterministic algorithm makes $\left\lfloor 2(R/\gamma)^2 \right \rfloor$
-mistakes in the worst case. For completeness, we give proofs  in
-Section~\ref{section:multiclass-perceptron-proofs} for both of these results.
-
-\begin{algorithm}[h]
-\caption{\textsc{Multiclass Perceptron}
-\label{algorithm:mutliclass-perceptron}}
-\begin{algorithmic}[1]
-{
-\REQUIRE{Number of classes $K$. Number of rounds $T$. Inner product space $(V,\ip{\cdot}{\cdot})$.}
-\STATE{Initialize $w_1^{(1)} = w_2^{(1)} = \dots = w_K^{(1)} = 0$}
-\FOR{$t=1,2,\dots,T$}
-\STATE{Observe feature vector $x_t \in V$}
-\STATE{Predict $\widehat y_t = \argmax_{i \in \{1,2,\dots,K\}} \ip{w_t^{(i)}}{x_t}$}
-\STATE{Observe $y_t \in \{1,2,\dots,K\}$}
-\IF{$\widehat y_t \neq y_t$}
-\STATE{Set $w_i^{(t+1)} = w_i^{(t)}$ for all $i \in \{1,2,\dots,K\} \setminus \{y_t, \widehat y_t\}$}
-\STATE{Update $w_{y_t}^{(t+1)} = w_{y_t}^{(t)} + x_t$}
-\STATE{Update $w_{\widehat y_t}^{(t+1)} = w_{\widehat y_t}^{(t)} - x_t$}
-\ELSE
-\STATE{Set $w_i^{(t+1)} = w_i^{(t)}$ for all $i \in \{1,2,\dots,K\}$}
-\ENDIF
-\ENDFOR
-}
-\end{algorithmic}
-\end{algorithm}
 
 \section{Algorithm for strongly linearly separable data}
 \label{section:algorithm-for-strongly-linearly-separable-data}
@@ -319,16 +301,38 @@ Section~\ref{section:multiclass-perceptron-proofs} for both of these results.
 
 \begin{theorem}
 Let $(V, \ip{\cdot}{\cdot})$ be any inner product space, let $K$ be a positive
-integer, $\gamma$ a positive real number, $R$ be a non-negative real number
-If $(x_1, y_1), (x_2, y_2), \dots, (x_T, y_T)$ is a sequence of labeled examples
-in $V \times \{1,2,\dots,K\}$ such that the examples are strongly separable with
-margin $\gamma$ and $\norm{x_1}, \norm{x_2}, \dots, \norm{x_T} \le R$ then
+integer, $\gamma$ a positive real number, $R$ be a non-negative real number If
+$(x_1, y_1), (x_2, y_2), \dots, (x_T, y_T)$ is a sequence of labeled examples in
+$V \times \{1,2,\dots,K\}$ such that the examples are strongly separable with
+margin $\gamma$ and $\norm{x_1}, \norm{x_2}, \dots, \norm{x_T} \le R$ then the
+expected number of mistakes
 Algorithm~\ref{algorithm:algorithm-for-strongly-linearly-separable-examples}
-makes at most $K (R/\gamma)^2$ mistakes.
+makes is at most $K(K-1) \lfloor (R/\gamma)^2 \rfloor$ mistakes.
 \end{theorem}
 
 \begin{proof}
-TODO
+Let $M = \sum_{t=1}^T z_t$ be the number of mistakes the algorithm makes. Let $A
+= \sum_{t ~:~ S_t \neq \emptyset} z_t$ be the number of mistakes in the rounds
+when $S_t \neq \emptyset$ and let $B = \sum_{t ~:~ S_t = \emptyset} z_t$ be the
+number of mistakes in the rounds when $S_t = \emptyset$. Obviously, $M = A + B$.
+We upper bound $A$ and $B$ separately.
+
+Let $C$ be the number of times line 16 gets executed. Let $U$ be the number of
+times line 16 or line 21 get executed. In other words, $U$ the number of times
+the weight vectors are updated. Clearly, $U = A + C$. We know that $U \le
+\frac{K} \lfloor (R/\gamma)^2 \rfloor$.
+
+The key observation is that $\Exp[B] = (K-1) \Exp[C]$ since there the $1/K$
+probability that the algorithm guesses the correct label correctly if $S_t =
+\emptyset$. Putting all the information together, we get that
+\begin{align*}
+\Exp[M]
+& = \Exp[A] + \Exp[B] \\
+& = \Exp[A] + (K-1) \Exp[C]  \\
+& \le (K-1) \Exp[A + C] \\
+& = (K-1) \Exp[U]  \\
+& \le K(K-1) \lfloor (R/\gamma)^2 \rfloor \; .
+\end{align*}
 \end{proof}
 
 
@@ -359,7 +363,62 @@ TODO
 \section{Multiclass Perceptron}
 \label{section:multiclass-perceptron-proofs}
 
+\textsc{Multiclass Perceptron} is an algorithm for \textsc{Online Multiclass
+Classification}. Both the protocol for the problem and the algorithm are stated
+below. The algorithm assumes that the feature vectors come from an inner product
+space $(V, \ip{\cdot}{\cdot})$.
+
+Two results are folklore. The first result is
+\autoref{theorem:mutliclass-perceptron-mistake-upper-bound} which states that if
+examples are linearly separable with margin $\gamma$ and examples have norm
+at most $R$ then the algorithm makes at most $\lfloor 2 (R/\gamma)^2 \rfloor$
+mistakes. The second result is
+\autoref{theorem:online-multiclass-classification-mistake-lower-bound} which
+states that under the same assumptions as in
+\autoref{theorem:online-multiclass-classification-mistake-lower-bound}
+\emph{any} deterministic algorithm for \textsc{Online Multiclass Classification}
+must make at least $\lfloor (R/\gamma)^2 \rfloor$ mistakes in the worst case.
+
+\begin{algorithm}[h]
+\caption{\textsc{Online Multiclass Classification}
+\label{algorithm:mutliclass-classification}}
+\begin{algorithmic}[1]
+{
+\REQUIRE{Number of classes $K$. Number of rounds $T$.}
+\FOR{$t=1,2,\dots,T$}
+\STATE{Observe feature vector $x_t$}
+\STATE{Predict $\widehat y_t \in \{1,2,\dots,K\}$}
+\STATE{Observe $y_t \in \{1,2,\dots,K\}$}
+\ENDFOR
+}
+\end{algorithmic}
+\end{algorithm}
+
+\begin{algorithm}[h]
+\caption{\textsc{Multiclass Perceptron}
+\label{algorithm:mutliclass-perceptron}}
+\begin{algorithmic}[1]
+{
+\REQUIRE{Number of classes $K$. Number of rounds $T$. Inner product space $(V,\ip{\cdot}{\cdot})$.}
+\STATE{Initialize $w_1^{(1)} = w_2^{(1)} = \dots = w_K^{(1)} = 0$}
+\FOR{$t=1,2,\dots,T$}
+\STATE{Observe feature vector $x_t \in V$}
+\STATE{Predict $\widehat y_t = \argmax_{i \in \{1,2,\dots,K\}} \ip{w_t^{(i)}}{x_t}$}
+\STATE{Observe $y_t \in \{1,2,\dots,K\}$}
+\IF{$\widehat y_t \neq y_t$}
+\STATE{Set $w_i^{(t+1)} = w_i^{(t)}$ for all $i \in \{1,2,\dots,K\} \setminus \{y_t, \widehat y_t\}$}
+\STATE{Update $w_{y_t}^{(t+1)} = w_{y_t}^{(t)} + x_t$}
+\STATE{Update $w_{\widehat y_t}^{(t+1)} = w_{\widehat y_t}^{(t)} - x_t$}
+\ELSE
+\STATE{Set $w_i^{(t+1)} = w_i^{(t)}$ for all $i \in \{1,2,\dots,K\}$}
+\ENDIF
+\ENDFOR
+}
+\end{algorithmic}
+\end{algorithm}
+
 \begin{theorem}[Mistake upper bound]
+\label{theorem:mutliclass-perceptron-mistake-upper-bound}
 Let $(V, \ip{\cdot}{\cdot})$ be an inner product space, let $K$ be a positive
 integer, let $\gamma$ be a positive real number and let $R$ be a non-negative real
 number. If $(x_1, y_1), (x_2, y_2), \dots, (x_T, y_T)$ is a sequence of labeled
@@ -417,23 +476,9 @@ $$
 We conclude that $M \le 2(R/\gamma)^2$. Since $M$ is an integer, $M \le \lfloor 2(R/\gamma)^2 \rfloor$.
 \end{proof}
 
-\begin{algorithm}[h]
-\caption{\textsc{Full-Information Multiclass Classification}
-\label{algorithm:mutliclass-classification}}
-\begin{algorithmic}[1]
-{
-\REQUIRE{Number of classes $K$. Number of rounds $T$.}
-\FOR{$t=1,2,\dots,T$}
-\STATE{Observe feature vector $x_t$}
-\STATE{Predict $\widehat y_t \in \{1,2,\dots,K\}$}
-\STATE{Observe $y_t \in \{1,2,\dots,K\}$}
-\ENDFOR
-}
-\end{algorithmic}
-\end{algorithm}
-
 
 \begin{theorem}[Mistake lower bound]
+\label{theorem:online-multiclass-classification-mistake-lower-bound}
 Let $K$ be a positive integer, let $\gamma$ be a positive real number and let
 $R$ be a non-negative real number. For any deterministic algorithm for the
 \textsc{Full-Information Multiclass Classification} problem there exists an
