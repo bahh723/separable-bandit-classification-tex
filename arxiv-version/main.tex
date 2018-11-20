@@ -63,19 +63,19 @@ TODO
 \label{section:introduction}
 
 We design new algorithms for the problem of \textsc{Online Multiclass
-Classification with Bandit Feedback}. In this problem, in each round $t$, the
-algorithm receives a feature vector $x_t$ and algorithm has to predict one of
-$K$ possible classes. Imediately after the algorithm makes its prediction, it
+Classification with Bandit Feedback}. In this problem, in each round, the
+algorithm receives a feature vector and algorithm has to predict one of $K$
+possible classes. Imediately after the algorithm makes its prediction, it
 receives feedback whether the prediction was correct or not. However, in
 contrast with the standard, so called full information setting, the algorithm
-does \emph{not} receive the correct label. In other words, the feedback is
-purely binary (correct prediction or incorrect prediction). To allow for
-meaningful randomized strategies, we assume that the correct label for round $t$
-is chosen prior to algorithm's prediction in that round.\footnote{The reader can
-assume throughout the paper a simpler model of the so called \emph{oblivious
-adversary} where the whole sequence of labeled examples $(x_1, y_1), (x_2, y_2),
-\dots, (x_T, y_T)$ is chosen before the first round of the game.} The protocol
-of the problem is stated below.
+does \emph{not} receive the correct label. The feedback is only binary, correct
+prediction or incorrect prediction. To allow for meaningful randomized
+strategies, we assume that the correct label in a particular round is chosen
+prior to algorithm's prediction in that round.\footnote{The reader can assume
+throughout the paper a simpler model of the so called \emph{oblivious adversary}
+where the whole sequence of labeled examples $(x_1, y_1), (x_2, y_2), \dots,
+(x_T, y_T)$ is chosen before the first round of the game.} The protocol of the
+problem is stated below.
 
 \begin{algorithm}[h]
 \caption{\textsc{Online Multiclass Classification with Bandit Feedback}
@@ -129,11 +129,13 @@ examples from each class can be separated from the remaining examples by a
 Section~\ref{section:notions-of-linear-separability}.
 
 For the case when the examples are strongly linearly separable, we design a
-simple and efficient algorithm with expected number of mistakes at most $K(K-1)
+simple and efficient algorithm with expected number of mistakes at most $(K-1)
 \lfloor (R/\gamma)^2 \rfloor$. The algorithm can be viewed as running $K$ copies
 of the \textsc{Binary Perceptron} algorithm, one copy for each class.
-Intuitively speaking, the factor $K(K-1)$ is the price we pay for the bandit
-feedback, or more precisely, the lack of full-information feedback.
+Intuitively speaking, the factor $K-1$ is the price we pay for the bandit
+feedback, or more precisely, the lack of full-information feedback. We also
+prove that any algorithm makes $K \lfloor (R/\gamma)^2 \rfloor / ??$ in the
+worst case in this setting.
 
 For the standard notion of linear separability, we propose three algorithms with
 various time-complexity-versus-mistake-bound trade-offs. Two of these algorithms
@@ -282,9 +284,9 @@ are \emph{not} strongly linearly separable for any positive margin $\gamma$.
 In this section, we present an algorithm for \textsc{Online Multiclass
 Classification with Bandit Feedback} and prove an upper bound on the number of
 mistakes under the assumption that the examples are strongly linearly separable
-with a margin. The algorithm is stated
-Algorithm~\eqref{algorithm:algorithm-for-strongly-linearly-separable-examples}
-below and the mistake upper bound is stated as
+with a margin. The algorithm is stated as
+Algorithm~\ref{algorithm:algorithm-for-strongly-linearly-separable-examples} and
+the mistake upper bound is stated as
 \autoref{theorem:stronglys-separable-example-mistake-upper-bound}.
 
 The idea behind the algorithm is to use $K$ copies of the \textsc{Binary
@@ -340,7 +342,7 @@ $V \times \{1,2,\dots,K\}$ such that the examples are strongly separable with
 margin $\gamma$ and $\norm{x_1}, \norm{x_2}, \dots, \norm{x_T} \le R$ then the
 expected number of mistakes
 Algorithm~\ref{algorithm:algorithm-for-strongly-linearly-separable-examples}
-makes is at most $K(K-1) \lfloor (R/\gamma)^2 \rfloor$ mistakes.
+makes is at most $(K-1) \lfloor (R/\gamma)^2 \rfloor$ mistakes.
 \end{theorem}
 
 \begin{proof}
@@ -352,8 +354,7 @@ We upper bound $A$ and $B$ separately.
 
 Let $C$ be the number of times line 16 gets executed. Let $U$ be the number of
 times line 16 or line 21 get executed. In other words, $U$ is the number of
-times the weight vectors are updated. Clearly, $U = A + C$. We know that $U \le
-K \lfloor (R/\gamma)^2 \rfloor$.
+times the weight vectors are updated. Clearly, $U = A + C$.
 
 The key observation is that $\Exp[B] = (K-1) \Exp[C]$ since if $S_t =
 \emptyset$, there is $1/K$ probability that the algorithm guesses the correct
@@ -364,9 +365,59 @@ Putting all the information together, we get that
 & = \Exp[A] + \Exp[B] \\
 & = \Exp[A] + (K-1) \Exp[C]  \\
 & \le (K-1) \Exp[A + C] \\
-& = (K-1) \Exp[U]  \\
-& \le K(K-1) \lfloor (R/\gamma)^2 \rfloor \; .
+& = (K-1) \Exp[U]  \; .
 \end{align*}
+
+To finish the proof, we need to upper bound the number of updates, $U$. We claim
+that $U \le \lfloor (R/\gamma)^2 \rfloor$. The proof of this upper bound is
+similar to the proof of the mistake bound for \textsc{Multiclass Perceptron}
+algorithm. Let $w_1^*, w_2^*, \dots, w_K^* \in V$ satisfy
+\eqref{equation:strong-linear-separability-1},
+\eqref{equation:strong-linear-separability-2} and
+\eqref{equation:strong-linear-separability-3}.
+The $K$-tuple $(w_1^{(t)}, w_2^{(t)}, \dots, w_K^{(t)})$
+changes only if there is an update in round $t$.
+We investigate how $\sum_{i=1}^K \norm{w_i^{(t)}}^2$ and
+$\sum_{i=1}^K \ip{w_i^*}{w_i^{(t)}}$ change. If there is an update in round $t$,
+we have
+\begin{align*}
+\sum_{i=1}^K \norm{w_i^{(t+1)}}^2
+& = \left( \sum_{i \in \{1,2,\dots,K\} \setminus \{\widehat y_t\}} \norm{w_i^{(t)}}^2 \right) + \norm{w_{\widehat y_t}^{(t+1)}}^2 \\
+& = \left( \sum_{i \in \{1,2,\dots,K\} \setminus \{\widehat y_t\}} \norm{w_i^{(t)}}^2 \right) + \norm{w_{\widehat y_t}^{(t)} + (-1)^{z_t} x_t}^2 \\
+& = \left( \sum_{i=1}^K \norm{w_i^{(t)}}^2 \right) + \norm{x_t}^2 + \underbrace{(-1)^{z_t} 2 \ip{w_{\widehat y_t}^{(t)}}{x_t}}_{\le 0} \\
+& \le \left( \sum_{i=1}^K \norm{w_i^{(t)}}^2 \right) + \norm{x_t}^2 \\
+& \le \left( \sum_{i=1}^K \norm{w_i^{(t)}}^2 \right) + R^2 \; .
+\end{align*}
+Therefore, after $U$ updates,
+$$
+\sum_{i=1}^K \norm{w_i^{(T+1)}}^2 \le R^2 U \; .
+$$
+Similarly, if there is an update in round $t$, we have
+\begin{align*}
+\sum_{i=1}^K \ip{w_i^*}{w_i^{(t)}}
+& = \left( \sum_{i \in \{1,2,\dots,K\} \setminus \{\widehat y_t\}} \ip{w_i^*}{w_i^{(t)}} \right) + \ip{w_{\widehat y_t}^*}{w_{\widehat y_t}^{(t+1)}} \\
+& = \left( \sum_{i \in \{1,2,\dots,K\} \setminus \{\widehat y_t\}} \ip{w_i^*}{w_i^{(t)}} \right) + \ip{w_{\widehat y_t}^*}{w_{\widehat y_t}^{(t)} + (-1)^{z_t} x_t} \\
+& = \left( \sum_{i=1}^K \ip{w_i^*}{w_i^{(t)}} \right) + (-1)^{z_t} \ip{w_{\widehat y_t}^*}{x_t} \\
+& \ge \left( \sum_{i=1}^K \ip{w_i^*}{w_i^{(t)}} \right) + \gamma
+\end{align*}
+where the last inequality follows from \eqref{equation:strong-linear-separability-2}
+and \eqref{equation:strong-linear-separability-3} and case analysis whether $z_t = 0$ or $z_t = 1$.
+Thus, after $U$ updates,
+$$
+\sum_{i=1}^K \ip{w_i^*}{w_i^{(T+1)}} \ge \gamma U \; .
+$$
+Applying Cauchy-Schwartz's inequality twice, we get that
+$$
+\sum_{i=1}^K \ip{w_i^*}{w_i^{(T+1)}}
+\le \sum_{i=1}^K \norm{w_i^*} \cdot \norm{w_i^{(T+1)}}
+\le \sqrt{\sum_{i=1}^K \norm{w_i^*}^2} \sqrt{\sum_{i=1}^K \norm{w_i^{(T+1)}}^2}
+\le \sqrt{\sum_{i=1}^K \norm{w_i^{(T+1)}}^2} \; .
+$$
+Combining the upper and lower bounds on $\sqrt{\sum_{i=1}^K \norm{w_i^{(T+1)}}^2}$ inequalities, we get
+$$
+(\gamma U)^2 \le \sum_{i=1}^K \norm{w_i^{(T+1)}}^2 \le R^2 U \; .
+$$
+We conclude that $U \le (R/\gamma)^2$. Since $U$ is an integer, $U \le \lfloor (R/\gamma)^2 \rfloor$.
 \end{proof}
 
 
@@ -486,7 +537,7 @@ Let $w_1^*, w_2^*, \dots, w_K^* \in V$ be vectors satisfying the
 only when a mistakes happens. If mistake happens in round $t$, we have
 \begin{align*}
 \sum_{i=1}^K \ip{w_i^*}{w_i^{(t+1)}}
-& = \left( \sum_{i \in \{1,2,\dots,K\} \setminus {y_t, \widehat y_t}} \ip{w_i^*}{w_i^{(t)}} \right) + \ip{w_{y_t}^*}{w_{y_t}^{(t)} + x_t} + \ip{w_{\widehat y_t}^*}{w_{\widehat y_t}^{(t)} - x_t} \\
+& = \left( \sum_{i \in \{1,2,\dots,K\} \setminus \{y_t, \widehat y_t\}} \ip{w_i^*}{w_i^{(t)}} \right) + \ip{w_{y_t}^*}{w_{y_t}^{(t)} + x_t} + \ip{w_{\widehat y_t}^*}{w_{\widehat y_t}^{(t)} - x_t} \\
 & = \left( \sum_{i=1}^K \ip{w_i^*}{w_i^{(t)}} \right) + \ip{w_{y_t}^* - w_{\widehat y_t}^*}{x_t} \\
 & \ge  \left( \sum_{i=1}^K \ip{w_i^*}{w_i^{(t)}} \right) + \gamma \; .
 \end{align*}
