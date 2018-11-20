@@ -1,2 +1,12 @@
+# LaTeX files
+*.aux
+*.bbl
+*.blg
+*.log
+*.out
+
+# IntelliJ and PyCharm config files
 /.idea/
 *.iml
+
+ptf_margin.pdf

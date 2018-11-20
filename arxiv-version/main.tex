@@ -336,7 +336,7 @@ predictions, the algorithms makes a blind guess.
 \begin{theorem}[Mistake upper bound]
 \label{theorem:strongly-separable-example-mistake-upper-bound}
 Let $(V, \ip{\cdot}{\cdot})$ be any inner product space, let $K$ be a positive
-integer, $\gamma$ a positive real number, $R$ be a non-negative real number If
+integer, $\gamma$ a positive real number, $R$ be a non-negative real number. If
 $(x_1, y_1), (x_2, y_2), \dots, (x_T, y_T)$ is a sequence of labeled examples in
 $V \times \{1,2,\dots,K\}$ such that the examples are strongly separable with
 margin $\gamma$ and $\norm{x_1}, \norm{x_2}, \dots, \norm{x_T} \le R$ then the
@@ -423,18 +423,66 @@ We conclude that $U \le (R/\gamma)^2$. Since $U$ is an integer, $U \le \lfloor (
 \end{proof}
 
 \begin{theorem}[Mistake lower bound]
-\label{theorem:strongly-separable-example-mistake-lower-bound} Let $K$ be a
-positive integer, let $\gamma$ be a positive real number and let $R$ be a
-non-negative real number. For any algorithm for the \textsc{Online Multiclass
-Classification with Bandit Feedback} there exists an inner product space $(V,
-\ip{\cdot}{\cdot})$, a non-negative integer $T$ and a sequence of labeled
-examples $(x_1, y_1), (x_2, y_2), \dots, (x_T, y_T)$ examples in $V \times
-\{1,2,\dots,K\}$ that are strongly linearly separable with margin $\gamma$, the
-norms satisfy $\norm{x_1}, \norm{x_2}, \dots, \norm{x_T} \le R$ and the expected
-number mistakes the algorithm is at least $K \lfloor (R/\gamma)^2 \rfloor/ ??$.
+\label{theorem:strongly-separable-example-mistake-lower-bound}
+Let $\gamma$ be a positive real number and let $R$ be a non-negative real
+number. For any algorithm for the \textsc{Online Multiclass Classification with
+Bandit Feedback} with $K \le \frac{1}{2}(R/\gamma)^2$ classes there exists an inner
+product space $(V, \ip{\cdot}{\cdot})$, a non-negative integer $T$ and a
+sequence of labeled examples $(x_1, y_1), (x_2, y_2), \dots, (x_T, y_T)$
+in $V \times \{1,2,\dots,K\}$ that are strongly linearly separable with
+margin $\gamma$, the norms satisfy $\norm{x_1}, \norm{x_2}, \dots, \norm{x_T}
+\le R$ and the expected number of mistakes the algorithm makes is at least $K
+\lfloor \frac{1}{8} (R/\gamma)^2 \rfloor/ ??$.
 \end{theorem}
 
 \begin{proof}
+Let $M = \lfloor \frac{1}{8} (R/\gamma)^2 \rfloor$. Let $V = \R^{M+1}$ equipped with the
+standard inner product.  Let $e_1, e_2, \dots, e_{M+1}$ be the standard
+orthonormal basis of $\R^{M+1}$. We define vectors $v_1, v_2, \dots, v_M \in V$
+where $v_i = \frac{R}{\sqrt{2}}(e_i + e_{M+1})$ for $i=1,2,\dots,M$. Let $\ell_1, \ell_2,
+\dots, \ell_M$ be chosen i.i.d. uniformly at random from $\{1,2,\dots,K\}$ and
+independently of any randomness used the by the algorithm.
+
+Let $T = M K$. We define examples $(x_1, y_1), (x_2, y_2), \dots, (x_T, y_T)$ as
+follows:
+$$
+\begin{array}{lclclclcl}
+(x_1, y_1) & = & (x_2, y_2) & = & \cdots & = & (x_K, y_K) & = & (v_1, \ell_1) \; , \\
+(x_{K+1},y_{K+1}) & = & (x_{K+2}, y_{K+2}) & = & \cdots & = & (x_{2K}, y_{2K}) & = & (v_2, \ell_2) \; , \\
+& \vdots & \\
+(x_{(M-1)K+1}, y_{(M-1)K+1})  & = & (x_{(M-1)K+2}, y_{(M-1)K+2}) & = & \cdots & = & (x_{MK}, y_{MK}) & = & (v_M, \ell_M) \; .
+\end{array}
+$$
+
+Clearly, norm of each example is $R$. We show that the examples are strongly
+separable with margin $\gamma$. In order to see that consider $w_1^*, w_2^*,
+\dots, w_K^* \in V$ defined by
+$$
+w_i^* = 2 \frac{\gamma}{R} \left( \sum_{j ~:~ \ell_j = i} e_j \right) - \frac{\gamma}{R} e_{M+1} \qquad \quad \text{for $i=1,2,\dots,K$.}
+$$
+Since for any $i \in \{1,2,\dots,K\}$ and any $j \in \{1,2,\dots,M\}$,
+$$
+\ip{w_i^*}{v_j} =
+\begin{cases}
+\gamma & \text{if $\ell_j = i$,} \\
+- \gamma & \text{if $\ell_j \neq i$,}
+\end{cases}
+$$
+it means that $w_1^*, w_2^*, \dots, w_K^*$ satisfy
+\eqref{equation:strong-linear-separability-2} and
+\eqref{equation:strong-linear-separability-3}. Condition \eqref{equation:strong-linear-separability-1}
+is satisfied since
+$$
+\sum_{i=1}^K \norm{w_i^*}^2
+= 4 \frac{\gamma^2}{R^2} \sum_{j=1}^M \norm{e_j}^2 + \frac{\gamma^2}{R^2} K \norm{e_{M+1}}^2
+= 4\frac{\gamma^2}{R^2} M + \frac{\gamma^2}{R^2} K
+\le \frac{1}{2} + \frac{1}{2}
+= 1 \; .
+$$
+
+It remains to show that the expected number of mistakes the algorithm makes is
+at least $K M / ??$.
+
 TODO
 \end{proof}
 
