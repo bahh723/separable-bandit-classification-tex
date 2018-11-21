@@ -64,7 +64,7 @@ TODO
 
 We design new algorithms for the problem of \textsc{Online Multiclass
 Classification with Bandit Feedback}. In this problem, in each round, the
-algorithm receives a feature vector and algorithm has to predict one of $K$
+algorithm receives a feature vector and the algorithm has to predict one of $K$
 possible classes. Imediately after the algorithm makes its prediction, it
 receives feedback whether the prediction was correct or not. However, in
 contrast with the standard, so called full information setting, the algorithm
@@ -133,8 +133,8 @@ simple and efficient algorithm with expected number of mistakes at most $(K-1)
 of the \textsc{Binary Perceptron} algorithm, one copy for each class.
 Intuitively speaking, the factor $K-1$ is the price we pay for the bandit
 feedback, or more precisely, the lack of full-information feedback. We also
-prove that any algorithm makes $K \lfloor (R/\gamma)^2 \rfloor / ??$ in the
-worst case in this setting.
+prove that any (possibly randomized) algorithm makes $\Omega(K (R/\gamma)^2))$
+mistakes in the worst case.
 
 For the standard notion of linear separability, we propose three algorithms with
 various time-complexity-versus-mistake-bound trade-offs. Two of these algorithms
@@ -187,7 +187,7 @@ TODO
 
 We define two notions of linear separability for multiclass classification. The
 first notion is the standard notion of linear separability used in the proof of
-mistake bound for the \textsc{Multiclass Perceptron} algorithm. The second
+the mistake bound for the \textsc{Multiclass Perceptron} algorithm. The second
 notion is stronger, i.e. more restrictive. However, it is more suitable for the
 bandit setting, since it allows for a simple and efficient algorithm; see
 Section~\ref{section:algorithm-for-strongly-linearly-separable-data}.
@@ -310,7 +310,7 @@ predictions, the algorithms makes a blind guess.
 \IF{$S_t = \emptyset$}
 \STATE{Predict $\widehat y_t \sim \text{Uniform}(\{1,2,\dots,K\})$}
 \ELSE
-\STATE{Predict $\widehat y_t \sim \text{Uniform}(S_t)$}
+\STATE{Predict $\widehat y_t \in S_t$ chosen arbitrarily}
 \ENDIF
 \STATE{Observe feedback $z_t \in \{0,1\}$ where $z_t = \indicator{\widehat y_t \neq y_t}$}
 \IF{$S_t = \emptyset$}
@@ -426,25 +426,24 @@ We conclude that $U \le (R/\gamma)^2$. Since $U$ is an integer, $U \le \lfloor (
 \label{theorem:strongly-separable-example-mistake-lower-bound}
 Let $\gamma$ be a positive real number and let $R$ be a non-negative real
 number. For any algorithm for the \textsc{Online Multiclass Classification with
-Bandit Feedback} with $K \le \frac{1}{2}(R/\gamma)^2$ classes there exists an inner
+Bandit Feedback} with $K \le \frac{1}{4}(R/\gamma)^2$ classes there exists an inner
 product space $(V, \ip{\cdot}{\cdot})$, a non-negative integer $T$ and a
 sequence of labeled examples $(x_1, y_1), (x_2, y_2), \dots, (x_T, y_T)$
 in $V \times \{1,2,\dots,K\}$ that are strongly linearly separable with
 margin $\gamma$, the norms satisfy $\norm{x_1}, \norm{x_2}, \dots, \norm{x_T}
-\le R$ and the expected number of mistakes the algorithm makes is at least $K
-\lfloor \frac{1}{8} (R/\gamma)^2 \rfloor/ ??$.
+\le R$ and the expected number of mistakes the algorithm makes is at least $\frac{K-1}{2}
+\lfloor \frac{1}{16} (R/\gamma)^2 \rfloor$.
 \end{theorem}
 
 \begin{proof}
-Let $M = \lfloor \frac{1}{8} (R/\gamma)^2 \rfloor$. Let $V = \R^{M+1}$ equipped with the
-standard inner product.  Let $e_1, e_2, \dots, e_{M+1}$ be the standard
-orthonormal basis of $\R^{M+1}$. We define vectors $v_1, v_2, \dots, v_M \in V$
-where $v_i = \frac{R}{\sqrt{2}}(e_i + e_{M+1})$ for $i=1,2,\dots,M$. Let $\ell_1, \ell_2,
-\dots, \ell_M$ be chosen i.i.d. uniformly at random from $\{1,2,\dots,K\}$ and
-independently of any randomness used the by the algorithm.
-
-Let $T = M K$. We define examples $(x_1, y_1), (x_2, y_2), \dots, (x_T, y_T)$ as
-follows:
+We use probabilistic method. Let $M = \lfloor \frac{1}{16} (R/\gamma)^2 \rfloor$.
+Let $V = \R^{M+1}$ equipped with the standard inner product.  Let $e_1, e_2,
+\dots, e_{M+1}$ be the standard orthonormal basis of $V$. We define
+vectors $v_1, v_2, \dots, v_M \in V$ where $v_i = \frac{R}{\sqrt{2}}(e_i +
+e_{M+1})$ for $i=1,2,\dots,M$. Let $\ell_1, \ell_2, \dots, \ell_M$ be chosen
+i.i.d. uniformly at random from $\{1,2,\dots,K\}$ and independently of any
+randomness used the by the algorithm. Let $T = M K$. We define examples $(x_1,
+y_1), (x_2, y_2), \dots, (x_T, y_T)$ as follows:
 $$
 \begin{array}{lclclclcl}
 (x_1, y_1) & = & (x_2, y_2) & = & \cdots & = & (x_K, y_K) & = & (v_1, \ell_1) \; , \\
@@ -454,11 +453,11 @@ $$
 \end{array}
 $$
 
-Clearly, norm of each example is $R$. We show that the examples are strongly
-separable with margin $\gamma$. In order to see that consider $w_1^*, w_2^*,
-\dots, w_K^* \in V$ defined by
+With probability one, norm of each example is $R$. We show that with probability
+one, the examples are strongly separable with margin $\gamma$. In order to see
+that consider $w_1^*, w_2^*, \dots, w_K^* \in V$ defined by
 $$
-w_i^* = 2 \frac{\gamma}{R} \left( \sum_{j ~:~ \ell_j = i} e_j \right) - \frac{\gamma}{R} e_{M+1} \qquad \quad \text{for $i=1,2,\dots,K$.}
+w_i^* = 2 \sqrt{2} \frac{\gamma}{R} \left( \sum_{j ~:~ \ell_j = i} e_j \right) - \sqrt{2} \frac{\gamma}{R} e_{M+1} \qquad \quad \text{for $i=1,2,\dots,K$.}
 $$
 Since for any $i \in \{1,2,\dots,K\}$ and any $j \in \{1,2,\dots,M\}$,
 $$
@@ -474,16 +473,24 @@ it means that $w_1^*, w_2^*, \dots, w_K^*$ satisfy
 is satisfied since
 $$
 \sum_{i=1}^K \norm{w_i^*}^2
-= 4 \frac{\gamma^2}{R^2} \sum_{j=1}^M \norm{e_j}^2 + \frac{\gamma^2}{R^2} K \norm{e_{M+1}}^2
-= 4\frac{\gamma^2}{R^2} M + \frac{\gamma^2}{R^2} K
+= 8 \frac{\gamma^2}{R^2} \sum_{j=1}^M \norm{e_j}^2 + 2 \frac{\gamma^2}{R^2} K \norm{e_{M+1}}^2
+= 8 \frac{\gamma^2}{R^2} M + 2 \frac{\gamma^2}{R^2} K
 \le \frac{1}{2} + \frac{1}{2}
 = 1 \; .
 $$
 
-It remains to show that the expected number of mistakes the algorithm makes is
-at least $K M / ??$.
+It remains to lower bound the expected number of mistakes of the algorithm. For
+any $j \in \{1,2,\dots,M\}$, consider the expected number of mistakes the
+algorithm makes in rounds $K(j-1) + 1, K(j-1) + 2, \dots, Kj$. In these rounds,
+the algorithm is guessing the label $\ell_j$. Since $\ell_j$ is chosen uniformly
+at random from the set $\{1,2,\dots,K\}$ and feedback is only binary, the
+expected number of mistakes the algorithm makes in these rounds is at least
+$\frac{K-1}{2}$. Altogether, the algorithm makes at least $\frac{K-1}{2} M$
+mistakes in expectation.
 
-TODO
+Finally, since strong separability and norm condition hold with probability one,
+there exists a particular (i.e. deterministic) sequence of examples for which
+the algorithm makes at least $\frac{K-1}{2} M$ mistakes.
 \end{proof}
 
 \section{Converting linear separability to strong linear separability}
