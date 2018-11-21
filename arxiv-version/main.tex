@@ -505,8 +505,38 @@ TODO
 
 \section{NP-hardness of the weak labeling problem}
 
-TODO
+Any algorithm for the bandit setting collects information in the form of so
+called \emph{strongly labeled} and \emph{weakly labeled} examples.
+Strongly-labeled examples are those for which we know the class label. Weakly
+labeled example is an example for which we know that class label can be anything
+except for a particular one class.
 
+A natural strategy for each round is to find vectors $w_1, w_2, \dots, w_K$ that
+linearly separate the examples see in previous rounds and use the vectors to
+predict label in the next round. More precisely, we want to find both the
+vectors $w_1, w_2, \dots, w_K$ and label for each exaple consistent with its
+weak and/or strong labels such that $w_1, w_2, \dots, w_K$ linearly separate the
+labeled examples. We show this problem is NP-hard even for $K=3$.
+
+Clearly, the problem is at least as hard as the decision version of the problem
+where the goal is to determine if such vectors and labeling exist. We show that
+this problem is NP-complete.
+
+Formally, the input to the decision problem are positive integers $d, T, K$ and
+a sequence $(x_1, y_1), (x_2, y_2), \dots, (x_T, y_T) \in \{0,1\}^d \times
+\{1,2,\dots,K, \overline{1}, \overline{2}, \dots, \overline{K}\}$ of strongly
+and weakly labeled examples. The numbers $1,2,\dots,K$ correspond to strong
+labels and the symbols $\overline{1}, \overline{2}, \dots, \overline{K}$
+correspond to weak labels. We adopt the convention that $\overline{\overline{i}}
+= i$ for any positive integer $i$. The goal is to determine whether or not there
+exist vectors $w_1, w_2, \dots, w_K \in \R^d$ that satisfy the following
+conditions for all $t=1,2,\dots,T$,
+\begin{align*}
+y_t \in \{1,2,\dots,K\} \qquad & \Longrightarrow \qquad & \forall i \in \{1,2,\dots,K\} \setminus \{y_t\} \qquad \ip{w_{y_t}}{x_t} & > \ip{w_i}{x_t} \; , \\
+y_t \in \{\overline{1}, \overline{2},\dots, \overline{K}\} \qquad & \Longrightarrow & \qquad \exists i \in \{1,2,\dots,K\} \qquad \ip{w_i}{x_t} & > \ip{w_{\overline{y_t}}}{x_t} \; .
+\end{align*}
+
+TODO
 
 \section{Mistake lower bound for ignorant algorithms}
 
