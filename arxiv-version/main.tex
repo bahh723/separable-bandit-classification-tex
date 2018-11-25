@@ -65,7 +65,7 @@ TODO
 We design new algorithms for the problem of \textsc{Online Multiclass
 Classification with Bandit Feedback}. In this problem, in each round, the
 algorithm receives a feature vector and the algorithm has to predict one of $K$
-possible classes. Imediately after the algorithm makes its prediction, it
+possible classes. Immediately after the algorithm makes its prediction, it
 receives feedback whether the prediction was correct or not. However, in
 contrast with the standard, so called full information setting, the algorithm
 does \emph{not} receive the correct label. The feedback is only binary. To allow
@@ -178,6 +178,13 @@ examples makes at least $\Omega(???)$ mistakes.
 
 \section{Related work}
 \label{section:related-work}
+
+\cite{Abernethy-Rakhlin-2009}
+
+\cite{Hazan-Kale-2011}
+
+\cite{Foster-Krishnamurthy-2018}
+
 
 TODO
 
@@ -494,9 +501,40 @@ the algorithm makes at least $\frac{K-1}{2} M$ mistakes.
 \end{proof}
 
 \section{Converting linear separability to strong linear separability}
+\label{section:converting-linear-separability-to-strong-linear-separability}
 
+In this section, we show how construct a mapping $\phi$ of points in the unit
+ball $B_d$ of $\R^d$ into a high dimensional inner product space that has the
+property if any set of labeled examples in $B_d$ is linearly separable with a
+margin $\gamma$, applying the mapping $\phi$ makes the examples \emph{strongly}
+linearly separable with a margin $\gamma'$ and their norms are bounded by $R'$.
+The parameters $\gamma'$ and $R'$ are functions of the old margin $\gamma$ and
+the number of classes $K$, and the are specified in the theorems below.
+
+Equipped with the mapping $\phi$, we can utilize
+Algorithm~\ref{algorithm:algorithm-for-strongly-linearly-separable-examples} and
+\autoref{theorem:strongly-separable-example-mistake-upper-bound} from the
+previous section and we obtain an algorithm for linearly separable examples and
+an upper bound on its number of mistakes. As a computational speed up, instead
+of working with the mapped examples $\phi(x_1), \phi(x_2), \dots$ explicitly, we
+can use the kernelized version of
+Algorithm~\ref{algorithm:algorithm-for-strongly-linearly-separable-examples}
+that uses a kernel function $k(x,x') = \ip{\phi(x)}{\phi(x')}$.
+
+We construct several different mappings $\phi$. The parameters $R'$ and
+$\gamma'$ for the different mappings are essentially the same. However, one
+mapping has the advantage of having a kernel $k(x,x')$ that is faster to
+evaluate. Another mapping has the advantage that one does \emph{not} need to
+know the initial margin $\gamma$. In other words, the same mapping works for all
+possible values of $\gamma > 0$. The idea behind all the mappings is that
+polynomials are universal function approximators, which is a well known fact
+expressed by the classical Stone-Weierstrass theorem~\citep[page 159]{Rudin-1976}.
+
+\subsection{Polynomials}
 TODO
 
+\subsection{Rational Kernel}
+TODO
 
 \section{Nearest neighbor algorithm}
 
@@ -512,9 +550,9 @@ labeled example is an example for which we know that class label can be anything
 except for a particular one class.
 
 A natural strategy for each round is to find vectors $w_1, w_2, \dots, w_K$ that
-linearly separate the examples see in previous rounds and use the vectors to
-predict label in the next round. More precisely, we want to find both the
-vectors $w_1, w_2, \dots, w_K$ and label for each exaple consistent with its
+linearly separate the examples seen in the previous rounds and use the vectors
+to predict the label in the next round. More precisely, we want to find both the
+vectors $w_1, w_2, \dots, w_K$ and label for each example consistent with its
 weak and/or strong labels such that $w_1, w_2, \dots, w_K$ linearly separate the
 labeled examples. We show this problem is NP-hard even for $K=3$.
 
@@ -689,13 +727,13 @@ element of $\{1,2,\dots,K\}$ not equal to $\widehat y_t$. This way the algorithm
 makes a mistake in every round $t=1,2,\dots,T$.
 
 It remains to show that the examples we have constructed are linearly separable
-with margin $\gamma$. To prove that we demostrate vectors $w_1, w_2, \dots, w_K$
+with margin $\gamma$. To prove that we demonstrate vectors $w_1, w_2, \dots, w_K$
 satisfying conditions \eqref{equation:linear-separability-1} and
 \eqref{equation:linear-separability-2}. We define
 $$
 w_i = \frac{1}{R\sqrt{T}} \sum_{\substack{t : 1 \le t \le T \\ y_t = i}} x_t \qquad \qquad \text{for $i=1,2,\dots,K$.}
 $$
-Let $a_i = |\{ t ~:~ 1 \le t \le T, \ y_t = i \}|$ be the number of occurences of label $i$.
+Let $a_i = |\{ t ~:~ 1 \le t \le T, \ y_t = i \}|$ be the number of occurrences of label $i$.
 It is easy to see that
 $$
 \norm{w_i}^2 = \frac{1}{R^2 T} \sum_{\substack{t : 1 \le t \le T \\ y_t = i}} \norm{x_t}^2 = \frac{a_i}{T} \qquad \qquad \text{for $i=1,2,\dots,K$.}
