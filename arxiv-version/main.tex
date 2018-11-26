@@ -35,6 +35,7 @@
 \newcommand{\indicator}[1]{\mathbf{1}\left[#1 \right]} % indicator
 \newcommand{\ip}[2]{\left\langle #1, #2 \right\rangle} % inner product
 \newcommand{\norm}[1]{\left\| #1 \right\|}  % norm of a vector or a matrix
+%\DeclareMathOperator*{\deg}{deg}
 \DeclareMathOperator*{\argmax}{argmax}
 \DeclareMathOperator*{\argmin}{argmin}
 \DeclareMathOperator*{\Exp}{\mathbf{E}}  % expected value
@@ -522,13 +523,50 @@ Algorithm~\ref{algorithm:algorithm-for-strongly-linearly-separable-examples}
 that uses a kernel function $k(x,x') = \ip{\phi(x)}{\phi(x')}$.
 
 We construct several different mappings $\phi$. The parameters $R'$ and
-$\gamma'$ for the different mappings are essentially the same. However, one
-mapping has the advantage of having a kernel $k(x,x')$ that is faster to
-evaluate. Another mapping has the advantage that one does \emph{not} need to
-know the initial margin $\gamma$. In other words, the same mapping works for all
-possible values of $\gamma > 0$. The idea behind all the mappings is that
-polynomials are universal function approximators, which is a well known fact
-expressed by the classical Stone-Weierstrass theorem~\citep[page 159]{Rudin-1976}.
+$\gamma'$ for the different mappings are not the same, but the ratios
+$R'/\gamma'$ are qualitively the same. However, one mapping has the advantage of
+having a kernel $k(x,x')$ that is faster to evaluate. Another mapping has the
+advantage that one does \emph{not} need to know the initial margin $\gamma$. In
+other words, the same mapping works for all possible values of $\gamma > 0$.
+
+The idea behind all the mappings is that, on a compact set, multivariate
+polynomials uniformly approximate any continuous function. This is result is a
+special case of the well known Stone-Weierstrass theorem~\citep[Section
+10.10]{Davidson-Donsig-2010}. In our case, we use a multivariate polynomial to
+approximate the indicator function corresponding to the intersection of $K-1$
+halfspaces. This polynomial separates examples in one class from examples in the
+other classes. To be able to quantify $\gamma'$ and $R'$ as well as time
+complexity of evaluating $k(x,x')$ we need to quantify certain parameters
+of the approximating polynomial (degree, norm, range of values).
+The parameters are quantified in \autoref{theorem:polynomial-approximation}
+stated below.
+
+Before we state the theorem, recall that a polynomial of $d$ variables is a
+function $p:\R^d \to \R$ of the form
+$$
+p(x) = p(x_1, x_2, \dots, x_d) = \sum_{i_1, i_2, \dots, i_d} c_{i_1, i_2, \dots, i_d} x_1^{i_1} x_2^{i_2} \dots x_d^{i_d}
+$$
+where the sum ranges over a finite set of tuples $(i_1, i_2, \dots, i_d)$ of
+non-negative integers and $c_{i_1, i_2, \dots, i_d}$ is a real coefficient. The
+\emph{degree} of a polynomial $p$, denoted by $\deg(p)$, is the largest value of
+$i_1 + i_2 + \dots + i_d$ for which the coefficient is non-zero. The \emph{norm
+of a polynomial} $p$ is defined as
+$$
+\norm{p} = \sqrt{\sum_{i_1, i_2, \dots, i_d} \left(c_{i_1, i_2, \dots, i_d} \right)^2 } \; .
+$$
+
+\begin{theorem}
+\label{theorem:polynomial-approximation}
+Let $w_1, w_2, \dots, w_K \in \R^d$ be such that $\sum_{i=1}^K \norm{w_1}^2 \le 1$.
+Let $\gamma > 0$. There exists a polynomial $p:\R^d \to \R$ such that
+\begin{itemize}
+\item $p(x) \ge 1$ for all $x \in \bigcap_{i=2}^K \{ x \in \R^d ~:~ \ip{w_1}{x} \ge \ip{w_i}{x} + \gamma \}$
+\item $p(x) \le -1$ for all $x \in \bigcup_{i=2}^K \{ x \in \R^d ~:~ \ip{w_1}{x} \le \ip{w_i}{x} - \gamma \}$
+\item $\deg(p) \le ???$
+\item $\norm{p} \le ???$
+\item $|p(x)| \le ???$ for all $x \in \R^d$ such that $\norm{x} \le 1$
+\end{itemize}
+\end{theorem}
 
 \subsection{Polynomials}
 TODO
