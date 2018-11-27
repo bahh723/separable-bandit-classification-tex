@@ -70,7 +70,7 @@ possible classes. Immediately after the algorithm makes its prediction, it
 receives feedback whether the prediction was correct or not. However, in
 contrast with the standard, so called full information setting, the algorithm
 does \emph{not} receive the correct label. The feedback is only binary. To allow
-for meaningful randomized strategies, we assume that the correct label in a
+for meaningful use of randomization, we assume that the correct label in a
 particular round is chosen prior to algorithm's prediction in that
 round.\footnote{The reader can assume throughout the paper a simpler model of
 the so called \emph{oblivious adversary} where the whole sequence of labeled
@@ -124,7 +124,7 @@ For multiclass classification with $K$ classes the standard notion of linear
 separability means that the examples from each class lie in an intersection of
 $K-1$ halfspaces and the examples outside of the class lie in the complement of
 the intersection of the halfspaces. Strong linear separability means that
-examples from each class is separated from the remaining examples by a
+examples from each class are separated from the remaining examples by a
 \emph{single} hyperplane. We state the definitions precisely in
 Section~\ref{section:notions-of-linear-separability}.
 
@@ -137,28 +137,32 @@ feedback, or more precisely, the lack of full-information feedback. We also
 prove that any (possibly randomized) algorithm makes $\Omega(K (R/\gamma)^2))$
 mistakes in the worst case.
 
-For the standard notion of linear separability, we propose three algorithms with
-various time-complexity-versus-mistake-bound trade-offs. Two of these algorithms
-map the examples into a high-dimensional inner product space induced by a
-kernel. In this space the examples become \emph{strongly} linearly separable.
-This allows us to run a kernelized version of the algorithm for the strongly
-linearly separable case.
+For the standard notion of linear separability, we propose several algorithms
+with various time-complexity-versus-mistake-bound trade-offs. First class of
+algorithms map the examples into a high-dimensional inner product space. In this
+space the examples become \emph{strongly} linearly separable. This allows us to
+run the algorithm for the strongly linearly separable case. All of these
+algorithms can be kernelized. (Some of them have to be kernalized since the
+underlying inner product space is infinite dimensional.) Kernelization does not
+change the input-output behavior of the algorithm, it only affects its time
+complexity.
 
-The two kernel-based algorithms differ by the choice of the kernel. The crux of
-the problem is the analysis of the approximation properties of these kernels and
-the way margin in original space under standard linear separability notion gets
-transformed into a margin in the high-dimensional space under the strong
-separability notion. This problem is related to the problem of learning
-intersection of halfspaces and has been studied previously by
-\cite{Klivans-Servedio-2008}.
+These algorithms differ by choice of the mapping or, equivalently, choice of the
+kernel. The crux of the problem is the analysis of the approximation properties
+of these mappings/kernels and the way margin in original space under standard
+linear separability notion gets transformed into a margin in the
+high-dimensional space under the strong separability notion. This problem is
+related to the problem of learning intersection of halfspaces and has been
+studied previously by \cite{Klivans-Servedio-2008}.
 
-The third algorithm is based on the obvious idea that two points that are close
-enough must have the same label. Here, close enough means that they cannot be
-separated from each other by a linear separator with a margin.
+Finally, we propose a very different algorithm that is based on the obvious idea
+that two points that are close enough must have the same label. Here, close
+enough means that they cannot be separated from each other by a linear separator
+with a margin.
 
-All three algorithms run in time that is polynomial in the dimension of the
+All the algorithms run in time that is polynomial in the dimension of the
 feature vectors, the number of classes and the number of rounds. At the same
-time, all three algorithms make number of mistakes that does \emph{not} depend
+time, all the algorithms make number of mistakes that does \emph{not} depend
 on the number of rounds. Instead, their number of mistakes depends only on the
 margin, number of classes, dimension of the feature vectors, and the radius of
 the ball in which the data lie.
@@ -169,22 +173,26 @@ setting collects information in the form of so called \emph{strongly labeled}
 and \emph{weakly labeled} examples. Strongly-labeled examples are those for
 which we know the class label. Weakly labeled example is an example for which we
 know that class label can be anything except for a particular one class. First,
-we show the offline problem of determining if a linear multiclass separator
-exists for a set of strongly- and weakly-labeled examples is NP-complete. This
-result is a simple consequence of the fact that learning intersection of
-halfspaces is NP-complete~\citep{Blum-Rivest-1993}. Second, we show that any
-algorithm that uses only strongly-labeled examples and ignores weakly labeled
-examples makes at least $\Omega(???)$ mistakes.
+we show the offline problem of finding a linear multiclass separator consistent
+with the strongly- and weakly-labeled examples is NP-hard. This result is a
+simple consequence of the fact that finding an intersection of two halfspaces
+consistent with binary-labeled examples is NP-hard~\citep{Blum-Rivest-1993}.
+Second, we show that any algorithm that uses only strongly-labeled examples and
+ignores weakly labeled examples makes at least $\Omega(???)$ mistakes.
 
 
 \section{Related work}
 \label{section:related-work}
 
-\cite{Abernethy-Rakhlin-2009}
+\begin{itemize}
+\item \cite{Abernethy-Rakhlin-2009}
 
-\cite{Hazan-Kale-2011}
+\item \cite{Hazan-Kale-2011}
 
-\cite{Foster-Krishnamurthy-2018}
+\item \cite{Beygelzimer-Orabona-Zhang-2017}
+
+\item \cite{Foster-Krishnamurthy-2018}
+\end{itemize}
 
 
 TODO
