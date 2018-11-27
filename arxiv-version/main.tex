@@ -540,13 +540,14 @@ other words, the same mapping works for all possible values of $\gamma > 0$.
 The idea behind all the mappings is that, on a compact set, multivariate
 polynomials uniformly approximate any continuous function. This is result is a
 special case of the well known Stone-Weierstrass theorem~\citep[Section
-10.10]{Davidson-Donsig-2010}. In our case, we use a multivariate polynomial to
+10.10]{Davidson-Donsig-2010}. In our case, we use a multivariate polynomials to
 approximate the indicator function corresponding to the intersection of $K-1$
 halfspaces. This polynomial separates examples in one class from examples in the
 other classes. To be able to quantify $\gamma'$ and $R'$ as well as time
 complexity of evaluating $k(x,x')$ we need to quantify certain parameters
 of the approximating polynomial (degree, norm, range of values).
-The parameters are quantified in \autoref{theorem:polynomial-approximation}
+The parameters are quantified in \autoref{theorem:polynomial-approximation-1}
+and \autoref{theorem:polynomial-approximation-2}
 stated below.
 
 Before we state the theorem, recall that a polynomial of $d$ variables is a
@@ -563,8 +564,8 @@ $$
 \norm{p} = \sqrt{\sum_{i_1, i_2, \dots, i_d} \left(c_{i_1, i_2, \dots, i_d} \right)^2 } \; .
 $$
 
-\begin{theorem}
-\label{theorem:polynomial-approximation}
+\begin{theorem}[Polynomial approximation of intersection of halfspaces (1)]
+\label{theorem:polynomial-approximation-1}
 Let $w_1, w_2, \dots, w_K \in \R^d$ be such that $\sum_{i=1}^K \norm{w_1}^2 \le 1$.
 Let $\gamma > 0$. There exists a polynomial $p:\R^d \to \R$ such that
 \begin{itemize}
@@ -576,8 +577,48 @@ Let $\gamma > 0$. There exists a polynomial $p:\R^d \to \R$ such that
 \end{itemize}
 \end{theorem}
 
-\subsection{Polynomials}
+\begin{theorem}[Polynomial approximation of intersection of halfspaces (2)]
+\label{theorem:polynomial-approximation-2}
+Let $w_1, w_2, \dots, w_K \in \R^d$ be such that $\sum_{i=1}^K \norm{w_1}^2 \le 1$.
+Let $\gamma > 0$. There exists a polynomial $p:\R^d \to \R$ such that
+\begin{itemize}
+\item $p(x) \ge 1$ for all $x \in \bigcap_{i=2}^K \{ x \in \R^d ~:~ \ip{w_1}{x} \ge \ip{w_i}{x} + \gamma \}$
+\item $p(x) \le -1$ for all $x \in \bigcup_{i=2}^K \{ x \in \R^d ~:~ \ip{w_1}{x} \le \ip{w_i}{x} - \gamma \}$
+\item $\deg(p) \le ???$
+\item $\norm{p} \le ???$
+\item $|p(x)| \le ???$ for all $x \in \R^d$ such that $\norm{x} \le 1$
+\end{itemize}
+\end{theorem}
+
+The proofs of the theorems can be found in
+Sections~\ref{section:proof-of-polynomial-approximation-1}~and~\ref{section:proof-of-polynomial-approximation-2}
+respectively.
+
+\subsection{Proof of \autoref{theorem:polynomial-approximation-1}}
+\label{section:proof-of-polynomial-approximation-1}
 TODO
+
+\subsection{Proof of \autoref{theorem:polynomial-approximation-2}}
+\label{section:proof-of-polynomial-approximation-2}
+
+To construct the polynomial $p$ we use Chebyshev polynomials of the first kind.
+Chebyshev polynomials of the fist kind form an infinite sequence of polynomials
+$T_0(z), T_1(z), T_2(z), \dots$ of single real variable $z$. They are defined
+by recurrence
+\begin{align*}
+T_0(z) & = 1 \; , \\
+T_1(z) & = z \; , \\
+T_{n+1}(z) & = 2zT_n(z) - T_{n-1}(z) & \text{for $n \ge 1$.}
+\end{align*}
+
+\begin{proposition}
+Chebyshev polynomials satisfy for any $n \ge 0$
+\begin{enumerate}
+\item $|T_n(z)| \le 1$ for all $z \in [-1,1]$.
+\item If $z > 1$ then $T_n(z) \ge 1 + n^2(z - 1)$.
+\item Absolute value of all coefficients of $T_n(z)$ is at most $2^n$.
+\end{enumerate}
+\end{proposition}
 
 \subsection{Rational Kernel}
 TODO
