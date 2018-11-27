@@ -39,6 +39,7 @@
 \DeclareMathOperator*{\argmax}{argmax}
 \DeclareMathOperator*{\argmin}{argmin}
 \DeclareMathOperator*{\Exp}{\mathbf{E}}  % expected value
+\DeclareMathOperator{\diff}{d \!} % differential
 
 
 \title{Online Multiclass Linear Classification with Bandit Feedback}
@@ -513,8 +514,8 @@ the algorithm makes at least $\frac{K-1}{2} M$ mistakes.
 \label{section:converting-linear-separability-to-strong-linear-separability}
 
 In this section, we show how construct a mapping $\phi$ of points in the unit
-ball $B_d$ of $\R^d$ into a high dimensional inner product space that has the
-property if any set of labeled examples in $B_d$ is linearly separable with a
+ball of $\R^d$ into a high dimensional inner product space that has the
+property if any set of labeled examples in the unit ball is linearly separable with a
 margin $\gamma$, applying the mapping $\phi$ makes the examples \emph{strongly}
 linearly separable with a margin $\gamma'$ and their norms are bounded by $R'$.
 The parameters $\gamma'$ and $R'$ are functions of the old margin $\gamma$ and
@@ -538,17 +539,17 @@ advantage that one does \emph{not} need to know the initial margin $\gamma$. In
 other words, the same mapping works for all possible values of $\gamma > 0$.
 
 The idea behind all the mappings is that, on a compact set, multivariate
-polynomials uniformly approximate any continuous function. This is result is a
-special case of the well known Stone-Weierstrass theorem~\citep[Section
-10.10]{Davidson-Donsig-2010}. In our case, we use a multivariate polynomials to
-approximate the indicator function corresponding to the intersection of $K-1$
-halfspaces. This polynomial separates examples in one class from examples in the
-other classes. To be able to quantify $\gamma'$ and $R'$ as well as time
-complexity of evaluating $k(x,x')$ we need to quantify certain parameters
-of the approximating polynomial (degree, norm, range of values).
-The parameters are quantified in \autoref{theorem:polynomial-approximation-1}
-and \autoref{theorem:polynomial-approximation-2}
-stated below.
+polynomials uniformly approximate any continuous function. This result is a
+special case of the well known Stone-Weierstrass theorem; see
+e.g.~\citep[Section~10.10]{Davidson-Donsig-2010}. In our case, we use
+multivariate polynomials to approximate the indicator function corresponding to
+the intersection of $K-1$ halfspaces. This polynomial separates examples in one
+class from examples in the other classes. To be able to quantify $\gamma'$ and
+$R'$ as well as time complexity of evaluating $k(x,x')$ we need to quantify
+certain parameters of the approximating polynomial (degree, norm, range of
+values). The parameters are quantified in
+\autoref{theorem:polynomial-approximation-1} and
+\autoref{theorem:polynomial-approximation-2} stated below.
 
 Before we state the theorem, recall that a polynomial of $d$ variables is a
 function $p:\R^d \to \R$ of the form
@@ -564,30 +565,30 @@ $$
 \norm{p} = \sqrt{\sum_{i_1, i_2, \dots, i_d} \left(c_{i_1, i_2, \dots, i_d} \right)^2 } \; .
 $$
 
-\begin{theorem}[Polynomial approximation of intersection of halfspaces (1)]
+\begin{theorem}[Polynomial approximation of intersection of halfspaces I]
 \label{theorem:polynomial-approximation-1}
-Let $w_1, w_2, \dots, w_K \in \R^d$ be such that $\sum_{i=1}^K \norm{w_1}^2 \le 1$.
+Let $v_1, v_2, \dots, v_m \in \R^d$ be vectors such that $\norm{v_1}, \norm{v_2}, \dots, \norm{v_m} \le 1$.
 Let $\gamma > 0$. There exists a polynomial $p:\R^d \to \R$ such that
-\begin{itemize}
-\item $p(x) \ge 1$ for all $x \in \bigcap_{i=2}^K \{ x \in \R^d ~:~ \ip{w_1}{x} \ge \ip{w_i}{x} + \gamma \}$
-\item $p(x) \le -1$ for all $x \in \bigcup_{i=2}^K \{ x \in \R^d ~:~ \ip{w_1}{x} \le \ip{w_i}{x} - \gamma \}$
+\begin{enumerate}
+\item $p(x) \ge 1$ for all $x \in \bigcap_{i=1}^m \left\{ x \in \R^d ~:~ \norm{x} \le 1, \ \ip{v_i}{x} \ge \gamma \right\}$
+\item $p(x) \le -1$ for all $x \in \bigcup_{i=1}^m \left\{ x \in \R^d ~:~ \norm{x} \le 1, \ \ip{v_i}{x} \le - \gamma \right\}$
 \item $\deg(p) \le ???$
 \item $\norm{p} \le ???$
 \item $|p(x)| \le ???$ for all $x \in \R^d$ such that $\norm{x} \le 1$
-\end{itemize}
+\end{enumerate}
 \end{theorem}
 
-\begin{theorem}[Polynomial approximation of intersection of halfspaces (2)]
+\begin{theorem}[Polynomial approximation of intersection of halfspaces II]
 \label{theorem:polynomial-approximation-2}
-Let $w_1, w_2, \dots, w_K \in \R^d$ be such that $\sum_{i=1}^K \norm{w_1}^2 \le 1$.
+Let $v_1, v_2, \dots, v_m \in \R^d$ be vectors such that $\norm{v_1}, \norm{v_2}, \dots, \norm{v_m} \le 1$.
 Let $\gamma > 0$. There exists a polynomial $p:\R^d \to \R$ such that
-\begin{itemize}
-\item $p(x) \ge 1$ for all $x \in \bigcap_{i=2}^K \{ x \in \R^d ~:~ \ip{w_1}{x} \ge \ip{w_i}{x} + \gamma \}$
-\item $p(x) \le -1$ for all $x \in \bigcup_{i=2}^K \{ x \in \R^d ~:~ \ip{w_1}{x} \le \ip{w_i}{x} - \gamma \}$
+\begin{enumerate}
+\item $p(x) \ge 1/2$ for all $x \in \bigcap_{i=1}^m \left\{ x \in \R^d ~:~ \norm{x} \le 1, \ \ip{v_i}{x} \ge \gamma \right\}$
+\item $p(x) \le -1/2$ for all $x \in \bigcup_{i=1}^m \left\{ x \in \R^d ~:~ \norm{x} \le 1, \ \ip{v_i}{x} \le - \gamma \right\}$
 \item $\deg(p) \le ???$
 \item $\norm{p} \le ???$
 \item $|p(x)| \le ???$ for all $x \in \R^d$ such that $\norm{x} \le 1$
-\end{itemize}
+\end{enumerate}
 \end{theorem}
 
 The proofs of the theorems can be found in
@@ -604,21 +605,126 @@ TODO
 To construct the polynomial $p$ we use Chebyshev polynomials of the first kind.
 Chebyshev polynomials of the fist kind form an infinite sequence of polynomials
 $T_0(z), T_1(z), T_2(z), \dots$ of single real variable $z$. They are defined
-by recurrence
+by the recurrence
 \begin{align*}
 T_0(z) & = 1 \; , \\
 T_1(z) & = z \; , \\
 T_{n+1}(z) & = 2zT_n(z) - T_{n-1}(z) & \text{for $n \ge 1$.}
 \end{align*}
+Chebyshev polynomials have a lot of interesting properties.
+We will need properties listed in
+\autoref{proposition:properties-of-chebyshev-polynomials} below.
+Interested reader can learn more about Chebyshev polynomials
+from the book by \cite{Mason-Handscomb-2002}.
 
-\begin{proposition}
-Chebyshev polynomials satisfy for any $n \ge 0$
+\begin{proposition}[Properties of Chebyshev polynomials]
+\label{proposition:properties-of-chebyshev-polynomials}
+Chebyshev polynomials satisfy
 \begin{enumerate}
-\item $|T_n(z)| \le 1$ for all $z \in [-1,1]$.
-\item If $z > 1$ then $T_n(z) \ge 1 + n^2(z - 1)$.
-\item Absolute value of all coefficients of $T_n(z)$ is at most $2^n$.
+\item $\deg(T_n) = n$ for all $n \ge 0$.
+\item If $n \ge 1$, the leading coefficient of $T_n(z)$ is $2^{n-1}$.
+\item $|T_n(z)| \le 1$ for all $z \in [-1,1]$ and all $n \ge 0$.
+\item $T_n(z) \ge 1 + n^2(z - 1)$ for all $z \ge 1$ and all $n \ge 0$.
+\item All coefficients of $T_n(z)$ lie in the interval $\left[-(1+\sqrt{2})^n, (1+\sqrt{2})^n \right]$.
 \end{enumerate}
 \end{proposition}
+
+\begin{proof}[Proof of \autoref{proposition:properties-of-chebyshev-polynomials}]
+The first two proprties easily follow from the recurrence.
+
+The third property is a direct consequence of
+\begin{equation}
+\label{equation:trigonometric-chebyshev}
+T_n(\cos(\theta)) = \cos(n \theta) \qquad \quad \text{for all $\theta \in \R$.}
+\end{equation}
+since for any $x \in [-1,1]$ there exists $\theta \in \R$ such that $\cos(\theta) = x$.
+Equation \eqref{equation:trigonometric-chebyshev} is proved by induction on $n$. Indeed, by definition
+$$
+T_0(\cos(\theta)) = 1 = \cos(0 \theta) \qquad \text{and} \qquad T_1(\cos(\theta)) = \cos(\theta) \; .
+$$
+For $n \ge 1$, we have
+\begin{align*}
+T_{n+1}(\cos(\theta))
+& = 2 \cos(\theta) T_n(\cos(\theta)) - T_{n-1}(\cos(\theta)) \\
+& = 2 \cos(\theta) \cos(n \theta) - \cos((n-1)\theta)) \; ,
+\end{align*}
+where the last step follow by induction hypothesis.
+It remains to show that the last expression equals $\cos((n+1)\theta)$.
+This can be derived from the trigonometric formula
+$$
+\cos(\alpha \pm \beta) = \cos(\alpha) \cos(\beta) \mp \sin(\alpha) \sin(\beta) \; .
+$$
+By substituting $\alpha = n \theta$ and $\beta = \theta$, we get two equations
+\begin{align*}
+\cos((n+1) \theta) & = \cos(n \theta) \cos(\theta) - \sin(n \theta) \sin(\theta) \; , \\
+\cos((n-1) \theta) & = \cos(n \theta) \cos(\theta) + \sin(n \theta) \sin(\theta) \; .
+\end{align*}
+Summing them yields
+$$
+\cos((n+1)\theta) + \cos((n-1) \theta) = 2 \cos(n \theta) \cos(\theta)
+$$
+which finishes the proof of equation \eqref{equation:trigonometric-chebyshev}.
+
+To verify the fourth property we first show that
+\begin{equation}
+\label{equation:hyperbolic-chebyshev}
+T_n(\cosh(\theta)) = \cosh(n \theta) \qquad \quad \text{for all $\theta \in \R$.}
+\end{equation}
+The proof of equation~\eqref{equation:hyperbolic-chebyshev} is the same
+as the proof of equation \eqref{equation:trigonometric-chebyshev} except
+that we replace $\cos$ and $\sin$ with $\cosh$ and $\sinh$ respectively.
+
+Note that $\cosh(\theta) = \frac{e^{\theta} + e^{-\theta}}{2}$ is an even
+continuous function that maps $\R$ onto $[1,+\infty)$, is strictly decreasing
+on $(-\infty,0]$, and is strictly increasing on $[0,\infty)$. Thus the fourth
+property is equivalent to
+$$
+T_n(\cosh(\theta)) \ge 1 + n^2 (\cosh(\theta) - 1) \qquad \text{for any $\theta \ge 0$.}
+$$
+For $\theta = 0$, according to \eqref{equation:hyperbolic-chebyshev} both sides
+are equal to $1$. The proof will be finished, if we prove that the derivative of
+the left hand side is greater or equal to the derivative of the right hand side.
+That is, we need to prove that
+\begin{equation}
+\label{equation:hyperbolic-chebyshev-derivative-inequality}
+\frac{\diff T_n(\cosh(\theta))}{\diff \theta} \ge \frac{\diff (1 + n^2 (\cosh(\theta) - 1))}{\diff \theta} \qquad \text{for any $\theta \ge 0$.}
+\end{equation}
+Using \eqref{equation:hyperbolic-chebyshev} and recalling that $\diff \cosh(\theta) / \diff \theta = \sinh(\theta)$ we
+can express the derivatives as
+\begin{align*}
+\frac{\diff T_n(\cosh(\theta))}{\diff \theta} & = \frac{\diff \cosh(n \theta))}{\diff \theta} = n \sinh(n \theta) \; , \\
+\frac{\diff (1 + n^2 (\cosh(\theta) - 1))}{\diff \theta} & = n^2 \sinh(\theta) \; .
+\end{align*}
+TODO
+
+To verify the fifth property let $a_n$ be the magnitude of the largest
+coefficient of $T_n(z)$. The recurrence for Chebyshev polynomials
+implies that the sequence $a_0, a_1, a_2, \dots$ satisfies
+\begin{align*}
+a_0 & = a_1 = 1 \; , \\
+a_{n+1} & \le 2 a_n + a_{n-1} & \text{for $n \ge 1$.}
+\end{align*}
+It remains to show that $a_n \le (1 + \sqrt{2})^n$ for all $n \ge 0$. We do this
+by induction on $n$. For $n=0$ and $n=1$ the inequality trivially holds. For $n
+\ge 1$, we have
+\begin{align*}
+a_{n+1} \le 2 a_n + a_{n-1}
+& \le 2 (1 + \sqrt{2})^n + (1 + \sqrt{2})^{n-1} \\
+& = (1 + \sqrt{2})^{n-1} (2 (1 + \sqrt{2}) + 1) \\
+& = (1 + \sqrt{2})^{n-1} (3 + 2\sqrt{2}) \\
+& = (1 + \sqrt{2})^{n-1} (1 + \sqrt{2})^2 \\
+& = (1 + \sqrt{2})^{n+1} \; .
+\end{align*}
+
+\end{proof}
+
+Let $r = \left\lceil \log_2(2m) \right\rceil$ and $s = \left\lceil \sqrt{\frac{1}{\gamma}} \right\rceil$.
+We define the polynomial $p:\R^d \to \R$ as
+$$
+p(x) = m + \frac{1}{2} - \sum_{i=1}^m \left( T_s(1 - \ip{v_i}{x}) \right)^r \; .
+$$
+It remains to show that $p$ has properties 1--5.
+
 
 \subsection{Rational Kernel}
 TODO
