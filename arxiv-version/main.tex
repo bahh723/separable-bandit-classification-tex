@@ -112,7 +112,7 @@ are \emph{linearly separable with a margin}. In the full-information feedback
 setting, it is well know that if the examples have norm at most $R$ and are
 linearly separable with a margin $\gamma$ then the \textsc{Multiclass
 Perceptron} algorithm makes at most $\lfloor 2(R/\gamma)^2 \rfloor$ mistakes.
-This result is very satisfactory since the upper bound on the number of mistakes
+This result is very satisfying since the upper bound on the number of mistakes
 is information-theoretically optimal and at the same time the \textsc{Multiclass
 Perceptron} algorithm has low time and memory complexity.
 
@@ -171,15 +171,16 @@ the ball in which the data lie.
 Finally, we study two questions related to the computational and
 information-theoretic hardness of the problem. Any algorithm for the bandit
 setting collects information in the form of so called \emph{strongly labeled}
-and \emph{weakly labeled} examples. Strongly-labeled examples are those for
+and \emph{weakly labeled} examples. Strongly labeled examples are those for
 which we know the class label. Weakly labeled example is an example for which we
 know that class label can be anything except for a particular one class. First,
 we show the offline problem of finding a linear multiclass separator consistent
-with the strongly- and weakly-labeled examples is NP-hard. This result is a
-simple consequence of the fact that finding an intersection of two halfspaces
-consistent with binary-labeled examples is NP-hard~\citep{Blum-Rivest-1993}.
-Second, we show that any algorithm that uses only strongly-labeled examples and
-ignores weakly labeled examples makes at least $\Omega(???)$ mistakes.
+with a set of strongly and weakly labeled examples is NP-hard. This result is a
+consequence of the fact that finding an intersection of two halfspaces
+consistent with a set of binary-labeled examples is
+NP-hard~\citep{Blum-Rivest-1993}. Second, we show that any algorithm that uses
+only strongly-labeled examples and ignores weakly labeled examples makes at
+least $\Omega(???)$ mistakes.
 
 
 \section{Related work}
