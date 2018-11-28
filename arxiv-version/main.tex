@@ -273,10 +273,10 @@ to see. The first condition follows from $\norm{w_i'}^2 \le (\frac{1}{2}
 \norm{w_1} + \frac{1}{2} \norm{w_2})^2 \le \frac{1}{2}\norm{w_1}^2 +
 \frac{1}{2}\norm{w_2}^2 \le \frac{1}{2}$ for $i=1,2$.
 
-However, for $K \ge 3$ there exists a set of labeled examples in an inner product
-space that is linearly separable with a positive margin $\gamma$ but it is not
-strongly linearly separable with any positive margin $\gamma$. Such set of labeled
-examples is shown in
+However, for any $K \ge 3$ and any inner product space of dimension at least
+$2$, there exists a set of labeled examples that is linearly separable with a
+positive margin $\gamma$ but it is not strongly linearly separable with any
+positive margin $\gamma$. An example of such set of labeled examples is shown in
 Figure~\ref{figure:linearly-separable-examples-with-margin}.
 
 \begin{figure}
@@ -308,10 +308,10 @@ the mistake upper bound is stated as
 
 The idea behind the algorithm is to use $K$ copies of the \textsc{Binary
 Perceptron} algorithm. Each copy corresponds to a class. In each round, each
-copy makes a binary decision whether the feature vector belongs their respective
+copy makes a binary decision whether the feature vector belongs its respective
 class or not. If at least one copy makes a positive prediction, the algorithm
 predicts accordingly. If multiple copies make positive predictions, the
-algorithm chooses one of them at random. If all copies make negative
+algorithm chooses one of them arbitrarily. If all copies make negative
 predictions, the algorithms makes a blind guess.
 
 \begin{algorithm}[h]
@@ -359,7 +359,7 @@ $V \times \{1,2,\dots,K\}$ such that the examples are strongly separable with
 margin $\gamma$ and $\norm{x_1}, \norm{x_2}, \dots, \norm{x_T} \le R$ then the
 expected number of mistakes
 Algorithm~\ref{algorithm:algorithm-for-strongly-linearly-separable-examples}
-makes is at most $(K-1) \lfloor (R/\gamma)^2 \rfloor$ mistakes.
+makes is at most $(K-1) \lfloor (R/\gamma)^2 \rfloor$.
 \end{theorem}
 
 \begin{proof}
@@ -442,14 +442,15 @@ We conclude that $U \le (R/\gamma)^2$. Since $U$ is an integer, $U \le \lfloor (
 \begin{theorem}[Mistake lower bound]
 \label{theorem:strongly-separable-example-mistake-lower-bound}
 Let $\gamma$ be a positive real number and let $R$ be a non-negative real
-number. For any algorithm for the \textsc{Online Multiclass Classification with
-Bandit Feedback} with $K \le \frac{1}{4}(R/\gamma)^2$ classes there exists an inner
-product space $(V, \ip{\cdot}{\cdot})$, a non-negative integer $T$ and a
-sequence of labeled examples $(x_1, y_1), (x_2, y_2), \dots, (x_T, y_T)$
-in $V \times \{1,2,\dots,K\}$ that are strongly linearly separable with
-margin $\gamma$, the norms satisfy $\norm{x_1}, \norm{x_2}, \dots, \norm{x_T}
-\le R$ and the expected number of mistakes the algorithm makes is at least $\frac{K-1}{2}
-\lfloor \frac{1}{16} (R/\gamma)^2 \rfloor$.
+number. For any (possibly randomized) algorithm for the \textsc{Online
+Multiclass Classification with Bandit Feedback} with $K \le
+\frac{1}{4}(R/\gamma)^2$ classes there exists an inner product space $(V,
+\ip{\cdot}{\cdot})$, a non-negative integer $T$ and a sequence of labeled
+examples $(x_1, y_1), (x_2, y_2), \dots, (x_T, y_T)$ in $V \times
+\{1,2,\dots,K\}$ that are strongly linearly separable with margin $\gamma$, the
+norms satisfy $\norm{x_1}, \norm{x_2}, \dots, \norm{x_T} \le R$ and the expected
+number of mistakes the algorithm makes is at least $\frac{K-1}{2} \lfloor
+\frac{1}{16} (R/\gamma)^2 \rfloor$.
 \end{theorem}
 
 \begin{proof}
@@ -507,7 +508,8 @@ mistakes in expectation.
 
 Finally, since strong separability and norm condition hold with probability one,
 there exists a particular (i.e. deterministic) sequence of examples for which
-the algorithm makes at least $\frac{K-1}{2} M$ mistakes.
+the algorithm makes at least $\frac{K-1}{2} M$ mistakes in expectation
+over its internal randomization.
 \end{proof}
 
 \section{Converting linear separability to strong linear separability}
@@ -542,16 +544,17 @@ The idea behind all the mappings is that, on a compact set, multivariate
 polynomials uniformly approximate any continuous function. This result is a
 special case of the well known Stone-Weierstrass theorem; see
 e.g.~\citep[Section~10.10]{Davidson-Donsig-2010}. In our case, we use
-multivariate polynomials to approximate the indicator function corresponding to
+multivariate polynomial to approximate the indicator function corresponding to
 the intersection of $K-1$ halfspaces. This polynomial separates examples in one
 class from examples in the other classes. To be able to quantify $\gamma'$ and
 $R'$ as well as time complexity of evaluating $k(x,x')$ we need to quantify
 certain parameters of the approximating polynomial (degree, norm, range of
-values). The parameters are quantified in
-\autoref{theorem:polynomial-approximation-1} and
-\autoref{theorem:polynomial-approximation-2} stated below.
+values). We construct two different polynomials with different paremeters. The
+parameters are quantified in
+Theorems~\ref{theorem:polynomial-approximation-1}~and~\ref{theorem:polynomial-approximation-2}
+stated below.
 
-Before we state the theorem, recall that a polynomial of $d$ variables is a
+Before we state the theorems, recall that a polynomial of $d$ variables is a
 function $p:\R^d \to \R$ of the form
 $$
 p(x) = p(x_1, x_2, \dots, x_d) = \sum_{i_1, i_2, \dots, i_d} c_{i_1, i_2, \dots, i_d} x_1^{i_1} x_2^{i_2} \dots x_d^{i_d}
@@ -679,23 +682,35 @@ continuous function that maps $\R$ onto $[1,+\infty)$, is strictly decreasing
 on $(-\infty,0]$, and is strictly increasing on $[0,\infty)$. Thus the fourth
 property is equivalent to
 $$
-T_n(\cosh(\theta)) \ge 1 + n^2 (\cosh(\theta) - 1) \qquad \text{for any $\theta \ge 0$.}
+T_n(\cosh(\theta)) \ge 1 + n^2 (\cosh(\theta) - 1) \qquad \text{for all $\theta \ge 0$.}
 $$
 For $\theta = 0$, according to \eqref{equation:hyperbolic-chebyshev} both sides
-are equal to $1$. The proof will be finished, if we prove that the derivative of
-the left hand side is greater or equal to the derivative of the right hand side.
+are equal to $1$. Thus, it is sufficient to prove that the derivative of the
+left hand side is greater or equal to the derivative of the right hand side.
 That is, we need to prove that
 \begin{equation}
 \label{equation:hyperbolic-chebyshev-derivative-inequality}
-\frac{\diff T_n(\cosh(\theta))}{\diff \theta} \ge \frac{\diff (1 + n^2 (\cosh(\theta) - 1))}{\diff \theta} \qquad \text{for any $\theta \ge 0$.}
+\frac{\diff T_n(\cosh(\theta))}{\diff \theta} \ge \frac{\diff (1 + n^2 (\cosh(\theta) - 1))}{\diff \theta} \qquad \text{for all $\theta \ge 0$.}
 \end{equation}
-Using \eqref{equation:hyperbolic-chebyshev} and recalling that $\diff \cosh(\theta) / \diff \theta = \sinh(\theta)$ we
+Using \eqref{equation:hyperbolic-chebyshev} and recalling that $\frac{\diff \cosh(\theta)}{\diff \theta} = \sinh(\theta)$ we
 can express the derivatives as
 \begin{align*}
 \frac{\diff T_n(\cosh(\theta))}{\diff \theta} & = \frac{\diff \cosh(n \theta))}{\diff \theta} = n \sinh(n \theta) \; , \\
 \frac{\diff (1 + n^2 (\cosh(\theta) - 1))}{\diff \theta} & = n^2 \sinh(\theta) \; .
 \end{align*}
-TODO
+The inequality \eqref{equation:hyperbolic-chebyshev-derivative-inequality} is thus equivalent to
+$$
+\sinh(n \theta) \ge n \sinh(\theta) \qquad \text{for all $\theta \ge 0$.}
+$$
+Tho prove this inequality we use the summation formula
+$$
+\sinh(\alpha + \beta) = \sinh(\alpha) \cosh(\beta) + \sinh(\beta) \cosh(\beta)
+$$
+and the observation that for $\theta \ge 0$, $\cosh(\theta) \ge 1$ and $\sinh(\theta) \ge 0$. Thus,
+$$
+\sinh(\alpha + \beta) \ge \sinh(\alpha) + \sinh(\beta) \qquad \text{for $\alpha, \beta \ge 0$.}
+$$
+Thus by induction on $n$, we see that $\sinh(n \theta) \ge n \sinh(\theta)$ for all $\theta \ge 0$.
 
 To verify the fifth property let $a_n$ be the magnitude of the largest
 coefficient of $T_n(z)$. The recurrence for Chebyshev polynomials
