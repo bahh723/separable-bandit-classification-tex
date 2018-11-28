@@ -560,7 +560,7 @@ function $p:\R^d \to \R$ of the form
 $$
 p(x) = p(x_1, x_2, \dots, x_d) = \sum_{i_1, i_2, \dots, i_d} c_{i_1, i_2, \dots, i_d} x_1^{i_1} x_2^{i_2} \dots x_d^{i_d}
 $$
-where the sum ranges over a finite set of tuples $(i_1, i_2, \dots, i_d)$ of
+where the sum ranges over a finite set of $d$-tuples $(i_1, i_2, \dots, i_d)$ of
 non-negative integers and $c_{i_1, i_2, \dots, i_d}$ is a real coefficient. The
 \emph{degree} of a polynomial $p$, denoted by $\deg(p)$, is the largest value of
 $i_1 + i_2 + \dots + i_d$ for which the coefficient is non-zero. The \emph{norm
@@ -603,30 +603,83 @@ respectively.
 
 \subsection{Proof of \autoref{theorem:polynomial-approximation-1}}
 \label{section:proof-of-polynomial-approximation-1}
-TODO
+
+\begin{lemma}[Inequality]
+\label{lemma:inequality}
+For any real numbers $b_1, b_2, \dots, b_n$,
+$$
+\left( \sum_{i=1}^n b_i \right)^2 \le n \sum_{i=1}^n b_i^2 \; .
+$$
+\end{lemma}
+
+\autoref{lemma:inequality} follows from Cauchy-Schwartz inequality applied to
+vectors $(b_1, b_2, \dots, b_n)$ and $(1,1,\dots,1)$.
 
 \begin{proposition}[Properties of the norm of polynomials]
 \hspace{1cm} % Dummy space
 \begin{enumerate}
 \item Let $p_1, p_2, \dots, p_n$ be multivariate polynomials and
-let $p(x) = \prod_{i=1}^n p_i(x)$ be their product. Then, $\norm{p}^2 \le n^{\sum_{i=1}^n \deg(p_i)} \prod_{i=1}^n \norm{p_i}^2$.
+let $p(x) = \prod_{j=1}^n p_j(x)$ be their product. Then, $\norm{p}^2 \le n^{\sum_{j=1}^n \deg(p_j)} \prod_{j=1}^n \norm{p_j}^2$.
 \item Let $q$ be a multivariate polynomial of degree at most $s$ and let $p(x) = (q(x))^n$. Then, $\norm{p}^2 \le n^{ns} \norm{q}^{2n}$.
-\item Let be $p_1, p_2, \dots, p_n$ be multivariate polynomials. Then, $\norm{\sum_{i=1}^n p_i}^2 \le n \sum_{i=1}^n \norm{p_i}^2$.
+\item Let be $p_1, p_2, \dots, p_n$ be multivariate polynomials. Then, $\norm{\sum_{j=1}^n p_j}^2 \le n \sum_{j=1}^n \norm{p_j}^2$.
 \end{enumerate}
 \end{proposition}
 
 \begin{proof}
-TODO
+Using multi-index notation we can write any multivariate polynomial $p$ as
+$$
+p(x) = \sum_A c_A x^A
+$$
+where $A = (i_1, i_2, \dots, i_d)$ is a multi-index (i.e. a $d$-tuple of
+non-negative integers), $x^A = x_1^{i_1} x_2^{i_2} \dots x_d^{i_d}$ is a
+monomial and $c_A = c_{i_1, i_2, \dots, i_d}$ is the corresponding real
+coefficient. The sum is over a finite subset of $d$-tuples of non-negative
+integers. Using this notation, the norm of a polynomial $p$ can be written as
+$$
+\norm{p} = \sqrt{\sum_A (c_A)^2} \; .
+$$
+For a multi-index $A = (i_1, i_2, \dots, i_d)$ we define its $1$-norm as
+$\norm{A}_1 = i_1 + i_2 + \dots + i_d$.
+
+To prove the first part, we express $p_j$ as
+$$
+p_j(x) = \sum_{A_j} c^{(j)}_{A_j} x^{A_j} \; .
+$$
+If $p$ has expansion $p(x) = \sum_A c_A x^A$ then its coefficient $c_A$ for any multi-index $A$ is
+$$
+c_A = \sum_{\substack{(A_1, A_2, \dots, A_n) \\ A_1 + A_2 + \dots + A_n = A}} c^{(1)}_{A_1} c^{(2)}_{A_2} \cdots c^{(n)}_{A_n} \; .
+$$
+Therefore,
+\begin{multline*}
+\norm{p}^2
+= \sum_{A} (c_A)^2
+= \sum_{A} \left( \sum_{\substack{(A_1, A_2, \dots, A_n) \\ A_1 + A_2 + \dots + A_n = A}} c^{(1)}_{A_1} c^{(2)}_{A_2} \cdots c^{(n)}_{A_n} \right)^2
+= \sum_{A} \left( \sum_{\substack{(A_1, A_2, \dots, A_n) \\ A_1 + A_2 + \dots + A_n = A}} \prod_{j=1}^n c^{(j)}_{A_j} \right)^2
+\end{multline*}
+and
+\begin{multline*}
+\prod_{i=1}^n \norm{p_i}^2
+= \prod_{i=1}^n \left( \sum_{A_i} (c^{(i)}_{A_i})^2 \right)
+= \sum_{(A_1, A_2, \dots, A_n)} \prod_{j=1}^n (c^{(j)}_{A_j})^2
+= \sum_{(A_1, A_2, \dots, A_n)} \left( \prod_{j=1}^n c^{(j)}_{A_j} \right)^2 \\
+= \sum_A \sum_{\substack{(A_1, A_2, \dots, A_n) \\ A_1 + A_2 + \dots + A_n = A}} \left( \prod_{j=1}^n c^{(j)}_{A_j} \right)^2
+\end{multline*}
+where in both cases the outer sum is over multi-indices $A$ such that $\norm{A}_1 \le \deg(p)$.
+To finish the proof, it is sufficient to prove that for any $A$ such that $\norm{A}_1 \le \deg(p)$,
+$$
+\left( \sum_{\substack{(A_1, A_2, \dots, A_n) \\ A_1 + A_2 + \dots + A_n = A}} \prod_{j=1}^n c^{(j)}_{A_j} \right)^2
+\le n^{\deg(p)} \sum_{\substack{(A_1, A_2, \dots, A_n) \\ A_1 + A_2 + \dots + A_n = A}} \left( \prod_{j=1}^n c^{(j)}_{A_j} \right)^2 \; .
+$$
+This inequality follows from \autoref{lemma:inequality} as long we can show that
+the number of $n$-tuples $(A_1, A_2, \dots, A_n)$ such that $A_1 + A_2 + \dots +
+A_n = A$ is upper bounded by $n^{\deg(p)}$.
 
 The second part follows from the first part by setting $p_1 = p_2 = \dots p_n = q$.
 
-To prove the third part we use generalized triangle inequality and
-an inequality $(\sum_{i=1}^n a_i)^2 \le n \sum_{i=1}^n a_i^2$ valid
-for any real numbers $a_1, a_2, \dots, a_n$. (The latter inequality follows from the inequality
-between arithmetic mean and qudratic mean, $\frac{1}{n} \sum_{i=1}^n a_i \le \sqrt{\frac{1}{n} \sum_{i=1}^n a_i^2}$.)
-We have
+To prove the third part we use generalized triangle inequality and an
+\autoref{lemma:inequality}. We have
 \begin{align*}
-\norm{\sum_{i=1}^n p_i}^2 = \left( \norm{\sum_{i=1}^n p_i} \right)^2 \le \left(\sum_{i=1}^n \norm{p_i} \right)^2 \le n \sum_{i=1}^n \norm{p_i}^2 \; .
+\norm{\sum_{j=1}^n p_j}^2 = \left( \norm{\sum_{j=1}^n p_j} \right)^2 \le \left(\sum_{j=1}^n \norm{p_j} \right)^2 \le n \sum_{j=1}^n \norm{p_j}^2 \; .
 \end{align*}
 \end{proof}
 
