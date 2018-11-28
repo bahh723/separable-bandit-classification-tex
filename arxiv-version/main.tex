@@ -568,6 +568,8 @@ of a polynomial} $p$ is defined as
 $$
 \norm{p} = \sqrt{\sum_{i_1, i_2, \dots, i_d} \left(c_{i_1, i_2, \dots, i_d} \right)^2 } \; .
 $$
+It is not hard to see that this indeed a norm, since we can interpret it as
+a Euclidean norm of the vector of the coefficients of the polynomial.
 
 \begin{theorem}[Polynomial approximation of intersection of halfspaces I]
 \label{theorem:polynomial-approximation-1}
@@ -602,6 +604,31 @@ respectively.
 \subsection{Proof of \autoref{theorem:polynomial-approximation-1}}
 \label{section:proof-of-polynomial-approximation-1}
 TODO
+
+\begin{proposition}[Properties of the norm of polynomials]
+\hspace{1cm} % Dummy space
+\begin{enumerate}
+\item Let $p_1, p_2, \dots, p_n$ be multivariate polynomials and
+let $p(x) = \prod_{i=1}^n p_i(x)$ be their product. Then, $\norm{p}^2 \le n^{\sum_{i=1}^n \deg(p_i)} \prod_{i=1}^n \norm{p_i}^2$.
+\item Let $q$ be a multivariate polynomial of degree at most $s$ and let $p(x) = (q(x))^n$. Then, $\norm{p}^2 \le n^{ns} \norm{q}^{2n}$.
+\item Let be $p_1, p_2, \dots, p_n$ be multivariate polynomials. Then, $\norm{\sum_{i=1}^n p_i}^2 \le n \sum_{i=1}^n \norm{p_i}^2$.
+\end{enumerate}
+\end{proposition}
+
+\begin{proof}
+TODO
+
+The second part follows from the first part by setting $p_1 = p_2 = \dots p_n = q$.
+
+To prove the third part we use generalized triangle inequality and
+an inequality $(\sum_{i=1}^n a_i)^2 \le n \sum_{i=1}^n a_i^2$ valid
+for any real numbers $a_1, a_2, \dots, a_n$. (The latter inequality follows from the inequality
+between arithmetic mean and qudratic mean, $\frac{1}{n} \sum_{i=1}^n a_i \le \sqrt{\frac{1}{n} \sum_{i=1}^n a_i^2}$.)
+We have
+\begin{align*}
+\norm{\sum_{i=1}^n p_i}^2 = \left( \norm{\sum_{i=1}^n p_i} \right)^2 \le \left(\sum_{i=1}^n \norm{p_i} \right)^2 \le n \sum_{i=1}^n \norm{p_i}^2 \; .
+\end{align*}
+\end{proof}
 
 \subsection{Proof of \autoref{theorem:polynomial-approximation-2}}
 \label{section:proof-of-polynomial-approximation-2}
