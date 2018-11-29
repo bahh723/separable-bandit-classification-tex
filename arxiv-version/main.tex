@@ -86,7 +86,7 @@ round of the game.} The protocol of the problem is stated below.
 \REQUIRE{Number of classes $K$. Number of rounds $T$.}
 \FOR{$t=1,2,\dots,T$}
 \STATE{Observe feature vector $x_t$}
-\STATE{Environment \emph{secretly} chooses correct class label $y_t \in \{1,2,\dots,K\}$}
+\STATE{Adversary \emph{secretly} chooses correct class label $y_t \in \{1,2,\dots,K\}$}
 \STATE{Predict class label $\widehat y_t \in \{1,2,\dots,K\}$}
 \STATE{Observe feedback $z_t \in \{0,1\}$ where $z_t = \begin{cases}
 0 & \text{if $\widehat y_t = y_t$,} \\
@@ -188,6 +188,8 @@ least $\Omega(???)$ mistakes.
 
 \begin{itemize}
 \item \cite{Abernethy-Rakhlin-2009}
+
+\item \cite{Chen-Chen-Zhang-Chen-Zhang-2009}
 
 \item \cite{Hazan-Kale-2011}
 
