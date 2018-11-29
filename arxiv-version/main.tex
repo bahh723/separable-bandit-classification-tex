@@ -154,7 +154,9 @@ of these mappings/kernels and the way margin in original space under standard
 linear separability notion gets transformed into a margin in the
 high-dimensional space under the strong separability notion. This problem is
 related to the problem of learning intersection of halfspaces and has been
-studied previously by \cite{Klivans-Servedio-2008}.
+studied previously by \cite{Klivans-Servedio-2008}. As an important technical
+achievement, we improve on the results of \cite{Klivans-Servedio-2008} by
+removing completely the dependency on the original dimension $d$.
 
 Finally, we propose a very different algorithm that is based on the obvious idea
 that two points that are close enough must have the same label. Here, close
@@ -194,6 +196,8 @@ least $\Omega(???)$ mistakes.
 \item \cite{Hazan-Kale-2011}
 
 \item \cite{Beygelzimer-Orabona-Zhang-2017}
+
+\item \cite{Foster-Kale-Luo-Mohri-Sridharan-2018}
 
 \item \cite{Foster-Krishnamurthy-2018}
 \end{itemize}
@@ -515,8 +519,8 @@ the algorithm makes at least $\frac{K-1}{2} M$ mistakes in expectation
 over its internal randomization.
 \end{proof}
 
-\section{Converting linear separability to strong linear separability}
-\label{section:converting-linear-separability-to-strong-linear-separability}
+\section{From linear separability to strong linear separability}
+\label{section:from-linear-separability-to-strong-linear-separability}
 
 In this section, we show how construct a mapping $\phi$ of points in the unit
 ball of $\R^d$ into a high dimensional inner product space that has the
@@ -536,23 +540,23 @@ can use the kernelized version of
 Algorithm~\ref{algorithm:algorithm-for-strongly-linearly-separable-examples}
 that uses a kernel function $k(x,x') = \ip{\phi(x)}{\phi(x')}$.
 
-We construct several different mappings $\phi$. The parameters $R'$ and
-$\gamma'$ for the different mappings are not the same, but the ratios
-$R'/\gamma'$ are qualitively the same. However, one mapping has the advantage of
-having a kernel $k(x,x')$ that is faster to evaluate. Another mapping has the
-advantage that one does \emph{not} need to know the initial margin $\gamma$. In
-other words, the same mapping works for all possible values of $\gamma > 0$.
+We construct several different mappings $\phi$. The mappings differ in the
+parameters $R'$, $\gamma'$, time complexity of evaluating $\phi(x)$, and time
+complexity of evaluating $k(x,x')$. Some of the mappings depend the original
+margin $\gamma$. In practice, the margin parameter $\gamma$ is not known, which
+makes these mappings impractical. However, one of the mappings we construct
+does \emph{not} depend $\gamma$.
 
-The idea behind all the mappings is that, on a compact set, multivariate
-polynomials uniformly approximate any continuous function. This result is a
-special case of the well known Stone-Weierstrass theorem; see
-e.g.~\citep[Section~10.10]{Davidson-Donsig-2010}. In our case, we use
-multivariate polynomial to approximate the indicator function corresponding to
-the intersection of $K-1$ halfspaces. This polynomial separates examples in one
-class from examples in the other classes. To be able to quantify $\gamma'$ and
-$R'$ as well as time complexity of evaluating $k(x,x')$ we need to quantify
-certain parameters of the approximating polynomial (degree, norm, range of
-values). We construct two different polynomials with different paremeters. The
+The idea behind all the mappings is polynomial approximation. According to the
+well known Stone-Weierstrass theorem (see
+e.g.~\citep[Section~10.10]{Davidson-Donsig-2010}), on a compact set,
+multivariate polynomials uniformly approximate any continuous function. In our
+case, we use multivariate polynomial to approximate the indicator function
+corresponding to the intersection of $K-1$ halfspaces. This polynomial separates
+examples in one class from examples in the other classes. To be able to quantify
+$R'$, $\gamma'$ and time complexities of evaluating $\phi(x)$ and $k(x,x')$, we
+need to quantify certain parameters of the approximating polynomial (degree,
+norm). We construct two different polynomials with different paremeters. The
 parameters are quantified in
 Theorems~\ref{theorem:polynomial-approximation-1}~and~\ref{theorem:polynomial-approximation-2}
 stated below.
@@ -603,19 +607,56 @@ The proofs of the theorems can be found in
 Sections~\ref{section:proof-of-polynomial-approximation-1}~and~\ref{section:proof-of-polynomial-approximation-2}
 respectively.
 
-\subsection{Proof of \autoref{theorem:polynomial-approximation-1}}
-\label{section:proof-of-polynomial-approximation-1}
+\section{Proof of Theorems~\ref{theorem:polynomial-approximation-1}~and~\ref{theorem:polynomial-approximation-2}}
 
-\begin{lemma}[Inequality]
-\label{lemma:inequality}
+For the proofs of the theorems we need several auxilliary results.
+
+\begin{lemma}[Simple inequality]
+\label{lemma:simple-inequality}
 For any real numbers $b_1, b_2, \dots, b_n$,
 $$
 \left( \sum_{i=1}^n b_i \right)^2 \le n \sum_{i=1}^n b_i^2 \; .
 $$
 \end{lemma}
 
-\autoref{lemma:inequality} follows from Cauchy-Schwartz inequality applied to
+\begin{proof}
+The lemma follows from Cauchy-Schwartz inequality applied to
 vectors $(b_1, b_2, \dots, b_n)$ and $(1,1,\dots,1)$.
+\end{proof}
+
+\begin{lemma}[Bound on binomial coefficients]
+\label{lemma:binomial-bound}
+For any integers $n,k$ such that $n \ge k \ge 0$,
+$$
+\binom{n}{k} \le (n - k + 1)^k \; .
+$$
+\end{lemma}
+
+\begin{proof}
+If $k = 0$, the inequality trivially holds. For the rest of the proof we can
+assume $k \ge 1$. We write the binomial coefficient as
+$$
+\binom{n}{k} = \frac{n(n-1)\cdots(n-k+1)}{k(k-1) \cdots 1} = \frac{n}{k} \cdot \frac{n-1}{k - 1} \cdots \frac{n-k+1}{1} \; .
+$$
+We claim that
+$$
+\frac{n}{k} \le \frac{n-1}{k - 1} \le \cdots \le \frac{n-k+1}{1}
+$$
+from which the lemma follows by upper bounding all the fractions by $n-k+1$.
+It remains to prove that for any $j=0,1,\dots,k-1$,
+$$
+\frac{n - j + 1}{k - j + 1} \le \frac{n - j}{k - j} \; .
+$$
+Mutliplying by the (positive) denonimators, we get an equivalent inequality
+$$
+(n - j + 1)(k - j) \le (n - j)(k - j + 1) \; .
+$$
+Cancelling common terms leads to an equivalent inequality
+$$
+k - j \le n - j \; ,
+$$
+which holds by the assumption on $n \ge k$.
+\end{proof}
 
 \begin{proposition}[Properties of the norm of polynomials]
 \hspace{1cm} % Dummy space
@@ -667,23 +708,42 @@ and
 = \sum_A \sum_{\substack{(A_1, A_2, \dots, A_n) \\ A_1 + A_2 + \dots + A_n = A}} \left( \prod_{j=1}^n c^{(j)}_{A_j} \right)^2
 \end{multline*}
 where in both cases the outer sum is over multi-indices $A$ such that $\norm{A}_1 \le \deg(p)$.
-To finish the proof, it is sufficient to prove that for any $A$ such that $\norm{A}_1 \le \deg(p)$,
+\autoref{lemma:simple-inequality} implies that for any multi-index $A$,
 $$
 \left( \sum_{\substack{(A_1, A_2, \dots, A_n) \\ A_1 + A_2 + \dots + A_n = A}} \prod_{j=1}^n c^{(j)}_{A_j} \right)^2
-\le n^{\deg(p)} \sum_{\substack{(A_1, A_2, \dots, A_n) \\ A_1 + A_2 + \dots + A_n = A}} \left( \prod_{j=1}^n c^{(j)}_{A_j} \right)^2 \; .
+\le M_A \sum_{\substack{(A_1, A_2, \dots, A_n) \\ A_1 + A_2 + \dots + A_n = A}} \left( \prod_{j=1}^n c^{(j)}_{A_j} \right)^2 \; .
 $$
-This inequality follows from \autoref{lemma:inequality} as long we can show that
-the number of $n$-tuples $(A_1, A_2, \dots, A_n)$ such that $A_1 + A_2 + \dots +
-A_n = A$ is upper bounded by $n^{\deg(p)}$.
+where $M_A$ is the number of $n$-tuples $(A_1, A_2, \dots, A_n)$ such that $A_1 +
+A_2 + \dots + A_n = A$.
+
+To finish the proof, it is sufficient to prove that
+$M_A \le n^{\deg(p)}$. To prove this inequality, consider a multi-index
+$A = (i_1, i_2, \dots, i_d)$ and consider its $\ell$-th coordinate $i_\ell$.
+In order for $A_1 + A_2 + \dots + A_n = A$, the $\ell$-th coordinates of
+$A_1, A_2, \dots, A_n$ need to sum to $i_\ell$. There are exactly $\binom{i_\ell + n - 1}{i_\ell}$
+possibilities for the choice of $\ell$-th coordinates of $A_1, A_2, \dots, A_n$.
+The total number of choices is thus
+$$
+M_A = \prod_{\ell=1}^d \binom{i_\ell + n - 1}{i_\ell} \; .
+$$
+Using \autoref{lemma:binomial-bound}, we upper bound it as
+$$
+M_A \le \prod_{\ell=1}^d n^{i_\ell} = n^{\norm{A}_1} \le n^{\deg(p)} \; .
+$$
 
 The second part follows from the first part by setting $p_1 = p_2 = \dots p_n = q$.
 
-To prove the third part we use generalized triangle inequality and an
-\autoref{lemma:inequality}. We have
+To prove the third part we use generalized triangle inequality and
+\autoref{lemma:simple-inequality}. We have
 \begin{align*}
 \norm{\sum_{j=1}^n p_j}^2 = \left( \norm{\sum_{j=1}^n p_j} \right)^2 \le \left(\sum_{j=1}^n \norm{p_j} \right)^2 \le n \sum_{j=1}^n \norm{p_j}^2 \; .
 \end{align*}
 \end{proof}
+
+\subsection{Proof of \autoref{theorem:polynomial-approximation-1}}
+\label{section:proof-of-polynomial-approximation-1}
+
+TODO
 
 \subsection{Proof of \autoref{theorem:polynomial-approximation-2}}
 \label{section:proof-of-polynomial-approximation-2}
@@ -709,6 +769,8 @@ Chebyshev polynomials satisfy
 \begin{enumerate}
 \item $\deg(T_n) = n$ for all $n \ge 0$.
 \item If $n \ge 1$, the leading coefficient of $T_n(z)$ is $2^{n-1}$.
+\item $T_n(\cos(\theta)) = \cos(n \theta)$ for all $\theta \in \R$ and all $n \ge 0$.
+\item $T_n(\cosh(\theta)) = \cosh(n \theta)$ for all $\theta \in \R$ and all $n \ge 0$.
 \item $|T_n(z)| \le 1$ for all $z \in [-1,1]$ and all $n \ge 0$.
 \item $T_n(z) \ge 1 + n^2(z - 1)$ for all $z \ge 1$ and all $n \ge 0$.
 \item All coefficients of $T_n(z)$ lie in the interval $\left[-(1+\sqrt{2})^n, (1+\sqrt{2})^n \right]$.
@@ -716,15 +778,9 @@ Chebyshev polynomials satisfy
 \end{proposition}
 
 \begin{proof}[Proof of \autoref{proposition:properties-of-chebyshev-polynomials}]
-The first two proprties easily follow from the recurrence.
+The first two properties can be easily proven by induction on $n$ using the recurrence.
 
-The third property is a direct consequence of
-\begin{equation}
-\label{equation:trigonometric-chebyshev}
-T_n(\cos(\theta)) = \cos(n \theta) \qquad \quad \text{for all $\theta \in \R$.}
-\end{equation}
-since for any $x \in [-1,1]$ there exists $\theta \in \R$ such that $\cos(\theta) = x$.
-Equation \eqref{equation:trigonometric-chebyshev} is proved by induction on $n$. Indeed, by definition
+We prove third property by induction on $n$. Indeed, by definition
 $$
 T_0(\cos(\theta)) = 1 = \cos(0 \theta) \qquad \text{and} \qquad T_1(\cos(\theta)) = \cos(\theta) \; .
 $$
@@ -749,55 +805,48 @@ Summing them yields
 $$
 \cos((n+1)\theta) + \cos((n-1) \theta) = 2 \cos(n \theta) \cos(\theta)
 $$
-which finishes the proof of equation \eqref{equation:trigonometric-chebyshev}.
+which finishes the proof.
 
-To verify the fourth property we first show that
-\begin{equation}
-\label{equation:hyperbolic-chebyshev}
-T_n(\cosh(\theta)) = \cosh(n \theta) \qquad \quad \text{for all $\theta \in \R$.}
-\end{equation}
-The proof of equation~\eqref{equation:hyperbolic-chebyshev} is the same
-as the proof of equation \eqref{equation:trigonometric-chebyshev} except
-that we replace $\cos$ and $\sin$ with $\cosh$ and $\sinh$ respectively.
+Fourth property has the similar proof as third property. It suffices
+to replace $\cos$ and $\sin$ with $\cosh$ and $\sinh$ respectively.
 
-Note that $\cosh(\theta) = \frac{e^{\theta} + e^{-\theta}}{2}$ is an even
-continuous function that maps $\R$ onto $[1,+\infty)$, is strictly decreasing
-on $(-\infty,0]$, and is strictly increasing on $[0,\infty)$. Thus the fourth
-property is equivalent to
+Fifth property follows from the third property. Indeed, for any $z \in [-1,1]$
+there exists $\theta \in \R$ such that $\cos \theta = z$. Thus, $|T_n(z)| =
+|T_n(\cos(\theta))| = |\cos(n\theta)| \le 1$.
+
+The sixth property is equivalent to
 $$
-T_n(\cosh(\theta)) \ge 1 + n^2 (\cosh(\theta) - 1) \qquad \text{for all $\theta \ge 0$.}
+T_n(\cosh(\theta)) \ge 1 + n^2 (\cosh(\theta) - 1) \qquad \text{for all $\theta \ge 0$,}
 $$
-For $\theta = 0$, according to \eqref{equation:hyperbolic-chebyshev} both sides
-are equal to $1$. Thus, it is sufficient to prove that the derivative of the
-left hand side is greater or equal to the derivative of the right hand side.
-That is, we need to prove that
-\begin{equation}
-\label{equation:hyperbolic-chebyshev-derivative-inequality}
-\frac{\diff T_n(\cosh(\theta))}{\diff \theta} \ge \frac{\diff (1 + n^2 (\cosh(\theta) - 1))}{\diff \theta} \qquad \text{for all $\theta \ge 0$.}
-\end{equation}
-Using \eqref{equation:hyperbolic-chebyshev} and recalling that $\frac{\diff \cosh(\theta)}{\diff \theta} = \sinh(\theta)$ we
-can express the derivatives as
-\begin{align*}
-\frac{\diff T_n(\cosh(\theta))}{\diff \theta} & = \frac{\diff \cosh(n \theta))}{\diff \theta} = n \sinh(n \theta) \; , \\
-\frac{\diff (1 + n^2 (\cosh(\theta) - 1))}{\diff \theta} & = n^2 \sinh(\theta) \; .
-\end{align*}
-The inequality \eqref{equation:hyperbolic-chebyshev-derivative-inequality} is thus equivalent to
+since $\cosh(\theta) = \frac{e^{\theta} + e^{-\theta}}{2}$ is an even continuous
+function that maps $\R$ onto $[1,+\infty)$, is strictly decreasing on
+$(-\infty,0]$, and is strictly increasing on $[0,\infty)$. Using the fourth
+property the last inequality is equivalent to
+$$
+\cosh(n \theta) \ge 1 + n^2 (\cosh(\theta) - 1) \qquad \text{for all $\theta \ge 0$.}
+$$
+For $\theta = 0$, both sides are equal to $1$. Thus, it is sufficient to prove
+that the derivative of the left hand side is greater or equal to the derivative
+of the right hand side. Recalling that $[\cosh(\theta)]' = \sinh(\theta)$, this
+means that we need to show that
 $$
 \sinh(n \theta) \ge n \sinh(\theta) \qquad \text{for all $\theta \ge 0$.}
 $$
 Tho prove this inequality we use the summation formula
 $$
-\sinh(\alpha + \beta) = \sinh(\alpha) \cosh(\beta) + \sinh(\beta) \cosh(\beta)
+\sinh(\alpha + \beta) = \sinh(\alpha) \cosh(\beta) + \sinh(\beta) \cosh(\beta) \; .
 $$
-and the observation that for $\theta \ge 0$, $\cosh(\theta) \ge 1$ and $\sinh(\theta) \ge 0$. Thus,
+If $\alpha, \beta$ are non-negative then $\sinh(\alpha), \sinh(\beta)$ are
+non-negative and $\cosh(\alpha), \cosh(\beta) \ge 1$. Hence,
 $$
-\sinh(\alpha + \beta) \ge \sinh(\alpha) + \sinh(\beta) \qquad \text{for $\alpha, \beta \ge 0$.}
+\sinh(\alpha + \beta) \ge \sinh(\alpha) + \sinh(\beta) \qquad \text{for any $\alpha, \beta \ge 0$.}
 $$
-Thus by induction on $n$, we see that $\sinh(n \theta) \ge n \sinh(\theta)$ for all $\theta \ge 0$.
+This implies that (using induction on $n$) that $\sinh(n \theta) \ge n
+\sinh(\theta)$ for all $\theta \ge 0$.
 
-To verify the fifth property let $a_n$ be the magnitude of the largest
-coefficient of $T_n(z)$. The recurrence for Chebyshev polynomials
-implies that the sequence $a_0, a_1, a_2, \dots$ satisfies
+To verify the seventh property let $a_n$ be the magnitude of the largest
+coefficient of $T_n(z)$. The recurrence for Chebyshev polynomials implies that
+the sequence $a_0, a_1, a_2, \dots$ satisfies
 \begin{align*}
 a_0 & = a_1 = 1 \; , \\
 a_{n+1} & \le 2 a_n + a_{n-1} & \text{for $n \ge 1$.}
