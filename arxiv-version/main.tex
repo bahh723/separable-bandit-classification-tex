@@ -545,7 +545,7 @@ parameters $R'$, $\gamma'$, time complexity of evaluating $\phi(x)$, and time
 complexity of evaluating $k(x,x')$. Some of the mappings depend the original
 margin $\gamma$. In practice, the margin parameter $\gamma$ is not known, which
 makes these mappings impractical. However, one of the mappings we construct
-does \emph{not} depend $\gamma$.
+does \emph{not} depend on $\gamma$.
 
 The idea behind all the mappings is polynomial approximation. According to the
 well known Stone-Weierstrass theorem (see
@@ -564,50 +564,53 @@ stated below.
 Before we state the theorems, recall that a polynomial of $d$ variables is a
 function $p:\R^d \to \R$ of the form
 $$
-p(x) = p(x_1, x_2, \dots, x_d) = \sum_{i_1, i_2, \dots, i_d} c_{i_1, i_2, \dots, i_d} x_1^{i_1} x_2^{i_2} \dots x_d^{i_d}
+p(x) = p(x_1, x_2, \dots, x_d) = \sum_{\alpha_1, \alpha_2, \dots, \alpha_d} c_{\alpha_1, \alpha_2, \dots, \alpha_d} x_1^{\alpha_1} x_2^{\alpha_2} \dots x_d^{\alpha_d}
 $$
-where the sum ranges over a finite set of $d$-tuples $(i_1, i_2, \dots, i_d)$ of
-non-negative integers and $c_{i_1, i_2, \dots, i_d}$ is a real coefficient. The
-\emph{degree} of a polynomial $p$, denoted by $\deg(p)$, is the largest value of
-$i_1 + i_2 + \dots + i_d$ for which the coefficient is non-zero. The \emph{norm
-of a polynomial} $p$ is defined as
+where the sum ranges over a finite set of $d$-tuples $(\alpha_1, \alpha_2,
+\dots, \alpha_d)$ of non-negative integers and $c_{\alpha_1, \alpha_2, \dots,
+\alpha_d}$ is a real coefficient. The \emph{degree} of a polynomial $p$, denoted
+by $\deg(p)$, is the largest value of $\alpha_1 + \alpha_2 + \dots + \alpha_d$
+for which the coefficient $c_{\alpha_1, \alpha_2, \dots, \alpha_d}$ is non-zero.
+The \emph{norm of a polynomial} $p$ is defined as
 $$
-\norm{p} = \sqrt{\sum_{i_1, i_2, \dots, i_d} \left(c_{i_1, i_2, \dots, i_d} \right)^2 } \; .
+\norm{p} = \sqrt{\sum_{\alpha_1, \alpha_2, \dots, \alpha_d} \left(c_{\alpha_1, \alpha_2, \dots, \alpha_d} \right)^2 } \; .
 $$
-It is not hard to see that this indeed a norm, since we can interpret it as
-a Euclidean norm of the vector of the coefficients of the polynomial.
+It is easy see that this is indeed a norm, since we can interpret it as a
+Euclidean norm of the vector of the coefficients of the polynomial.
 
 \begin{theorem}[Polynomial approximation of intersection of halfspaces I]
 \label{theorem:polynomial-approximation-1}
-Let $v_1, v_2, \dots, v_m \in \R^d$ be vectors such that $\norm{v_1}, \norm{v_2}, \dots, \norm{v_m} \le 1$.
-Let $\gamma > 0$. There exists a polynomial $p:\R^d \to \R$ such that
+Let $v_1, v_2, \dots, v_m \in \R^d$ be vectors such that $\norm{v_1},
+\norm{v_2}, \dots, \norm{v_m} \le 1$. Let $\gamma > 0$. There exists a
+multivariate polynomial $p:\R^d \to \R$ such that
 \begin{enumerate}
-\item $p(x) \ge 1$ for all $x \in \bigcap_{i=1}^m \left\{ x \in \R^d ~:~ \norm{x} \le 1, \ \ip{v_i}{x} \ge \gamma \right\}$
-\item $p(x) \le -1$ for all $x \in \bigcup_{i=1}^m \left\{ x \in \R^d ~:~ \norm{x} \le 1, \ \ip{v_i}{x} \le - \gamma \right\}$
+\item $p(x) \ge 1$ for all $\displaystyle x \in \bigcap_{i=1}^m \left\{ x \in \R^d ~:~ \norm{x} \le 1, \ \ip{v_i}{x} \ge \gamma \right\}$
+\item $p(x) \le -1$ for all $\displaystyle x \in \bigcup_{i=1}^m \left\{ x \in \R^d ~:~ \norm{x} \le 1, \ \ip{v_i}{x} \le - \gamma \right\}$
 \item $\deg(p) \le ???$
 \item $\norm{p} \le ???$
-\item $|p(x)| \le ???$ for all $x \in \R^d$ such that $\norm{x} \le 1$
 \end{enumerate}
 \end{theorem}
 
 \begin{theorem}[Polynomial approximation of intersection of halfspaces II]
 \label{theorem:polynomial-approximation-2}
-Let $v_1, v_2, \dots, v_m \in \R^d$ be vectors such that $\norm{v_1}, \norm{v_2}, \dots, \norm{v_m} \le 1$.
-Let $\gamma > 0$. There exists a polynomial $p:\R^d \to \R$ such that
+Let $v_1, v_2, \dots, v_m \in \R^d$ be vectors such that $\norm{v_1},
+\norm{v_2}, \dots, \norm{v_m} \le 1$. Let $\gamma > 0$. There exists a
+multivariate polynomial $p:\R^d \to \R$ such that
 \begin{enumerate}
-\item $p(x) \ge 1/2$ for all $x \in \bigcap_{i=1}^m \left\{ x \in \R^d ~:~ \norm{x} \le 1, \ \ip{v_i}{x} \ge \gamma \right\}$
-\item $p(x) \le -1/2$ for all $x \in \bigcup_{i=1}^m \left\{ x \in \R^d ~:~ \norm{x} \le 1, \ \ip{v_i}{x} \le - \gamma \right\}$
-\item $\deg(p) \le ???$
-\item $\norm{p} \le ???$
-\item $|p(x)| \le ???$ for all $x \in \R^d$ such that $\norm{x} \le 1$
+\item $p(x) \ge 1/2$ for all $\displaystyle x \in \bigcap_{i=1}^m \left\{ x \in \R^d ~:~ \norm{x} \le 1, \ \ip{v_i}{x} \ge \gamma \right\}$
+\item $p(x) \le -1/2$ for all $\displaystyle x \in \bigcup_{i=1}^m \left\{ x \in \R^d ~:~ \norm{x} \le 1, \ \ip{v_i}{x} \le - \gamma \right\}$
+\item $\displaystyle \deg(p) = \left\lceil \log_2(2m) \right\rceil \cdot \left\lceil \sqrt{\frac{1}{\gamma}} \right\rceil$
+\item $\displaystyle \norm{p} \le \left( 188 \left\lceil \log_2(2m) \right\rceil \cdot \left\lceil \sqrt{\frac{1}{\gamma}} \right\rceil \right)^{\frac{1}{2} \left\lceil \log_2(2m) \right\rceil \cdot \left\lceil \sqrt{\frac{1}{\gamma}} \right\rceil}$
 \end{enumerate}
 \end{theorem}
 
 The proofs of the theorems can be found in
-Sections~\ref{section:proof-of-polynomial-approximation-1}~and~\ref{section:proof-of-polynomial-approximation-2}
-respectively.
+Section~\ref{section:proof-of-polynomial-approximation}.
+
+TODO: Mappings and kernels!
 
 \section{Proof of Theorems~\ref{theorem:polynomial-approximation-1}~and~\ref{theorem:polynomial-approximation-2}}
+\label{section:proof-of-polynomial-approximation}.
 
 For the proofs of the theorems we need several auxilliary results.
 
@@ -636,7 +639,9 @@ $$
 If $k = 0$, the inequality trivially holds. For the rest of the proof we can
 assume $k \ge 1$. We write the binomial coefficient as
 $$
-\binom{n}{k} = \frac{n(n-1)\cdots(n-k+1)}{k(k-1) \cdots 1} = \frac{n}{k} \cdot \frac{n-1}{k - 1} \cdots \frac{n-k+1}{1} \; .
+\binom{n}{k}
+= \frac{n(n-1)\cdots(n-k+1)}{k(k-1) \cdots 1}
+= \frac{n}{k} \cdot \frac{n-1}{k - 1} \cdots \frac{n-k+1}{1} \; .
 $$
 We claim that
 $$
@@ -658,37 +663,44 @@ $$
 which holds by the assumption on $n \ge k$.
 \end{proof}
 
-\begin{proposition}[Properties of the norm of polynomials]
+\begin{lemma}[Properties of the norm of polynomials]
+\label{lemma:properties-of-norm-of-polynomials}
 \hspace{1cm} % Dummy space
 \begin{enumerate}
-\item Let $p_1, p_2, \dots, p_n$ be multivariate polynomials and
-let $p(x) = \prod_{j=1}^n p_j(x)$ be their product. Then, $\norm{p}^2 \le n^{\sum_{j=1}^n \deg(p_j)} \prod_{j=1}^n \norm{p_j}^2$.
-\item Let $q$ be a multivariate polynomial of degree at most $s$ and let $p(x) = (q(x))^n$. Then, $\norm{p}^2 \le n^{ns} \norm{q}^{2n}$.
-\item Let be $p_1, p_2, \dots, p_n$ be multivariate polynomials. Then, $\norm{\sum_{j=1}^n p_j}^2 \le n \sum_{j=1}^n \norm{p_j}^2$.
+\item Let $p_1, p_2, \dots, p_n$ be multivariate polynomials and let $p(x) =
+\prod_{j=1}^n p_j(x)$ be their product.  Then, $\norm{p}^2 \le n^{\sum_{j=1}^n
+\deg(p_j)} \prod_{j=1}^n \norm{p_j}^2$.
+
+\item Let $q$ be a multivariate polynomial of degree at most $s$ and let $p(x) =
+(q(x))^n$. Then, $\norm{p}^2 \le n^{ns} \norm{q}^{2n}$.
+
+\item Let be $p_1, p_2, \dots, p_n$ be multivariate polynomials. Then,
+$\norm{\sum_{j=1}^n p_j}^2 \le n \sum_{j=1}^n \norm{p_j}^2$.
 \end{enumerate}
-\end{proposition}
+\end{lemma}
 
 \begin{proof}
 Using multi-index notation we can write any multivariate polynomial $p$ as
 $$
 p(x) = \sum_A c_A x^A
 $$
-where $A = (i_1, i_2, \dots, i_d)$ is a multi-index (i.e. a $d$-tuple of
-non-negative integers), $x^A = x_1^{i_1} x_2^{i_2} \dots x_d^{i_d}$ is a
-monomial and $c_A = c_{i_1, i_2, \dots, i_d}$ is the corresponding real
+where $A = (\alpha_1, \alpha_2, \dots, \alpha_d)$ is a multi-index (i.e. a $d$-tuple of
+non-negative integers), $x^A = x_1^{\alpha_1} x_2^{\alpha_2} \dots x_d^{\alpha_d}$ is a
+monomial and $c_A = c_{\alpha_1, \alpha_2, \dots, \alpha_d}$ is the corresponding real
 coefficient. The sum is over a finite subset of $d$-tuples of non-negative
 integers. Using this notation, the norm of a polynomial $p$ can be written as
 $$
 \norm{p} = \sqrt{\sum_A (c_A)^2} \; .
 $$
-For a multi-index $A = (i_1, i_2, \dots, i_d)$ we define its $1$-norm as
-$\norm{A}_1 = i_1 + i_2 + \dots + i_d$.
+For a multi-index $A = (\alpha_1, \alpha_2, \dots, \alpha_d)$ we define its
+$1$-norm as $\norm{A}_1 = \alpha_1 + \alpha_2 + \dots + \alpha_d$.
 
 To prove the first part, we express $p_j$ as
 $$
 p_j(x) = \sum_{A_j} c^{(j)}_{A_j} x^{A_j} \; .
 $$
-If $p$ has expansion $p(x) = \sum_A c_A x^A$ then its coefficient $c_A$ for any multi-index $A$ is
+Since $p(x) = \prod_{i=1}^n p_j(x)$, the coefficients of its expansion $p(x) =
+\sum_A c_A x^A$ are
 $$
 c_A = \sum_{\substack{(A_1, A_2, \dots, A_n) \\ A_1 + A_2 + \dots + A_n = A}} c^{(1)}_{A_1} c^{(2)}_{A_2} \cdots c^{(n)}_{A_n} \; .
 $$
@@ -716,19 +728,19 @@ $$
 where $M_A$ is the number of $n$-tuples $(A_1, A_2, \dots, A_n)$ such that $A_1 +
 A_2 + \dots + A_n = A$.
 
-To finish the proof, it is sufficient to prove that
-$M_A \le n^{\deg(p)}$. To prove this inequality, consider a multi-index
-$A = (i_1, i_2, \dots, i_d)$ and consider its $\ell$-th coordinate $i_\ell$.
-In order for $A_1 + A_2 + \dots + A_n = A$, the $\ell$-th coordinates of
-$A_1, A_2, \dots, A_n$ need to sum to $i_\ell$. There are exactly $\binom{i_\ell + n - 1}{i_\ell}$
-possibilities for the choice of $\ell$-th coordinates of $A_1, A_2, \dots, A_n$.
-The total number of choices is thus
+To finish the proof, it is sufficient to prove that $M_A \le n^{\deg(p)}$ for
+any $A$ such that $\norm{A}_1 \le \deg(p)$. To prove this inequality, consider a
+multi-index $A = (\alpha_1, \alpha_2, \dots, \alpha_d)$ and consider its $i$-th coordinate
+$\alpha_i$. In order for $A_1 + A_2 + \dots + A_n = A$ to hold, the $i$-th
+coordinates of $A_1, A_2, \dots, A_n$ need to sum to $\alpha_i$. There are exactly
+$\binom{\alpha_i + n - 1}{\alpha_i}$ possibilities for the choice of $i$-th
+coordinates of $A_1, A_2, \dots, A_n$. The total number of choices is thus
 $$
-M_A = \prod_{\ell=1}^d \binom{i_\ell + n - 1}{i_\ell} \; .
+M_A = \prod_{i=1}^d \binom{\alpha_i + n - 1}{\alpha_i} \; .
 $$
 Using \autoref{lemma:binomial-bound}, we upper bound it as
 $$
-M_A \le \prod_{\ell=1}^d n^{i_\ell} = n^{\norm{A}_1} \le n^{\deg(p)} \; .
+M_A \le \prod_{i=1}^d n^{\alpha_i} = n^{\norm{A}_1} \le n^{\deg(p)} \; .
 $$
 
 The second part follows from the first part by setting $p_1 = p_2 = \dots p_n = q$.
@@ -773,7 +785,7 @@ Chebyshev polynomials satisfy
 \item $T_n(\cosh(\theta)) = \cosh(n \theta)$ for all $\theta \in \R$ and all $n \ge 0$.
 \item $|T_n(z)| \le 1$ for all $z \in [-1,1]$ and all $n \ge 0$.
 \item $T_n(z) \ge 1 + n^2(z - 1)$ for all $z \ge 1$ and all $n \ge 0$.
-\item All coefficients of $T_n(z)$ lie in the interval $\left[-(1+\sqrt{2})^n, (1+\sqrt{2})^n \right]$.
+\item $\norm{T_n} \le (1+\sqrt{2})^n$ for all $n \ge 0$
 \end{enumerate}
 \end{proposition}
 
@@ -844,18 +856,12 @@ $$
 This implies that (using induction on $n$) that $\sinh(n \theta) \ge n
 \sinh(\theta)$ for all $\theta \ge 0$.
 
-To verify the seventh property let $a_n$ be the magnitude of the largest
-coefficient of $T_n(z)$. The recurrence for Chebyshev polynomials implies that
-the sequence $a_0, a_1, a_2, \dots$ satisfies
+We verify the seventh property by induction on $n$.
+For $n=0$ and $n=1$ the inequality trivially holds, since $\norm{T_0} = \norm{T_1} = 1$.
+For $n \ge 1$, since $T_{n+1}(z) = 2zT_n(z) - T_{n-1}(z)$,
 \begin{align*}
-a_0 & = a_1 = 1 \; , \\
-a_{n+1} & \le 2 a_n + a_{n-1} & \text{for $n \ge 1$.}
-\end{align*}
-It remains to show that $a_n \le (1 + \sqrt{2})^n$ for all $n \ge 0$. We do this
-by induction on $n$. For $n=0$ and $n=1$ the inequality trivially holds. For $n
-\ge 1$, we have
-\begin{align*}
-a_{n+1} \le 2 a_n + a_{n-1}
+\norm{T_{n+1}}
+& \le 2 \norm{T_n} + \norm{T_{n-1}} \\
 & \le 2 (1 + \sqrt{2})^n + (1 + \sqrt{2})^{n-1} \\
 & = (1 + \sqrt{2})^{n-1} (2 (1 + \sqrt{2}) + 1) \\
 & = (1 + \sqrt{2})^{n-1} (3 + 2\sqrt{2}) \\
@@ -872,9 +878,82 @@ p(x) = m + \frac{1}{2} - \sum_{i=1}^m \left( T_s(1 - \ip{v_i}{x}) \right)^r \; .
 $$
 It remains to show that $p$ has properties 1--5.
 
+To verify the first property notice that if $x \in \R^d$ satisfies $\norm{x} \le
+1$ and $\ip{v_i}{x} \ge \gamma$ then since $\norm{v_i} \le 1$ we have
+$\ip{v_i}{x} \in [0,1]$. Thus, $T_s(1 - \ip{v_i}{x})$ and $\left( T_s(1 -
+\ip{v_i}{x}) \right)^r$ lie in the interval $[-1,1]$. Therefore,
+$$
+p(x) \ge m + \frac{1}{2} - m \ge \frac{1}{2} \; .
+$$
 
-\subsection{Rational Kernel}
-TODO
+To verify the second property consider any $x \in \bigcup_{i=1}^m \left\{ x \in \R^d
+~:~ \norm{x} \le 1, \ \ip{v_i}{x} \le - \gamma \right\}$. Clearly, $\norm{x} \le 1$
+and there exists at least one $i \in \{1,2,\dots,m\}$ such that $\ip{v_i}{x} \le
+- \gamma$. Therefore, $1 - \ip{v_i}{x} \ge 1 + \gamma$ and~\autoref{proposition:properties-of-chebyshev-polynomials} (part 6)
+imply that
+$$
+T_s(1 - \ip{v_i}{x}) \ge 1 + s^2 \gamma \ge 2
+$$
+and thus
+$$
+\left( T_s(1 - \ip{v_i}{x}) \right)^r \ge 2^r \ge 2m \; .
+$$
+On the oter hand for any $j \in \{1,2,\dots,m\}$, we have $\ip{v_j}{x} \in
+[-1,1]$ and thus $1 - \ip{v_j}{x}$ lies in the interval $[0,2]$. According to
+\autoref{proposition:properties-of-chebyshev-polynomials} (parts 5 and 6), $T_s(1 - \ip{v_j}{x})
+\ge -1$. Therefore,
+$$
+p(x) = m + \frac{1}{2} - \left( T_s(1 - \ip{v_i}{x}) \right)^r - \sum_{\substack{j ~:~  1 \le j \le m \\ j \neq i}} \le m + \frac{1}{2} - 2m + (m - 1) \le - \frac{1}{2} \; .
+$$
+
+The third property follows from observation that degree of $p$
+is the same as the degree of any one of the terms
+$\left( T_s(1 - \ip{v_i}{x}) \right)^r$ which is $r \cdot s$.
+
+To prove the fourth property, we need to upper bound the norm of $p$.
+Let $f_i(x) = 1 - \ip{v_i}{x}$, let $g_i(x) = T_s(1 - \ip{v_i}{x})$
+and let $h_i(x) = (T_s(1 - \ip{v_i}{x}))^r$. We have
+$$
+\norm{f_i}^2 = 1 + \norm{v_i}^2 \le 1 + 1 = 2 \; .
+$$
+Let $T_s(z) = \sum_{j=0}^s c_j z^j$ be the expansion of $s$-th Chebyshev polynomial.
+Then,
+\begin{align*}
+\norm{g_i}^2
+& = \norm{ \sum_{j=0}^s c_j (f_i)^j }^2 \\
+& \le (s + 1) \sum_{j=0}^s \norm{c_j (f_i)^j}^2 & \text{(by~part 3 of \autoref{lemma:properties-of-norm-of-polynomials})} \\
+& = (s + 1) \sum_{j=0}^s (c_j)^2 \norm{(f_i)^j}^2 \\
+& \le (s + 1) \sum_{j=0}^s (c_j)^2 j^j \norm{f_i}^{2j} & \text{(by~part 2 of \autoref{lemma:properties-of-norm-of-polynomials})} \\
+& \le (s + 1) \sum_{j=0}^s (c_j)^2 j^j 2^{2j} \\
+& \le (s + 1) s^s 2^{2s} \sum_{j=0}^s (c_j)^2 \\
+& = (s + 1) s^s 2^{2s} \norm{T_s}^2 \\
+& = (s + 1) s^s 2^{2s} (1 + \sqrt{2})^{2s} & \text{(by~part 7 of \autoref{proposition:properties-of-chebyshev-polynomials})} \\
+& = (s + 1) \left(4(1+\sqrt{2})^2 s \right)^s \\
+& \le \left(8(1+\sqrt{2})^2 s \right)^s & \text{(since $s+1 \le 2^s$ for any integers $s \ge 0$)} \\
+& \le \left(47 s \right)^s \; .
+\end{align*}
+Finally,
+\begin{align*}
+\norm{p}
+& \le m + \frac{1}{2} + \sum_{i=1}^m \norm{(g_i)^r} \\
+& = m + \frac{1}{2} + \sum_{i=1}^m \sqrt{\norm{(g_i)^r}^2} \\
+& \le m + \frac{1}{2} + \sum_{i=1}^m \sqrt{r^{rs} \norm{g_i}^{2r}} \\
+& \le m + \frac{1}{2} + m r^{rs/2} \left(47 s \right)^{rs/2} \\
+& = m + \frac{1}{2} + m \left(47 rs \right)^{rs/2} \; .
+\end{align*}
+We can further upper bound the last expression by using that $m \le \frac{1}{2} 2^r$.
+Since $r,s \ge 1$,
+\begin{align*}
+\norm{p}
+& \le m + \frac{1}{2} + m \left(47 rs \right)^{rs/2} \\
+& \le \frac{1}{2} 2^r + \frac{1}{2} + \frac{1}{2} 2^r \left(47 rs \right)^{rs/2} \\
+& \le 2^r + \frac{1}{2} 2^r \left(47 rs \right)^{rs/2} \\
+& = 2^r \left(1 + \frac{1}{2} \left(47 rs \right)^{rs/2} \right) \\
+& = 2^r \left(47 rs \right)^{rs/2} \\
+& \le 4^{rs/2} \left(47 rs \right)^{rs/2} \\
+& \le \left(188 rs \right)^{rs/2} \; .
+\end{align*}
+Substituting for $r$ and $s$ finishes the proof.
 
 \section{Nearest neighbor algorithm}
 
