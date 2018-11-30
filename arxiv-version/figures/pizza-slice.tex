@@ -1,0 +1,52 @@
+\begin{tikzpicture}
+
+  \useasboundingbox (-5.5,-5.5) rectangle (5.5,5.5);
+  % \draw[help lines] (-5.5,-5.5) rectangle (5.5,5.5);
+
+  % Grid and coordinate axes
+  %% \draw[help lines] (-5.2,-5.2) grid (5.2,5.2);
+  %% \draw[thick, ->, >=latex] (-5.2,0) -- (5.2,0);
+  %% \draw[thick, ->,  >=latex] (0,-5.2) -- (0,5.2);
+
+  % Notable points
+  \coordinate (Origin) at (0,0);
+
+  \coordinate [label={[xshift=-10mm, yshift=5mm]$\ip{v_1}{x} = 0$}] (A) at (120:5);
+  \coordinate [label={[xshift=-10mm, yshift=-10mm]$\ip{v_2}{x} = 0$}] (B) at (240:5);
+
+  % Circle which contains all the examples.
+  % \draw (Origin) circle (5cm);
+
+  \draw[dashed] (Origin) -- (A);
+  \draw[dashed] (Origin) -- (B);
+
+  \coordinate (A1) at ($(120:0.5*sqrt{97} - 0.5) - (1,0)$);
+  \coordinate (B1) at ($(240:0.5*sqrt{97} - 0.5) - (1,0)$);
+
+  \coordinate (A2) at ($(120:0.5*sqrt{97} + 0.5) + (1,0)$);
+  \coordinate (B2) at ($(240:0.5*sqrt{97} + 0.5) + (1,0)$);
+
+  \draw[ultra thick] ($(Origin) - (1,0)$) -- (A1);
+  \draw[ultra thick] ($(Origin) - (1,0)$) -- (B1);
+
+  \draw[ultra thick] ($(Origin) + (1,0)$) -- (A2);
+  \draw[ultra thick] ($(Origin) + (1,0)$) -- (B2);
+
+  \pic [ultra thick, draw, angle radius=5cm] {angle=A1--Origin--B1};
+  \pic [ultra thick, draw, angle radius=5cm] {angle=B2--Origin--A2};
+
+
+  \coordinate (C) at (120:3);
+  \coordinate [label={[xshift=-6mm, yshift=-4mm]$\gamma$}] (C1) at ($(120:3) + (0.75, 0.43301270189221932338)$);
+  \coordinate [label={[xshift=+3mm, yshift=+2mm]$\gamma$}] (C2) at ($(120:3) - (0.75, 0.43301270189221932338)$);
+  \draw[<->, >=latex, ultra thick] (C1) -- (C) -- (C2);
+
+  \coordinate (D) at (240:3);
+  \coordinate [label={[xshift=+4mm, yshift=-8mm]$\gamma$}] (D1) at ($(240:3) + (-0.75, 0.43301270189221932338)$);
+  \coordinate [label={[xshift=-5mm, yshift=-3mm]$\gamma$}] (D2) at ($(240:3) - (-0.75, 0.43301270189221932338)$);
+  \draw[<->, >=latex, ultra thick] (D1) -- (D) -- (D2);
+
+  \coordinate [label={$R^+$}](R1) at ($(Origin) - (3,0)$);
+  \coordinate [label={$R^-$}](R2) at ($(Origin) + (3,0)$);
+
+\end{tikzpicture}

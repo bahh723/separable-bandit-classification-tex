@@ -6,7 +6,7 @@
 \usepackage{amsmath}
 \usepackage{amssymb}
 \usepackage{amsthm}
-\usepackage{caption}
+\usepackage[singlelinecheck=false]{caption}
 \usepackage{fullpage}
 \usepackage[colorlinks=true,citecolor=blue,linkcolor=blue]{hyperref}
 \usepackage{natbib}
@@ -15,6 +15,7 @@
 
 % TikZ packages
 \usetikzlibrary{arrows}
+\usetikzlibrary{angles}
 \usetikzlibrary{backgrounds}
 \usetikzlibrary{calc}
 \usetikzlibrary{cd}  % commutative diagrams
@@ -605,7 +606,24 @@ multivariate polynomial $p:\R^d \to \R$ such that
 \end{theorem}
 
 The proofs of the theorems can be found in
-Section~\ref{section:proof-of-polynomial-approximation}.
+Section~\ref{section:proof-of-polynomial-approximation}. The geometric
+interpretation of the two regions described in parts 1 and 2 of the theorems is
+explained in Figure~\ref{figure:pizza-slice}.
+
+
+\begin{figure}
+\begin{center}
+\input{figures/pizza-slice}
+\end{center}
+\caption[]{The figure shows the two regions used in parts 1 and 2 of Theorems~\ref{theorem:polynomial-approximation-1}~and~\ref{theorem:polynomial-approximation-2}
+for the case $m=d=2$ and a particular choice of vectors $v_1$ and $v_2$. These regions are
+\begin{align*}
+R^+ & = \displaystyle \bigcap_{i=1}^m \left\{ x \in \R^d ~:~ \norm{x} \le 1, \ \ip{v_i}{x} \ge \gamma \right\} \; , \\
+R^- & = \displaystyle \bigcup_{i=1}^m \left\{ x \in \R^d ~:~ \norm{x} \le 1, \ \ip{v_i}{x} \le - \gamma \right\} \; .
+\end{align*}
+}
+\label{figure:pizza-slice}
+\end{figure}
 
 TODO: Mappings and kernels!
 
