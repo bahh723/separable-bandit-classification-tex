@@ -39,12 +39,14 @@
   \coordinate (C) at (120:3);
   \coordinate [label={[xshift=-6mm, yshift=-4mm]$\gamma$}] (C1) at ($(120:3) + (0.75, 0.43301270189221932338)$);
   \coordinate [label={[xshift=+3mm, yshift=+2mm]$\gamma$}] (C2) at ($(120:3) - (0.75, 0.43301270189221932338)$);
-  \draw[<->, >=latex, ultra thick] (C1) -- (C) -- (C2);
+  \draw[<->, >=latex, ultra thick] (C1) -- (C);
+  \draw[<->, >=latex, ultra thick] (C2) -- (C);
 
   \coordinate (D) at (240:3);
   \coordinate [label={[xshift=+4mm, yshift=-8mm]$\gamma$}] (D1) at ($(240:3) + (-0.75, 0.43301270189221932338)$);
   \coordinate [label={[xshift=-5mm, yshift=-3mm]$\gamma$}] (D2) at ($(240:3) - (-0.75, 0.43301270189221932338)$);
-  \draw[<->, >=latex, ultra thick] (D1) -- (D) -- (D2);
+  \draw[<->, >=latex, ultra thick] (D1) -- (D);
+  \draw[<->, >=latex, ultra thick] (D2) -- (D);
 
   \coordinate [label={$R^+$}](R1) at ($(Origin) - (3,0)$);
   \coordinate [label={$R^-$}](R2) at ($(Origin) + (3,0)$);

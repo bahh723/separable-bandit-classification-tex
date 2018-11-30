@@ -615,12 +615,15 @@ explained in Figure~\ref{figure:pizza-slice}.
 \begin{center}
 \input{figures/pizza-slice}
 \end{center}
-\caption[]{The figure shows the two regions used in parts 1 and 2 of Theorems~\ref{theorem:polynomial-approximation-1}~and~\ref{theorem:polynomial-approximation-2}
-for the case $m=d=2$ and a particular choice of vectors $v_1$ and $v_2$. These regions are
+\caption[]{The figure shows the two regions used in parts 1 and 2 of
+Theorems~\ref{theorem:polynomial-approximation-1}~and~\ref{theorem:polynomial-approximation-2}
+for the case $m=d=2$ and a particular choice of vectors $v_1, v_2$ and margin
+parameter $\gamma$. These regions are
 \begin{align*}
 R^+ & = \displaystyle \bigcap_{i=1}^m \left\{ x \in \R^d ~:~ \norm{x} \le 1, \ \ip{v_i}{x} \ge \gamma \right\} \; , \\
 R^- & = \displaystyle \bigcup_{i=1}^m \left\{ x \in \R^d ~:~ \norm{x} \le 1, \ \ip{v_i}{x} \le - \gamma \right\} \; .
 \end{align*}
+The separating hyperplanes $\ip{v_1}{x} = 0$ and $\ip{v_2}{x} = 0$ are shown as dashed lines.
 }
 \label{figure:pizza-slice}
 \end{figure}
@@ -773,7 +776,59 @@ To prove the third part we use generalized triangle inequality and
 \subsection{Proof of \autoref{theorem:polynomial-approximation-1}}
 \label{section:proof-of-polynomial-approximation-1}
 
+We define several univariate polynomials
+\begin{align*}
+P_n(z) & = (z - 1) \prod_{i=1}^n (z - 2^i)^2 && \text{for $n \ge 0$,} \\
+A_{n,k}(z) & = (P_n(z))^k - (P_n(-z))^k && \text{for $n,k \ge 0$,} \\
+B_{n,k}(z) & = - (P_n(z))^k - (P_n(-z))^k && \text{for $n,k \ge 0$.}
+\end{align*}
+Let $r = 2 \left\lceil \frac{1}{2} \log(4m + 1) \right\rceil + 1$ and $s = \left \lceil \log(1/\gamma) \right \rceil$.
+We define the polynomial $p:\R^d \to \R$ as
+$$
+p(x) = \sum_{i=1}^m A_{s,r}\left( \frac{\ip{v_i}{x}}{\gamma} \right) \prod_{\substack{j ~:~ 1 \le j \le m \\ j \neq i}} B_{s,r} \left( \frac{\ip{v_i}{x}}{\gamma} \right)
+- \left(m - \frac{1}{2} \right) \prod_{j=1}^m B_{s,r} \left( \frac{\ip{v_i}{x}}{\gamma} \right) \; .
+$$
+For convenienence we define univariate rational function
+\begin{align*}
+S_{n,k}(z) & = \frac{A_{n,k}(z)}{B_{n,k}(z)} && \text{for $n,k \ge 0$,}
+\end{align*}
+and a multivariate rational function
+$$
+Q(x) = \left( \sum_{i=1}^m S_{s,r}\left( \frac{\ip{v_i}{x}}{\gamma} \right) \right) - \left(m - \frac{1}{2} \right) \; .
+$$
+It easy to verify that
+$$
+p(x) = Q(x) \prod_{i=1}^m B_{s,r} \left( \frac{\ip{v_i}{x}}{\gamma} \right) \; .
+$$
+
+\begin{proposition}[Properties of $P_n$]
+\hspace{1cm} % Dummy space
+\begin{enumerate}
+\item If $z \in [0,1]$ then $P_n(-z) \le P_n(z) \le 0$.
+\item If $z \in [1,2^n]$ then $0 \le 4P_n(z) \le -P_n(-z)$.
+\end{enumerate}
+\end{proposition}
+
+\begin{proof}
+To prove the first part, note that $P_n(z)$ and $P_n(-z)$ are non-positive for
+$z \in [0,1]$. If $z=1$ then $P_n(z)=P_n(-z) = 0$. For $z \in [0,1)$, we have
+$$
+\frac{P_n(-z)}{P_n(z)} = \frac{1+x}{1-x} \prod_{i=1}^n \frac{(x+2^i)^2}{(x-2^i)^2} \ge 1 \; .
+$$
 TODO
+\end{proof}
+
+\begin{proposition}[Properties of $S_{n,k}$]
+\hspace{1cm} % Dummy space
+\begin{enumerate}
+\item
+\end{enumerate}
+\end{proposition}
+
+\begin{proof}
+TODO
+\end{proof}
+
 
 \subsection{Proof of \autoref{theorem:polynomial-approximation-2}}
 \label{section:proof-of-polynomial-approximation-2}
