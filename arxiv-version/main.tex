@@ -382,10 +382,10 @@ times line 16 and line 21 get executed. In other words, $U$ is the number of
 times the $K$-tuple of vectors $(w_1^{(t)}, w_2^{(t)}, \dots, w_K^{(t)})$ gets
 updated. Clearly, $U = A + C$.
 
-The key observation is that $\Exp[B] = (K-1) \Exp[C]$ since if $S_t =
-\emptyset$, there is $1/K$ probability that the algorithm guesses the correct
-label and with probability $(K-1)/K$ algorithm's guess is incorrect.
-Putting all the information together, we get that
+The key observation is that $\Exp[B] = (K-1) \Exp[C]$. The equality holds
+because if $S_t = \emptyset$, there is $1/K$ probability that the algorithm
+guesses the correct label and with probability $(K-1)/K$ algorithm's guess is
+incorrect. Putting all the information together, we get that
 \begin{align*}
 \Exp[M]
 & = \Exp[A] + \Exp[B] \\
@@ -427,7 +427,7 @@ Similarly, if there is an update in round $t$, we have
 & \ge \left( \sum_{i=1}^K \ip{w_i^*}{w_i^{(t)}} \right) + \gamma
 \end{align*}
 where the last inequality follows from \eqref{equation:strong-linear-separability-2}
-and \eqref{equation:strong-linear-separability-3} and case analysis whether $z_t = 0$ or $z_t = 1$.
+and \eqref{equation:strong-linear-separability-3} and analysis of the cases $z_t = 0$ and $z_t = 1$.
 Thus, after $U$ updates,
 $$
 \sum_{i=1}^K \ip{w_i^*}{w_i^{(T+1)}} \ge \gamma U \; .
@@ -457,12 +457,12 @@ Multiclass Classification with Bandit Feedback} with $K \le
 examples $(x_1, y_1), (x_2, y_2), \dots, (x_T, y_T)$ in $V \times
 \{1,2,\dots,K\}$ that are strongly linearly separable with margin $\gamma$, the
 norms satisfy $\norm{x_1}, \norm{x_2}, \dots, \norm{x_T} \le R$ and the expected
-number of mistakes the algorithm makes is at least $\frac{K-1}{2} \lfloor
-\frac{1}{16} (R/\gamma)^2 \rfloor$.
+number of mistakes the algorithm makes is at least $\frac{K-1}{2} \left\lfloor
+\frac{1}{16} (R/\gamma)^2 \right\rfloor$.
 \end{theorem}
 
 \begin{proof}
-We use probabilistic method. Let $M = \lfloor \frac{1}{16} (R/\gamma)^2 \rfloor$.
+We use probabilistic method. Let $M = \left\lfloor \frac{1}{16} (R/\gamma)^2 \right\rfloor$.
 Let $V = \R^{M+1}$ equipped with the standard inner product.  Let $e_1, e_2,
 \dots, e_{M+1}$ be the standard orthonormal basis of $V$. We define
 vectors $v_1, v_2, \dots, v_M \in V$ where $v_i = \frac{R}{\sqrt{2}}(e_i +
@@ -551,14 +551,16 @@ does \emph{not} depend on $\gamma$.
 The idea behind all the mappings is polynomial approximation. According to the
 well known Stone-Weierstrass theorem (see
 e.g.~\citep[Section~10.10]{Davidson-Donsig-2010}), on a compact set,
-multivariate polynomials uniformly approximate any continuous function. In our
-case, we use multivariate polynomial to approximate the indicator function
-corresponding to the intersection of $K-1$ halfspaces. This polynomial separates
-examples in one class from examples in the other classes. To be able to quantify
-$R'$, $\gamma'$ and time complexities of evaluating $\phi(x)$ and $k(x,x')$, we
-need to quantify certain parameters of the approximating polynomial (degree,
-norm). We construct two different polynomials with different paremeters. The
-parameters are quantified in
+multivariate polynomials uniformly approximate any continuous function.
+Intuitively speaking, we use a multivariate polynomial to approximate, on the
+unit ball of $\R^d$, the indicator function corresponding to the intersection of
+$m=K-1$ halfspaces. Within margin $\gamma$ along the decision boundary, we allow
+the polynomial to attain arbitrary value. The polynomial separates examples in
+one class from examples in the other classes. To be able to quantify $R'$,
+$\gamma'$ and time complexities of evaluating $\phi(x)$ and $k(x,x')$, we need
+to quantify certain parameters of the approximating polynomial. We construct two
+different polynomials with different paremeters. The parameters are quantified
+in
 Theorems~\ref{theorem:polynomial-approximation-1}~and~\ref{theorem:polynomial-approximation-2}
 stated below.
 
@@ -631,7 +633,7 @@ The separating hyperplanes $\ip{v_1}{x} = 0$ and $\ip{v_2}{x} = 0$ are shown as 
 TODO: Mappings and kernels!
 
 \section{Proof of Theorems~\ref{theorem:polynomial-approximation-1}~and~\ref{theorem:polynomial-approximation-2}}
-\label{section:proof-of-polynomial-approximation}.
+\label{section:proof-of-polynomial-approximation}
 
 For the proofs of the theorems we need several auxilliary results.
 
@@ -813,7 +815,7 @@ $$
 To prove the first part, note that $P_n(z)$ and $P_n(-z)$ are non-positive for
 $z \in [0,1]$. If $z=1$ then $P_n(z)=P_n(-z) = 0$. For $z \in [0,1)$, we have
 $$
-\frac{P_n(-z)}{P_n(z)} = \frac{1+x}{1-x} \prod_{i=1}^n \frac{(x+2^i)^2}{(x-2^i)^2} \ge 1 \; .
+\frac{P_n(-z)}{P_n(z)} = \frac{1+z}{1-z} \prod_{i=1}^n \frac{(z+2^i)^2}{(z-2^i)^2} \ge 1 \; .
 $$
 TODO
 \end{proof}
@@ -1150,7 +1152,7 @@ Let $M = \sum_{t=1}^T \indicator{\widehat y_t \neq y_t}$ be the number of
 mistakes the algorithm makes. Since the $K$-tuple $(w_1^{(t)}, w_2^{(t)}, \dots,
 w_K^{(t)})$ changes only if a mistake is made, we can upper bound $\sum_{i=1}^K
 \norm{w_i^{(t)}}^2$ in terms of number of mistakes.
-If a mistake happens in round $t$,
+If a mistake happens in round $t$ then
 \begin{align*}
 \sum_{i=1}^K \norm{w_i^{(t+1)}}^2
 & = \left(\sum_{i \in \{1,2,\dots,K\} \setminus \{y_t, \widehat y_t\} } \norm{w_i^{(t)}}^2 \right) + \norm{w_{y_t}^{(t)} + x_t}^2 + \norm{w_{\widehat y_t}^{(t)} - x_t}^2 \\
