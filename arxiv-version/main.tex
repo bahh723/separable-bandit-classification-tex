@@ -604,7 +604,7 @@ multivariate polynomial $p:\R^d \to \R$ such that
 \begin{enumerate}
 \item $p(x) \ge 1$ for all $\displaystyle x \in \bigcap_{i=1}^m \left\{ x \in \R^d ~:~ \norm{x} \le 1, \ \ip{v_i}{x} \ge \gamma \right\}$
 \item $p(x) \le -1$ for all $\displaystyle x \in \bigcup_{i=1}^m \left\{ x \in \R^d ~:~ \norm{x} \le 1, \ \ip{v_i}{x} \le - \gamma \right\}$
-\item $\deg(p) \le ???$
+\item $\deg(p) \le m (2 \left\lceil \frac{1}{2} \log(4m + 1) \right\rceil + 1) (2 \left \lceil \log(1/\gamma) \right \rceil + 1)$
 \item $\norm{p} \le ???$
 \end{enumerate}
 \end{theorem}
@@ -627,8 +627,8 @@ Section~\ref{section:proof-of-polynomial-approximation}. The geometric
 interpretation of the two regions described in parts 1 and 2 of the theorems is
 explained in Figure~\ref{figure:pizza-slice}. Similar but weaker results were
 proved by~\cite{Klivans-Servedio-2008}. In particular, we prove that the degrees
-of the polynomials, their norms, and their ``margins'' (parts 1 and 2 of theorems)
-are independent of the dimension $d$.
+of the polynomials, their norms, and their ``margins'' (parts 1 and 2 of
+theorems) are independent of the dimension $d$.
 
 
 \begin{figure}
@@ -808,6 +808,9 @@ $$
 p(x) = \left[ \sum_{i=1}^m A_{s,r}\left( \frac{\ip{v_i}{x}}{\gamma} \right) \prod_{\substack{j ~:~ 1 \le j \le m \\ j \neq i}} B_{s,r} \left( \frac{\ip{v_j}{x}}{\gamma} \right) \right]
 - \left(m - \frac{1}{2} \right) \prod_{j=1}^m B_{s,r} \left( \frac{\ip{v_j}{x}}{\gamma} \right) \; .
 $$
+Clearly, $\deg(P_n) = 2n+1$. Thus, $\deg(A_{n,k})$ and $\deg(B_{n,k})$ are at
+most  $(2n+1)k$, and therefore $\deg(p) \le m (2s+1) r$.
+
 For convenienence we define univariate rational function
 \begin{align*}
 S_{n,k}(z) & = \frac{A_{n,k}(z)}{B_{n,k}(z)} && \text{for $n,k \ge 0$,}
@@ -827,36 +830,45 @@ $$
 \begin{enumerate}
 \item If $z \in [0,1]$ then $P_n(-z) \le P_n(z) \le 0$.
 \item If $z \in [1,2^n]$ then $0 \le 4P_n(z) \le -P_n(-z)$.
+\item If $z \ge 0$ then $-P_n(-z) \ge 2^{n(n-1)}$.
 \end{enumerate}
 \end{proposition}
 
 \begin{proof}
 To prove the first part, note that $P_n(z)$ and $P_n(-z)$ are non-positive for
-$z \in [0,1]$. For $z=1$, $P_n(z) = 0$. For $z \in [0,1)$, we have
+$z \in [0,1]$. We can write $\frac{P_n(z)}{P_n(-z)}$ as a product of $n+1$
+non-negative fractions
 $$
-\frac{P_n(-z)}{P_n(z)} = \frac{1+z}{1-z} \prod_{i=1}^n \frac{(z+2^i)^2}{(z-2^i)^2} \ge 1
+\frac{P_n(z)}{P_n(-z)} = \frac{1-z}{1+z} \prod_{i=1}^n \frac{(z+2^i)^2}{(z-2^i)^2} \; .
 $$
-since each of the fractions is at least $1$.
+The first part follows from the observation that each fraction is upper bounded
+by $1$.
 
 To prove the second part, notice that $P_n(z)$ is non-negative and $P_n(-z)$ is
-negative for any $z \in [1,2^n]$. Now, fix $z \in [1,2^n]$ and let $j \in
+non-positive for any $z \in [1,2^n]$. Now, fix $z \in [1,2^n]$ and let $j \in
 \{1,2,\dots,n\}$ be such that $2^{j-1} \le z \le 2^j$. This implies that
-$(z+2^{j})^2 \ge 4 (z - 2^j)^2$. Therefore,
+$(z+2^{j})^2 \ge 4 (z - 2^j)^2$. We can write $\frac{P_n(z)}{-P_n(-z)}$ as a
+product of $n+1$ non-negative fractions
 $$
-\frac{-P_n(-z)}{P_n(z)}
-= \frac{1+z}{z-1} \cdot \frac{(z+2^j)^2}{(z-2^j)} \prod_{\substack{i ~:~ 1 \le i \le n \\ i \neq j}} \frac{(z+2^j)^2}{(z-2^j)}
-\ge 4 \;
+\frac{P_n(z)}{-P_n(-z)}
+= \frac{z-1}{z+1} \cdot \frac{(z-2^j)^2}{(z+2^j)^2} \prod_{\substack{i ~:~ 1 \le i \le n \\ i \neq j}} \frac{(z-2^i)^2}{(z+2^i)^2} \; .
 $$
-since one fraction is at least $4$ and all other fractions are at least $1$.
+The second part follows from the observation that the second fraction is upper
+bounded by $1/4$ and all other fractions are upper bounded by $1$.
+
+The third part follows from
+$$
+-P_n(-z) = (1+z) \prod_{i=1}^n (z+2^i)^2 \ge \prod_{i=1}^n 2^{2i} = 2^{n(n-1)} \; .
+$$
 \end{proof}
 
-\begin{proposition}[Properties of $S_{n,k}$]
-For any integer $n \ge 0$,
+\begin{proposition}[Properties of $S_{n,r}$ and $B_{n,r}$]
+For any integer $n \ge 0$ and $r = 2 \left\lceil \frac{1}{2} \log(4m + 1) \right\rceil + 1$,
 \begin{enumerate}
 \item If $z \in [1,2^n]$ then $S_{n,r}(z) \in [1,1+\frac{1}{2m}]$.
 \item If $z \in [-2^n, -1]$ then $S_{n,r} \in [-1-\frac{1}{2m}, -1]$.
 \item If $z \in [-1,1]$ then $|S_{n,r}(z)| \le 1$.
-\item If $z \in [-2,2^n]$ then $B_{n,r}(z) \ge \left(1 - \frac{1}{4m+1} \right) 2^{n(n-1)r}$
+\item If $z \in [-2^n,2^n]$ then $B_{n,r}(z) \ge \left(1 - \frac{1}{4m+1} \right) 2^{n(n-1)r}$.
 \end{enumerate}
 \end{proposition}
 
@@ -867,30 +879,47 @@ Therefore, $S_{n,r}(z)$ is odd. Also notice that $r$ is an odd integer.
 \begin{enumerate}
 \item Observe that $S_{n,r}(z)$ can be written as
 $$
-S_{n,r}(z) = \frac{1 + \left( - \frac{P_n(z)}{P_n(-z)}\right)^r}{1 - \left( - \frac{P_n(z)}{P_n(-z)}\right)^r} \; .
+S_{n,r}(z) = \frac{\displaystyle 1 + \left( - \frac{P_n(z)}{P_n(-z)}\right)^r}{\displaystyle 1 - \left( - \frac{P_n(z)}{P_n(-z)}\right)^r} = \frac{1 + c}{1 - c}
 $$
-Let $c = \left( - \frac{P_n(z)}{P_n(-z)}\right)^r$. Since $z \in [1,2^n]$, by
-part 2 of~\autoref{proposition:properties-of-p-n}, $c \in [0,\frac{1}{4^r}] =
-[0,\frac{1}{4m+1}]$. Thus, $S_{n,r}(z) = \frac{1+c}{1-c} \in [1,1 +
-\frac{1}{2m}]$.
+where $c = \left( - \frac{P_n(z)}{P_n(-z)}\right)^r$. Since $z \in [1,2^n]$, by
+part 2 of~\autoref{proposition:properties-of-p-n}, $c \in [0,\frac{1}{4^r}]$. By
+the definition of $r$ that means that $c \in [0,\frac{1}{4m+1}]$. Thus,
+$S_{n,r}(z) = \frac{1+c}{1-c} \in [1,1 + \frac{1}{2m}]$.
 
-\item The statement follows part 1 and the fact that $S_{n,r}(z)$ is odd.
+\item Since $S_{n,r}(z)$ is odd, the statement follows from part 1.
 
 \item Observe that $S_{n,r}(z)$ can be written as
 $$
-S_{n,r}(z) = \frac{1 + \left( - \frac{P_n(z)}{P_n(-z)}\right)^r}{1 - \left( - \frac{P_n(z)}{P_n(-z)}\right)^r}
+S_{n,r}(z) = \frac{\displaystyle 1 + \left( - \frac{P_n(z)}{P_n(-z)}\right)^r}{\displaystyle 1 - \left( - \frac{P_n(z)}{P_n(-z)}\right)^r} = \frac{1 + c}{1 - c}
 $$
-and let $c = \left( - \frac{P_n(z)}{P_(-z)}\right)^r$. If $z \in [0,1]$, by part
+where $c = \left( - \frac{P_n(z)}{P_n(-z)}\right)^r$. If $z \in [0,1]$, by part
 1 of~\autoref{proposition:properties-of-p-n} and the fact that $r$ is odd, $c
 \in [-1,0]$, and thus, $S_{n,r}(z) = \frac{1+c}{1-c} \in [0,1]$. Since
 $S_{n,r}(z)$ is odd, for $z \in [-1,0]$, $S_{n,r}(z) \in [-1,0]$.
 
-\item TODO
+\item Since $B_{n,r}(z)$ is even, we can without loss generality assume that $z \ge
+0$. We consider two cases.
 
+Case $z \in [0,1]$. Since $r$ is odd and $P_n(z)$ is non-positive,
+$$
+B_{n,r}(z) = - (P_n(z))^r + \left(- P_{n}(-z)\right)^r \ge \left(- P_{n}(-z)\right)^r \ge 2^{n(n-1)r} \ge 2^{n(n-1)r} \left( 1 - \frac{1}{4m+1} \right) \; .
+$$
+where the second last inequality follows from part 3 of \autoref{proposition:properties-of-p-n}.
+
+Case $z \in [1,2^n]$. Since $r$ is odd,
+$$
+B_{n,r}(z) = \left(- P_{n}(-z)\right)^r \left(1 - \left( - \frac{P_n(z)}{P_n(-z)}\right)^r \right) = \left(- P_{n}(-z)\right)^r (1 - c)
+$$
+where $c = \left( - \frac{P_n(z)}{P_n(-z)}\right)^r$. Since $z \in [1,2^n]$, by
+part 2 of~\autoref{proposition:properties-of-p-n}, $c \in [0,\frac{1}{4^r}]$. By
+the definition of $r$ that means that $c \in [0,\frac{1}{4m+1}]$. Thus,
+$$
+B_{n,r}(z) \ge \left(- P_{n}(-z)\right)^r \left( 1 - \frac{1}{4m+1} \right) \ge 2^{n(n-1)r} \left( 1 - \frac{1}{4m+1} \right) \; .
+$$
+where the last inequality follows from part 3 of \autoref{proposition:properties-of-p-n}.
 \end{enumerate}
 \end{proof}
 
-Clearly, $\deg(A_{s,r}) = \deg(B_{s,r}) = (s+1)r$ and thus $\deg(p) = (s+1)rm$.
 TODO
 
 \subsection{Proof of \autoref{theorem:polynomial-approximation-2}}
