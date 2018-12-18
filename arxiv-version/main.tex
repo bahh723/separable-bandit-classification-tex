@@ -868,7 +868,8 @@ $$
 
 \begin{proposition}[Properties of $S_{n,r}$ and $B_{n,r}$]
 \label{proposition:properties-of-s-n-r}
-For any integer $n \ge 0$ and $r = 2 \left\lceil \frac{1}{4} \log_2(4m + 1) \right\rceil + 1$,
+Let $n,m$ be non-negative integers.
+Let $r = 2 \left\lceil \frac{1}{4} \log_2(4m + 1) \right\rceil + 1$. Then,
 \begin{enumerate}
 \item If $z \in [1,2^n]$ then $S_{n,r}(z) \in [1,1+\frac{1}{2m}]$.
 \item If $z \in [-2^n, -1]$ then $S_{n,r} \in [-1-\frac{1}{2m}, -1]$.
@@ -936,12 +937,21 @@ note that \autoref{proposition:properties-of-s-n-r} implies that
 & \ge 4 |Q(x)| \cdot (4m+1)^{s^2m/2} && \text{(since $r \ge 1 + \frac{1}{2} \log_2(4m+1)$)} \\
 & \ge 2 |Q(x)| \cdot m^{s^2m/2} \; .
 \end{align*}
-It thus remains to prove that
+Since $p(x)$ and $Q(x)$ have the same sign, it remains to prove that
 \begin{align}
+\label{equation:rational-margin-1}
 Q(x) & \ge \frac{1}{2} && \text{for all} \ x \in \bigcap_{i=1}^m \left\{ x \in \R^d ~:~ \norm{x} \le 1, \ \ip{v_i}{x} \ge \gamma \right\} \; , \\
+\label{equation:rational-margin-2}
 Q(x) & \le -\frac{1}{2} && \text{for all} \ x \in \bigcup_{i=1}^m \left\{ x \in \R^d ~:~ \norm{x} \le 1, \ \ip{v_i}{x} \le - \gamma \right\} \; .
 \end{align}
+Consider any $x \in \bigcap_{i=1}^m \left\{ x \in \R^d ~:~ \norm{x} \le 1, \ \ip{v_i}{x} \ge \gamma \right\}$. Then,
+$\frac{\ip{v_i}{x}}{\gamma} \in [1, \frac{1}{\gamma}]$.
+By part 1 of \autoref{proposition:properties-of-s-n-r}, $S_{s,r}\left(\frac{\ip{v_i}{x}}{\gamma}\right) \in [1, 1 + \frac{1}{2m}]$
+and in particular $S_{s,r}\left(\frac{\ip{v_i}{x}}{\gamma}\right) \ge 1$.
+Thus, $Q(x) = \left( \sum_{i=1}^m S_{s,r}\left(\frac{\ip{v_i}{x}}{\gamma}\right) \right) - (m - 1/2) \ge m - (m - 1/2) = 1/2$.
 
+Consider any $x \in \bigcup_{i=1}^m \left\{ x \in \R^d ~:~ \norm{x} \le 1, \ \ip{v_i}{x} \le - \gamma \right\}$.
+Observe that $\frac{\ip{v_i}{x}}{\gamma} \in [-\frac{1}{\gamma}, \frac{1}{\gamma}]$.
 TODO
 
 \subsection{Proof of \autoref{theorem:polynomial-approximation-2}}
