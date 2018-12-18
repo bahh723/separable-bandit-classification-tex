@@ -74,7 +74,7 @@ contrast with the standard, so called full information setting, the algorithm
 does \emph{not} receive the correct label. The feedback is only binary. To allow
 for meaningful use of randomization, we assume that the correct label in a
 particular round is chosen prior to algorithm's prediction in that
-round.\footnote{The reader can assume throughout the paper a simpler model of
+round.\footnote{All our results apply to also to a simpler model of
 the so called \emph{oblivious adversary} where the whole sequence of labeled
 examples $(x_1, y_1), (x_2, y_2), \dots, (x_T, y_T)$ is chosen before the first
 round of the game.} The protocol of the problem is stated below.
@@ -104,9 +104,10 @@ $\sum_{t=1}^T z_t = \sum_{t=1}^T \indicator{\widehat y_t \neq y_t}$. The problem
 was initially proposed by \cite{Kakade-Shalev-Shwartz-Tewari-2008}. The
 corresponding problem with full information feedback is solved by the classical
 \textsc{Multiclass Perceptron} algorithm and its variants (see e.g.
-\cite{Crammer-Dekel-Keshet-Shalev-Shwartz-Singer-2006}). The problem is quite
-natural and potential applications include online advertising and online content
-optimization where the feedback corresponds to a user's click.
+\cite{Crammer-Dekel-Keshet-Shalev-Shwartz-Singer-2006}). The bandit feedback
+version is a mathematically natural model and potential applications include
+online advertising and online content optimization where the binary feedback
+corresponds to a click.
 
 In this paper, we focus on the special case when the examples lie in $\R^d$ and
 are \emph{linearly separable with a margin}. In the full-information feedback
@@ -147,12 +148,12 @@ run the algorithm for the strongly linearly separable case. All of these
 algorithms can be kernelized. (Some of them have to be kernalized since the
 underlying inner product space is infinite dimensional.) Kernelization does not
 change the input-output behavior of the algorithm, it only affects its time
-complexity.
+and memory complexity.
 
 These algorithms differ by choice of the mapping or, equivalently, choice of the
 kernel. The crux of the problem is the analysis of the approximation properties
-of these mappings/kernels and the way margin in original space under standard
-linear separability notion gets transformed into a margin in the
+of these mappings/kernels and the way margin in the original space $\R^d$ under
+standard linear separability notion gets transformed into a margin in the
 high-dimensional space under the strong separability notion. This problem is
 related to the problem of learning intersection of halfspaces and has been
 studied previously by \cite{Klivans-Servedio-2008}. As an important technical
@@ -256,7 +257,7 @@ mistakes. Another folklore result is that \textsc{Multiclass Perceptron} is
 essentially optimal in the sense that any deterministic algorithm must make
 $\left\lfloor (R/\gamma)^2 \right \rfloor$ mistakes in the worst case. For
 completeness, we give proofs of both of these results in
-Section~\ref{section:multiclass-perceptron-proofs}.
+Appendix~\ref{section:multiclass-perceptron-proofs}.
 
 The notion of strong linear separability is new.
 
@@ -320,7 +321,7 @@ copy makes a binary decision whether the feature vector belongs its respective
 class or not. If at least one copy makes a positive prediction, the algorithm
 predicts accordingly. If multiple copies make positive predictions, the
 algorithm chooses one of them arbitrarily. If all copies make negative
-predictions, the algorithms makes a blind guess.
+predictions, the algorithms makes a uniformly random guess.
 
 \begin{algorithm}[h]
 \caption{\textsc{Bandit Algorithm for Strongly Linearly Separable Examples}
@@ -334,11 +335,7 @@ predictions, the algorithms makes a blind guess.
 \STATE{Compute $S_t = \left\{ i ~:~ 1 \le i \le K, \ \ip{w_i^{(t)}}{x_t} \ge 0 \right\}$}
 \IF{$S_t = \emptyset$}
 \STATE{Predict $\widehat y_t \sim \text{Uniform}(\{1,2,\dots,K\})$}
-\ELSE
-\STATE{Predict $\widehat y_t \in S_t$ chosen arbitrarily}
-\ENDIF
 \STATE{Observe feedback $z_t \in \{0,1\}$ where $z_t = \indicator{\widehat y_t \neq y_t}$}
-\IF{$S_t = \emptyset$}
 \IF{$z_t = 1$}
 \STATE{Set $w_i^{(t+1)} = w_i^{(t)}$ for all $i \in \{1,2,\dots,K\}$}
 \ELSE
@@ -346,6 +343,8 @@ predictions, the algorithms makes a blind guess.
 \STATE{Update $w_{\widehat y_t}^{(t+1)} = w_{\widehat y_t}^{(t)} + x_t$}
 \ENDIF
 \ELSE
+\STATE{Predict $\widehat y_t \in S_t$ chosen arbitrarily}
+\STATE{Observe feedback $z_t \in \{0,1\}$ where $z_t = \indicator{\widehat y_t \neq y_t}$}
 \IF{$z_t = 1$}
 \STATE{Set $w_i^{(t+1)} = w_i^{(t)}$ for all $i \in \{1,2,\dots,K\} \setminus \{\widehat y_t\}$}
 \STATE{Update $w_{\widehat y_t}^{(t+1)} = w_{\widehat y_t}^{(t)} - x_t$}
@@ -361,7 +360,7 @@ predictions, the algorithms makes a blind guess.
 \begin{theorem}[Mistake upper bound]
 \label{theorem:strongly-separable-example-mistake-upper-bound}
 Let $(V, \ip{\cdot}{\cdot})$ be any inner product space, let $K$ be a positive
-integer, $\gamma$ a positive real number, $R$ be a non-negative real number. If
+integer, let $\gamma$ a positive real number, let $R$ be a non-negative real number. If
 $(x_1, y_1), (x_2, y_2), \dots, (x_T, y_T)$ is a sequence of labeled examples in
 $V \times \{1,2,\dots,K\}$ such that the examples are strongly separable with
 margin $\gamma$ and $\norm{x_1}, \norm{x_2}, \dots, \norm{x_T} \le R$ then the
@@ -377,8 +376,8 @@ when $S_t \neq \emptyset$ and let $B = \sum_{t ~:~ S_t = \emptyset} z_t$ be the
 number of mistakes in the rounds when $S_t = \emptyset$. Obviously, $M = A + B$.
 We upper bound $A$ and $B$ separately.
 
-Let $C$ be the number of times line 16 gets executed. Let $U$ be the number of
-times line 16 and line 21 get executed. In other words, $U$ is the number of
+Let $C$ be the number of times line 12 gets executed. Let $U$ be the number of
+times line 12 and line 19 get executed. In other words, $U$ is the number of
 times the $K$-tuple of vectors $(w_1^{(t)}, w_2^{(t)}, \dots, w_K^{(t)})$ gets
 updated. Clearly, $U = A + C$.
 
@@ -406,6 +405,8 @@ changes only if there is an update in round $t$.
 We investigate how $\sum_{i=1}^K \norm{w_i^{(t)}}^2$ and
 $\sum_{i=1}^K \ip{w_i^*}{w_i^{(t)}}$ change. If there is an update in round $t$,
 we have
+\begingroup
+\allowdisplaybreaks
 \begin{align*}
 \sum_{i=1}^K \norm{w_i^{(t+1)}}^2
 & = \left( \sum_{i \in \{1,2,\dots,K\} \setminus \{\widehat y_t\}} \norm{w_i^{(t)}}^2 \right) + \norm{w_{\widehat y_t}^{(t+1)}}^2 \\
@@ -414,6 +415,7 @@ we have
 & \le \left( \sum_{i=1}^K \norm{w_i^{(t)}}^2 \right) + \norm{x_t}^2 \\
 & \le \left( \sum_{i=1}^K \norm{w_i^{(t)}}^2 \right) + R^2 \; .
 \end{align*}
+\endgroup
 Therefore, after $U$ updates,
 $$
 \sum_{i=1}^K \norm{w_i^{(T+1)}}^2 \le R^2 U \; .
@@ -446,6 +448,19 @@ $$
 $$
 We conclude that $U \le (R/\gamma)^2$. Since $U$ is an integer, $U \le \lfloor (R/\gamma)^2 \rfloor$.
 \end{proof}
+
+The upper bound $(K-1) \lfloor (R/\gamma)^2 \rfloor$ on the expected number of
+mistakes of
+Algorithm~\ref{algorithm:algorithm-for-strongly-linearly-separable-examples} is
+optimal to within constant factor as long as the number of classes $K$ is
+at most $O((R/\gamma)^2)$. This is proved in
+\autoref{theorem:strongly-separable-example-mistake-lower-bound} below.
+
+Irrespective of any conditions on $K$, $R$, and $\gamma$, a trivial lower bound
+on the expected number of mistakes of any randomized algorithm is
+$\frac{K-1}{2}$. (Adversary chooses the same example over and over.) However, it
+is unclear if the trivial lower bound is the best possible if $K$ is large,
+i.e., $\omega((R/\gamma)^2)$. We leave this as an open problem.
 
 \begin{theorem}[Mistake lower bound]
 \label{theorem:strongly-separable-example-mistake-lower-bound}
@@ -523,9 +538,9 @@ over its internal randomization.
 \section{From linear separability to strong linear separability}
 \label{section:from-linear-separability-to-strong-linear-separability}
 
-In this section, we show how construct a mapping $\phi$ of points in the unit
+In this section, we show how to construct a mapping $\phi$ from the unit
 ball of $\R^d$ into a high dimensional inner product space that has the
-property if any set of labeled examples in the unit ball is linearly separable with a
+property if a set of labeled examples in the unit ball is linearly separable with a
 margin $\gamma$, applying the mapping $\phi$ makes the examples \emph{strongly}
 linearly separable with a margin $\gamma'$ and their norms are bounded by $R'$.
 The parameters $\gamma'$ and $R'$ are functions of the old margin $\gamma$ and
@@ -610,7 +625,10 @@ multivariate polynomial $p:\R^d \to \R$ such that
 The proofs of the theorems can be found in
 Section~\ref{section:proof-of-polynomial-approximation}. The geometric
 interpretation of the two regions described in parts 1 and 2 of the theorems is
-explained in Figure~\ref{figure:pizza-slice}.
+explained in Figure~\ref{figure:pizza-slice}. Similar but weaker results were
+proved by~\cite{Klivans-Servedio-2008}. In particular, we prove that the degrees
+of the polynomials, their norms, and their ``margins'' (parts 1 and 2 of theorems)
+are independent of the dimension $d$.
 
 
 \begin{figure}
