@@ -602,13 +602,13 @@ Let $v_1, v_2, \dots, v_m \in \R^d$ be vectors such that $\norm{v_1},
 \norm{v_2}, \dots, \norm{v_m} \le 1$. Let $\gamma \in (0,1)$. There exists a
 multivariate polynomial $p:\R^d \to \R$ such that
 \begin{enumerate}
-\item $\displaystyle p(x) \ge m^{\frac{1}{2} m \log^2(1/\gamma)}$
+\item $\displaystyle p(x) \ge m^{\frac{1}{2} m (\log_2(1/\gamma))^2}$
 for all $\displaystyle x \in \bigcap_{i=1}^m \left\{ x \in \R^d ~:~ \norm{x} \le 1, \ \ip{v_i}{x} \ge \gamma \right\}$
 
-\item $\displaystyle p(x) \le - m^{\frac{1}{2} m \log^2(1/\gamma)}$
+\item $\displaystyle p(x) \le - m^{\frac{1}{2} m (\log_2(1/\gamma))^2}$
 for all $\displaystyle x \in \bigcup_{i=1}^m \left\{ x \in \R^d ~:~ \norm{x} \le 1, \ \ip{v_i}{x} \le - \gamma \right\}$
 
-\item $\deg(p) \le m (2 \left\lceil \frac{1}{4} \log_2(4m + 1) \right\rceil + 1) (2 \left \lceil \log(1/\gamma) \right \rceil + 1)$
+\item $\deg(p) \le m (2 \left\lceil \frac{1}{4} \log_2(4m + 1) \right\rceil + 1) (2 \left \lceil \log_2(1/\gamma) \right \rceil + 1)$
 \item $\norm{p} \le ???$
 \end{enumerate}
 \end{theorem}
@@ -740,7 +740,7 @@ $$
 For a multi-index $A = (\alpha_1, \alpha_2, \dots, \alpha_d)$ we define its
 $1$-norm as $\norm{A}_1 = \alpha_1 + \alpha_2 + \dots + \alpha_d$.
 
-To prove the first part, we express $p_j$ as
+To prove the part 1, we express $p_j$ as
 $$
 p_j(x) = \sum_{A_j} c^{(j)}_{A_j} x^{A_j} \; .
 $$
@@ -788,9 +788,9 @@ $$
 M_A \le \prod_{i=1}^d n^{\alpha_i} = n^{\norm{A}_1} \le n^{\deg(p)} \; .
 $$
 
-The second part follows from the first part by setting $p_1 = p_2 = \dots p_n = q$.
+Part 2 follows from the part 1 by setting $p_1 = p_2 = \dots p_n = q$.
 
-To prove the third part we use generalized triangle inequality and
+To prove the part 3, we use generalized triangle inequality and
 \autoref{lemma:simple-inequality}. We have
 \begin{align*}
 \norm{\sum_{j=1}^n p_j}^2 = \left( \norm{\sum_{j=1}^n p_j} \right)^2 \le \left(\sum_{j=1}^n \norm{p_j} \right)^2 \le n \sum_{j=1}^n \norm{p_j}^2 \; .
@@ -806,14 +806,12 @@ P_n(z) & = (z - 1) \prod_{i=1}^n (z - 2^i)^2 && \text{for $n \ge 0$,} \\
 A_{n,k}(z) & = (P_n(z))^k - (P_n(-z))^k && \text{for $n,k \ge 0$,} \\
 B_{n,k}(z) & = - (P_n(z))^k - (P_n(-z))^k && \text{for $n,k \ge 0$.}
 \end{align*}
-Let $r = 2 \left\lceil \frac{1}{4} \log_2(4m + 1) \right\rceil + 1$ and $s = \left \lceil \log(1/\gamma) \right \rceil$.
+Let $r = 2 \left\lceil \frac{1}{4} \log_2(4m + 1) \right\rceil + 1$ and $s = \left \lceil \log_2(1/\gamma) \right \rceil$.
 We define the polynomial $p:\R^d \to \R$ as
 $$
 p(x) = \left[ \sum_{i=1}^m A_{s,r}\left( \frac{\ip{v_i}{x}}{\gamma} \right) \prod_{\substack{j ~:~ 1 \le j \le m \\ j \neq i}} B_{s,r} \left( \frac{\ip{v_j}{x}}{\gamma} \right) \right]
 - \left(m - \frac{1}{2} \right) \prod_{j=1}^m B_{s,r} \left( \frac{\ip{v_j}{x}}{\gamma} \right) \; .
 $$
-Clearly, $\deg(P_n) = 2n+1$. Thus, $\deg(A_{n,k})$ and $\deg(B_{n,k})$ are at
-most  $(2n+1)k$, and therefore $\deg(p) \le m (2s+1) r$.
 
 For convenienence we define univariate rational function
 \begin{align*}
@@ -987,7 +985,50 @@ Then,
 & \ge 2 |Q(x)| \cdot m^{s^2m/2} \\
 & \ge m^{s^2m/2} && \text{(\autoref{lemma:properties-of-q})} \; .
 \end{align*}
-TODO
+
+To prove part 3 of \autoref{theorem:polynomial-approximation-1} note that
+$\deg(P_n) = 2n+1$. Thus, $\deg(A_{n,k})$ and $\deg(B_{n,k})$ are at most
+$(2n+1)k$. Therefore $\deg(p) \le m (2s+1) r$.
+
+It remains to prove part 4 of \autoref{theorem:polynomial-approximation-1}.
+For any $i \in \{0,1,2,\dots,s\}$ and any $v \in \R^d$ such that $\norm{v} \le 1$
+define multivariate polynomials
+\begin{align*}
+f_{i,v}(x) & = \frac{\ip{v}{x}}{\gamma} - 2^i \; , \\
+q_v(x) & = P_s \left( \frac{\ip{v}{x}}{\gamma} \right) \; , \\
+a_v(x) & = A_{s,r} \left( \frac{\ip{v}{x}}{\gamma} \right) \; , \\
+b_v(x) & = B_{s,r} \left( \frac{\ip{v}{x}}{\gamma} \right) \; .
+\end{align*}
+Note that
+$$
+p(x) = \left[ \sum_{i=1}^m a_{v_i}(x) \prod_{\substack{j ~:~ 1 \le j \le m \\ j \neq i}} b_{v_j}(x) \right] - \left(m - \frac{1}{2} \right) \prod_{j=1}^n b_{v_j}(x) \; .
+$$
+We bound the norms of these polynomials. We have
+$$
+\norm{f_{i,v}}^2 = \norm{v}^2/\gamma^2 + 2^{2i} \le 2 \cdot 2^s \; .
+$$
+where we used that $1/\gamma \le 2^s$ and $\norm{v} \le 1$.
+Since $q_v(x) = f_{i,v}(\frac{\ip{v}{x}}{\gamma}) \prod_{i=1}^s \left(f_{i,v}(\frac{\ip{v}{x}})\right)^2$,
+using part 1 of \autoref{lemma:properties-of-norm-of-polynomials} we upper bound the norm of $q_v$
+as
+$$
+\norm{q_v}^2 \le (2s+1)^{2s+1} \norm{f_{0,v}}^2 \prod_{i=1}^s \norm{f_{i,v}}^4 \le  (2s+1)^{2s+1} (2 \cdot 2^s)^{2s + 1} \; .
+$$
+Using parts 3 and 2 of \autoref{lemma:properties-of-norm-of-polynomials} we upper bound the norm of $a_v$ as
+\begin{align*}
+\norm{a_v}^2
+& \le 2\norm{(q_v)^r}^2 + 2\norm{(q_{-v})^r}^2 \\
+& \le 2 r^{r(2s+1)} \norm{q_v}^{2r} + 2 r^{r(2s+1)} \norm{q_{-v}}^{2r} \\
+& \le 4 r^{r(2s+1)} \left((2s+1)^{2s+1} (2 \cdot 2^s)^{2s + 1} \right)^{2r} \; .
+\end{align*}
+The same upper bound holds for $\norm{b_v}^2$. Finally,
+\begin{align*}
+\norm{p}
+& \le \left[ \sum_{i=1}^m \norm{a_{v_i} \prod_{\substack{j ~:~ 1 \le j \le m \\ j \neq i}} b_{v_j}} \right] + \left(m - \frac{1}{2} \right) \norm{\prod_{j=1}^m b_{v_j}} \\
+& \le \left[ \sum_{i=1}^m m^{???/2} \norm{a_{v_i}} \prod_{\substack{j ~:~ 1 \le j \le m \\ j \neq i}} \norm{b_{v_j}} \right] + \left(m - \frac{1}{2} \right) m^{???/2} \prod_{j=1}^m \norm{b_{v_j}} \\
+& \le (2m-1/2) m^{???/2} \norm{a_v}^m 
+\end{align*}
+
 
 \subsection{Proof of \autoref{theorem:polynomial-approximation-2}}
 \label{section:proof-of-polynomial-approximation-2}
