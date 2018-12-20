@@ -602,23 +602,6 @@ Let $v_1, v_2, \dots, v_m \in \R^d$ be vectors such that $\norm{v_1},
 \norm{v_2}, \dots, \norm{v_m} \le 1$. Let $\gamma \in (0,1)$. There exists a
 multivariate polynomial $p:\R^d \to \R$ such that
 \begin{enumerate}
-\item $\displaystyle p(x) \ge m^{\frac{1}{2} m (\log_2(1/\gamma))^2}$
-for all $\displaystyle x \in \bigcap_{i=1}^m \left\{ x \in \R^d ~:~ \norm{x} \le 1, \ \ip{v_i}{x} \ge \gamma \right\}$
-
-\item $\displaystyle p(x) \le - m^{\frac{1}{2} m (\log_2(1/\gamma))^2}$
-for all $\displaystyle x \in \bigcup_{i=1}^m \left\{ x \in \R^d ~:~ \norm{x} \le 1, \ \ip{v_i}{x} \le - \gamma \right\}$
-
-\item $\deg(p) \le m (2 \left\lceil \frac{1}{4} \log_2(4m + 1) \right\rceil + 1) (2 \left \lceil \log_2(1/\gamma) \right \rceil + 1)$
-\item $\norm{p} \le ???$
-\end{enumerate}
-\end{theorem}
-
-\begin{theorem}[Polynomial approximation of intersection of halfspaces II]
-\label{theorem:polynomial-approximation-2}
-Let $v_1, v_2, \dots, v_m \in \R^d$ be vectors such that $\norm{v_1},
-\norm{v_2}, \dots, \norm{v_m} \le 1$. Let $\gamma \in (0,1)$. There exists a
-multivariate polynomial $p:\R^d \to \R$ such that
-\begin{enumerate}
 \item $p(x) \ge 1/2$ for all $\displaystyle x \in \bigcap_{i=1}^m \left\{ x \in \R^d ~:~ \norm{x} \le 1, \ \ip{v_i}{x} \ge \gamma \right\}$
 \item $p(x) \le -1/2$ for all $\displaystyle x \in \bigcup_{i=1}^m \left\{ x \in \R^d ~:~ \norm{x} \le 1, \ \ip{v_i}{x} \le - \gamma \right\}$
 \item $\displaystyle \deg(p) = \left\lceil \log_2(2m) \right\rceil \cdot \left\lceil \sqrt{\frac{1}{\gamma}} \right\rceil$
@@ -626,14 +609,34 @@ multivariate polynomial $p:\R^d \to \R$ such that
 \end{enumerate}
 \end{theorem}
 
+\begin{theorem}[Polynomial approximation of intersection of halfspaces II]
+\label{theorem:polynomial-approximation-2}
+Let $v_1, v_2, \dots, v_m \in \R^d$ be vectors such that $\norm{v_1},
+\norm{v_2}, \dots, \norm{v_m} \le 1$. Let $\gamma \in (0,1)$.
+Define
+$$
+r = 2 \left\lceil \frac{1}{4} \log_2(4m + 1) \right\rceil + 1 \qquad \text{and} \qquad s = \left \lceil \log_2(1/\gamma) \right \rceil \; .
+$$
+Then, there exists a multivariate polynomial $p:\R^d \to \R$ such that
+\begin{enumerate}
+\item $\displaystyle p(x) \ge \frac{1}{4} \cdot 2^{s(s+1)rm}$
+for all $\displaystyle x \in \bigcap_{i=1}^m \left\{ x \in \R^d ~:~ \norm{x} \le 1, \ \ip{v_i}{x} \ge \gamma \right\}$
+
+\item $\displaystyle p(x) \le - \frac{1}{4} \cdot 2^{s(s+1)rm}$
+for all $\displaystyle x \in \bigcup_{i=1}^m \left\{ x \in \R^d ~:~ \norm{x} \le 1, \ \ip{v_i}{x} \le - \gamma \right\}$
+
+\item $\deg(p) \le (2s+1) rm$
+\item $\norm{p} \le (2m-1/2) 2^m \cdot \left(2^{2s} rm (4s+2)^2 \right)^{(s+1/2)rm}$
+\end{enumerate}
+\end{theorem}
+
+
 The proofs of the theorems can be found in
 Section~\ref{section:proof-of-polynomial-approximation}. The geometric
 interpretation of the two regions described in parts 1 and 2 of the theorems is
 explained in Figure~\ref{figure:pizza-slice}. Similar but weaker results were
-proved by~\cite{Klivans-Servedio-2008}. In particular, we prove that the degrees
-of the polynomials, their norms, and their ``margins'' (parts 1 and 2 of
-theorems) are independent of the dimension $d$.
-
+proved by~\cite{Klivans-Servedio-2008}. In particular, the bounds in parts
+1, 2, 3, 4 of the theorems are independent of the dimension $d$.
 
 \begin{figure}
 \begin{center}
@@ -800,239 +803,6 @@ To prove the part 3, we use generalized triangle inequality and
 \subsection{Proof of \autoref{theorem:polynomial-approximation-1}}
 \label{section:proof-of-polynomial-approximation-1}
 
-We define several univariate polynomials
-\begin{align*}
-P_n(z) & = (z - 1) \prod_{i=1}^n (z - 2^i)^2 && \text{for $n \ge 0$,} \\
-A_{n,k}(z) & = (P_n(z))^k - (P_n(-z))^k && \text{for $n,k \ge 0$,} \\
-B_{n,k}(z) & = - (P_n(z))^k - (P_n(-z))^k && \text{for $n,k \ge 0$.}
-\end{align*}
-Let $r = 2 \left\lceil \frac{1}{4} \log_2(4m + 1) \right\rceil + 1$ and $s = \left \lceil \log_2(1/\gamma) \right \rceil$.
-We define the polynomial $p:\R^d \to \R$ as
-$$
-p(x) = \left[ \sum_{i=1}^m A_{s,r}\left( \frac{\ip{v_i}{x}}{\gamma} \right) \prod_{\substack{j ~:~ 1 \le j \le m \\ j \neq i}} B_{s,r} \left( \frac{\ip{v_j}{x}}{\gamma} \right) \right]
-- \left(m - \frac{1}{2} \right) \prod_{j=1}^m B_{s,r} \left( \frac{\ip{v_j}{x}}{\gamma} \right) \; .
-$$
-
-For convenienence we define univariate rational function
-\begin{align*}
-S_{n,k}(z) & = \frac{A_{n,k}(z)}{B_{n,k}(z)} && \text{for $n,k \ge 0$,}
-\end{align*}
-and a multivariate rational function
-$$
-Q(x) = \left( \sum_{i=1}^m S_{s,r}\left( \frac{\ip{v_i}{x}}{\gamma} \right) \right) - \left(m - \frac{1}{2} \right) \; .
-$$
-It easy to verify that
-$$
-p(x) = Q(x) \prod_{j=1}^m B_{s,r} \left( \frac{\ip{v_j}{x}}{\gamma} \right) \; .
-$$
-
-\begin{lemma}[Properties of $P_n$]
-\label{lemma:properties-of-p-n}
-\hspace{1cm} % Dummy space
-\begin{enumerate}
-\item If $z \in [0,1]$ then $P_n(-z) \le P_n(z) \le 0$.
-\item If $z \in [1,2^n]$ then $0 \le 4P_n(z) \le -P_n(-z)$.
-\item If $z \ge 0$ then $-P_n(-z) \ge 2^{n(n+1)}$.
-\end{enumerate}
-\end{lemma}
-
-\begin{proof}
-To prove the first part, note that $P_n(z)$ and $P_n(-z)$ are non-positive for
-$z \in [0,1]$. We can write $\frac{P_n(z)}{P_n(-z)}$ as a product of $n+1$
-non-negative fractions
-$$
-\frac{P_n(z)}{P_n(-z)} = \frac{1-z}{1+z} \prod_{i=1}^n \frac{(z+2^i)^2}{(z-2^i)^2} \; .
-$$
-The first part follows from the observation that each fraction is upper bounded
-by $1$.
-
-To prove the second part, notice that $P_n(z)$ is non-negative and $P_n(-z)$ is
-non-positive for any $z \in [1,2^n]$. Now, fix $z \in [1,2^n]$ and let $j \in
-\{1,2,\dots,n\}$ be such that $2^{j-1} \le z \le 2^j$. This implies that
-$(z+2^{j})^2 \ge 4 (z - 2^j)^2$. We can write $\frac{P_n(z)}{-P_n(-z)}$ as a
-product of $n+1$ non-negative fractions
-$$
-\frac{P_n(z)}{-P_n(-z)}
-= \frac{z-1}{z+1} \cdot \frac{(z-2^j)^2}{(z+2^j)^2} \prod_{\substack{i ~:~ 1 \le i \le n \\ i \neq j}} \frac{(z-2^i)^2}{(z+2^i)^2} \; .
-$$
-The second part follows from the observation that the second fraction is upper
-bounded by $1/4$ and all other fractions are upper bounded by $1$.
-
-The third part follows from
-$$
--P_n(-z) = (1+z) \prod_{i=1}^n (z+2^i)^2 \ge \prod_{i=1}^n 2^{2i} = 2^{n(n+1)} \; .
-$$
-\end{proof}
-
-\begin{lemma}[Properties of $S_{n,r}$ and $B_{n,r}$]
-\label{lemma:properties-of-s-n-r}
-Let $n,m$ be non-negative integers.
-Let $r = 2 \left\lceil \frac{1}{4} \log_2(4m + 1) \right\rceil + 1$. Then,
-\begin{enumerate}
-\item If $z \in [1,2^n]$ then $S_{n,r}(z) \in [1,1+\frac{1}{2m}]$.
-\item If $z \in [-2^n, -1]$ then $S_{n,r} \in [-1-\frac{1}{2m}, -1]$.
-\item If $z \in [-1,1]$ then $|S_{n,r}(z)| \le 1$.
-\item If $z \in [-2^n,2^n]$ then $B_{n,r}(z) \ge \left(1 - \frac{1}{4m+1} \right) 2^{n(n+1)r}$.
-\end{enumerate}
-\end{lemma}
-
-\begin{proof}
-Note that $B_{n,r}(z)$ is an even function and $A_{n,r}(z)$ is an odd function.
-Therefore, $S_{n,r}(z)$ is odd. Also notice that $r$ is an odd integer.
-
-\begin{enumerate}
-\item Observe that $S_{n,r}(z)$ can be written as
-$$
-S_{n,r}(z) = \frac{\displaystyle 1 + \left( - \frac{P_n(z)}{P_n(-z)}\right)^r}{\displaystyle 1 - \left( - \frac{P_n(z)}{P_n(-z)}\right)^r} = \frac{1 + c}{1 - c}
-$$
-where $c = \left( - \frac{P_n(z)}{P_n(-z)}\right)^r$. Since $z \in [1,2^n]$, by
-part 2 of~\autoref{lemma:properties-of-p-n}, $c \in [0,\frac{1}{4^r}]$. Since
-$r \ge \frac{1}{2} \log_2(4m+1)$ that means that $c \in [0,\frac{1}{4m+1}]$. Thus,
-$S_{n,r}(z) = \frac{1+c}{1-c} \in [1,1 + \frac{1}{2m}]$.
-
-\item Since $S_{n,r}(z)$ is odd, the statement follows from part 1.
-
-\item Observe that $S_{n,r}(z)$ can be written as
-$$
-S_{n,r}(z) = \frac{\displaystyle 1 + \left( - \frac{P_n(z)}{P_n(-z)}\right)^r}{\displaystyle 1 - \left( - \frac{P_n(z)}{P_n(-z)}\right)^r} = \frac{1 + c}{1 - c}
-$$
-where $c = \left( - \frac{P_n(z)}{P_n(-z)}\right)^r$. If $z \in [0,1]$, by part
-1 of~\autoref{lemma:properties-of-p-n} and the fact that $r$ is odd, $c
-\in [-1,0]$, and thus, $S_{n,r}(z) = \frac{1+c}{1-c} \in [0,1]$. Since
-$S_{n,r}(z)$ is odd, for $z \in [-1,0]$, $S_{n,r}(z) \in [-1,0]$.
-
-\item Since $B_{n,r}(z)$ is even, we can without loss generality assume that $z \ge
-0$. We consider two cases.
-
-Case $z \in [0,1]$. Since $r$ is odd and $P_n(z)$ is non-positive,
-$$
-B_{n,r}(z) = - (P_n(z))^r + \left(- P_{n}(-z)\right)^r \ge \left(- P_{n}(-z)\right)^r \ge 2^{n(n+1)r} \ge 2^{n(n+1)r} \left( 1 - \frac{1}{4m+1} \right) \; .
-$$
-where the second last inequality follows from part 3 of \autoref{lemma:properties-of-p-n}.
-
-Case $z \in [1,2^n]$. Since $r$ is odd,
-$$
-B_{n,r}(z) = \left(- P_{n}(-z)\right)^r \left(1 - \left( - \frac{P_n(z)}{P_n(-z)}\right)^r \right) = \left(- P_{n}(-z)\right)^r (1 - c)
-$$
-where $c = \left( - \frac{P_n(z)}{P_n(-z)}\right)^r$. Since $z \in [1,2^n]$, by
-part 2 of~\autoref{lemma:properties-of-p-n}, $c \in [0,\frac{1}{4^r}]$. By
-the definition of $r$ that means that $c \in [0,\frac{1}{4m+1}]$. Thus,
-$$
-B_{n,r}(z) \ge \left(- P_{n}(-z)\right)^r \left( 1 - \frac{1}{4m+1} \right) \ge 2^{n(n+1)r} \left( 1 - \frac{1}{4m+1} \right) \; .
-$$
-where the last inequality follows from part 3 of \autoref{lemma:properties-of-p-n}.
-\end{enumerate}
-\end{proof}
-
-\begin{lemma}[Properties of $Q(x)$]
-\label{lemma:properties-of-q}
-The rational function $Q(x)$ satisfies
-\begin{enumerate}
-\item $Q(x) \ge \frac{1}{2}$ for all $\displaystyle x \in \bigcap_{i=1}^m \left\{ x \in \R^d ~:~ \norm{x} \le 1, \ \ip{v_i}{x} \ge \gamma \right\}$,
-\item $Q(x) \le -\frac{1}{2}$ for all $\displaystyle x \in \bigcup_{i=1}^m \left\{ x \in \R^d ~:~ \norm{x} \le 1, \ \ip{v_i}{x} \le - \gamma \right\}$.
-\end{enumerate}
-\end{lemma}
-
-\begin{proof}
-To prove part 1, consider any $x \in \bigcap_{i=1}^m \left\{ x \in \R^d ~:~ \norm{x} \le 1, \
-\ip{v_i}{x} \ge \gamma \right\}$. Then, $\frac{\ip{v_i}{x}}{\gamma} \in [1,
-\frac{1}{\gamma}]$. By part 1 of \autoref{lemma:properties-of-s-n-r},
-$S_{s,r}\left(\frac{\ip{v_i}{x}}{\gamma}\right) \in [1, 1 + \frac{1}{2m}]$ and
-in particular $S_{s,r}\left(\frac{\ip{v_i}{x}}{\gamma}\right) \ge 1$. Thus,
-$$
-Q(x) = \left( \sum_{i=1}^m S_{s,r}\left(\frac{\ip{v_i}{x}}{\gamma}\right) \right) - (m - 1/2) \ge m - (m - 1/2) = 1/2 \; .
-$$
-
-To prove part 2, consider any $x \in \bigcup_{i=1}^m \left\{ x \in \R^d ~:~
-\norm{x} \le 1, \ \ip{v_i}{x} \le - \gamma \right\}$. Observe that
-$\frac{\ip{v_i}{x}}{\gamma} \in [-\frac{1}{\gamma}, \frac{1}{\gamma}]$. Consider
-$S_{s,r}\left(\frac{\ip{v_i}{x}}{\gamma}\right)$ for any $i \in
-\{1,2,\dots,m\}$. Parts 1,2, and 3 of \autoref{lemma:properties-of-s-n-r}
-and the fact $1/\gamma \le 2^s$ imply that
-$S_{s,r}\left(\frac{\ip{v_i}{x}}{\gamma}\right) \le 1 +
-\frac{1}{2m}$ for all $i \in \{1,2,\dots,m\}$. By the choice of $x$, there
-exists $j \in \{1,2,\dots,m\}$ such that $\ip{v_j}{x} \le - \gamma$. Part 2 of
-\autoref{lemma:properties-of-s-n-r} implies that
-$S_{s,r}\left(\frac{\ip{v_j}{x}}{\gamma}\right) \in [-1-\frac{1}{2m},-1]$. Thus,
-\begin{align*}
-Q(x)
-& = \left( \sum_{i=1}^m S_{s,r}\left( \frac{\ip{v_i}{x}}{\gamma} \right) \right) - \left(m - \frac{1}{2} \right) \\
-& = S_{s,r}\left( \frac{\ip{v_j}{x}}{\gamma} \right) + \left( \sum_{\substack{i ~:~ 1 \le i \le m \\ i \neq j}} S_{s,r}\left( \frac{\ip{v_i}{x}}{\gamma} \right) \right) - \left(m - \frac{1}{2} \right) \\
-& \le -1 + (m-1) \left( 1 + \frac{1}{2m} \right) - \left(m - \frac{1}{2} \right) \\
-& \le 1/2 \; .
-\end{align*}
-\end{proof}
-
-To prove parts 1 and 2 of \autoref{theorem:polynomial-approximation-1}
-first note that part 4 of \autoref{lemma:properties-of-s-n-r} implies that
-for any $x$ such that $\norm{x} \le 1$,
-$B_{s,r}\left( \frac{\ip{v_i}{x}}{\gamma} \right)$ is positive.
-Thus $p(x)$ and $Q(x)$ have the same sign on the unit ball.
-\autoref{lemma:properties-of-q} states that $Q(x) \ge 1/2$
-and $Q(x) \le -1/2$ in the two respective regions of the unit ball.
-It remains to show that $|p(x)| \ge m^{s^2m/2}$ in those regions.
-Consider any $x$ in either
-$\displaystyle \bigcap_{i=1}^m \left\{ x \in \R^d ~:~ \norm{x} \le 1, \ \ip{v_i}{x} \ge \gamma \right\}$
-or in $\displaystyle \bigcup_{i=1}^m \left\{ x \in \R^d ~:~ \norm{x} \le 1, \ \ip{v_i}{x} \le - \gamma \right\}$.
-Then,
-\begin{align*}
-|p(x)|
-& = |Q(x)| \prod_{j=1}^m B_{s,r} \left( \frac{\ip{v_j}{x}}{\gamma} \right) \\
-& \ge |Q(x)| \left( 2^{s(s+1)r} \left( 1 - \frac{1}{4m+1} \right) \right)^m \\
-& \ge |Q(x)| \cdot 2^{s(s+1)rm} e^{-4} && \text{(since $\left(1-\frac{1}{4m+1}\right)^m \ge e^{-4}$)} \\
-& \ge 4 |Q(x)| \cdot 2^{s^2rm} && \text{(since $e^{-4} \ge 1/2$ and $2^{rms} \ge 8$)} \\
-& \ge 4 |Q(x)| \cdot (4m+1)^{s^2m/2} && \text{(since $r \ge 1 + \frac{1}{2} \log_2(4m+1)$)} \\
-& \ge 2 |Q(x)| \cdot m^{s^2m/2} \\
-& \ge m^{s^2m/2} && \text{(\autoref{lemma:properties-of-q})} \; .
-\end{align*}
-
-To prove part 3 of \autoref{theorem:polynomial-approximation-1} note that
-$\deg(P_n) = 2n+1$. Thus, $\deg(A_{n,k})$ and $\deg(B_{n,k})$ are at most
-$(2n+1)k$. Therefore $\deg(p) \le m (2s+1) r$.
-
-It remains to prove part 4 of \autoref{theorem:polynomial-approximation-1}.
-For any $i \in \{0,1,2,\dots,s\}$ and any $v \in \R^d$ such that $\norm{v} \le 1$
-define multivariate polynomials
-\begin{align*}
-f_{i,v}(x) & = \frac{\ip{v}{x}}{\gamma} - 2^i \; , \\
-q_v(x) & = P_s \left( \frac{\ip{v}{x}}{\gamma} \right) \; , \\
-a_v(x) & = A_{s,r} \left( \frac{\ip{v}{x}}{\gamma} \right) \; , \\
-b_v(x) & = B_{s,r} \left( \frac{\ip{v}{x}}{\gamma} \right) \; .
-\end{align*}
-Note that
-$$
-p(x) = \left[ \sum_{i=1}^m a_{v_i}(x) \prod_{\substack{j ~:~ 1 \le j \le m \\ j \neq i}} b_{v_j}(x) \right] - \left(m - \frac{1}{2} \right) \prod_{j=1}^n b_{v_j}(x) \; .
-$$
-We bound the norms of these polynomials. We have
-$$
-\norm{f_{i,v}}^2 = \norm{v}^2/\gamma^2 + 2^{2i} \le 2 \cdot 2^s \; .
-$$
-where we used that $1/\gamma \le 2^s$ and $\norm{v} \le 1$.
-Since $q_v(x) = f_{i,v}(\frac{\ip{v}{x}}{\gamma}) \prod_{i=1}^s \left(f_{i,v}(\frac{\ip{v}{x}})\right)^2$,
-using part 1 of \autoref{lemma:properties-of-norm-of-polynomials} we upper bound the norm of $q_v$
-as
-$$
-\norm{q_v}^2 \le (2s+1)^{2s+1} \norm{f_{0,v}}^2 \prod_{i=1}^s \norm{f_{i,v}}^4 \le  (2s+1)^{2s+1} (2 \cdot 2^s)^{2s + 1} \; .
-$$
-Using parts 3 and 2 of \autoref{lemma:properties-of-norm-of-polynomials} we upper bound the norm of $a_v$ as
-\begin{align*}
-\norm{a_v}^2
-& \le 2\norm{(q_v)^r}^2 + 2\norm{(q_{-v})^r}^2 \\
-& \le 2 r^{r(2s+1)} \norm{q_v}^{2r} + 2 r^{r(2s+1)} \norm{q_{-v}}^{2r} \\
-& \le 4 r^{r(2s+1)} \left((2s+1)^{2s+1} (2 \cdot 2^s)^{2s + 1} \right)^{2r} \; .
-\end{align*}
-The same upper bound holds for $\norm{b_v}^2$. Finally,
-\begin{align*}
-\norm{p}
-& \le \left[ \sum_{i=1}^m \norm{a_{v_i} \prod_{\substack{j ~:~ 1 \le j \le m \\ j \neq i}} b_{v_j}} \right] + \left(m - \frac{1}{2} \right) \norm{\prod_{j=1}^m b_{v_j}} \\
-& \le \left[ \sum_{i=1}^m m^{???/2} \norm{a_{v_i}} \prod_{\substack{j ~:~ 1 \le j \le m \\ j \neq i}} \norm{b_{v_j}} \right] + \left(m - \frac{1}{2} \right) m^{???/2} \prod_{j=1}^m \norm{b_{v_j}} \\
-& \le (2m-1/2) m^{???/2} \norm{a_v}^m 
-\end{align*}
-
-
-\subsection{Proof of \autoref{theorem:polynomial-approximation-2}}
-\label{section:proof-of-polynomial-approximation-2}
-
 To construct the polynomial $p$ we use Chebyshev polynomials of the first kind.
 Chebyshev polynomials of the fist kind form an infinite sequence of polynomials
 $T_0(z), T_1(z), T_2(z), \dots$ of single real variable $z$. They are defined
@@ -1191,6 +961,8 @@ $$
 $$
 Let $T_s(z) = \sum_{j=0}^s c_j z^j$ be the expansion of $s$-th Chebyshev polynomial.
 Then,
+\begingroup
+\allowdisplaybreaks
 \begin{align*}
 \norm{g_i}^2
 & = \norm{ \sum_{j=0}^s c_j (f_i)^j }^2 \\
@@ -1202,9 +974,10 @@ Then,
 & = (s + 1) s^s 2^{2s} \norm{T_s}^2 \\
 & = (s + 1) s^s 2^{2s} (1 + \sqrt{2})^{2s} & \text{(by~part 7 of \autoref{proposition:properties-of-chebyshev-polynomials})} \\
 & = (s + 1) \left(4(1+\sqrt{2})^2 s \right)^s \\
-& \le \left(8(1+\sqrt{2})^2 s \right)^s & \text{(since $s+1 \le 2^s$ for any integers $s \ge 0$)} \\
+& \le \left(8(1+\sqrt{2})^2 s \right)^s & \text{(since $s+1 \le 2^s$ for any integer $s \ge 0$)} \\
 & \le \left(47 s \right)^s \; .
 \end{align*}
+\endgroup
 Finally,
 \begin{align*}
 \norm{p}
@@ -1227,6 +1000,238 @@ Since $r,s \ge 1$,
 & \le \left(188 rs \right)^{rs/2} \; .
 \end{align*}
 Substituting for $r$ and $s$ finishes the proof.
+
+
+\subsection{Proof of \autoref{theorem:polynomial-approximation-2}}
+\label{section:proof-of-polynomial-approximation-2}
+
+We define several univariate polynomials
+\begin{align*}
+P_n(z) & = (z - 1) \prod_{i=1}^n (z - 2^i)^2 && \text{for $n \ge 0$,} \\
+A_{n,k}(z) & = (P_n(z))^k - (P_n(-z))^k && \text{for $n,k \ge 0$,} \\
+B_{n,k}(z) & = - (P_n(z))^k - (P_n(-z))^k && \text{for $n,k \ge 0$.}
+\end{align*}
+We define the polynomial $p:\R^d \to \R$ as
+$$
+p(x) = \left[ \sum_{i=1}^m A_{s,r}\left( \frac{\ip{v_i}{x}}{\gamma} \right) \prod_{\substack{j ~:~ 1 \le j \le m \\ j \neq i}} B_{s,r} \left( \frac{\ip{v_j}{x}}{\gamma} \right) \right]
+- \left(m - \frac{1}{2} \right) \prod_{j=1}^m B_{s,r} \left( \frac{\ip{v_j}{x}}{\gamma} \right) \; .
+$$
+
+For convenienence we define univariate rational function
+\begin{align*}
+S_{n,k}(z) & = \frac{A_{n,k}(z)}{B_{n,k}(z)} && \text{for $n,k \ge 0$,}
+\end{align*}
+and a multivariate rational function
+$$
+Q(x) = \left( \sum_{i=1}^m S_{s,r}\left( \frac{\ip{v_i}{x}}{\gamma} \right) \right) - \left(m - \frac{1}{2} \right) \; .
+$$
+It easy to verify that
+$$
+p(x) = Q(x) \prod_{j=1}^m B_{s,r} \left( \frac{\ip{v_j}{x}}{\gamma} \right) \; .
+$$
+
+\begin{lemma}[Properties of $P_n$]
+\label{lemma:properties-of-p-n}
+\hspace{1cm} % Dummy space
+\begin{enumerate}
+\item If $z \in [0,1]$ then $P_n(-z) \le P_n(z) \le 0$.
+\item If $z \in [1,2^n]$ then $0 \le 4P_n(z) \le -P_n(-z)$.
+\item If $z \ge 0$ then $-P_n(-z) \ge 2^{n(n+1)}$.
+\end{enumerate}
+\end{lemma}
+
+\begin{proof}
+To prove the first part, note that $P_n(z)$ and $P_n(-z)$ are non-positive for
+$z \in [0,1]$. We can write $\frac{P_n(z)}{P_n(-z)}$ as a product of $n+1$
+non-negative fractions
+$$
+\frac{P_n(z)}{P_n(-z)} = \frac{1-z}{1+z} \prod_{i=1}^n \frac{(z+2^i)^2}{(z-2^i)^2} \; .
+$$
+The first part follows from the observation that each fraction is upper bounded
+by $1$.
+
+To prove the second part, notice that $P_n(z)$ is non-negative and $P_n(-z)$ is
+non-positive for any $z \in [1,2^n]$. Now, fix $z \in [1,2^n]$ and let $j \in
+\{1,2,\dots,n\}$ be such that $2^{j-1} \le z \le 2^j$. This implies that
+$(z+2^{j})^2 \ge 4 (z - 2^j)^2$. We can write $\frac{P_n(z)}{-P_n(-z)}$ as a
+product of $n+1$ non-negative fractions
+$$
+\frac{P_n(z)}{-P_n(-z)}
+= \frac{z-1}{z+1} \cdot \frac{(z-2^j)^2}{(z+2^j)^2} \prod_{\substack{i ~:~ 1 \le i \le n \\ i \neq j}} \frac{(z-2^i)^2}{(z+2^i)^2} \; .
+$$
+The second part follows from the observation that the second fraction is upper
+bounded by $1/4$ and all other fractions are upper bounded by $1$.
+
+The third part follows from
+$$
+-P_n(-z) = (1+z) \prod_{i=1}^n (z+2^i)^2 \ge \prod_{i=1}^n 2^{2i} = 2^{n(n+1)} \; .
+$$
+\end{proof}
+
+\begin{lemma}[Properties of $S_{n,r}$ and $B_{n,r}$]
+\label{lemma:properties-of-s-n-r}
+Let $n,m$ be non-negative integers.
+Let $r = 2 \left\lceil \frac{1}{4} \log_2(4m + 1) \right\rceil + 1$. Then,
+\begin{enumerate}
+\item If $z \in [1,2^n]$ then $S_{n,r}(z) \in [1,1+\frac{1}{2m}]$.
+\item If $z \in [-2^n, -1]$ then $S_{n,r} \in [-1-\frac{1}{2m}, -1]$.
+\item If $z \in [-1,1]$ then $|S_{n,r}(z)| \le 1$.
+\item If $z \in [-2^n,2^n]$ then $B_{n,r}(z) \ge \left(1 - \frac{1}{4m+1} \right) 2^{n(n+1)r}$.
+\end{enumerate}
+\end{lemma}
+
+\begin{proof}
+Note that $B_{n,r}(z)$ is an even function and $A_{n,r}(z)$ is an odd function.
+Therefore, $S_{n,r}(z)$ is odd. Also notice that $r$ is an odd integer.
+
+\begin{enumerate}
+\item Observe that $S_{n,r}(z)$ can be written as
+$$
+S_{n,r}(z) = \frac{\displaystyle 1 + \left( - \frac{P_n(z)}{P_n(-z)}\right)^r}{\displaystyle 1 - \left( - \frac{P_n(z)}{P_n(-z)}\right)^r} = \frac{1 + c}{1 - c}
+$$
+where $c = \left( - \frac{P_n(z)}{P_n(-z)}\right)^r$. Since $z \in [1,2^n]$, by
+part 2 of~\autoref{lemma:properties-of-p-n}, $c \in [0,\frac{1}{4^r}]$. Since
+$r \ge \frac{1}{2} \log_2(4m+1)$ that means that $c \in [0,\frac{1}{4m+1}]$. Thus,
+$S_{n,r}(z) = \frac{1+c}{1-c} \in [1,1 + \frac{1}{2m}]$.
+
+\item Since $S_{n,r}(z)$ is odd, the statement follows from part 1.
+
+\item Observe that $S_{n,r}(z)$ can be written as
+$$
+S_{n,r}(z) = \frac{\displaystyle 1 + \left( - \frac{P_n(z)}{P_n(-z)}\right)^r}{\displaystyle 1 - \left( - \frac{P_n(z)}{P_n(-z)}\right)^r} = \frac{1 + c}{1 - c}
+$$
+where $c = \left( - \frac{P_n(z)}{P_n(-z)}\right)^r$. If $z \in [0,1]$, by part
+1 of~\autoref{lemma:properties-of-p-n} and the fact that $r$ is odd, $c
+\in [-1,0]$, and thus, $S_{n,r}(z) = \frac{1+c}{1-c} \in [0,1]$. Since
+$S_{n,r}(z)$ is odd, for $z \in [-1,0]$, $S_{n,r}(z) \in [-1,0]$.
+
+\item Since $B_{n,r}(z)$ is even, we can without loss generality assume that $z \ge
+0$. We consider two cases.
+
+Case $z \in [0,1]$. Since $r$ is odd and $P_n(z)$ is non-positive,
+$$
+B_{n,r}(z) = - (P_n(z))^r + \left(- P_{n}(-z)\right)^r \ge \left(- P_{n}(-z)\right)^r \ge 2^{n(n+1)r} \ge 2^{n(n+1)r} \left( 1 - \frac{1}{4m+1} \right) \; .
+$$
+where the second last inequality follows from part 3 of \autoref{lemma:properties-of-p-n}.
+
+Case $z \in [1,2^n]$. Since $r$ is odd,
+$$
+B_{n,r}(z) = \left(- P_{n}(-z)\right)^r \left(1 - \left( - \frac{P_n(z)}{P_n(-z)}\right)^r \right) = \left(- P_{n}(-z)\right)^r (1 - c)
+$$
+where $c = \left( - \frac{P_n(z)}{P_n(-z)}\right)^r$. Since $z \in [1,2^n]$, by
+part 2 of~\autoref{lemma:properties-of-p-n}, $c \in [0,\frac{1}{4^r}]$. By
+the definition of $r$ that means that $c \in [0,\frac{1}{4m+1}]$. Thus,
+$$
+B_{n,r}(z) \ge \left(- P_{n}(-z)\right)^r \left( 1 - \frac{1}{4m+1} \right) \ge 2^{n(n+1)r} \left( 1 - \frac{1}{4m+1} \right) \; .
+$$
+where the last inequality follows from part 3 of \autoref{lemma:properties-of-p-n}.
+\end{enumerate}
+\end{proof}
+
+\begin{lemma}[Properties of $Q(x)$]
+\label{lemma:properties-of-q}
+The rational function $Q(x)$ satisfies
+\begin{enumerate}
+\item $Q(x) \ge \frac{1}{2}$ for all $\displaystyle x \in \bigcap_{i=1}^m \left\{ x \in \R^d ~:~ \norm{x} \le 1, \ \ip{v_i}{x} \ge \gamma \right\}$,
+\item $Q(x) \le -\frac{1}{2}$ for all $\displaystyle x \in \bigcup_{i=1}^m \left\{ x \in \R^d ~:~ \norm{x} \le 1, \ \ip{v_i}{x} \le - \gamma \right\}$.
+\end{enumerate}
+\end{lemma}
+
+\begin{proof}
+To prove part 1, consider any $x \in \bigcap_{i=1}^m \left\{ x \in \R^d ~:~ \norm{x} \le 1, \
+\ip{v_i}{x} \ge \gamma \right\}$. Then, $\frac{\ip{v_i}{x}}{\gamma} \in [1,
+\frac{1}{\gamma}]$. By part 1 of \autoref{lemma:properties-of-s-n-r},
+$S_{s,r}\left(\frac{\ip{v_i}{x}}{\gamma}\right) \in [1, 1 + \frac{1}{2m}]$ and
+in particular $S_{s,r}\left(\frac{\ip{v_i}{x}}{\gamma}\right) \ge 1$. Thus,
+$$
+Q(x) = \left( \sum_{i=1}^m S_{s,r}\left(\frac{\ip{v_i}{x}}{\gamma}\right) \right) - (m - 1/2) \ge m - (m - 1/2) = 1/2 \; .
+$$
+
+To prove part 2, consider any $x \in \bigcup_{i=1}^m \left\{ x \in \R^d ~:~
+\norm{x} \le 1, \ \ip{v_i}{x} \le - \gamma \right\}$. Observe that
+$\frac{\ip{v_i}{x}}{\gamma} \in [-\frac{1}{\gamma}, \frac{1}{\gamma}]$. Consider
+$S_{s,r}\left(\frac{\ip{v_i}{x}}{\gamma}\right)$ for any $i \in
+\{1,2,\dots,m\}$. Parts 1,2, and 3 of \autoref{lemma:properties-of-s-n-r}
+and the fact $1/\gamma \le 2^s$ imply that
+$S_{s,r}\left(\frac{\ip{v_i}{x}}{\gamma}\right) \le 1 +
+\frac{1}{2m}$ for all $i \in \{1,2,\dots,m\}$. By the choice of $x$, there
+exists $j \in \{1,2,\dots,m\}$ such that $\ip{v_j}{x} \le - \gamma$. Part 2 of
+\autoref{lemma:properties-of-s-n-r} implies that
+$S_{s,r}\left(\frac{\ip{v_j}{x}}{\gamma}\right) \in [-1-\frac{1}{2m},-1]$. Thus,
+\begin{align*}
+Q(x)
+& = \left( \sum_{i=1}^m S_{s,r}\left( \frac{\ip{v_i}{x}}{\gamma} \right) \right) - \left(m - \frac{1}{2} \right) \\
+& = S_{s,r}\left( \frac{\ip{v_j}{x}}{\gamma} \right) + \left( \sum_{\substack{i ~:~ 1 \le i \le m \\ i \neq j}} S_{s,r}\left( \frac{\ip{v_i}{x}}{\gamma} \right) \right) - \left(m - \frac{1}{2} \right) \\
+& \le -1 + (m-1) \left( 1 + \frac{1}{2m} \right) - \left(m - \frac{1}{2} \right) \\
+& \le 1/2 \; .
+\end{align*}
+\end{proof}
+
+To prove parts 1 and 2 of \autoref{theorem:polynomial-approximation-2} first
+note that part 4 of \autoref{lemma:properties-of-s-n-r} implies that for any $x$
+such that $\norm{x} \le 1$, $B_{s,r}\left( \frac{\ip{v_i}{x}}{\gamma} \right)$
+is positive. Thus $p(x)$ and $Q(x)$ have the same sign on the unit ball.
+Consider any $x$ in either
+$\displaystyle \bigcap_{i=1}^m \left\{ x \in \R^d ~:~ \norm{x} \le 1, \ \ip{v_i}{x} \ge \gamma \right\}$
+or in
+$\displaystyle \bigcup_{i=1}^m \left\{ x \in \R^d ~:~ \norm{x} \le 1, \ \ip{v_i}{x} \le - \gamma \right\}$.
+\autoref{lemma:properties-of-q} states that $|Q(x)| \ge 1/2$ and the sign
+depends on which of the two sets $x$ lies in. Since signs of $Q(x)$ and $p(x)$
+are the same, it remains to show that $|p(x)| \ge m^{s^2m/2}$. Indeed,
+\begin{align*}
+|p(x)|
+& = |Q(x)| \prod_{j=1}^m B_{s,r} \left( \frac{\ip{v_j}{x}}{\gamma} \right) \\
+& \ge |Q(x)| \left( 2^{s(s+1)r} \left( 1 - \frac{1}{4m+1} \right) \right)^m \\
+& \ge \frac{1}{2} |Q(x)| \cdot 2^{s(s+1)rm} && \text{(since $\left(1-\frac{1}{4m+1}\right)^m \ge e^{-4} \ge 1/2$)} \\
+& \ge \frac{1}{4} \cdot 2^{s(s+1)rm} && \text{(\autoref{lemma:properties-of-q})} \; .
+\end{align*}
+
+To prove part 3 of \autoref{theorem:polynomial-approximation-2} note that
+$\deg(P_s) = 2s+1$. Thus, $\deg(A_{s,r})$ and $\deg(B_{s,r})$ are at most
+$(2s+1)r$. Therefore, $\deg(p) \le (2s+1) rm$.
+
+It remains to prove part 4 of \autoref{theorem:polynomial-approximation-2}.
+For any $i \in \{0,1,2,\dots,s\}$ and any $v \in \R^d$ such that $\norm{v} \le 1$
+define multivariate polynomials
+\begin{align*}
+f_{i,v}(x) & = \frac{\ip{v}{x}}{\gamma} - 2^i \; , \\
+q_v(x) & = P_s \left( \frac{\ip{v}{x}}{\gamma} \right) \; , \\
+a_v(x) & = A_{s,r} \left( \frac{\ip{v}{x}}{\gamma} \right) \; , \\
+b_v(x) & = B_{s,r} \left( \frac{\ip{v}{x}}{\gamma} \right) \; .
+\end{align*}
+Note that
+$$
+p(x) = \left[ \sum_{i=1}^m a_{v_i}(x) \prod_{\substack{j ~:~ 1 \le j \le m \\ j \neq i}} b_{v_j}(x) \right] - \left(m - \frac{1}{2} \right) \prod_{j=1}^n b_{v_j}(x) \; .
+$$
+We bound the norms of these polynomials. We have
+$$
+\norm{f_{i,v}}^2 = \norm{v}^2/\gamma^2 + 2^{2i} \le 2 \cdot 2^s \; .
+$$
+where we used that $1/\gamma \le 2^s$ and $\norm{v} \le 1$.
+Since $q_v(x) = f_{i,v}(\frac{\ip{v}{x}}{\gamma}) \prod_{i=1}^s \left(f_{i,v}(\frac{\ip{v}{x}})\right)^2$,
+using part 1 of \autoref{lemma:properties-of-norm-of-polynomials} we upper bound the norm of $q_v$
+as
+$$
+\norm{q_v}^2 \le (2s+1)^{2s+1} \norm{f_{0,v}}^2 \prod_{i=1}^s \norm{f_{i,v}}^4 \le  (2s+1)^{2s+1} (2 \cdot 2^s)^{2s + 1} \; .
+$$
+Using parts 3 and 2 of \autoref{lemma:properties-of-norm-of-polynomials} we upper bound the norm of $a_v$ as
+\begin{align*}
+\norm{a_v}^2
+& \le 2\norm{(q_v)^r}^2 + 2\norm{(q_{-v})^r}^2 \\
+& \le 2 r^{r(2s+1)} \norm{q_v}^{2r} + 2 r^{r(2s+1)} \norm{q_{-v}}^{2r} \\
+& \le 4 r^{r(2s+1)} \left((2s+1)^{2s+1} (2 \cdot 2^s)^{2s + 1} \right)^{2r} \\
+& = 4 \left(2^{2s} r (4s+2)^2 \right)^{(2s+1)r} \; .
+\end{align*}
+The same upper bound holds for $\norm{b_v}^2$. Finally,
+\begin{align*}
+\norm{p}
+& \le \left[ \sum_{i=1}^m \norm{a_{v_i} \prod_{\substack{j ~:~ 1 \le j \le m \\ j \neq i}} b_{v_j}} \right] + \left(m - \frac{1}{2} \right) \norm{\prod_{j=1}^m b_{v_j}} \\
+& \le \left[ \sum_{i=1}^m m^{(s+1/2)rm} \norm{a_{v_i}} \prod_{\substack{j ~:~ 1 \le j \le m \\ j \neq i}} \norm{b_{v_j}} \right] + \left(m - \frac{1}{2} \right) m^{(s+1/2)rm} \prod_{j=1}^m \norm{b_{v_j}} \\
+& \le (2m-1/2) m^{(s+1/2)rm} \left(4 \left(2^{2s} r (4s+2)^2 \right)^{(2s+1)r} \right)^{m/2} \\
+& = (2m-1/2) 2^m \cdot \left(2^{2s} rm (4s+2)^2 \right)^{(s+1/2)rm} \; .
+\end{align*}
+
+
 
 \section{Nearest neighbor algorithm}
 
