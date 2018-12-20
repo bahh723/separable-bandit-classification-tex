@@ -655,7 +655,42 @@ The separating hyperplanes $\ip{v_1}{x} = 0$ and $\ip{v_2}{x} = 0$ are shown as 
 \label{figure:pizza-slice}
 \end{figure}
 
-TODO: Mappings and kernels!
+We construct the three different mappings $\phi_n, \psi_n, \rho$. The first two
+are parametrized by a non-negative integer $n$. The domain of $\phi_n$ and
+$\psi_n$ is $\R^d$. The domain of $\rho$ is the unit ball of $\R^d$. The
+co-domain for $\phi_n$ and $\psi_n$ is $\R^p$ where $p = \sum_{i=0}^n
+\binom{i+d-1}{d-1}$ equipped with the standard inner product $\ip{x}{x'} =
+\sum_{i=1}^p x_i x'_i$. The co-domain is the classical separable Hilbert space
+$\ell_2 = \{ x \in \R^\infty ~:~ \sum_{i=1}^\infty x_i^2 < + \infty \}$ equipped
+with the standard inner product $\ip{x}{x'} = \sum_{i=1}^\infty x_i x'_i$. We
+index the coordinates of the co-domain $\R^p$ by $d$-tuples $(\alpha_1,
+\alpha_2, \dots, \alpha_d)$ of non-negative integers such that $\alpha_1 +
+\alpha_2 + \dots + \alpha_d \le n$. Similarly, we index the coordinates of
+$\ell_2$ by $d$-tuples $(\alpha_1, \alpha_2, \dots, \alpha_d)$ of non-negative
+integers. The mappings are defined by
+\begin{align*}
+\left(\phi_n(x_1, x_2, \dots, x_d)\right)_{(\alpha_1, \alpha_2, \dots, \alpha_d)}
+& = x_1^{\alpha_1} x_2^{\alpha_2} \dots x_d^{\alpha_d}
+\\
+\left(\psi_n(x_1, x_2, \dots, x_d)\right)_{(\alpha_1, \alpha_2, \dots, \alpha_d)}
+& = \sqrt{\binom{n}{\alpha_1 + \alpha_2 + \dots + \alpha_d} \binom{\alpha_1 + \alpha_2 + \dots + \alpha_d}{\alpha_1, \alpha_2, \dots, \alpha_d}} x_1^{\alpha_1} x_2^{\alpha_2} \dots x_d^{\alpha_d}
+\\
+\left(\rho(x)\right)_{(\alpha_1, \alpha_2, \dots, \alpha_d)}
+& = \sqrt{2^{-(\alpha_1 + \alpha_2 + \dots + \alpha_d)} \binom{\alpha_1 + \alpha_2 + \dots + \alpha_d}{\alpha_1, \alpha_2, \dots, \alpha_d}} x_1^{\alpha_1} x_2^{\alpha_2} \dots x_d^{\alpha_d}
+\end{align*}
+where $\binom{\alpha_1 + \alpha_2 + \dots + \alpha_d}{\alpha_1, \alpha_2, \dots, \alpha_d} = \frac{(\alpha_1 + \alpha_2 + \dots + \alpha_d)!}{\alpha_1! \alpha_2! \dots \alpha_d!}$
+is the multinomial coefficient and $\binom{n}{k} = \frac{n!}{(n-k)!k!}$ is the binomial coefficient.
+
+Mappings $\psi_n$ and $\rho$ have simple-to-compute kernels
+\begin{align*}
+K_{\psi_n}(x,x') & = \ip{\psi_n(x)}{\psi_n(x')}_{\R^p} = \left( 1 + \ip{x}{x'} \right)^n \; , \\
+K_{\rho}(x,x') & = \ip{\rho(x)}{\rho(x')}_{\ell_2} = \frac{1}{1 - \frac{1}{2}\ip{x}{x'}} \; .
+\end{align*}
+In passing we note that the formula for $K_\rho$ implies the mapping $\rho$ is
+well defined. Indeed, since $K_{\rho}(x,x) < +\infty$ for any $x$ in the unit
+ball of $\R^d$, it means that $\rho(x)$ indeed lies in $\ell_2$.
+
+TODO
 
 \section{Proof of Theorems~\ref{theorem:polynomial-approximation-1}~and~\ref{theorem:polynomial-approximation-2}}
 \label{section:proof-of-polynomial-approximation}
