@@ -145,7 +145,7 @@ with various time-complexity-versus-mistake-bound trade-offs. First class of
 algorithms map the examples into a high-dimensional inner product space. In this
 space the examples become \emph{strongly} linearly separable. This allows us to
 run the algorithm for the strongly linearly separable case. All of these
-algorithms can be kernelized. (Some of them have to be kernalized since the
+algorithms can be kernelized. (Some of them have to be kernelized since the
 underlying inner product space is infinite dimensional.) Kernelization does not
 change the input-output behavior of the algorithm, it only affects its time
 and memory complexity.
@@ -574,7 +574,7 @@ the polynomial to attain arbitrary value. The polynomial separates examples in
 one class from examples in the other classes. To be able to quantify $R'$,
 $\gamma'$ and time complexities of evaluating $\phi(x)$ and $k(x,x')$, we need
 to quantify certain parameters of the approximating polynomial. We construct two
-different polynomials with different paremeters. The parameters are quantified
+different polynomials with different parameters. The parameters are quantified
 in
 Theorems~\ref{theorem:polynomial-approximation-1}~and~\ref{theorem:polynomial-approximation-2}
 stated below.
@@ -656,7 +656,7 @@ The separating hyperplanes $\ip{v_1}{x} = 0$ and $\ip{v_2}{x} = 0$ are shown as 
 \end{figure}
 
 We construct the three different mappings $\phi_n, \psi_n, \rho$. The first two
-are parametrized by a non-negative integer $n$. The domain of $\phi_n$ and
+are parameterized by a non-negative integer $n$. The domain of $\phi_n$ and
 $\psi_n$ is $\R^d$. The domain of $\rho$ is the unit ball of $\R^d$. The
 co-domain for $\phi_n$ and $\psi_n$ is $\R^p$ where $p = \sum_{i=0}^n
 \binom{i+d-1}{d-1}$ equipped with the standard inner product $\ip{x}{x'} =
@@ -695,7 +695,7 @@ TODO
 \section{Proof of Theorems~\ref{theorem:polynomial-approximation-1}~and~\ref{theorem:polynomial-approximation-2}}
 \label{section:proof-of-polynomial-approximation}
 
-For the proofs of the theorems we need several auxilliary results.
+For the proofs of the theorems we need several auxiliary results.
 
 \begin{lemma}[Simple inequality]
 \label{lemma:simple-inequality}
@@ -735,7 +735,7 @@ It remains to prove that for any $j=0,1,\dots,k-1$,
 $$
 \frac{n - j + 1}{k - j + 1} \le \frac{n - j}{k - j} \; .
 $$
-Mutliplying by the (positive) denonimators, we get an equivalent inequality
+Multiplying by the (positive) denominators, we get an equivalent inequality
 $$
 (n - j + 1)(k - j) \le (n - j)(k - j + 1) \; .
 $$
@@ -976,7 +976,7 @@ and thus
 $$
 \left( T_s(1 - \ip{v_i}{x}) \right)^r \ge 2^r \ge 2m \; .
 $$
-On the oter hand for any $j \in \{1,2,\dots,m\}$, we have $\ip{v_j}{x} \in
+On the other hand for any $j \in \{1,2,\dots,m\}$, we have $\ip{v_j}{x} \in
 [-1,1]$ and thus $1 - \ip{v_j}{x}$ lies in the interval $[0,2]$. According to
 \autoref{proposition:properties-of-chebyshev-polynomials} (parts 5 and 6), $T_s(1 - \ip{v_j}{x})
 \ge -1$. Therefore,
@@ -1052,7 +1052,7 @@ p(x) = \left[ \sum_{i=1}^m A_{s,r}\left( \frac{\ip{v_i}{x}}{\gamma} \right) \pro
 - \left(m - \frac{1}{2} \right) \prod_{j=1}^m B_{s,r} \left( \frac{\ip{v_j}{x}}{\gamma} \right) \; .
 $$
 
-For convenienence we define univariate rational function
+For convenience we define univariate rational function
 \begin{align*}
 S_{n,k}(z) & = \frac{A_{n,k}(z)}{B_{n,k}(z)} && \text{for $n,k \ge 0$,}
 \end{align*}
