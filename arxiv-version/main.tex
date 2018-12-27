@@ -12,6 +12,8 @@
 \usepackage{natbib}
 \usepackage{thmtools}
 \usepackage{tikz}
+\usepackage{color}
+\usepackage{comment}
 
 % TikZ packages
 \usetikzlibrary{arrows}
@@ -41,6 +43,22 @@
 \DeclareMathOperator*{\argmin}{argmin}
 \DeclareMathOperator*{\Exp}{\mathbf{E}}  % expected value
 \DeclareMathOperator{\diff}{d \!} % differential
+\DeclareMathOperator*{\polylog}{polylog}
+
+
+\definecolor{darkgreen}{rgb}{0,0.5,0}
+\definecolor{darkred}{rgb}{0.7,0,0}
+\definecolor{teal}{rgb}{0.3,0.8,0.8}
+\definecolor{orange}{rgb}{1.0,0.5,0.0}
+\definecolor{purple}{rgb}{0.8,0.0,0.8}
+\definecolor{blue}{rgb}{0.0,0.0,1.0}
+\newcommand{\kibitz}[2]{{\textcolor{#1}{\textsf{\footnotesize #2}}}}
+\newcommand{\alina}[1]{\kibitz{darkred}{[AB: #1]}}
+\newcommand{\david}[1]{\kibitz{darkgreen}{[DP: #1]}}
+\newcommand{\balazs}[1]{\kibitz{purple}{[BS: #1]}}
+\newcommand{\deva}[1]{\kibitz{teal}{[DT: #1]}}
+\newcommand{\chenyu}[1]{\kibitz{orange}{[CW: #1]}}
+\newcommand{\chicheng}[1]{\kibitz{blue}{[CZ: #1]}}
 
 
 \title{Online Multiclass Linear Classification with Bandit Feedback}
@@ -59,25 +77,56 @@ Chicheng Zhang
 \maketitle
 
 \begin{abstract}
-TODO
+We study the problem of efficient online multiclass linear classification with bandit feedback, where all examples belong to one of $K$ classes and lie in the $d$-dimensional Euclidean space.
+Previous works have left open the challenge of designing efficient algorithms with finite mistake bounds
+when the data is linearly separable by a margin $\gamma$.
+In this work, we take a first step towards this problem.
+We identify two notions of linear separability:
+one-versus-all (OvA) linear separability and weakly linear separability.
+\begin{enumerate}
+\item Under the OvA
+linear separability condition, we design an efficient algorithm that achieves a near-optimal mistake bound of $O(\frac{K}{\gamma^2})$.
+\item Under the more challenging weakly linear separability condition, we design an efficient algorithm with a mistake bound of $2^{\tilde{O}(\min(K \log^2 \frac 1 \gamma, \log K \sqrt{\frac 1 \gamma})) }$ \footnote{We use the notation $\tilde{O}(f(\cdot)) = O( f(\cdot) \polylog(f(\cdot)) )$.}.
+Our algorithm is based on a reduction from weakly linear separability to OvA linear separability via an infinite dimensional monomial feature map, which in turn is inspired by ~\cite{Klivans-Servedio-2008}'s work on learning intersection of halfspaces.
+\end{enumerate}
+
+%We focus on the setting where there are $K$ classes, and there is a $d$-dimensional multiclass linear classifier that separates all the examples shown with a positive margin $\gamma$.
+%$2^{O(\min(K \log^2 K \log^2 \frac 1 \gamma, \log K \log \log K \sqrt \frac 1 \gamma \log \frac 1\gamma))}$
+%$\min( (\log K \sqrt{\frac 1 \gamma})^{O(\log K \sqrt{\frac 1 \gamma})}, K^{O(K \log K \log^2 \frac1\gamma)} )$.
+
+
 \end{abstract}
 
 \section{Introduction}
 \label{section:introduction}
 
-We design new algorithms for the problem of \textsc{Online Multiclass
-Classification with Bandit Feedback}. In this problem, in each round, the
-algorithm receives a feature vector and the algorithm has to predict one of $K$
-possible classes. Immediately after the algorithm makes its prediction, it
-receives feedback whether the prediction was correct or not. However, in
-contrast with the standard, so called full information setting, the algorithm
-does \emph{not} receive the correct label. The feedback is only binary. To allow
-for meaningful use of randomization, we assume that the correct label in a
-particular round is chosen prior to algorithm's prediction in that
-round.\footnote{All our results apply to also to a simpler model of
+We study the problem of \textsc{Online Multiclass Linear
+Classification with Bandit Feedback}~\cite{Kakade-Shalev-Shwartz-Tewari-2008}.
+The problem can be viewed as a game between the learner and the environment:
+at each timestep $t$, the environment chooses an example $(x_t, y_t)$, where its feature
+part $x_t \in \R^d$ is revealed to the learner.
+\footnote{All our results apply to also to a simpler model of
 the so called \emph{oblivious adversary} where the whole sequence of labeled
 examples $(x_1, y_1), (x_2, y_2), \dots, (x_T, y_T)$ is chosen before the first
-round of the game.} The protocol of the problem is stated below.
+round of the game.}
+Upon receiving this example, the
+learner is asked to make a prediction $\hat{y}_t$.
+the learner receives feedback immediately after making its prediction.
+In contrast with the standard full information setting (where the feedback given is the correct label $y_t$), the feedback given is only a binary indicator
+whether the prediction was correct or not. The protocol of the problem is formally stated below.
+
+
+
+%In this problem, in each round, the
+%learner receives a feature vector and is asked to predict one of $K$
+%possible classes. To allow
+%for meaningful use of randomization, we assume that the correct label in a
+%particular round is chosen prior to algorithm's prediction in that
+%round.
+%Immediately after the learner makes its prediction, it
+%receives feedback whether the prediction was correct or not. However, in
+%contrast with the standard, so called full information setting, the algorithm
+%does \emph{not} receive the correct label. The feedback is only binary.
 
 \begin{algorithm}[h]
 \caption{\textsc{Online Multiclass Classification with Bandit Feedback}
@@ -88,6 +137,7 @@ round of the game.} The protocol of the problem is stated below.
 \FOR{$t=1,2,\dots,T$}
 \STATE{Observe feature vector $x_t$}
 \STATE{Adversary \emph{secretly} chooses correct class label $y_t \in \{1,2,\dots,K\}$}
+\chicheng{Or we simply say: Adversary chooses example $(x_t, y_t)$, where $x_t$ is reveal to the learner.}
 \STATE{Predict class label $\widehat y_t \in \{1,2,\dots,K\}$}
 \STATE{Observe feedback $z_t \in \{0,1\}$ where $z_t = \begin{cases}
 0 & \text{if $\widehat y_t = y_t$,} \\
@@ -99,19 +149,25 @@ round of the game.} The protocol of the problem is stated below.
 \end{algorithmic}
 \end{algorithm}
 
-The goal is to design an algorithm that makes small number of mistakes
-$\sum_{t=1}^T z_t = \sum_{t=1}^T \indicator{\widehat y_t \neq y_t}$. The problem
-was initially proposed by \cite{Kakade-Shalev-Shwartz-Tewari-2008}. The
-corresponding problem with full information feedback is solved by the classical
-\textsc{Multiclass Perceptron} algorithm and its variants (see e.g.
-\cite{Crammer-Dekel-Keshet-Shalev-Shwartz-Singer-2006}). The bandit feedback
-version is a mathematically natural model and potential applications include
-online advertising and online content optimization where the binary feedback
-corresponds to a click.
+The performance is of the learner is measured by its cumulative number of mistakes
+$\sum_{t=1}^T z_t = \sum_{t=1}^T \indicator{\widehat y_t \neq y_t}$. The bandit feedback
+ is a natural feedback model motivated by applications including
+online advertising and online content optimization, where the learner only gets to
+see the loss of its action taken.
+%where the binary feedback corresponds to a click
+%The
+%corresponding problem with full information feedback is solved by the classical
+%\textsc{Multiclass Perceptron} algorithm and its variants (see e.g.
+%\cite{Crammer-Dekel-Keshet-Shalev-Shwartz-Singer-2006}).
 
 In this paper, we focus on the special case when the examples lie in $\R^d$ and
-are \emph{linearly separable with a margin}. In the full-information feedback
-setting, it is well know that if the examples have norm at most $R$ and are
+are \emph{linearly separable with a margin}.
+\chicheng{I wonder if we should introduce the two notions of linear separability here,
+because strong linear separability is also worth mentioning in the full-information setting.
+}
+
+In the full-information feedback
+setting, it is well known that if the examples have norm at most $R$ and are
 linearly separable with a margin $\gamma$ then the \textsc{Multiclass
 Perceptron} algorithm makes at most $\lfloor 2(R/\gamma)^2 \rfloor$ mistakes.
 This result is very satisfying since the upper bound on the number of mistakes

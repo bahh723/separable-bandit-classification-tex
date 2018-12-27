@@ -197,31 +197,31 @@ $W_y \cdot x \geq W_{y'} \cdot x + \gamma \max_{(x,y) \in S} \| x \|_2$ holds si
 \begin{definition}
 $S \subset (\calX \times [K])^*$ is said to be {\em one-versus-all (OvA) linearly separable} with margin parameter $\gamma > 0$, if there exists an multiclass linear classifier $W \in \fR^{k \times d}$ ($\| W \|_F \leq 1$),
 such that for every $(x,y)$ in $S$,
-$W_y \cdot x \geq \gamma \max_{(x,y) \in S} \| x \|_2 $, 
-and 
+$W_y \cdot x \geq \gamma \max_{(x,y) \in S} \| x \|_2 $,
+and
 $W_{y'} \cdot x \leq -\gamma \max_{(x,y) \in S} \| x \|_2$
 holds simultaneously for all $y' \neq y$.
 \label{def:mc-ova-margin}
 \end{definition}
 
-For every example $(x, y)$, and a label $i$ in $[K]$, denote by 
+For every example $(x, y)$, and a label $i$ in $[K]$, denote by
 \[ b_y^i = \begin{cases} +1  & y = i \\ -1 & y \neq i \end{cases} \]
 its one-versus-all label for problem $i$. The above definition is equivalent to: there exists a $W$ in $\fR^{K \times d}$ ($\|W\|_F \leq 1$),
 for every $i$ in $[K]$,
 for every $(x, y)$ in $S$,
-\[ 
+\[
 b_y^i W_i \cdot x \geq \gamma \max_{(x,y) \in S} \| x \|_2.
 \]
 
 
 \cz{The reason we are using this specific notion of linear separability is:
-1. We need a direct comparison of $\gamma$'s before and after feature transformation, therefore a ``normalized'' notion of margin is used.  
+1. We need a direct comparison of $\gamma$'s before and after feature transformation, therefore a ``normalized'' notion of margin is used.
 2. Alternative notions such as $\frac{W_y \cdot x}{\| x \|_2} \geq \gamma$ requires normalizing each example, in order to get a $\frac{1}{\gamma^2}$ mistake bound. If kernel Perceptron is used, this extra normalization step is equivalent to using a new kernel $k'(x,x') = \frac{k(x,x')}{\sqrt{k(x,x) k(x',x')}}$ as opposed to using the original kernel $k$ - we would like to avoid this techinicality for ease of presentation.}
 
 \section{Main algorithm}
 Our key observation is that, we can reduce the problem of online bandit linear multiclass learning under linear separability to the same problem under OvA linear separability. Specifically, inspired by~\cite{klivans2004learning}, we define
-a feature map $\phi: \fR^d \to \fR^{d'}$, such that if the original dataset $S$ is linearly separable with margin $\gamma > 0$, then the dataset tranformed by $\phi$, $S' := \cbr{(\phi(x), y): (x,y) \in S}$ is OvA linearly separable with margin $\gamma' > 0$. Built on this feature map, we propose an efficient algorithm that has a finite mistake bound in the linearly separable setting. Its key idea is to 
-run an algorithm that has a finite mistake bound under OvA linear separability, upon the transformed examples $(\phi(x), y)$. 
+a feature map $\phi: \fR^d \to \fR^{d'}$, such that if the original dataset $S$ is linearly separable with margin $\gamma > 0$, then the dataset tranformed by $\phi$, $S' := \cbr{(\phi(x), y): (x,y) \in S}$ is OvA linearly separable with margin $\gamma' > 0$. Built on this feature map, we propose an efficient algorithm that has a finite mistake bound in the linearly separable setting. Its key idea is to
+run an algorithm that has a finite mistake bound under OvA linear separability, upon the transformed examples $(\phi(x), y)$.
 %a Perceptron-based algorithm that achieves a finite mistake bound under strong linear separablilty, and show how it can be combined with the feature map $\phi$ to get a
 %online learning intersection of halfspaces.
 
@@ -229,7 +229,7 @@ run an algorithm that has a finite mistake bound under OvA linear separability, 
 \begin{algorithm}[H]
 \caption{Main Algorithm}
 \label{alg:ova}
-\SetKwInOut{Input}{Input} 
+\SetKwInOut{Input}{Input}
 \Input{Feature mapping $\phi$}
 Initialize $w_t^{(1)}=\ldots=w_t^{(K)}=\mathbf{0}\in \mathbb{R}^{d'}$\\
 \For{$t=1$ to $T$}{
@@ -249,7 +249,7 @@ Initialize $w_t^{(1)}=\ldots=w_t^{(K)}=\mathbf{0}\in \mathbb{R}^{d'}$\\
 
 We have the following guarantees of the above algorithm.
 \begin{theorem}
-Suppose feature map $\phi$ is such that for \cbr{(\phi(x_t), y_t): t \in [T]} is OvA linearly separable by margin $\gamma'$ except for $N$ points. Then, 
+Suppose feature map $\phi$ is such that for \cbr{(\phi(x_t), y_t): t \in [T]} is OvA linearly separable by margin $\gamma'$ except for $N$ points. Then,
 the expected cumulative number of mistakes made by Algorithm~\ref{alg:ova} is at most $K \cdot ( (1 + \frac 1 {\gamma'}) N + \sqrt{ (1 + \frac 1 {\gamma'}) N \cdot \frac{1}{\gamma'^2} } + \frac{1}{\gamma'^2})$.
 \end{theorem}
 
@@ -259,30 +259,30 @@ Suppose feature map $\phi$ is such that \cbr{(\phi(x_t), y_t): t \in [T]} is OvA
 
 \begin{proof}
 Denote by $U_{t,1}$ (resp. $U_{t,2}$) the indicator in the ``if'' branch (resp. ``else'' branch) at time $t$. Let $U_t = U_{t,1} + U_{t,2}$ be the indicator of Algorithm~\ref{alg:ova} making an update at iteration $t$.
-% In addition, denote by $U_t^y$ the indicator of $w_t^{(y)}$ gets updated at 
-%round $t$. It can be easily seen that $U_{t,1} + U_{t,2} = \sum_{y=1}^k U_t^y = U_t^{\tilde{y}_t} = U_t$, which is equal to the . 
+% In addition, denote by $U_t^y$ the indicator of $w_t^{(y)}$ gets updated at
+%round $t$. It can be easily seen that $U_{t,1} + U_{t,2} = \sum_{y=1}^k U_t^y = U_t^{\tilde{y}_t} = U_t$, which is equal to the .
 Let $N_{t,2}$ be the indicator of Algorithm~\ref{alg:ova} encounters the ``else'' branch at time $t$. Throughout, we also use the shorthand that $b_{t,i} = b_{y_t}^i$.
 
 
 
 % for every $y$ in $[K]$, we have the following bound on $\sum_{t=1}^T U_t^y$: for all $w_y \in \fR^d$ and all $\rho > 0$,
 %\begin{eqnarray*}
-%\sum_{t=1}^T U_t^y 
+%\sum_{t=1}^T U_t^y
 %\leq
-%\sum_{t=1}^T U_t^y (1 - \frac{b_{t,y} w_y \phi(x_t)}{\rho})_+ 
-%+ \sqrt{(\sum_{t=1}^T U_t^y (1 - \frac{b_{t,y} w_y \phi(x_t)}{\rho})_+) \cdot \frac{\|w_y\|^2 R^2}{\rho^2} } 
+%\sum_{t=1}^T U_t^y (1 - \frac{b_{t,y} w_y \phi(x_t)}{\rho})_+
+%+ \sqrt{(\sum_{t=1}^T U_t^y (1 - \frac{b_{t,y} w_y \phi(x_t)}{\rho})_+) \cdot \frac{\|w_y\|^2 R^2}{\rho^2} }
 %+ \frac{\|w_y\|^2 R^2}{\rho^2}
 %\end{eqnarray*}
 %
-%Summing over all $y$ in $[K]$ and doing some algebra, 
+%Summing over all $y$ in $[K]$ and doing some algebra,
 
 Conceptually, Algorithm~\ref{alg:ova} is equivalent to Perceptron over examples $(\phi(x_t) \otimes e_{\tilde{y}_t}, b_{t, \tilde{y}_t})$.
 Therefore, by standard analysis of the Perceptron algorithm, we have that for all $W \in \fR^{K \times d}$, and all $\rho > 0$,
 \begin{equation}
-\sum_{t=1}^T U_t 
-\leq 
-\sum_{t=1}^T  U_t (1 - \frac{b_{t,\tilde{y}_t} w_{\tilde{y}_t} \phi(x_t)}{\rho})_+ 
-+ \sqrt{(\sum_{t=1}^T  U_t (1 - \frac{b_{t,y} w_{\tilde{y}_t} \phi(x_t)}{\rho})_+) \cdot \frac{\|W\|_F^2 R^2}{\rho^2} } 
+\sum_{t=1}^T U_t
+\leq
+\sum_{t=1}^T  U_t (1 - \frac{b_{t,\tilde{y}_t} w_{\tilde{y}_t} \phi(x_t)}{\rho})_+
++ \sqrt{(\sum_{t=1}^T  U_t (1 - \frac{b_{t,y} w_{\tilde{y}_t} \phi(x_t)}{\rho})_+) \cdot \frac{\|W\|_F^2 R^2}{\rho^2} }
 + \frac{\|W\|_F^2 R^2}{\rho^2},
 \label{eqn:perceptron-mb}
 \end{equation}
@@ -290,10 +290,10 @@ where $R = \max_{t=1}^T \| \phi(x_t)\|$.
 
 Denote by $S_{\sep}$ the indices of examples in $\cbr{(x_t, y_t)}_{t=1}^T$ that is separable by a margin $\gamma$.
 Take $W = W^*$, and $\rho = \gamma' \max_{t=1}^T \| \phi(x_t) \|_2$, we have that for all $t$ in $S_{\sep}$, for all $y$ in $[K]$, $(1 - \frac{b_{t,y} W^*_y \phi(x_t)}{\rho})_+ = 0$. For $t$ not in $S_{\sep}$,
-$U_t (1 - \frac{b_{t,\tilde{y}_t} W^*_{\tilde{y}_t} \phi(x_t)}{\rho})_+ \leq (1 + \frac{1}{\gamma'})$. 
+$U_t (1 - \frac{b_{t,\tilde{y}_t} W^*_{\tilde{y}_t} \phi(x_t)}{\rho})_+ \leq (1 + \frac{1}{\gamma'})$.
 This implies that $\sum_{t=1}^T  U_t (1 - \frac{b_{t,\tilde{y}_t} W^*_{\tilde{y}_t} \phi(x_t)}{\rho})_+ \leq N(1 + \frac 1 {\gamma'})$.
 
-Combining with Equation~\eqref{eqn:perceptron-mb}, we get 
+Combining with Equation~\eqref{eqn:perceptron-mb}, we get
 \[
 \sum_{t=1}^T U_t  \leq (1 + \frac 1 {\gamma'}) N + \sqrt{ (1 + \frac 1 {\gamma'}) N \cdot \frac{1}{\gamma'^2} } + \frac{1}{\gamma'^2}.
 \]
@@ -309,10 +309,10 @@ Now, observe that $M_t$, the mistake indicator at time $t$ is at most $U_{t,1} +
 \section{Feature mappings that induce OvA linear separability from linear separability}
 
 How do we come up with a feature map that maps a linearly separable dataset to a OvA linearly separable dataset? Recall Definition~\ref{def:mc-ova-margin}, it suffices to give a feature map $\phi$ that for every $i$ in $K$, dataset $S_i = \cbr{(x, b_y^i): (x,y) \in S}$ is separable after the transformation. What property does dataset $S^i$ possess? Observe that for all examples $(x,b_y^i)$ in $S_i$ such that $b_y^i = +1$, $x$ lies in the region $\cbr{x: (w_i - w_{y'}) \cdot x \geq \gamma, \text{ for all } y' \neq i}$. For all examples $(x,b_y^i)$ in $S_i$ such that $b_y^i = -1$, $x$ lies in the region $\cbr{x: (w_i - w_{y'}) \cdot x \leq -\gamma, \text{ for some } y' \neq i}$.
-%$(w_y - w_i) \cdot x \geq \gamma$, specifically, $(w_i - w_{y'}) \cdot x \leq -\gamma$ for some $y' \neq i$. 
+%$(w_y - w_i) \cdot x \geq \gamma$, specifically, $(w_i - w_{y'}) \cdot x \leq -\gamma$ for some $y' \neq i$.
 This motivates the following definition.
 
-%Suppose we are given examples 
+%Suppose we are given examples
 \begin{definition}
 Suppose we are given dataset $S = \cbr{(x, y)}$, where $x$ is in $\cbr{x \in \fR^d: \| x \| \leq 1}$, and $y$ is in $\cbr{-1,+1}$.
 $S$ is said to be separable by an intersection of halfspaces with margin parameter $\gamma > 0$, if there exists $t$ linear classifiers $v_1, \ldots, v_t$ (all of which are in $\cbr{v \in \fR^d: \| v \| \leq 1}$),
@@ -350,6 +350,14 @@ $\inner{\phi_s'(x), \phi_s'(x)} = K_s'(x,x) = (1 + \|x\|^2)^s \leq 2^s$.
 \item $\phi_0(x) = ( \sqrt{ (\frac 1 2)^{i_1+\ldots+i_d} {i_1+\ldots+i_d \choose i_1 \ldots i_d}}  x_1^{i_1} \ldots x_d^{i_d})_{i_1, \ldots, i_d \geq 0}$. This corresponds to the kernel $K(x,x') = \frac{1}{1 - \frac 1 2 \inner{x,x'}}$.
 Note that for all $x$ such that $\| x \|_2 \leq 1$,
 $\inner{\phi_0(x), \phi_0(x)} = K(x,x) \leq 2$.
+
+\item $\phi(x) = \sqrt{{i_1+\ldots+i_d \choose i_1 \ldots i_d}} x_1^{i_1} \ldots x_d^{i_d})_{i_1 + \ldots + i_d \leq s, i_1, \ldots, i_d \geq 0}$. This corresponds to the multinomial kernel $K(x,x') = \sum_{i=0}^s \inner{x,x'}^i$. Note that for all $x$ such that $\| x \|_2 \leq 1$,
+$\inner{\phi(x), \phi(x)} = K(x,x) = \sum_{i=0}^s \|x\|^{2i} \leq s+1$.
+
+\item $\phi(x) = (\sqrt{\frac{1}{i_1! \ldots i_d!}} x_1^{i_1} \ldots x_d^{i_d})_{i_1, \ldots, i_d \geq 0}$. This corresponds to the kernel $K(x,x') = \exp(\inner{x,y})$. Note that for all $x$ such that $\|x\|_2 \leq 1$, $\inner{\phi(x), \phi(x)} \leq e$.
+
+\cz{Actually I wasn't able to get the RBF kernel working in our problem, as every term in the feature map will be a monomial term *with a $\exp(-\frac{\|x\|_2^2}{2})$ scaling*; it is unclear how to represent a polynomial as $\inner{c, \phi(x)}$.}
+
 \end{enumerate}
 
 For a polynomial $p = \sum_{S \in \fN^d} c_S x_S$, define $\|p\|$, the norm of $p$, as the $\ell_2$ norm of the vector that contains its coefficients on every monomial, that is $\|p\| = \| (c_S)_{S \in \fN^d} \| = \sqrt{\sum_{S \in \fN^d} c_S^2}$. We have the following simple result.
@@ -425,7 +433,7 @@ Hence,
 %\leq -1 + t-1 + \frac{t-1}{2t} - (t - \frac 1 2)
 \end{enumerate}
 To summarize, we have shown that for all $(x,y)$ in $S$, $y Q(x) \geq \frac 1 2$.
-Therefore, by item~\ref{item:sign-denom} of Fact~\ref{fact:newman}, 
+Therefore, by item~\ref{item:sign-denom} of Fact~\ref{fact:newman},
 \[ y p(x) = y Q(x) \cdot \prod_{i=1}^t B_{\ceil{\log \frac 1 \gamma}}^{2t}(\frac{v_i \cdot x}\gamma) \geq \frac 1 2 ((1-\frac{1}{4t+1}) \cdot 2^{n(n-1)h(2t)})^t \geq 2^{n(n-1)h(2t)t - 2}. \]
 \end{proof}
 
@@ -600,10 +608,10 @@ Suppose we are given an integer $s$, and a set of examples $S$ separable by an i
 
 \begin{proof}
 \begin{enumerate}
-\item From Lemma~\ref{lem:rational-margin} and Theorem~\ref{thm:rational-norm}, 
+\item From Lemma~\ref{lem:rational-margin} and Theorem~\ref{thm:rational-norm},
 along with the fact that $s \geq (2\ceil{\log \frac 1 \gamma}+1) h(2t) t$,
 we know that there exists some polynomial $p = \inner{c, \phi_s(x)}$, such that
-$y \inner{c, \phi_s(x)} \geq  2^{\ceil{\log \frac 1 \gamma}(\ceil{\log \frac 1 \gamma}-1)h(2t)t - 2}$ and 
+$y \inner{c, \phi_s(x)} \geq  2^{\ceil{\log \frac 1 \gamma}(\ceil{\log \frac 1 \gamma}-1)h(2t)t - 2}$ and
 $\|c\| \leq ((16\ceil{\log \frac 1 \gamma}+8) h(2t) t \cdot \frac 1 \gamma)^{(2\ceil{\log \frac 1 \gamma}+1)h(2t)t}$. This implies that $S'$ is separable by a halfspace with the desired margin.
 
 \item From Lemma~\ref{lem:cheb-margin} and Theorem~\ref{thm:cheb-norm},
@@ -627,19 +635,19 @@ Suppose we are given a set of examples $S$ separable by an intersection of halfs
 \end{theorem}
 
 \begin{proof}
-%The proof the essentially the same as the proof of 
+%The proof the essentially the same as the proof of
 \begin{enumerate}
-\item From Lemma~\ref{lem:rational-margin} and Theorem~\ref{thm:rational-norm}, 
+\item From Lemma~\ref{lem:rational-margin} and Theorem~\ref{thm:rational-norm},
 we know that there exists some polynomial $p(x)$ of degree at most $(2\ceil{\log \frac 1 \gamma}+1) h(2t) t$, such that
-$y p(x) \geq  2^{\ceil{\log \frac 1 \gamma}(\ceil{\log \frac 1 \gamma}-1)h(2t)t - 2}$ and 
-$\|p\| \leq ((16\ceil{\log \frac 1 \gamma}+8) h(2t) t \cdot \frac 1 \gamma)^{(2\ceil{\log \frac 1 \gamma}+1)h(2t)t}$. 
+$y p(x) \geq  2^{\ceil{\log \frac 1 \gamma}(\ceil{\log \frac 1 \gamma}-1)h(2t)t - 2}$ and
+$\|p\| \leq ((16\ceil{\log \frac 1 \gamma}+8) h(2t) t \cdot \frac 1 \gamma)^{(2\ceil{\log \frac 1 \gamma}+1)h(2t)t}$.
 By Lemma~\ref{lem:fm-convert}, there is some vector $c$, such that $y \inner{c, \phi_0(x)} = y p(x)$ for all $(x,y)$ in $S$	, and $\| c \| \leq 2^{\frac 1 2 \cdot (2\ceil{\log \frac 1 \gamma}+1) h(2t) t} \| p \|$.
 This implies that $S'$ is separable by a halfspace with the desired margin.
 
 \item From Lemma~\ref{lem:cheb-margin} and Theorem~\ref{thm:cheb-norm}, we know that there exists some polynomial $p(x)$ of degree $\ceil{\sqrt{\frac1\gamma}} \cdot \ceil{\log(2t)}$ such that
 $y p(x) \geq \frac 1 2$ and
-$\| p \| \leq 2 \cdot (256 \ceil{\sqrt{\frac1\gamma}} \ceil{\log 2t})^{\ceil{\sqrt{\frac1\gamma}} \ceil{\log 2t}}$. 
-By Lemma~\ref{lem:fm-convert}, there is some vector $c$, such that $y \inner{c, \phi_0(x)} = y p(x)$ for all $(x,y)$ in $S,$ and $\| c \| \leq 2^{\frac 1 2 \cdot \ceil{\sqrt{\frac1\gamma}} \cdot \ceil{\log(2t)}} \| p \|$.	
+$\| p \| \leq 2 \cdot (256 \ceil{\sqrt{\frac1\gamma}} \ceil{\log 2t})^{\ceil{\sqrt{\frac1\gamma}} \ceil{\log 2t}}$.
+By Lemma~\ref{lem:fm-convert}, there is some vector $c$, such that $y \inner{c, \phi_0(x)} = y p(x)$ for all $(x,y)$ in $S,$ and $\| c \| \leq 2^{\frac 1 2 \cdot \ceil{\sqrt{\frac1\gamma}} \cdot \ceil{\log(2t)}} \| p \|$.
 This implies that $S'$ is separable by a halfspace with the desired margin.
 \end{enumerate}
 
