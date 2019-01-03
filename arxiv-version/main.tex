@@ -14,6 +14,8 @@
 \usepackage{tikz}
 \usepackage{color}
 \usepackage{comment}
+\usepackage{commath}
+\usepackage{dsfont}
 
 % TikZ packages
 \usetikzlibrary{arrows}
@@ -34,12 +36,14 @@
 \newtheorem{corollary}[definition]{Corollary}
 
 % Math symbols and commands
-\newcommand{\calF}{\mathcal{F}}  % set of real numbers
+\newcommand{\calF}{\mathcal{F}}
+\newcommand{\one}{\mathds{1}}
 \newcommand{\R}{\mathbb{R}}  % set of real numbers
 \newcommand{\indicator}[1]{\mathbf{1}\left[#1 \right]} % indicator
 \newcommand{\ip}[2]{\left\langle #1, #2 \right\rangle} % inner product
-\newcommand{\norm}[1]{\left\| #1 \right\|}  % norm of a vector or a matrix
+%\newcommand{\norm}[1]{\left\| #1 \right\|}  % norm of a vector or a matrix
 %\DeclareMathOperator*{\deg}{deg}
+
 \DeclareMathOperator*{\argmax}{argmax}
 \DeclareMathOperator*{\argmin}{argmin}
 \DeclareMathOperator*{\Exp}{\mathbf{E}}  % expected value
@@ -289,22 +293,21 @@ On one hand, it gives information-theoretic mistake upper bounds under various s
 %Their results do not imply a finite mistake bound in the weakly separable setting, in that the benchmark loss can still be $\Omega(T)$.
 
 
-\begin{itemize}
-\item \cite{Abernethy-Rakhlin-2009}
+%\begin{itemize}
+%\item \cite{Abernethy-Rakhlin-2009}
 
-\item \cite{Chen-Chen-Zhang-Chen-Zhang-2009}
+%\item \cite{Chen-Chen-Zhang-Chen-Zhang-2009}
 
-\item \cite{Hazan-Kale-2011}
+%\item \cite{Hazan-Kale-2011}
 
-\item \cite{Beygelzimer-Orabona-Zhang-2017}
+%\item \cite{Beygelzimer-Orabona-Zhang-2017}
 
-\item \cite{Foster-Kale-Luo-Mohri-Sridharan-2018}
+%\item \cite{Foster-Kale-Luo-Mohri-Sridharan-2018}
 
-\item \cite{Foster-Krishnamurthy-2018}
-\end{itemize}
+%\item \cite{Foster-Krishnamurthy-2018}
+%\end{itemize}
 
-
-TODO
+%TODO
 
 
 \section{Notions of linear separability}
