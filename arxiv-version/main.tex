@@ -1412,7 +1412,22 @@ TODO
 
 \section{Mistake lower bound for ignorant algorithms}
 
-TODO
+\begin{lemma}
+For any $\gamma \in (0,\frac 1 {160})$,
+there exists a set of $N$ examples $x_1, \ldots, x_N$ and vectors $w_1, \ldots, w_N$ ($N = (\Omega(\frac{1}{\gamma}))^{(d-2)/2}$), such that:
+$\| x_i \|_2 \leq 1$, $\| w_i \|_2 \leq 1$ for all $i$ in $[N]$, and for all $i, j$ in $[N]$,
+\[ w_i \cdot x_j \begin{cases} \geq \gamma ,& i = j, \\ \leq -\gamma ,& i \neq j. \end{cases} \]
+\label{lem:embed_d_gamma}
+\end{lemma}
+\begin{proof}
+By Lemma 6 of~\cite{Long1995}, there exists a set of $N = (\frac{1}{2\sqrt{40\gamma}})^{d-2}$ $(d-1)$-dimensional vectors $z_1, \ldots, z_N$ on the unit sphere $\mathbb{S}^{d-2}$, such that
+$\theta(z_i, z_j) \geq \sqrt{40 \gamma}$. As $\cos\theta \geq 1-\theta^2/5$ for every $\theta \in [0,\pi]$,
+this implies that
+\[ z_i \cdot z_j \begin{cases} = 1 ,& i = j, \\ \leq 1- 8\gamma ,& i \neq j. \end{cases} \]
+
+Define $x_i = (\frac12 z_i, \frac12)$, and $w_i = (\frac 12 z_i, -\frac 12(1-4\gamma))$ for all $i$ in $[N]$. It can be easily checked that for all $i$, $\|x_i\| \leq 1$ and $\|w_i\| \leq 1$. In addition,
+\[ w_i \cdot x_j = \frac 1 4 z_i \cdot z_j - \frac {1-4\gamma} 4 \begin{cases} \geq \gamma ,& i = j, \\ \leq -\gamma ,& i \neq j. \end{cases}\]
+\end{proof}
 
 \bibliographystyle{plainnat}
 \bibliography{biblio}
