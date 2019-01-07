@@ -1,33 +1,17 @@
 \section{Introduction}
 \label{section:introduction}
 
-We study the problem of \textsc{Online Multiclass Linear
-Classification with Bandit Feedback}~\cite{Kakade-Shalev-Shwartz-Tewari-2008}.
-The problem can be viewed as a game between the learner and the environment:
-at each timestep $t$, the environment chooses an example $(x_t, y_t)$, where its feature
-part $x_t \in \R^d$ is revealed to the learner.
-\footnote{All our results apply to also to a simpler model of
-the so called \emph{oblivious adversary} where the whole sequence of labeled
-examples $(x_1, y_1), (x_2, y_2), \dots, (x_T, y_T)$ is chosen before the first
-round of the game.}
-Upon receiving this example, the
-learner is asked to make a prediction $\hat{y}_t$.
-the learner receives feedback immediately after making its prediction.
-In contrast with the standard full information setting (where the feedback given is the correct label $y_t$), the feedback given is only a binary indicator
-whether the prediction was correct or not. The protocol of the problem is formally stated below.
-
-
-
-%In this problem, in each round, the
-%learner receives a feature vector and is asked to predict one of $K$
-%possible classes. To allow
-%for meaningful use of randomization, we assume that the correct label in a
-%particular round is chosen prior to algorithm's prediction in that
-%round.
-%Immediately after the learner makes its prediction, it
-%receives feedback whether the prediction was correct or not. However, in
-%contrast with the standard, so called full information setting, the algorithm
-%does \emph{not} receive the correct label. The feedback is only binary.
+We study the problem of \textsc{Online Multiclass Linear Classification with
+Bandit Feedback}~\cite{Kakade-Shalev-Shwartz-Tewari-2008}. The problem can be
+viewed as a game between the learner and the adversary: at each timestep $t$,
+the adversary chooses an example $(x_t, y_t)$ where the feature vector $x_t \in
+\R^d$ is revealed to the learner and the correct label $y_t$ is kept secret by
+the adversary. Upon receiving the feature vector $x_t$, the learner is asked to
+make a prediction $\widehat{y}_t$. Immediately after making its prediction, the
+learner receives a feedback. In contrast with the standard full information
+setting (where the feedback given is the correct label $y_t$), here the feedback
+is only a binary indicator of whether the prediction was correct or not. The
+protocol of the problem is formally stated below.
 
 \begin{algorithm}[h]
 \caption{\textsc{Online Multiclass Classification with Bandit Feedback}
@@ -50,22 +34,17 @@ whether the prediction was correct or not. The protocol of the problem is formal
 \end{algorithmic}
 \end{algorithm}
 
-The performance is of the learner is measured by its cumulative number of mistakes
-$\sum_{t=1}^T z_t = \sum_{t=1}^T \indicator{\widehat y_t \neq y_t}$. The bandit feedback
- is a natural feedback model motivated by applications including
-online advertising and online content optimization, where the learner only gets to
-see the loss of its action taken.
-%where the binary feedback corresponds to a click
-%The
-%corresponding problem with full information feedback is solved by the classical
-%\textsc{Multiclass Perceptron} algorithm and its variants (see e.g.
-%\cite{Crammer-Dekel-Keshet-Shalev-Shwartz-Singer-2006}).
+The performance is of the learner is measured by its cumulative number of
+mistakes $\sum_{t=1}^T z_t = \sum_{t=1}^T \indicator{\widehat y_t \neq y_t}$.
+The bandit feedback is a natural feedback model motivated by applications
+including online advertising and online content optimization.
 
 In this paper, we focus on the special case when the examples lie in $\R^d$ and
 are \emph{linearly separable with a margin}.
 \chicheng{I wonder if we should introduce the two notions of linear separability here,
 because strong linear separability is also worth mentioning in the full-information setting.
 }
+\david{The formal definitions are in a section of their own.}
 
 In the full-information feedback
 setting, it is well known that if the examples have norm at most $R$ and are
