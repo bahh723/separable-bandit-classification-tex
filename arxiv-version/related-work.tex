@@ -3,16 +3,17 @@
 
 The problem of bandit multiclass linear classification was initially formulated
 by the pioneering work of~\cite{Kakade-Shalev-Shwartz-Tewari-2008}. In that
-work, two computationally inefficient algorithms that work in the $\gamma$-weak
-linearly separable setting are proposed: one with a mistake bound of $O(k^2 d
+work, two computationally inefficient algorithms that work in the standard
+linearly separable setting are proposed: one with a mistake bound of $O(K^2 d
 \ln(\frac{d}{\gamma^2}))$, the other with a mistake bound of
-$\widetilde{O}(\frac{k^2}{\gamma^2} \ln T)$. In addition, the authors propose
+$\widetilde{O}(\frac{K^2}{\gamma^2} \ln T)$. In addition, the authors propose
 the \textsc{Banditron} algorithm, a computationally efficient algorithm that has
-a $O(T^{2/3})$ regret in the general setting, and has a $O(\sqrt{T})$ mistake
+a $O(T^{2/3})$ regret against the multiclass hinge loss
+in the general setting, and has a $O(\sqrt{T})$ mistake
 bound in the $\gamma$-weak linearly separable setting. The polynomial dependence
 of \textsc{Banditron}'s mistake bound on the time horizon is undesirable for
 problems with a long time horizon. One key open question left
-by~\cite{Kakade-Shalev-Shwartz-Tewari-2008} is whether one can deesign
+by~\cite{Kakade-Shalev-Shwartz-Tewari-2008} is whether one can design
 computationally efficient algorithms that achieve mistake bounds that match or
 improve over those of inefficient algorithms. In this paper, we take a step
 towards answering this question, showing that efficient algorithms with mistake
@@ -25,32 +26,23 @@ bounds quasipolynomial in the margin parameter can be obtained.
 
 Many works consider bandit multiclass classification in the general
 non-separable setting. \cite{Abernethy-Rakhlin-2009} poses the open problem of
-whether one can design and efficient algorithm to get a $O(\sqrt{T})$ regret
+whether one can design an efficient algorithm to get a $O(\sqrt{T})$ regret
 against some reasonable loss functions. \cite{Crammer-Gentile-2013} show that
-such an algorithm can be obtained, under the assumption that the distribution of
+such an algorithm can be obtained, provided that the distribution of
 the label $y_t$ conditioned on feature vector $x_t$ satisfies certain parametric
 noise assumption. \cite{Hazan-Kale-2011} developed the \textsc{Newtron}
 algorithm, which has a regret between $O(\ln T)$ and $O(T^{2/3})$ against the
 multiclass logistic loss, where the exact order of the regret depends on the
 diameter of the benchmark class. In particular, if the diameter is $O(\ln T)$,
-its regret bound would become $O(T^{2/3})$. The SOBA algorithm by
+its regret bound would become $O(T^{2/3})$. The \textsc{SOBA} algorithm by
 \cite{Beygelzimer-Orabona-Zhang-2017} achieves a regret of
 $\widetilde{O}(\sqrt{T})$ against the
-$\eta$-loss~\cite{Orabona-Cesa-Bianchi-Gentile-2012}. In addition, their regret
+$\eta$-loss~\cite{Orabona-Cesa-Bianchi-Gentile-2012}. In addition, its regret
 bound does not depend sensitively on the diameter of the benchmark class.
 \cite{Foster-Kale-Luo-Mohri-Sridharan-2018} developed an algorithm that has a
 regret of $\widetilde{O}(\sqrt{T})$ against the multiclass logistic loss, where
 it doubly-exponentially improves over \cite{Hazan-Kale-2011}'s regret on its
-dependence on the diameter of the benchmark class. Recently,
-\cite{Foster-Krishnamurthy-2018} developed a rich theory on contextual bandits
-with surrogate losses, focusing on benchmarks of the form $\min_{f \in \calF}
-\frac{1}{K} \sum_{i=1}^K \phi( f_i(x) )$, where $\calF$ contains function $f$
-such that $\sum_{i=1}^K f_i(\cdot) \equiv 0$, and $\phi(s) = \max(1 - \frac s
-\gamma, 0)$ and $\min(1, \max(1 - \frac s \gamma, 0))$. On one hand, it gives
-information-theoretic mistake upper bounds under various settings of $\calF$,
-for instance parametric and nonparametric classes. On the other hand, it gives
-an efficient algorithm that has a $O(\sqrt{T})$ regret against the benchmark of
-$\calF = \cbr{x \mapsto W x: W \in \R^{k \times d}, \one^T W = 0}$.
+dependence on the diameter of the benchmark class.
 
 \cite{Chen-Lin-Lu-2014, Zhang-Jung-Tewari-2018} study online bandit multiclass
 boosting under bandit feedback, where one can view online boosting as online
@@ -65,6 +57,24 @@ that weakly separates all examples with a margin
 an algorithm with a $O(\sqrt{T})$ mistake bound with the knowledge of the edge
 parameter. In addition, it gives an adaptive algorithm with a $O(T^{3/4})$
 mistake bound.
+
+The online bandit multiclass learning is a special case of the contextual bandits
+problem~\cite{Auer-2003, Langford-Zhang-2007}, where the cost is the classification error.
+A series of works in the contextual bandits learning literature focuses on
+oracle-efficiency, that is, they assume access to an
+oracle that given a set of cost-sensitve learning examples,
+
+
+
+Recently, \cite{Foster-Krishnamurthy-2018} developed a rich theory on contextual bandits
+with surrogate losses, focusing on benchmarks of the form $\min_{f \in \calF}
+\frac{1}{K} \sum_{i=1}^K l_t(i) \phi( f_i(x) )$, where $\calF$ contains function $f$
+such that $\sum_{i=1}^K f_i(\cdot) \equiv 0$, and $\phi(s) = \max(1 - \frac s
+\gamma, 0)$ and $\min(1, \max(1 - \frac s \gamma, 0))$. On one hand, it gives
+information-theoretic mistake upper bounds under various settings of $\calF$,
+for instance parametric and nonparametric classes. On the other hand, it gives
+an efficient algorithm that has a $O(\sqrt{T})$ regret against the benchmark of
+$\calF = \cbr{x \mapsto W x: W \in \R^{k \times d}, \one^T W = 0}$.
 
 %\cite{Chen-Chen-Zhang-Chen-Zhang-2009} studies the approach of reducing bandit
 %multiclass learning to online binary classification using one-versus-all
