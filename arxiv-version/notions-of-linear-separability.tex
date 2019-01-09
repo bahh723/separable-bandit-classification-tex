@@ -25,7 +25,7 @@ that
 \label{def:linear-sep}
 \end{definition}
 
-\begin{definition}[Strong Linear separability]
+\begin{definition}[Strong linear separability]
 Let $(V,\ip{\cdot}{\cdot})$ be an inner product space, $K$ be a positive
 integer, and $\gamma$ be a positive real number. Let $(x_1, y_1), (x_2,
 y_2), \dots, (x_T, y_T)$ be labeled examples in $V \times \{1,2,\dots,K\}$.
@@ -49,7 +49,7 @@ full-information setting to upper bound the number of mistakes of the
 \textsc{Multiclass Perceptron} algorithm. For completeness, we state the
 algorithm in Appendix~\ref{section:multiclass-perceptron-proofs}. It is a
 folklore result that if a set of labeled examples is separable with a margin
-$\gamma$ and the norm of the examples is bounded by $R$ then \textsc{Multiclass
+$\gamma$ and the norm of the examples is bounded by $R$, then \textsc{Multiclass
 Perceptron} algorithm makes at most $\left\lfloor 2(R/\gamma)^2 \right \rfloor$
 mistakes. Another folklore result is that \textsc{Multiclass Perceptron} is
 essentially optimal in the sense that any deterministic algorithm must make
@@ -57,14 +57,18 @@ $\left\lfloor (R/\gamma)^2 \right \rfloor$ mistakes in the worst case. For
 completeness, we give proofs of both of these results in
 Appendix~\ref{section:multiclass-perceptron-proofs}.
 
-The notion of strong linear separability is new.
+The notion of strong linear separability is new. Intuitively, strong linear separability
+means that, for each $i$, the set of examples with class $i$ and the set of example of other classes are separated by a linear classifier $w_i$. Formally, $w_i$ separates the set of examples $\cbr{(x_t, y_t): t \in \cbr{1,\ldots,T}, y_t = i}$ and
+$\cbr{(x_t, y_t): t \in \cbr{1,\ldots,T}, y_t \neq i}$.
+
+
 \chicheng{I think the notion has appeared in~\cite{Chen-Chen-Zhang-Chen-Zhang-2009}, however,
 they proposed an algorithm that doesn't achieve a finite mistake bound in the bandit
 setting under this assumption (although they claimed that they have done so, the proof was
 wrong..)}
 
-It is easy to see that if labeled examples are strongly linearly
-separable with margin $\gamma$ then they are linearly separable with margin
+It is easy to see that if a set of labeled examples are strongly linearly
+separable with margin $\gamma$, then they are linearly separable with margin
 $2\gamma$. Indeed, if $w_1, w_2, \dots, w_K \in V$
 satisfy \eqref{equation:strong-linear-separability-1},
 \eqref{equation:strong-linear-separability-2},
