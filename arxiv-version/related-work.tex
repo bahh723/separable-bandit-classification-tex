@@ -63,7 +63,7 @@ A series of works in the contextual bandits learning literature focuses on
 oracle-efficiency, that is, they assume access to an
 oracle that given a set of cost-sensitve learning examples,
 
-There has been much literature on the contextual bandit learning problem~\citep{Auer-2003, Langford-Zhang-2007}.
+There has been much literature on the contextual bandit learning problem~\citep{Auer-2003, Langford-Zhang-2008}.
 In this problem, the learner is given a policy class $\Pi$, and
 at each timestep $t$, an example $x_t$ is shown, with an associated cost vector $c_t$ hidden.
 The learner then takes an action $\hat{y}_t$, and observed the incurred cost $c_t$.
@@ -73,13 +73,17 @@ where the cost $c_t(i)$ is the classification error $I(i \neq y_t)$,
 and the policy class $\Pi$ is the set of linear classifiers
 $\cbr{x \mapsto \argmax_y (Wx)_y: W \in \R^{k \times d}}$.
 A series of works in the contextual bandits learning literature focus on
-oracle-efficiency~\citep{DudikHKKLRZ11, Monster:2014, RakhlinS16, Syrgkanis2016a, Syrgkanis2016b}.
+oracle-efficiency~\citep{Dudik-Hsu-Kale-Karampatziakis-Langford-Reyzin-Zhang-2011,
+Agarwal-Hsu-Kale-Langford-Li-Schapire-2014,
+Rakhlin-Sridharan-2016,
+Syrgkanis-Krishnamurthy-Schapire-2016,
+Syrgkanis-Luo-Krishnamurthy-Schapire-2016}.
 Specifically, they assume access to a policy optimization
 oracle that receives a set of cost-sensitive learning examples and policy class $\Pi$,
 return the policy in $\Pi$ that minimizes its empirical cost on the examples, and the algorithm
 only call the oracle a polynomial number of times.
 However, these algorithms are not truly computationally efficient in our setting,
-as it is NP-hard in general to find a linear classifier that minimizes the empirical cost over a set of examples~\citep{arora1997hardness}.
+as it is NP-hard in general to find a linear classifier that minimizes the empirical cost over a set of examples~\citep{Arora-Babai-Stern-Sweedyk-1997}.
 
 %as algorithms generate cost-sensitive examples that may not be linearly separable
 %Algorithms that satisfy oracle efficiency has been proposed in the literature, for
