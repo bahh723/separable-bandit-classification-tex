@@ -1,0 +1,55 @@
+% The \icmltitle you define below is probably too long as a header.
+% Therefore, a short form for the running title is supplied here:
+\icmltitlerunning{Online Multiclass Linear Classification with Bandit Feedback}
+
+\twocolumn[
+\icmltitle{Online Multiclass Linear Classification with Bandit Feedback}
+
+\begin{icmlauthorlist}
+\icmlauthor{Alina Beygelzimer}{yahoo}
+\icmlauthor{D\'avid P\'al}{yahoo}
+\icmlauthor{Bal\'azs Sz\"or\'enyi}{yahoo}
+\icmlauthor{Devanathan Thiruvenkatachari}{nyu}
+\icmlauthor{Chen-Yu Wei}{usc}
+\icmlauthor{Chicheng Zhang}{microsoft}
+
+\end{icmlauthorlist}
+
+\icmlaffiliation{yahoo}{Yahoo Research, New York, NY, USA}
+\icmlaffiliation{nyu}{New York University, New York, MA, USA}
+\icmlaffiliation{usc}{University of Southern California, Los Angeles, CA, USA}
+\icmlaffiliation{microsoft}{Microsoft Research, New York, NY, USA}
+
+\icmlcorrespondingauthor{D\'avid P\'al}{davidko.pal@gmail.com}
+
+\icmlkeywords{multi-armed bandits, contextual bandits, online classification, linear separability}
+
+\vskip 0.3in
+]
+
+\printAffiliationsAndNotice{}
+
+\begin{abstract}
+We study the problem of efficient online multiclass linear classification with
+bandit feedback, where all examples belong to one of $K$ classes and lie in the
+$d$-dimensional Euclidean space. Previous works have left open the challenge of
+designing efficient algorithms with finite mistake bounds when the data is
+linearly separable by a margin $\gamma$. In this work, we take a first step
+towards this problem. We consider two notions of linear separability: strong
+linear separability and weak linear separability.
+
+\begin{enumerate}
+\item Under the strong linear separability condition, we design an efficient
+algorithm that achieves a near-optimal mistake bound of
+$O\left(\frac{K}{\gamma^2} \right)$.
+
+\item Under the more challenging weak linear separability condition, we design
+an efficient algorithm with a mistake bound of $2^{\widetilde{O}(\min(K \log^2
+\frac{1}{\gamma}, \log K \sqrt{\frac 1 \gamma}))}$ \footnote{We use the notation
+$\widetilde{O}(f(\cdot)) = O(f(\cdot) \polylog(f(\cdot)))$.}. Our algorithm is
+based on a infinite-dimensional feature mapping that transforms weak linear
+separable examples to strong linear separable examples, which in turn is
+inspired by \cite{Klivans-Servedio-2008}'s work on learning intersection of
+halfspaces.
+\end{enumerate}
+\end{abstract}
