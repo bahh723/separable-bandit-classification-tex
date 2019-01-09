@@ -1,6 +1,6 @@
-\begin{tikzpicture}
+\begin{tikzpicture}[scale=0.4]
 
-  \useasboundingbox (-5.5,-5.5) rectangle (5.5,5.5);
+  \useasboundingbox (-6.5,-6) rectangle (12.5,6);
   % \draw[help lines] (-5.5,-5.5) rectangle (5.5,5.5);
 
   % Grid and coordinate axes
@@ -11,9 +11,9 @@
   % Notable points
   \coordinate (Origin) at (0,0);
 
-  \coordinate [label={[xshift=-10mm, yshift=5mm]$\ip{w_1 - w_2}{x} = 0$}] (A) at (120:5);
-  \coordinate [label={[xshift=-10mm, yshift=-10mm]$\ip{w_2 - w_3}{x} = 0$}] (B) at (240:5);
-  \coordinate [label={[xshift=+20mm, yshift=-3mm]$\ip{w_3 - w_1}{x} = 0$}] (C) at (360:5);
+  \coordinate [label={[xshift=-5mm, yshift=2.5mm]$\ip{w_1 - w_2}{x} = 0$}] (A) at (120:5);
+  \coordinate [label={[xshift=-5mm, yshift=-10mm]$\ip{w_2 - w_3}{x} = 0$}] (B) at (240:5);
+  \coordinate [label={[xshift=+17mm, yshift=-1.5mm]$\ip{w_3 - w_1}{x} = 0$}] (C) at (360:5);
 
   % Circle which contains all the examples.
   \draw (Origin) circle (5);
