@@ -1,0 +1,64 @@
+% LaTeX packages
+\usepackage{algorithm}
+\usepackage{algorithmic}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsthm}
+\usepackage[english]{babel}
+\usepackage[singlelinecheck=false]{caption}
+\usepackage[colorlinks=true,citecolor=blue,linkcolor=blue]{hyperref}
+\usepackage{natbib}
+\usepackage{thmtools}
+\usepackage{tikz}
+\usepackage{color}
+\usepackage{comment}
+\usepackage{commath}
+\usepackage{dsfont}
+\usepackage[accepted]{icml2019}  % Remove [accepted] for ICML submission (to make the paper anonymous).
+
+% TikZ packages
+\usetikzlibrary{arrows}
+\usetikzlibrary{angles}
+\usetikzlibrary{backgrounds}
+\usetikzlibrary{calc}
+\usetikzlibrary{cd}  % commutative diagrams
+\usetikzlibrary{intersections}
+\usetikzlibrary{patterns}
+\usetikzlibrary{shapes}
+\usetikzlibrary{through}
+
+% Math environments
+\newtheorem{definition}{Definition}
+\newtheorem{proposition}[definition]{Proposition}
+\newtheorem{lemma}[definition]{Lemma}
+\newtheorem{theorem}[definition]{Theorem}
+\newtheorem{corollary}[definition]{Corollary}
+
+% Math symbols and commands
+\newcommand{\calF}{\mathcal{F}}
+\newcommand{\one}{\mathds{1}}
+\newcommand{\R}{\mathbb{R}}  % set of real numbers
+\newcommand{\indicator}[1]{\mathbf{1}\left[#1 \right]} % indicator
+\newcommand{\ip}[2]{\left\langle #1, #2 \right\rangle} % inner product
+%\newcommand{\norm}[1]{\left\| #1 \right\|}  % norm of a vector or a matrix
+%\DeclareMathOperator*{\deg}{deg}
+
+\DeclareMathOperator*{\argmax}{argmax}
+\DeclareMathOperator*{\argmin}{argmin}
+\DeclareMathOperator*{\Exp}{\mathbf{E}}  % expected value
+\DeclareMathOperator{\diff}{d \!} % differential
+\DeclareMathOperator*{\polylog}{polylog}
+
+\definecolor{darkgreen}{rgb}{0,0.5,0}
+\definecolor{darkred}{rgb}{0.7,0,0}
+\definecolor{teal}{rgb}{0.3,0.8,0.8}
+\definecolor{orange}{rgb}{1.0,0.5,0.0}
+\definecolor{purple}{rgb}{0.8,0.0,0.8}
+\definecolor{blue}{rgb}{0.0,0.0,1.0}
+\newcommand{\kibitz}[2]{{\textcolor{#1}{\textsf{\footnotesize #2}}}}
+\newcommand{\alina}[1]{\kibitz{darkred}{[AB: #1]}}
+\newcommand{\david}[1]{\kibitz{darkgreen}{[DP: #1]}}
+\newcommand{\balazs}[1]{\kibitz{purple}{[BS: #1]}}
+\newcommand{\deva}[1]{\kibitz{teal}{[DT: #1]}}
+\newcommand{\chenyu}[1]{\kibitz{orange}{[CW: #1]}}
+\newcommand{\chicheng}[1]{\kibitz{blue}{[CZ: #1]}}

@@ -1,0 +1,130 @@
+\section{Introduction}
+\label{section:introduction}
+
+We study the problem of \textsc{Online Multiclass Linear Classification with
+Bandit Feedback}~\citep{Kakade-Shalev-Shwartz-Tewari-2008}. The problem can be
+viewed as a game between the learner and the adversary: at each timestep $t$,
+the adversary chooses an example $(x_t, y_t)$ where the feature vector $x_t \in
+\R^d$ is revealed to the learner and the correct label $y_t$ is kept secret by
+the adversary. Upon receiving the feature vector $x_t$, the learner is asked to
+make a prediction $\widehat{y}_t$. Immediately after making its prediction, the
+learner receives a feedback. In contrast with the standard full information
+setting (where the feedback given is the correct label $y_t$), here the feedback
+is only a binary indicator of whether the prediction was correct or not. The
+protocol of the problem is formally stated below.
+
+\begin{algorithm}[h]
+\caption{\textsc{Online Multiclass Classification with Bandit Feedback}
+\label{algorithm:game-protocol}}
+\begin{algorithmic}[1]
+{
+\REQUIRE{Number of classes $K$. Number of rounds $T$.}
+\FOR{$t=1,2,\dots,T$}
+\STATE{Observe feature vector $x_t$}
+\STATE{Adversary \emph{secretly} chooses correct class label $y_t \in \{1,2,\dots,K\}$}
+\chicheng{Or we simply say: Adversary chooses example $(x_t, y_t)$, where $x_t$ is reveal to the learner.}
+\STATE{Predict class label $\widehat y_t \in \{1,2,\dots,K\}$}
+\STATE{Observe feedback $z_t \in \{0,1\}$ where $z_t = \begin{cases}
+0 & \text{if $\widehat y_t = y_t$,} \\
+1 & \text{if $\widehat y_t \neq y_t$.}
+\end{cases}$
+}
+\ENDFOR
+}
+\end{algorithmic}
+\end{algorithm}
+
+The performance is of the learner is measured by its cumulative number of
+mistakes $\sum_{t=1}^T z_t = \sum_{t=1}^T \indicator{\widehat y_t \neq y_t}$.
+The bandit feedback is a natural feedback model motivated by applications
+including online advertising and online content optimization.
+
+In this paper, we focus on the special case when the examples chosen by the
+adversary lie in $\R^d$ and
+are \emph{linearly separable with a margin}
+(see Definition~\ref{def:linear-sep} for a formal description).
+%\chicheng{I wonder if we should introduce the two notions of linear separability here,
+%because strong linear separability is also worth mentioning in the full-information setting.
+%}
+%\david{The formal definitions are in a section of their own.}
+
+In the full-information feedback
+setting, it is well known that if the examples have norm at most $R$ and are
+linearly separable with a margin $\gamma$ then the \textsc{Multiclass
+Perceptron} algorithm makes at most $\lfloor 2(R/\gamma)^2 \rfloor$ mistakes.
+This result is very satisfying since the upper bound on the number of mistakes
+is information-theoretically optimal and at the same time the \textsc{Multiclass
+Perceptron} algorithm has low time and memory complexity.
+
+The bandit feedback setting, however, is much more challenging. To understand
+the differences, we dissect the notion of linear separability in the multiclass
+setting. Besides the standard notion of linear separability, we also consider
+\emph{strong linear separability} (see Definition~\ref{def:strong-linear-sep} for a formal description). For binary classification, these two
+definitions are identical.
+However, they differ for multiclass classification with $K \geq 3$.
+For multiclass classification with $K$ classes, the standard notion of linear
+separability means that the examples from each class lie in an intersection of
+$K-1$ halfspaces and the examples outside of the class lie in the complement of
+the intersection of the halfspaces. Strong linear separability means that
+examples from each class are separated from the remaining examples by a
+\emph{single} hyperplane. We state the definitions precisely in
+Section~\ref{section:notions-of-linear-separability}.
+
+For the case when the examples are strongly linearly separable, we design a
+simple and efficient algorithm with an expected number of mistakes at most $(K-1)
+\lfloor (R/\gamma)^2 \rfloor$. The algorithm can be viewed as running $K$ copies
+of the \textsc{Binary Perceptron} algorithm, one copy for each class.
+Intuitively speaking, the factor $K-1$ is the price we pay for the bandit
+feedback, or more precisely, the lack of full-information feedback. We also
+prove that any (possibly randomized) algorithm makes $\Omega(K (R/\gamma)^2))$
+mistakes in the worst case.
+
+For the standard notion of linear separability, we propose several algorithms
+with various time-complexity-versus-mistake-bound trade-offs.
+\chicheng{I wonder if we should just present the results using the rational kernel,
+ as results using other kernels are nonadaptive,
+ and achieve qualitatively similar mistake bounds.}
+First class of
+algorithms map the examples into a high-dimensional inner product space. In this
+space the examples become \emph{strongly} linearly separable. This allows us to
+run the algorithm for the strongly linearly separable case. All of these
+algorithms can be kernelized. (Some of them have to be kernelized since the
+underlying inner product space is infinite dimensional.) Kernelization does not
+change the input-output behavior of the algorithm, it only affects its time
+and memory complexity.
+
+These algorithms differ by choice of the mapping or, equivalently, choice of the
+kernel. The crux of the problem is the analysis of the approximation properties
+of these mappings/kernels and the way margin in the original space $\R^d$ under
+standard linear separability notion gets transformed into a margin in the
+high-dimensional space under the strong separability notion. This problem is
+related to the problem of learning intersection of halfspaces and has been
+studied previously by \cite{Klivans-Servedio-2008}. As an important technical
+achievement, we improve on the results of \cite{Klivans-Servedio-2008} by
+removing completely the dependency on the original dimension $d$.
+
+Finally, we propose a very different algorithm that is based on the obvious idea
+that two points that are close enough must have the same label. Here, close
+enough means that they cannot be separated from each other by a linear separator
+with a margin.
+
+All the algorithms run in time that is polynomial in the dimension of the
+feature vectors, the number of classes and the number of rounds. At the same
+time, all the algorithms make number of mistakes that does \emph{not} depend
+on the number of rounds. Instead, their number of mistakes depends only on the
+margin, number of classes, dimension of the feature vectors, and the radius of
+the ball in which the data lie.
+
+Finally, we study two questions related to the computational and
+information-theoretic hardness of the problem. Any algorithm for the bandit
+setting collects information in the form of so called \emph{strongly labeled}
+and \emph{weakly labeled} examples. Strongly labeled examples are those for
+which we know the class label. Weakly labeled example is an example for which we
+know that class label can be anything except for a particular one class. First,
+we show the offline problem of finding a linear multiclass separator consistent
+with a set of strongly and weakly labeled examples is NP-hard. This result is a
+consequence of the fact that finding an intersection of two halfspaces
+consistent with a set of binary-labeled examples is
+NP-hard~\citep{Blum-Rivest-1993}. Second, we show that any algorithm that uses
+only strongly-labeled examples and ignores weakly labeled examples makes at
+least $\Omega(???)$ mistakes.
