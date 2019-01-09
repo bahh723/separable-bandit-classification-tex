@@ -10,10 +10,12 @@ submission:
 	bibtex ${filename_submission} || true
 	pdflatex ${filename_submission}
 	pdflatex ${filename_submission}
+	pdflatex ${filename_submission}
 
 supplementary:
 	pdflatex ${filename_supplementary}
 	bibtex ${filename_supplementary} || true
+	pdflatex ${filename_supplementary}
 	pdflatex ${filename_supplementary}
 	pdflatex ${filename_supplementary}
 

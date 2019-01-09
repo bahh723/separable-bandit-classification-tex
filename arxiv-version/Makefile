@@ -7,6 +7,7 @@ all:
 	bibtex ${filename} || true
 	pdflatex ${filename}
 	pdflatex ${filename}
+	pdflatex ${filename}
 
 read:
 	evince ${filename}.pdf || open ${filename}.pdf &

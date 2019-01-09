@@ -9,6 +9,7 @@ bandit setting, since it allows for a simple and efficient algorithm; see
 Section~\ref{section:algorithm-for-strongly-linearly-separable-data}.
 
 \begin{definition}[Linear separability]
+\label{definition:linear-separability}
 Let $(V,\ip{\cdot}{\cdot})$ be an inner product space, $K$ be a positive
 integer, and $\gamma$ be a positive real number. Let $(x_1, y_1), (x_2,
 y_2), \dots, (x_T, y_T)$ be labeled examples in $V \times \{1,2,\dots,K\}$.
@@ -22,10 +23,10 @@ that
 \label{equation:linear-separability-2}
 \forall t \in \{1,2,\dots,T\} \quad \forall i \in \{1,2,\dots, K\} \setminus \{y_t\} \qquad \qquad \ip{x_t}{w_{y_t}} & \ge \ip{x_t}{w_i} + \gamma \; .
 \end{align}
-\label{def:linear-sep}
 \end{definition}
 
 \begin{definition}[Strong linear separability]
+\label{definition:strong-linear-separability}
 Let $(V,\ip{\cdot}{\cdot})$ be an inner product space, $K$ be a positive
 integer, and $\gamma$ be a positive real number. Let $(x_1, y_1), (x_2,
 y_2), \dots, (x_T, y_T)$ be labeled examples in $V \times \{1,2,\dots,K\}$.
@@ -41,7 +42,6 @@ that
 \label{equation:strong-linear-separability-3}
 \forall t \in \{1,2,\dots,T\} \qquad \forall i \in \{1,2,\dots, K\} \setminus \{y_t\} \qquad \qquad \ip{x_t}{w_i} & \le - \gamma \; .
 \end{align}
-\label{def:strong-linear-sep}
 \end{definition}
 
 The notion of linear separability with a margin is standard. It is used in the

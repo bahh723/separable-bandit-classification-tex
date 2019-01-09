@@ -40,34 +40,33 @@ The bandit feedback is a natural feedback model motivated by applications
 including online advertising and online content optimization.
 
 In this paper, we focus on the special case when the examples chosen by the
-adversary lie in $\R^d$ and
-are \emph{linearly separable with a margin}
-(see Definition~\ref{def:linear-sep} for a formal description).
+adversary lie in $\R^d$ and are \emph{linearly separable with a margin} (see
+\autoref{definition:linear-separability} for a formal description).
 %\chicheng{I wonder if we should introduce the two notions of linear separability here,
 %because strong linear separability is also worth mentioning in the full-information setting.
 %}
 %\david{The formal definitions are in a section of their own.}
 
-In the full-information feedback
-setting, it is well known that if the examples have norm at most $R$ and are
-linearly separable with a margin $\gamma$ then the \textsc{Multiclass
-Perceptron} algorithm makes at most $\lfloor 2(R/\gamma)^2 \rfloor$ mistakes.
-This result is very satisfying since the upper bound on the number of mistakes
-is information-theoretically optimal and at the same time the \textsc{Multiclass
-Perceptron} algorithm has low time and memory complexity.
+In the full-information feedback setting, it is well known that if the examples
+have norm at most $R$ and are linearly separable with a margin $\gamma$ then the
+\textsc{Multiclass Perceptron} algorithm makes at most $\lfloor 2(R/\gamma)^2
+\rfloor$ mistakes. This result is very satisfying since the upper bound on the
+number of mistakes is information-theoretically optimal and at the same time the
+\textsc{Multiclass Perceptron} algorithm has low time and memory complexity.
 
 The bandit feedback setting, however, is much more challenging. To understand
 the differences, we dissect the notion of linear separability in the multiclass
 setting. Besides the standard notion of linear separability, we also consider
-\emph{strong linear separability} (see Definition~\ref{def:strong-linear-sep} for a formal description). For binary classification, these two
-definitions are identical.
-However, they differ for multiclass classification with $K \geq 3$.
-For multiclass classification with $K$ classes, the standard notion of linear
-separability means that the examples from each class lie in an intersection of
-$K-1$ halfspaces and the examples outside of the class lie in the complement of
-the intersection of the halfspaces. Strong linear separability means that
-examples from each class are separated from the remaining examples by a
-\emph{single} hyperplane. We state the definitions precisely in
+\emph{strong linear separability} (see
+\autoref{definition:strong-linear-separability} for a formal description). For
+binary classification, these two definitions are identical. However, they differ
+for multiclass classification with $K \geq 3$. For multiclass classification
+with $K$ classes, the standard notion of linear separability means that the
+examples from each class lie in an intersection of $K-1$ halfspaces and the
+examples outside of the class lie in the complement of the intersection of the
+halfspaces. Strong linear separability means that examples from each class are
+separated from the remaining examples by a \emph{single} hyperplane. We state
+the definitions precisely in
 Section~\ref{section:notions-of-linear-separability}.
 
 For the case when the examples are strongly linearly separable, we design a
