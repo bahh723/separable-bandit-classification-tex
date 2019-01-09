@@ -60,7 +60,7 @@ must make at least $\lfloor (R/\gamma)^2 \rfloor$ mistakes in the worst case.
 Let $(V, \ip{\cdot}{\cdot})$ be an inner product space, let $K$ be a positive
 integer, let $\gamma$ be a positive real number and let $R$ be a non-negative real
 number. If $(x_1, y_1), (x_2, y_2), \dots, (x_T, y_T)$ is a sequence of labeled
-examples in $V \times \{1,2,\dots,K\}$ that are linearly separable with margin
+examples in $V \times \{1,2,\dots,K\}$ that are weakly linearly separable with margin
 $\gamma$ and $\norm{x_1}, \norm{x_2}, \dots, \norm{x_T} \le R$
 then \textsc{Multiclass Perceptron} algorithm makes at most $\lfloor
 2(R/\gamma)^2 \rfloor$ mistakes.
@@ -87,8 +87,8 @@ $$
 \sum_{i=1}^K \norm{w_i^{(T+1)}}^2 \le 2R^2 M \; .
 $$
 Let $w_1^*, w_2^*, \dots, w_K^* \in V$ be vectors satisfying the
-\eqref{equation:linear-separability-1} and
-\eqref{equation:linear-separability-2}. We lower bound $\sum_{i=1}^K \ip{w_i^*}{w_i^{(t)}}$. This quantity changes
+\eqref{equation:weak-linear-separability-1} and
+\eqref{equation:weak-linear-separability-2}. We lower bound $\sum_{i=1}^K \ip{w_i^*}{w_i^{(t)}}$. This quantity changes
 only when a mistakes happens. If mistake happens in round $t$, we have
 \begin{align*}
 & \sum_{i=1}^K \ip{w_i^*}{w_i^{(t+1)}} \\
@@ -102,7 +102,7 @@ $$
 \sum_{i=1}^K \ip{w_i^*}{w_i^{(T+1)}} \ge \gamma M \; .
 $$
 We upper bound the left hand side by using Cauchy-Schwartz inequality twice and
-the condition \eqref{equation:linear-separability-1} on $w_1^*, w_2^*, \dots,
+the condition \eqref{equation:weak-linear-separability-1} on $w_1^*, w_2^*, \dots,
 w_K^*$. We have
 \begin{align*}
 \sum_{i=1}^K \ip{w_i^*}{w_i^{(T+1)}}
@@ -125,7 +125,7 @@ $R$ be a non-negative real number. For any deterministic algorithm for the
 \textsc{Online Multiclass Classification} problem there exists an
 inner product space $(V, \ip{\cdot}{\cdot})$, a non-negative integer $T$ and a
 sequence of labeled examples $(x_1, y_1), (x_2, y_2), \dots, (x_T, y_T)$
-examples in $V \times \{1,2,\dots,K\}$ that are linearly separable with margin
+examples in $V \times \{1,2,\dots,K\}$ that are weakly linearly separable with margin
 $\gamma$, the norms satisfy $\norm{x_1}, \norm{x_2}, \dots, \norm{x_T} \le R$
 and the algorithm makes at least $\lfloor (R/\gamma)^2 \rfloor$ mistakes.
 \end{theorem}
@@ -144,8 +144,8 @@ makes a mistake in every round $t=1,2,\dots,T$.
 
 It remains to show that the examples we have constructed are linearly separable
 with margin $\gamma$. To prove that we demonstrate vectors $w_1, w_2, \dots, w_K$
-satisfying conditions \eqref{equation:linear-separability-1} and
-\eqref{equation:linear-separability-2}. We define
+satisfying conditions \eqref{equation:weak-linear-separability-1} and
+\eqref{equation:weak-linear-separability-2}. We define
 $$
 w_i = \frac{1}{R\sqrt{T}} \sum_{\substack{t : 1 \le t \le T \\ y_t = i}} x_t \qquad \text{for $i=1,2,\dots,K$.}
 $$
@@ -155,8 +155,8 @@ $$
 \norm{w_i}^2 = \frac{1}{R^2 T} \sum_{\substack{t : 1 \le t \le T \\ y_t = i}} \norm{x_t}^2 = \frac{a_i}{T} \qquad \text{for $i=1,2,\dots,K$.}
 $$
 Since $\sum_{i=1}^K a_i = T$, the condition
-\eqref{equation:linear-separability-1} holds. To verify condition
-\eqref{equation:linear-separability-2} consider any labeled example $(x_t,
+\eqref{equation:weak-linear-separability-1} holds. To verify condition
+\eqref{equation:weak-linear-separability-2} consider any labeled example $(x_t,
 y_t)$. Then, by definition of $w_{y_t}$ we have
 \begin{align*}
 \ip{w_{y_t}}{x_t}
@@ -167,5 +167,5 @@ y_t)$. Then, by definition of $w_{y_t}$ we have
 & = \gamma \; .
 \end{align*}
 and for any $i \in \{1,2,\dots,K\} \setminus \{y_t\}$ we have
-$\ip{w_i}{x_t} = 0$. Therefore, condition \eqref{equation:linear-separability-2} holds.
+$\ip{w_i}{x_t} = 0$. Therefore, condition \eqref{equation:weak-linear-separability-2} holds.
 \end{proof}

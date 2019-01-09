@@ -8,19 +8,19 @@ notion is stronger, i.e. more restrictive. However, it is more suitable for the
 bandit setting, since it allows for a simple and efficient algorithm; see
 Section~\ref{section:algorithm-for-strongly-linearly-separable-data}.
 
-\begin{definition}[Linear separability]
-\label{definition:linear-separability}
+\begin{definition}[Weak linear separability]
+\label{definition:weak-linear-separability}
 Let $(V,\ip{\cdot}{\cdot})$ be an inner product space, $K$ be a positive
 integer, and $\gamma$ be a positive real number. Let $(x_1, y_1), (x_2,
 y_2), \dots, (x_T, y_T)$ be labeled examples in $V \times \{1,2,\dots,K\}$.
 
-The examples are said to be \emph{linearly separable with a
+The examples are said to be \emph{weakly linearly separable with a
 margin $\gamma$} if there exist vectors $w_1, w_2, \dots, w_K \in V$ such
 that
 \begin{align}
-\label{equation:linear-separability-1}
+\label{equation:weak-linear-separability-1}
 & \sum_{i=1}^K \norm{w_i}^2 \le 1 \; , \\
-\label{equation:linear-separability-2}
+\label{equation:weak-linear-separability-2}
 & \begin{gathered}
 \forall t \in \{1,2,\dots,T\} \quad \forall i \in \{1,2,\dots, K\} \setminus \{y_t\} \\
 \ip{x_t}{w_{y_t}} \ge \ip{x_t}{w_i} + \gamma \; .
@@ -50,23 +50,25 @@ that
 \end{align}
 \end{definition}
 
-The notion of linear separability with a margin is standard. It is used in the
+The notion of weak linear separability with a margin is standard. It is used in the
 full-information setting to upper bound the number of mistakes of the
-\textsc{Multiclass Perceptron} algorithm. For completeness, we state the
-algorithm in Appendix~\ref{section:multiclass-perceptron-proofs}. It is a
+\textsc{Multiclass Perceptron} algorithm. It is a
 folklore result that if a set of labeled examples is separable with a margin
 $\gamma$ and the norm of the examples is bounded by $R$, then \textsc{Multiclass
 Perceptron} algorithm makes at most $\left\lfloor 2(R/\gamma)^2 \right \rfloor$
 mistakes. Another folklore result is that \textsc{Multiclass Perceptron} is
 essentially optimal in the sense that any deterministic algorithm must make
 $\left\lfloor (R/\gamma)^2 \right \rfloor$ mistakes in the worst case. For
-completeness, we give proofs of both of these results in
+completeness, we state the \textsc{Multiclass Perceptron} algorithm
+and give proofs of both of these results in
 Appendix~\ref{section:multiclass-perceptron-proofs}.
 
-The notion of strong linear separability is new. Intuitively, strong linear separability
-means that, for each $i$, the set of examples with class $i$ and the set of example of other classes are separated by a linear classifier $w_i$. Formally, $w_i$ separates the set of examples $\cbr{(x_t, y_t): t \in \cbr{1,\ldots,T}, y_t = i}$ and
-$\cbr{(x_t, y_t): t \in \cbr{1,\ldots,T}, y_t \neq i}$.
-
+The notion of strong linear separability is new. Intuitively, strong linear
+separability means that, for each $i$, the set of examples with class $i$ and
+the set of example of other classes are separated by a linear classifier $w_i$.
+Formally, $w_i$ separates the set of examples $\cbr{(x_t, y_t): t \in
+\cbr{1,\ldots,T}, y_t = i}$ and $\cbr{(x_t, y_t): t \in \cbr{1,\ldots,T}, y_t
+\neq i}$.
 
 \chicheng{I think the notion has appeared in~\cite{Chen-Chen-Zhang-Chen-Zhang-2009}, however,
 they proposed an algorithm that doesn't achieve a finite mistake bound in the bandit
@@ -74,19 +76,18 @@ setting under this assumption (although they claimed that they have done so, the
 wrong..)}
 
 It is easy to see that if a set of labeled examples are strongly linearly
-separable with margin $\gamma$, then they are linearly separable with margin
+separable with margin $\gamma$, then they are weakly linearly separable with margin
 $2\gamma$. Indeed, if $w_1, w_2, \dots, w_K \in V$
 satisfy \eqref{equation:strong-linear-separability-1},
 \eqref{equation:strong-linear-separability-2},
 \eqref{equation:strong-linear-separability-3} then they satisfy
-\eqref{equation:linear-separability-1} and
-\eqref{equation:linear-separability-2} with margin $\gamma' = 2\gamma$.
+\eqref{equation:weak-linear-separability-1} and
+\eqref{equation:weak-linear-separability-2} with margin $\gamma' = 2\gamma$.
 
-
-Similarly, if $K=2$ and labeled examples are linearly separable with a margin
+Similarly, if $K=2$ and labeled examples are weakly linearly separable with a margin
 $\gamma$ then they are strongly linearly separable with margin $\gamma/2$.
-Indeed, if $w_1, w_2$ satisfy \eqref{equation:linear-separability-1} and
-\eqref{equation:linear-separability-2} then $w_1' = \frac{w_1 - w_2}{2}$, $w_2' =
+Indeed, if $w_1, w_2$ satisfy \eqref{equation:weak-linear-separability-1} and
+\eqref{equation:weak-linear-separability-2} then $w_1' = \frac{w_1 - w_2}{2}$, $w_2' =
 \frac{w_2 - w_1}{2}$ and $\gamma'=\gamma/2$ satisfy
 \eqref{equation:strong-linear-separability-1},
 \eqref{equation:strong-linear-separability-2},
@@ -95,25 +96,28 @@ to see. The first condition follows from $\norm{w_i'}^2 \le (\frac{1}{2}
 \norm{w_1} + \frac{1}{2} \norm{w_2})^2 \le \frac{1}{2}\norm{w_1}^2 +
 \frac{1}{2}\norm{w_2}^2 \le \frac{1}{2}$ for $i=1,2$.
 
-\chicheng{Shall we change the $\gamma$ in Equations \eqref{equation:strong-linear-separability-2}, \eqref{equation:strong-linear-separability-3} to $\gamma/2$, to simplify the presentation?}
+\chicheng{Shall we change the $\gamma$ in Equations
+\eqref{equation:strong-linear-separability-2},
+\eqref{equation:strong-linear-separability-3} to $\gamma/2$, to simplify the
+presentation?}
 
 However, for any $K \ge 3$ and any inner product space of dimension at least
-$2$, there exists a set of labeled examples that is linearly separable with a
+$2$, there exists a set of labeled examples that is weakly linearly separable with a
 positive margin $\gamma$ but it is not strongly linearly separable with any
 positive margin $\gamma$. An example of such set of labeled examples is shown in
-Figure~\ref{figure:linearly-separable-examples-with-margin}.
+Figure~\ref{figure:weakly-linearly-separable-examples-with-margin}.
 
 \begin{figure}
 \begin{center}
-\input{figures/linearly-separable-examples-with-margin}
+\input{figures/weakly-linearly-separable-examples-with-margin}
 \end{center}
 \caption[]{The figure shows labeled examples in $\R^2$. The examples belong to
 $K=3$ classes colored white, gray and black respectively. Each class lies in a
 $120^\circ$ wedge. In other words, each class lies in an intersection of two
 halfspaces.
 
-While the examples are linearly separable with a positive margin $\gamma$, they
+While the examples are weakly linearly separable with a positive margin $\gamma$, they
 are \emph{not} strongly linearly separable with any positive margin $\gamma$.
 }
-\label{figure:linearly-separable-examples-with-margin}
+\label{figure:weakly-linearly-separable-examples-with-margin}
 \end{figure}

@@ -3,8 +3,8 @@
 
 We study the problem of \textsc{Online Multiclass Linear Classification with
 Bandit Feedback}~\citep{Kakade-Shalev-Shwartz-Tewari-2008}. The problem can be
-viewed as a game between the learner and the adversary: at each timestep $t$,
-the adversary chooses an example $(x_t, y_t)$ where the feature vector $x_t \in
+viewed as a repeated game between the learner and the adversary. At each timestep $t$,
+the adversary chooses a labeled example $(x_t, y_t)$ where the feature vector, $x_t \in
 \R^d$ is revealed to the learner and the correct label $y_t$ is kept secret by
 the adversary. Upon receiving the feature vector $x_t$, the learner is asked to
 make a prediction $\widehat{y}_t$. Immediately after making its prediction, the
@@ -41,43 +41,37 @@ The bandit feedback is a natural feedback model motivated by applications
 including online advertising and online content optimization.
 
 In this paper, we focus on the special case when the examples chosen by the
-adversary lie in $\R^d$ and are \emph{linearly separable with a margin} (see
-\autoref{definition:linear-separability} for a formal description).
-%\chicheng{I wonder if we should introduce the two notions of linear separability here,
-%because strong linear separability is also worth mentioning in the full-information setting.
-%}
-%\david{The formal definitions are in a section of their own.}
+adversary lie in $\R^d$ and are linearly separable with a margin. We introduce
+two notions of linear separability, \emph{weak} and \emph{strong}. These are
+formally stated in
+Definitions~\ref{definition:weak-linear-separability}~and~\ref{definition:strong-linear-separability}.
+The standard notion of multiclass linear separability corresponds to the weak
+linear separability. For binary classification, these two notions are
+identical. However, they differ for multiclass classification with $K \geq 3$.
+For multiclass classification with $K$ classes, the standard notion of linear
+separability means that the examples from each class lie in an intersection of
+$K-1$ halfspaces and the examples outside of the class lie in the complement of
+the intersection of the halfspaces. Strong linear separability means that
+examples from each class are separated from the remaining examples by a
+\emph{single} hyperplane.
 
 In the full-information feedback setting, it is well known that if the examples
-have norm at most $R$ and are linearly separable with a margin $\gamma$ then the
-\textsc{Multiclass Perceptron} algorithm makes at most $\lfloor 2(R/\gamma)^2
-\rfloor$ mistakes. This result is very satisfying since the upper bound on the
-number of mistakes is information-theoretically optimal and at the same time the
-\textsc{Multiclass Perceptron} algorithm has low time and memory complexity.
+have norm at most $R$ and are weakly linearly separable with a margin $\gamma$
+then the \textsc{Multiclass Perceptron} algorithm makes at most $\lfloor
+2(R/\gamma)^2 \rfloor$ mistakes. This result is very satisfying since the upper
+bound on the number of mistakes is information-theoretically optimal and at the
+same time the \textsc{Multiclass Perceptron} algorithm has low time and memory
+complexity.
 
-The bandit feedback setting, however, is much more challenging. To understand
-the differences, we dissect the notion of linear separability in the multiclass
-setting. Besides the standard notion of linear separability, we also consider
-\emph{strong linear separability} (see
-\autoref{definition:strong-linear-separability} for a formal description). For
-binary classification, these two definitions are identical. However, they differ
-for multiclass classification with $K \geq 3$. For multiclass classification
-with $K$ classes, the standard notion of linear separability means that the
-examples from each class lie in an intersection of $K-1$ halfspaces and the
-examples outside of the class lie in the complement of the intersection of the
-halfspaces. Strong linear separability means that examples from each class are
-separated from the remaining examples by a \emph{single} hyperplane. We state
-the definitions precisely in
-Section~\ref{section:notions-of-linear-separability}.
-
-For the case when the examples are strongly linearly separable, we design a
-simple and efficient algorithm with an expected number of mistakes at most $(K-1)
-\lfloor (R/\gamma)^2 \rfloor$. The algorithm can be viewed as running $K$ copies
-of the \textsc{Binary Perceptron} algorithm, one copy for each class.
-Intuitively speaking, the factor $K-1$ is the price we pay for the bandit
-feedback, or more precisely, the lack of full-information feedback. We also
-prove that any (possibly randomized) algorithm makes $\Omega(K (R/\gamma)^2))$
-mistakes in the worst case.
+The bandit feedback setting, however, is much more challenging. For the case
+when the examples are strongly linearly separable, we design a simple and
+efficient algorithm with an expected number of mistakes at most $(K-1) \lfloor
+(R/\gamma)^2 \rfloor$. The algorithm can be viewed as running $K$ copies of the
+\textsc{Binary Perceptron} algorithm, one copy for each class. Intuitively
+speaking, the factor $K-1$ is the price we pay for the bandit feedback, or more
+precisely, the lack of full-information feedback. We also prove that any
+(possibly randomized) algorithm makes $\Omega(K (R/\gamma)^2))$ mistakes in the
+worst case.
 
 For the standard notion of linear separability, we propose several algorithms
 with various time-complexity-versus-mistake-bound trade-offs.
