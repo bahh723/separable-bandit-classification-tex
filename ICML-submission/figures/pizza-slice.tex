@@ -1,4 +1,4 @@
-\begin{tikzpicture}
+\begin{tikzpicture}[scale=0.5]
 
   \useasboundingbox (-5.5,-5.5) rectangle (5.5,5.5);
   % \draw[help lines] (-5.5,-5.5) rectangle (5.5,5.5);
@@ -11,8 +11,8 @@
   % Notable points
   \coordinate (Origin) at (0,0);
 
-  \coordinate [label={[xshift=-10mm, yshift=5mm]$\ip{v_1}{x} = 0$}] (A) at (120:5);
-  \coordinate [label={[xshift=-10mm, yshift=-10mm]$\ip{v_2}{x} = 0$}] (B) at (240:5);
+  \coordinate [label={[xshift=-10mm, yshift=0mm]$\ip{v_1}{x} = 0$}] (A) at (120:5);
+  \coordinate [label={[xshift=-10mm, yshift=-5mm]$\ip{v_2}{x} = 0$}] (B) at (240:5);
 
   % Circle which contains all the examples.
   % \draw (Origin) circle (5cm);
@@ -32,23 +32,23 @@
   \draw[ultra thick] ($(Origin) + (1,0)$) -- (A2);
   \draw[ultra thick] ($(Origin) + (1,0)$) -- (B2);
 
-  \pic [ultra thick, draw, angle radius=5cm] {angle=A1--Origin--B1};
-  \pic [ultra thick, draw, angle radius=5cm] {angle=B2--Origin--A2};
+  \pic [ultra thick, draw, angle radius=2.5cm] {angle=A1--Origin--B1};
+  \pic [ultra thick, draw, angle radius=2.5cm] {angle=B2--Origin--A2};
 
 
   \coordinate (C) at (120:3);
   \coordinate (C1) at ($(120:3) + (0.75, 0.43301270189221932338)$);
   \coordinate (C2) at ($(120:3) - (0.75, 0.43301270189221932338)$);
-  \draw[<->, >=latex, ultra thick] (C1) -- (C);
-  \draw[<->, >=latex, ultra thick] (C2) -- (C);
+  \draw[<->, >=latex', ultra thick] (C1) -- (C);
+  \draw[<->, >=latex', ultra thick] (C2) -- (C);
   \draw ($0.5*(C1) + 0.5*(C)$) node[above, xshift=-1mm] {$\gamma$};
   \draw ($0.5*(C2) + 0.5*(C)$) node[above, xshift=-1mm] {$\gamma$};
 
   \coordinate (D) at (240:3);
   \coordinate (D1) at ($(240:3) + (-0.75, 0.43301270189221932338)$);
   \coordinate (D2) at ($(240:3) - (-0.75, 0.43301270189221932338)$);
-  \draw[<->, >=latex, ultra thick] (D1) -- (D);
-  \draw[<->, >=latex, ultra thick] (D2) -- (D);
+  \draw[<->, >=latex', ultra thick] (D1) -- (D);
+  \draw[<->, >=latex', ultra thick] (D2) -- (D);
   \draw ($0.5*(D1) + 0.5*(D)$) node[below, xshift=-1mm] {$\gamma$};
   \draw ($0.5*(D2) + 0.5*(D)$) node[below, xshift=-1mm] {$\gamma$};
 

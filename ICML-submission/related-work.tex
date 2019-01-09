@@ -43,18 +43,19 @@ regret of $\widetilde{O}(\sqrt{T})$ against the multiclass logistic loss, where
 it doubly-exponentially improves over \citet{Hazan-Kale-2011}'s regret on its
 dependence on the diameter of the benchmark class.
 
-\citet{Chen-Lin-Lu-2014, Zhang-Jung-Tewari-2018} study online bandit multiclass
-boosting under bandit feedback, where one can view online boosting as online
-linear classification by treating each base hypothesis as a separate feature.
-\citet{Chen-Lin-Lu-2014}'s online weak learning condition implies that the set
-of examples is strongly separable by a convex combination of base hypotheses
-with a margin. Under this condition, it gives an algorithm with a $O(T^{3/4})$
-mistake bound. \citet{Zhang-Jung-Tewari-2018} considers an online weak learning
-condition, which implies that all examples is separable by a convex combination
-of base hypotheses with a margin (See~\cite{Mukherjee-Schapire-2013}, Theorem
-3). Under this condition, it gives a boosting algorithm with a $O(\sqrt{T})$
-mistake bound with the knowledge of the edge parameter. In addition, it gives an
-adaptive algorithm with a $O(T^{3/4})$ mistake bound.
+\citet{Chen-Lin-Lu-2014} and \citet{Zhang-Jung-Tewari-2018} study online bandit
+multiclass boosting under bandit feedback, where one can view online boosting as
+online linear classification by treating each base hypothesis as a separate
+feature. \citet{Chen-Lin-Lu-2014}'s online weak learning condition implies that
+the set of examples is strongly separable by a convex combination of base
+hypotheses with a margin. Under this condition, it gives an algorithm with a
+$O(T^{3/4})$ mistake bound. \citet{Zhang-Jung-Tewari-2018} considers an online
+weak learning condition, which implies that all examples is separable by a
+convex combination of base hypotheses with a margin
+(See~\cite{Mukherjee-Schapire-2013}, Theorem 3). Under this condition, it gives
+a boosting algorithm with a $O(\sqrt{T})$ mistake bound with the knowledge of
+the edge parameter. In addition, it gives an adaptive algorithm with a
+$O(T^{3/4})$ mistake bound.
 
 The online bandit multiclass learning is a special case of the contextual
 bandits problem~\citep{Auer-2003, Langford-Zhang-2008}, where the cost is the
