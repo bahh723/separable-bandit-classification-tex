@@ -44,7 +44,7 @@ must make at least $\lfloor (R/\gamma)^2 \rfloor$ mistakes in the worst case.
 \STATE{Predict $\widehat y_t = \argmax_{i \in \{1,2,\dots,K\}} \ip{w_t^{(i)}}{x_t}$}
 \STATE{Observe $y_t \in \{1,2,\dots,K\}$}
 \IF{$\widehat y_t \neq y_t$}
-\STATE{Set $w_i^{(t+1)} = w_i^{(t)}$ for all $i \in \{1,2,\dots,K\} \setminus \{y_t, \widehat y_t\}$}
+\STATE{Set $w_i^{(t+1)} = w_i^{(t)}$ \\ \qquad for all $i \in \{1,2,\dots,K\} \setminus \{y_t, \widehat y_t\}$}
 \STATE{Update $w_{y_t}^{(t+1)} = w_{y_t}^{(t)} + x_t$}
 \STATE{Update $w_{\widehat y_t}^{(t+1)} = w_{\widehat y_t}^{(t)} - x_t$}
 \ELSE
