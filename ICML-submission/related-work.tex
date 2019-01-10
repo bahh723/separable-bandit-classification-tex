@@ -2,9 +2,9 @@
 \label{section:related-work}
 
 The problem of bandit multiclass linear classification was initially formulated
-by the pioneering work of~\citet{Kakade-Shalev-Shwartz-Tewari-2008}. In that
-work, two computationally inefficient algorithms that work in the standard
-linearly separable setting are proposed: one with a mistake bound of $O(K^2 d
+in the pioneering work of~\citet{Kakade-Shalev-Shwartz-Tewari-2008}. They proposed
+two computationally inefficient algorithms that work in the standard
+linearly separable setting, one with a mistake bound of $O(K^2 d
 \ln(\frac{d}{\gamma^2}))$, the other with a mistake bound of
 $\widetilde{O}(\frac{K^2}{\gamma^2} \ln T)$. In addition, the authors propose
 the \textsc{Banditron} algorithm, a computationally efficient algorithm that has
@@ -51,11 +51,10 @@ the set of examples is strongly separable by a convex combination of base
 hypotheses with a margin. Under this condition, it gives an algorithm with a
 $O(T^{3/4})$ mistake bound. \citet{Zhang-Jung-Tewari-2018} considers an online
 weak learning condition, which implies that all examples is separable by a
-convex combination of base hypotheses with a margin
-(See~\cite{Mukherjee-Schapire-2013}, Theorem 3). Under this condition, it gives
-a boosting algorithm with a $O(\sqrt{T})$ mistake bound with the knowledge of
-the edge parameter. In addition, it gives an adaptive algorithm with a
-$O(T^{3/4})$ mistake bound.
+convex combination of base hypotheses with a margin; see~\citet[Theorem
+3]{Mukherjee-Schapire-2013}. Under this condition, it gives a boosting algorithm
+with a $O(\sqrt{T})$ mistake bound with the knowledge of the edge parameter. In
+addition, it gives an adaptive algorithm with a $O(T^{3/4})$ mistake bound.
 
 The online bandit multiclass learning is a special case of the contextual
 bandits problem~\citep{Auer-2003, Langford-Zhang-2008}, where the cost is the
@@ -67,11 +66,11 @@ There has been much literature on the contextual bandit learning
 problem~\citep{Auer-2003, Langford-Zhang-2008}. In this problem, the learner is
 given a policy class $\Pi$, and at each timestep $t$, an example $x_t$ is shown,
 with an associated cost vector $c_t$ hidden. The learner then takes an action
-$\hat{y}_t$, and observed the incurred cost $c_t$. The goal of the learner is to
-minimize its regret $\sum_{t=1}^T c_t(\hat{y}_t) - \min_{\pi \in \Pi}
+$\widehat{y}_t$, and observed the incurred cost $c_t$. The goal of the learner is to
+minimize its regret $\sum_{t=1}^T c_t(\widehat{y}_t) - \min_{\pi \in \Pi}
 \sum_{t=1}^T c_t(\pi(x_t))$. The online bandit multiclass learning problem is a
 special case of the contextual bandits problem, where the cost $c_t(i)$ is the
-classification error $I(i \neq y_t)$, and the policy class $\Pi$ is the set of
+classification error $\indicator{i \neq y_t}$, and the policy class $\Pi$ is the set of
 linear classifiers $\cbr{x \mapsto \argmax_y (Wx)_y: W \in \R^{k \times d}}$. A
 series of works in the contextual bandits learning literature focus on
 oracle-efficiency~\citep{Dudik-Hsu-Kale-Karampatziakis-Langford-Reyzin-Zhang-2011,
