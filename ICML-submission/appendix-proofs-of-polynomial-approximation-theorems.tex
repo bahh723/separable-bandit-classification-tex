@@ -1,0 +1,592 @@
+\section{Proof of Theorems~\ref{theorem:polynomial-approximation-1}~and~\ref{theorem:polynomial-approximation-2}}
+\label{section:proof-of-polynomial-approximation}
+
+For the proofs of the theorems we need several auxiliary results.
+
+\begin{lemma}[Simple inequality]
+\label{lemma:simple-inequality}
+For any real numbers $b_1, b_2, \dots, b_n$,
+$$
+\left( \sum_{i=1}^n b_i \right)^2 \le n \sum_{i=1}^n b_i^2 \; .
+$$
+\end{lemma}
+
+\begin{proof}
+The lemma follows from Cauchy-Schwartz inequality applied to
+vectors $(b_1, b_2, \dots, b_n)$ and $(1,1,\dots,1)$.
+\end{proof}
+
+\begin{lemma}[Bound on binomial coefficients]
+\label{lemma:binomial-bound}
+For any integers $n,k$ such that $n \ge k \ge 0$,
+$$
+\binom{n}{k} \le (n - k + 1)^k \; .
+$$
+\end{lemma}
+
+\begin{proof}
+If $k = 0$, the inequality trivially holds. For the rest of the proof we can
+assume $k \ge 1$. We write the binomial coefficient as
+\begin{align*}
+\binom{n}{k}
+& = \frac{n(n-1)\cdots(n-k+1)}{k(k-1) \cdots 1} \\
+& = \frac{n}{k} \cdot \frac{n-1}{k - 1} \cdots \frac{n-k+1}{1} \; .
+\end{align*}
+We claim that
+$$
+\frac{n}{k} \le \frac{n-1}{k - 1} \le \cdots \le \frac{n-k+1}{1}
+$$
+from which the lemma follows by upper bounding all the fractions by $n-k+1$.
+It remains to prove that for any $j=0,1,\dots,k-1$,
+$$
+\frac{n - j + 1}{k - j + 1} \le \frac{n - j}{k - j} \; .
+$$
+Multiplying by the (positive) denominators, we get an equivalent inequality
+$$
+(n - j + 1)(k - j) \le (n - j)(k - j + 1) \; .
+$$
+Cancelling common terms leads to an equivalent inequality
+$$
+k - j \le n - j \; ,
+$$
+which since $n \ge k$ by assumption.
+\end{proof}
+
+\begin{lemma}[Properties of the norm of polynomials]
+\label{lemma:properties-of-norm-of-polynomials}
+\hspace{1cm} % Dummy space
+\begin{enumerate}
+\item Let $p_1, p_2, \dots, p_n$ be multivariate polynomials and let $p(x) =
+\prod_{j=1}^n p_j(x)$ be their product.  Then, $\norm{p}^2 \le n^{\sum_{j=1}^n
+\deg(p_j)} \prod_{j=1}^n \norm{p_j}^2$.
+
+\item Let $q$ be a multivariate polynomial of degree at most $s$ and let $p(x) =
+(q(x))^n$. Then, $\norm{p}^2 \le n^{ns} \norm{q}^{2n}$.
+
+\item Let be $p_1, p_2, \dots, p_n$ be multivariate polynomials. Then,
+$\norm{\sum_{j=1}^n p_j}^2 \le n \sum_{j=1}^n \norm{p_j}^2$.
+\end{enumerate}
+\end{lemma}
+
+\begin{proof}
+Using multi-index notation we can write any multivariate polynomial $p$ as
+$$
+p(x) = \sum_A c_A x^A
+$$
+where $A = (\alpha_1, \alpha_2, \dots, \alpha_d)$ is a multi-index (i.e. a $d$-tuple of
+non-negative integers), $x^A = x_1^{\alpha_1} x_2^{\alpha_2} \dots x_d^{\alpha_d}$ is a
+monomial and $c_A = c_{\alpha_1, \alpha_2, \dots, \alpha_d}$ is the corresponding real
+coefficient. The sum is over a finite subset of $d$-tuples of non-negative
+integers. Using this notation, the norm of a polynomial $p$ can be written as
+$$
+\norm{p} = \sqrt{\sum_A (c_A)^2} \; .
+$$
+For a multi-index $A = (\alpha_1, \alpha_2, \dots, \alpha_d)$ we define its
+$1$-norm as $\norm{A}_1 = \alpha_1 + \alpha_2 + \dots + \alpha_d$.
+
+To prove the part 1, we express $p_j$ as
+$$
+p_j(x) = \sum_{A_j} c^{(j)}_{A_j} x^{A_j} \; .
+$$
+Since $p(x) = \prod_{i=1}^n p_j(x)$, the coefficients of its expansion $p(x) =
+\sum_A c_A x^A$ are
+$$
+c_A = \sum_{\substack{(A_1, A_2, \dots, A_n) \\ A_1 + A_2 + \dots + A_n = A}} c^{(1)}_{A_1} c^{(2)}_{A_2} \cdots c^{(n)}_{A_n} \; .
+$$
+Therefore,
+\begin{align*}
+\norm{p}^2
+& = \sum_{A} (c_A)^2 \\
+& = \sum_{A} \left( \sum_{\substack{(A_1, A_2, \dots, A_n) \\ A_1 + A_2 + \dots + A_n = A}} c^{(1)}_{A_1} c^{(2)}_{A_2} \cdots c^{(n)}_{A_n} \right)^2 \\
+& = \sum_{A} \left( \sum_{\substack{(A_1, A_2, \dots, A_n) \\ A_1 + A_2 + \dots + A_n = A}} \prod_{j=1}^n c^{(j)}_{A_j} \right)^2
+\end{align*}
+and
+\begin{align*}
+\prod_{i=1}^n \norm{p_i}^2
+& = \prod_{i=1}^n \left( \sum_{A_i} (c^{(i)}_{A_i})^2 \right) \\
+& = \sum_{(A_1, A_2, \dots, A_n)} \prod_{j=1}^n (c^{(j)}_{A_j})^2 \\
+& = \sum_{(A_1, A_2, \dots, A_n)} \left( \prod_{j=1}^n c^{(j)}_{A_j} \right)^2 \\
+& = \sum_A \sum_{\substack{(A_1, A_2, \dots, A_n) \\ A_1 + A_2 + \dots + A_n = A}} \left( \prod_{j=1}^n c^{(j)}_{A_j} \right)^2
+\end{align*}
+where in both cases the outer sum is over multi-indices $A$ such that $\norm{A}_1 \le \deg(p)$.
+\autoref{lemma:simple-inequality} implies that for any multi-index $A$,
+\begin{multline*}
+\left( \sum_{\substack{(A_1, A_2, \dots, A_n) \\ A_1 + A_2 + \dots + A_n = A}} \prod_{j=1}^n c^{(j)}_{A_j} \right)^2 \\
+\le M_A \sum_{\substack{(A_1, A_2, \dots, A_n) \\ A_1 + A_2 + \dots + A_n = A}} \left( \prod_{j=1}^n c^{(j)}_{A_j} \right)^2 \; .
+\end{multline*}
+where $M_A$ is the number of $n$-tuples $(A_1, A_2, \dots, A_n)$ such that $A_1 +
+A_2 + \dots + A_n = A$.
+
+To finish the proof, it is sufficient to prove that $M_A \le n^{\deg(p)}$ for
+any $A$ such that $\norm{A}_1 \le \deg(p)$. To prove this inequality, consider a
+multi-index $A = (\alpha_1, \alpha_2, \dots, \alpha_d)$ and consider its $i$-th coordinate
+$\alpha_i$. In order for $A_1 + A_2 + \dots + A_n = A$ to hold, the $i$-th
+coordinates of $A_1, A_2, \dots, A_n$ need to sum to $\alpha_i$. There are exactly
+$\binom{\alpha_i + n - 1}{\alpha_i}$ possibilities for the choice of $i$-th
+coordinates of $A_1, A_2, \dots, A_n$. The total number of choices is thus
+$$
+M_A = \prod_{i=1}^d \binom{\alpha_i + n - 1}{\alpha_i} \; .
+$$
+Using \autoref{lemma:binomial-bound}, we upper bound it as
+$$
+M_A \le \prod_{i=1}^d n^{\alpha_i} = n^{\norm{A}_1} \le n^{\deg(p)} \; .
+$$
+
+Part 2 follows from the part 1 by setting $p_1 = p_2 = \dots p_n = q$.
+
+To prove the part 3, we use generalized triangle inequality and
+\autoref{lemma:simple-inequality}. We have
+\begin{multline*}
+\norm{\sum_{j=1}^n p_j}^2 = \left( \norm{\sum_{j=1}^n p_j} \right)^2 \\ \le \left(\sum_{j=1}^n \norm{p_j} \right)^2 \le n \sum_{j=1}^n \norm{p_j}^2 \; .
+\end{multline*}
+\end{proof}
+
+\subsection{Proof of \autoref{theorem:polynomial-approximation-1}}
+\label{section:proof-of-polynomial-approximation-1}
+
+To construct the polynomial $p$ we use Chebyshev polynomials of the first kind.
+Chebyshev polynomials of the fist kind form an infinite sequence of polynomials
+$T_0(z), T_1(z), T_2(z), \dots$ of single real variable $z$. They are defined
+by the recurrence
+\begin{align*}
+T_0(z) & = 1 \; , \\
+T_1(z) & = z \; , \\
+T_{n+1}(z) & = 2zT_n(z) - T_{n-1}(z) & \text{for $n \ge 1$.}
+\end{align*}
+Chebyshev polynomials have a lot of interesting properties.
+We will need properties listed in
+\autoref{proposition:properties-of-chebyshev-polynomials} below.
+Interested reader can learn more about Chebyshev polynomials
+from the book by \cite{Mason-Handscomb-2002}.
+
+\begin{proposition}[Properties of Chebyshev polynomials]
+\label{proposition:properties-of-chebyshev-polynomials}
+Chebyshev polynomials satisfy
+\begin{enumerate}
+\item $\deg(T_n) = n$ for all $n \ge 0$.
+\item If $n \ge 1$, the leading coefficient of $T_n(z)$ is $2^{n-1}$.
+\item $T_n(\cos(\theta)) = \cos(n \theta)$ for all $\theta \in \R$ and all $n \ge 0$.
+\item $T_n(\cosh(\theta)) = \cosh(n \theta)$ for all $\theta \in \R$ and all $n \ge 0$.
+\item $|T_n(z)| \le 1$ for all $z \in [-1,1]$ and all $n \ge 0$.
+\item $T_n(z) \ge 1 + n^2(z - 1)$ for all $z \ge 1$ and all $n \ge 0$.
+\item $\norm{T_n} \le (1+\sqrt{2})^n$ for all $n \ge 0$
+\end{enumerate}
+\end{proposition}
+
+\begin{proof}[Proof of \autoref{proposition:properties-of-chebyshev-polynomials}]
+The first two properties can be easily proven by induction on $n$ using the recurrence.
+
+We prove third property by induction on $n$. Indeed, by definition
+$$
+T_0(\cos(\theta)) = 1 = \cos(0 \theta) \quad \text{and} \quad T_1(\cos(\theta)) = \cos(\theta) \; .
+$$
+For $n \ge 1$, we have
+\begin{align*}
+T_{n+1}(\cos(\theta))
+& = 2 \cos(\theta) T_n(\cos(\theta)) - T_{n-1}(\cos(\theta)) \\
+& = 2 \cos(\theta) \cos(n \theta) - \cos((n-1)\theta)) \; ,
+\end{align*}
+where the last step follow by induction hypothesis.
+It remains to show that the last expression equals $\cos((n+1)\theta)$.
+This can be derived from the trigonometric formula
+$$
+\cos(\alpha \pm \beta) = \cos(\alpha) \cos(\beta) \mp \sin(\alpha) \sin(\beta) \; .
+$$
+By substituting $\alpha = n \theta$ and $\beta = \theta$, we get two equations
+\begin{align*}
+\cos((n+1) \theta) & = \cos(n \theta) \cos(\theta) - \sin(n \theta) \sin(\theta) \; , \\
+\cos((n-1) \theta) & = \cos(n \theta) \cos(\theta) + \sin(n \theta) \sin(\theta) \; .
+\end{align*}
+Summing them yields
+$$
+\cos((n+1)\theta) + \cos((n-1) \theta) = 2 \cos(n \theta) \cos(\theta)
+$$
+which finishes the proof.
+
+Fourth property has the similar proof as third property. It suffices
+to replace $\cos$ and $\sin$ with $\cosh$ and $\sinh$ respectively.
+
+Fifth property follows from the third property. Indeed, for any $z \in [-1,1]$
+there exists $\theta \in \R$ such that $\cos \theta = z$. Thus, $|T_n(z)| =
+|T_n(\cos(\theta))| = |\cos(n\theta)| \le 1$.
+
+The sixth property is equivalent to
+$$
+T_n(\cosh(\theta)) \ge 1 + n^2 (\cosh(\theta) - 1) \qquad \text{for all $\theta \ge 0$,}
+$$
+since $\cosh(\theta) = \frac{e^{\theta} + e^{-\theta}}{2}$ is an even continuous
+function that maps $\R$ onto $[1,+\infty)$, is strictly decreasing on
+$(-\infty,0]$, and is strictly increasing on $[0,\infty)$. Using the fourth
+property the last inequality is equivalent to
+$$
+\cosh(n \theta) \ge 1 + n^2 (\cosh(\theta) - 1) \qquad \text{for all $\theta \ge 0$.}
+$$
+For $\theta = 0$, both sides are equal to $1$. Thus, it is sufficient to prove
+that the derivative of the left hand side is greater or equal to the derivative
+of the right hand side. Recalling that $[\cosh(\theta)]' = \sinh(\theta)$, this
+means that we need to show that
+$$
+\sinh(n \theta) \ge n \sinh(\theta) \qquad \text{for all $\theta \ge 0$.}
+$$
+Tho prove this inequality we use the summation formula
+$$
+\sinh(\alpha + \beta) = \sinh(\alpha) \cosh(\beta) + \sinh(\beta) \cosh(\beta) \; .
+$$
+If $\alpha, \beta$ are non-negative then $\sinh(\alpha), \sinh(\beta)$ are
+non-negative and $\cosh(\alpha), \cosh(\beta) \ge 1$. Hence,
+$$
+\sinh(\alpha + \beta) \ge \sinh(\alpha) + \sinh(\beta) \qquad \text{for any $\alpha, \beta \ge 0$.}
+$$
+This implies that (using induction on $n$) that $\sinh(n \theta) \ge n
+\sinh(\theta)$ for all $\theta \ge 0$.
+
+We verify the seventh property by induction on $n$.
+For $n=0$ and $n=1$ the inequality trivially holds, since $\norm{T_0} = \norm{T_1} = 1$.
+For $n \ge 1$, since $T_{n+1}(z) = 2zT_n(z) - T_{n-1}(z)$,
+\begin{align*}
+\norm{T_{n+1}}
+& \le 2 \norm{T_n} + \norm{T_{n-1}} \\
+& \le 2 (1 + \sqrt{2})^n + (1 + \sqrt{2})^{n-1} \\
+& = (1 + \sqrt{2})^{n-1} (2 (1 + \sqrt{2}) + 1) \\
+& = (1 + \sqrt{2})^{n-1} (3 + 2\sqrt{2}) \\
+& = (1 + \sqrt{2})^{n-1} (1 + \sqrt{2})^2 \\
+& = (1 + \sqrt{2})^{n+1} \; .
+\end{align*}
+
+\end{proof}
+
+Let $r = \left\lceil \log_2(2m) \right\rceil$ and $s = \left\lceil \sqrt{\frac{1}{\gamma}} \right\rceil$.
+We define the polynomial $p:\R^d \to \R$ as
+$$
+p(x) = m + \frac{1}{2} - \sum_{i=1}^m \left( T_s(1 - \ip{v_i}{x}) \right)^r \; .
+$$
+It remains to show that $p$ has properties 1--5.
+
+To verify the first property notice that if $x \in \R^d$ satisfies $\norm{x} \le
+1$ and $\ip{v_i}{x} \ge \gamma$ then since $\norm{v_i} \le 1$ we have
+$\ip{v_i}{x} \in [0,1]$. Thus, $T_s(1 - \ip{v_i}{x})$ and $\left( T_s(1 -
+\ip{v_i}{x}) \right)^r$ lie in the interval $[-1,1]$. Therefore,
+$$
+p(x) \ge m + \frac{1}{2} - m \ge \frac{1}{2} \; .
+$$
+
+To verify the second property consider any $x \in \bigcup_{i=1}^m \left\{ x \in \R^d
+~:~ \norm{x} \le 1, \ \ip{v_i}{x} \le - \gamma \right\}$. Clearly, $\norm{x} \le 1$
+and there exists at least one $i \in \{1,2,\dots,m\}$ such that $\ip{v_i}{x} \le
+- \gamma$. Therefore, $1 - \ip{v_i}{x} \ge 1 + \gamma$ and~\autoref{proposition:properties-of-chebyshev-polynomials} (part 6)
+imply that
+$$
+T_s(1 - \ip{v_i}{x}) \ge 1 + s^2 \gamma \ge 2
+$$
+and thus
+$$
+\left( T_s(1 - \ip{v_i}{x}) \right)^r \ge 2^r \ge 2m \; .
+$$
+On the other hand for any $j \in \{1,2,\dots,m\}$, we have $\ip{v_j}{x} \in
+[-1,1]$ and thus $1 - \ip{v_j}{x}$ lies in the interval $[0,2]$. According to
+\autoref{proposition:properties-of-chebyshev-polynomials} (parts 5 and 6), $T_s(1 - \ip{v_j}{x})
+\ge -1$. Therefore,
+\begin{align*}
+p(x) & = m + \frac{1}{2} - \left( T_s(1 - \ip{v_i}{x}) \right)^r \\
+& \qquad - \sum_{\substack{j ~:~  1 \le j \le m \\ j \neq i}} \left( T_s(1 - \ip{v_j}{x}) \right)^r \\
+& \le m + \frac{1}{2} - 2m + (m - 1) \\
+& \le - \frac{1}{2} \; .
+\end{align*}
+
+The third property follows from observation that degree of $p$
+is the same as the degree of any one of the terms
+$\left( T_s(1 - \ip{v_i}{x}) \right)^r$ which is $r \cdot s$.
+
+To prove the fourth property, we need to upper bound the norm of $p$.
+Let $f_i(x) = 1 - \ip{v_i}{x}$, let $g_i(x) = T_s(1 - \ip{v_i}{x})$
+and let $h_i(x) = (T_s(1 - \ip{v_i}{x}))^r$. We have
+$$
+\norm{f_i}^2 = 1 + \norm{v_i}^2 \le 1 + 1 = 2 \; .
+$$
+Let $T_s(z) = \sum_{j=0}^s c_j z^j$ be the expansion of $s$-th Chebyshev polynomial.
+Then,
+\begingroup
+\allowdisplaybreaks
+\begin{align*}
+\norm{g_i}^2
+& = \norm{ \sum_{j=0}^s c_j (f_i)^j }^2 \\
+& \le (s + 1) \sum_{j=0}^s \norm{c_j (f_i)^j}^2 \qquad \text{(by~part 3 of \autoref{lemma:properties-of-norm-of-polynomials})} \\
+& = (s + 1) \sum_{j=0}^s (c_j)^2 \norm{(f_i)^j}^2 \\
+& \le (s + 1) \sum_{j=0}^s (c_j)^2 j^j \norm{f_i}^{2j} \qquad \text{(by~part 2 of \autoref{lemma:properties-of-norm-of-polynomials})} \\
+& \le (s + 1) \sum_{j=0}^s (c_j)^2 j^j 2^{2j} \\
+& \le (s + 1) s^s 2^{2s} \sum_{j=0}^s (c_j)^2 \\
+& = (s + 1) s^s 2^{2s} \norm{T_s}^2 \\
+& = (s + 1) s^s 2^{2s} (1 + \sqrt{2})^{2s} \qquad \text{(by~part 7 of \autoref{proposition:properties-of-chebyshev-polynomials})} \\
+& = (s + 1) \left(4(1+\sqrt{2})^2 s \right)^s \\
+& \le \left(8(1+\sqrt{2})^2 s \right)^s \quad \text{(since $s+1 \le 2^s$ for any integer $s \ge 0$)} \\
+& \le \left(47 s \right)^s \; .
+\end{align*}
+\endgroup
+Finally,
+\begin{align*}
+\norm{p}
+& \le m + \frac{1}{2} + \sum_{i=1}^m \norm{(g_i)^r} \\
+& = m + \frac{1}{2} + \sum_{i=1}^m \sqrt{\norm{(g_i)^r}^2} \\
+& \le m + \frac{1}{2} + \sum_{i=1}^m \sqrt{r^{rs} \norm{g_i}^{2r}} \\
+& \le m + \frac{1}{2} + m r^{rs/2} \left(47 s \right)^{rs/2} \\
+& = m + \frac{1}{2} + m \left(47 rs \right)^{rs/2} \; .
+\end{align*}
+We can further upper bound the last expression by using that $m \le \frac{1}{2} 2^r$.
+Since $r,s \ge 1$,
+\begin{align*}
+\norm{p}
+& \le m + \frac{1}{2} + m \left(47 rs \right)^{rs/2} \\
+& \le \frac{1}{2} 2^r + \frac{1}{2} + \frac{1}{2} 2^r \left(47 rs \right)^{rs/2} \\
+& \le 2^r + \frac{1}{2} 2^r \left(47 rs \right)^{rs/2} \\
+& = 2^r \left(1 + \frac{1}{2} \left(47 rs \right)^{rs/2} \right) \\
+& = 2^r \left(47 rs \right)^{rs/2} \\
+& \le 4^{rs/2} \left(47 rs \right)^{rs/2} \\
+& \le \left(188 rs \right)^{rs/2} \; .
+\end{align*}
+Substituting for $r$ and $s$ finishes the proof.
+
+
+\subsection{Proof of \autoref{theorem:polynomial-approximation-2}}
+\label{section:proof-of-polynomial-approximation-2}
+
+We define several univariate polynomials
+\begin{align*}
+P_n(z) & = (z - 1) \prod_{i=1}^n (z - 2^i)^2 && \text{for $n \ge 0$,} \\
+A_{n,k}(z) & = (P_n(z))^k - (P_n(-z))^k && \text{for $n,k \ge 0$,} \\
+B_{n,k}(z) & = - (P_n(z))^k - (P_n(-z))^k && \text{for $n,k \ge 0$.}
+\end{align*}
+We define the polynomial $p:\R^d \to \R$ as
+\begin{multline*}
+p(x) = \left[ \sum_{i=1}^m A_{s,r}\left( \frac{\ip{v_i}{x}}{\gamma} \right) \prod_{\substack{j ~:~ 1 \le j \le m \\ j \neq i}} B_{s,r} \left( \frac{\ip{v_j}{x}}{\gamma} \right) \right] \\
+- \left(m - \frac{1}{2} \right) \prod_{j=1}^m B_{s,r} \left( \frac{\ip{v_j}{x}}{\gamma} \right) \; .
+\end{multline*}
+
+For convenience we define univariate rational function
+\begin{align*}
+S_{n,k}(z) & = \frac{A_{n,k}(z)}{B_{n,k}(z)} && \text{for $n,k \ge 0$,}
+\end{align*}
+and a multivariate rational function
+$$
+Q(x) = \left( \sum_{i=1}^m S_{s,r}\left( \frac{\ip{v_i}{x}}{\gamma} \right) \right) - \left(m - \frac{1}{2} \right) \; .
+$$
+It easy to verify that
+$$
+p(x) = Q(x) \prod_{j=1}^m B_{s,r} \left( \frac{\ip{v_j}{x}}{\gamma} \right) \; .
+$$
+
+\begin{lemma}[Properties of $P_n$]
+\label{lemma:properties-of-p-n}
+\hspace{1cm} % Dummy space
+\begin{enumerate}
+\item If $z \in [0,1]$ then $P_n(-z) \le P_n(z) \le 0$.
+\item If $z \in [1,2^n]$ then $0 \le 4P_n(z) \le -P_n(-z)$.
+\item If $z \ge 0$ then $-P_n(-z) \ge 2^{n(n+1)}$.
+\end{enumerate}
+\end{lemma}
+
+\begin{proof}
+To prove the first part, note that $P_n(z)$ and $P_n(-z)$ are non-positive for
+$z \in [0,1]$. We can write $\frac{P_n(z)}{P_n(-z)}$ as a product of $n+1$
+non-negative fractions
+$$
+\frac{P_n(z)}{P_n(-z)} = \frac{1-z}{1+z} \prod_{i=1}^n \frac{(z+2^i)^2}{(z-2^i)^2} \; .
+$$
+The first part follows from the observation that each fraction is upper bounded
+by $1$.
+
+To prove the second part, notice that $P_n(z)$ is non-negative and $P_n(-z)$ is
+non-positive for any $z \in [1,2^n]$. Now, fix $z \in [1,2^n]$ and let $j \in
+\{1,2,\dots,n\}$ be such that $2^{j-1} \le z \le 2^j$. This implies that
+$(z+2^{j})^2 \ge 4 (z - 2^j)^2$. We can write $\frac{P_n(z)}{-P_n(-z)}$ as a
+product of $n+1$ non-negative fractions
+$$
+\frac{P_n(z)}{-P_n(-z)}
+= \frac{z-1}{z+1} \cdot \frac{(z-2^j)^2}{(z+2^j)^2} \prod_{\substack{i ~:~ 1 \le i \le n \\ i \neq j}} \frac{(z-2^i)^2}{(z+2^i)^2} \; .
+$$
+The second part follows from the observation that the second fraction is upper
+bounded by $1/4$ and all other fractions are upper bounded by $1$.
+
+The third part follows from
+$$
+-P_n(-z) = (1+z) \prod_{i=1}^n (z+2^i)^2 \ge \prod_{i=1}^n 2^{2i} = 2^{n(n+1)} \; .
+$$
+\end{proof}
+
+\begin{lemma}[Properties of $S_{n,r}$ and $B_{n,r}$]
+\label{lemma:properties-of-s-n-r}
+Let $n,m$ be non-negative integers.
+Let $r = 2 \left\lceil \frac{1}{4} \log_2(4m + 1) \right\rceil + 1$. Then,
+\begin{enumerate}
+\item If $z \in [1,2^n]$ then $S_{n,r}(z) \in [1,1+\frac{1}{2m}]$.
+\item If $z \in [-2^n, -1]$ then $S_{n,r} \in [-1-\frac{1}{2m}, -1]$.
+\item If $z \in [-1,1]$ then $|S_{n,r}(z)| \le 1$.
+\item If $z \in [-2^n,2^n]$ then \\ $B_{n,r}(z) \ge \left(1 - \frac{1}{4m+1} \right) 2^{n(n+1)r}$.
+\end{enumerate}
+\end{lemma}
+
+\begin{proof}
+Note that $B_{n,r}(z)$ is an even function and $A_{n,r}(z)$ is an odd function.
+Therefore, $S_{n,r}(z)$ is odd. Also notice that $r$ is an odd integer.
+
+\begin{enumerate}
+\item Observe that $S_{n,r}(z)$ can be written as
+$$
+S_{n,r}(z) = \frac{\displaystyle 1 + \left( - \frac{P_n(z)}{P_n(-z)}\right)^r}{\displaystyle 1 - \left( - \frac{P_n(z)}{P_n(-z)}\right)^r} = \frac{1 + c}{1 - c}
+$$
+where $c = \left( - \frac{P_n(z)}{P_n(-z)}\right)^r$. Since $z \in [1,2^n]$, by
+part 2 of~\autoref{lemma:properties-of-p-n}, $c \in [0,\frac{1}{4^r}]$. Since
+$r \ge \frac{1}{2} \log_2(4m+1)$ that means that $c \in [0,\frac{1}{4m+1}]$. Thus,
+$S_{n,r}(z) = \frac{1+c}{1-c} \in [1,1 + \frac{1}{2m}]$.
+
+\item Since $S_{n,r}(z)$ is odd, the statement follows from part 1.
+
+\item Observe that $S_{n,r}(z)$ can be written as
+$$
+S_{n,r}(z) = \frac{\displaystyle 1 + \left( - \frac{P_n(z)}{P_n(-z)}\right)^r}{\displaystyle 1 - \left( - \frac{P_n(z)}{P_n(-z)}\right)^r} = \frac{1 + c}{1 - c}
+$$
+where $c = \left( - \frac{P_n(z)}{P_n(-z)}\right)^r$. If $z \in [0,1]$, by part
+1 of~\autoref{lemma:properties-of-p-n} and the fact that $r$ is odd, $c
+\in [-1,0]$, and thus, $S_{n,r}(z) = \frac{1+c}{1-c} \in [0,1]$. Since
+$S_{n,r}(z)$ is odd, for $z \in [-1,0]$, $S_{n,r}(z) \in [-1,0]$.
+
+\item Since $B_{n,r}(z)$ is even, we can without loss generality assume that $z \ge
+0$. We consider two cases.
+
+Case $z \in [0,1]$. Since $r$ is odd and $P_n(z)$ is non-positive,
+\begin{align*}
+B_{n,r}(z)
+& = - (P_n(z))^r + \left(- P_{n}(-z)\right)^r \\
+& \ge \left(- P_{n}(-z)\right)^r \ge 2^{n(n+1)r}  \\
+& \ge 2^{n(n+1)r} \left( 1 - \frac{1}{4m+1} \right) \; .
+\end{align*}
+where the second last inequality follows from part 3 of \autoref{lemma:properties-of-p-n}.
+
+Case $z \in [1,2^n]$. Since $r$ is odd,
+\begin{align*}
+B_{n,r}(z)
+& = \left(- P_{n}(-z)\right)^r \left(1 - \left( - \frac{P_n(z)}{P_n(-z)}\right)^r \right) \\
+& = \left(- P_{n}(-z)\right)^r (1 - c)
+\end{align*}
+where $c = \left( - \frac{P_n(z)}{P_n(-z)}\right)^r$. Since $z \in [1,2^n]$, by
+part 2 of~\autoref{lemma:properties-of-p-n}, $c \in [0,\frac{1}{4^r}]$. By
+the definition of $r$ that means that $c \in [0,\frac{1}{4m+1}]$. Thus,
+\begin{align*}
+B_{n,r}(z)
+& \ge \left(- P_{n}(-z)\right)^r \left( 1 - \frac{1}{4m+1} \right) \\
+& \ge 2^{n(n+1)r} \left( 1 - \frac{1}{4m+1} \right) \; .
+\end{align*}
+where the last inequality follows from part 3 of \autoref{lemma:properties-of-p-n}.
+\end{enumerate}
+\end{proof}
+
+\begin{lemma}[Properties of $Q(x)$]
+\label{lemma:properties-of-q}
+The rational function $Q(x)$ satisfies
+\begin{enumerate}
+\item $Q(x) \ge \frac{1}{2}$ \\ for all $\displaystyle x \in \bigcap_{i=1}^m \left\{ x \in \R^d ~:~ \norm{x} \le 1, \ \ip{v_i}{x} \ge \gamma \right\}$,
+\item $Q(x) \le -\frac{1}{2}$ \\ for all $\displaystyle x \in \bigcup_{i=1}^m \left\{ x \in \R^d ~:~ \norm{x} \le 1, \ \ip{v_i}{x} \le - \gamma \right\}$.
+\end{enumerate}
+\end{lemma}
+
+\begin{proof}
+To prove part 1, consider any $x \in \bigcap_{i=1}^m \left\{ x \in \R^d ~:~ \norm{x} \le 1, \
+\ip{v_i}{x} \ge \gamma \right\}$. Then, $\frac{\ip{v_i}{x}}{\gamma} \in [1,
+\frac{1}{\gamma}]$. By part 1 of \autoref{lemma:properties-of-s-n-r},
+$S_{s,r}\left(\frac{\ip{v_i}{x}}{\gamma}\right) \in [1, 1 + \frac{1}{2m}]$ and
+in particular $S_{s,r}\left(\frac{\ip{v_i}{x}}{\gamma}\right) \ge 1$. Thus,
+\begin{align*}
+Q(x)
+& = \left( \sum_{i=1}^m S_{s,r}\left(\frac{\ip{v_i}{x}}{\gamma}\right) \right) - (m - 1/2) \\
+& \ge m - (m - 1/2) \\
+& = 1/2 \; .
+\end{align*}
+
+To prove part 2, consider any $x \in \bigcup_{i=1}^m \left\{ x \in \R^d ~:~
+\norm{x} \le 1, \ \ip{v_i}{x} \le - \gamma \right\}$. Observe that
+$\frac{\ip{v_i}{x}}{\gamma} \in [-\frac{1}{\gamma}, \frac{1}{\gamma}]$. Consider
+$S_{s,r}\left(\frac{\ip{v_i}{x}}{\gamma}\right)$ for any $i \in
+\{1,2,\dots,m\}$. Parts 1,2, and 3 of \autoref{lemma:properties-of-s-n-r}
+and the fact $1/\gamma \le 2^s$ imply that
+$S_{s,r}\left(\frac{\ip{v_i}{x}}{\gamma}\right) \le 1 +
+\frac{1}{2m}$ for all $i \in \{1,2,\dots,m\}$. By the choice of $x$, there
+exists $j \in \{1,2,\dots,m\}$ such that $\ip{v_j}{x} \le - \gamma$. Part 2 of
+\autoref{lemma:properties-of-s-n-r} implies that
+$S_{s,r}\left(\frac{\ip{v_j}{x}}{\gamma}\right) \in [-1-\frac{1}{2m},-1]$. Thus,
+\begin{align*}
+Q(x)
+& = \left( \sum_{i=1}^m S_{s,r}\left( \frac{\ip{v_i}{x}}{\gamma} \right) \right) - \left(m - \frac{1}{2} \right) \\
+& = S_{s,r}\left( \frac{\ip{v_j}{x}}{\gamma} \right) + \left( \sum_{\substack{i ~:~ 1 \le i \le m \\ i \neq j}} S_{s,r}\left( \frac{\ip{v_i}{x}}{\gamma} \right) \right)  \\
+& \qquad - \left(m - \frac{1}{2} \right) \\
+& \le -1 + (m-1) \left( 1 + \frac{1}{2m} \right) - \left(m - \frac{1}{2} \right) \\
+& \le 1/2 \; .
+\end{align*}
+\end{proof}
+
+To prove parts 1 and 2 of \autoref{theorem:polynomial-approximation-2} first
+note that part 4 of \autoref{lemma:properties-of-s-n-r} implies that for any $x$
+such that $\norm{x} \le 1$, $B_{s,r}\left( \frac{\ip{v_i}{x}}{\gamma} \right)$
+is positive. Thus $p(x)$ and $Q(x)$ have the same sign on the unit ball.
+Consider any $x$ in either
+$\displaystyle \bigcap_{i=1}^m \left\{ x \in \R^d ~:~ \norm{x} \le 1, \ \ip{v_i}{x} \ge \gamma \right\}$
+or in
+$\displaystyle \bigcup_{i=1}^m \left\{ x \in \R^d ~:~ \norm{x} \le 1, \ \ip{v_i}{x} \le - \gamma \right\}$.
+\autoref{lemma:properties-of-q} states that $|Q(x)| \ge 1/2$ and the sign
+depends on which of the two sets $x$ lies in. Since signs of $Q(x)$ and $p(x)$
+are the same, it remains to show that $|p(x)| \ge m^{s^2m/2}$. Indeed,
+\begin{align*}
+|p(x)|
+& = |Q(x)| \prod_{j=1}^m B_{s,r} \left( \frac{\ip{v_j}{x}}{\gamma} \right) \\
+& \ge |Q(x)| \left( 2^{s(s+1)r} \left( 1 - \frac{1}{4m+1} \right) \right)^m \\
+& \ge \frac{1}{2} |Q(x)| \cdot 2^{s(s+1)rm} \\
+& \ge \frac{1}{4} \cdot 2^{s(s+1)rm} \quad \text{(\autoref{lemma:properties-of-q})} \; .
+\end{align*}
+where we used that $\left(1-\frac{1}{4m+1}\right)^m \ge e^{-4} \ge 1/2$.
+
+To prove part 3 of \autoref{theorem:polynomial-approximation-2} note that
+$\deg(P_s) = 2s+1$. Thus, $\deg(A_{s,r})$ and $\deg(B_{s,r})$ are at most
+$(2s+1)r$. Therefore, $\deg(p) \le (2s+1) rm$.
+
+It remains to prove part 4 of \autoref{theorem:polynomial-approximation-2}.
+For any $i \in \{0,1,2,\dots,s\}$ and any $v \in \R^d$ such that $\norm{v} \le 1$
+define multivariate polynomials
+\begin{align*}
+f_{i,v}(x) & = \frac{\ip{v}{x}}{\gamma} - 2^i \; , \\
+q_v(x) & = P_s \left( \frac{\ip{v}{x}}{\gamma} \right) \; , \\
+a_v(x) & = A_{s,r} \left( \frac{\ip{v}{x}}{\gamma} \right) \; , \\
+b_v(x) & = B_{s,r} \left( \frac{\ip{v}{x}}{\gamma} \right) \; .
+\end{align*}
+Note that
+\begin{multline*}
+p(x) = \left[ \sum_{i=1}^m a_{v_i}(x) \prod_{\substack{j ~:~ 1 \le j \le m \\ j \neq i}} b_{v_j}(x) \right]  \\
+- \left(m - \frac{1}{2} \right) \prod_{j=1}^n b_{v_j}(x) \; .
+\end{multline*}
+We bound the norms of these polynomials. We have
+$$
+\norm{f_{i,v}}^2 = \norm{v}^2/\gamma^2 + 2^{2i} \le 2 \cdot 2^s \; .
+$$
+where we used that $1/\gamma \le 2^s$ and $\norm{v} \le 1$.
+Since $q_v(x) = f_{i,v}(\frac{\ip{v}{x}}{\gamma}) \prod_{i=1}^s \left(f_{i,v}(\frac{\ip{v}{x}})\right)^2$,
+using part 1 of \autoref{lemma:properties-of-norm-of-polynomials} we upper bound the norm of $q_v$
+as
+\begin{align*}
+\norm{q_v}^2
+& \le (2s+1)^{2s+1} \norm{f_{0,v}}^2 \prod_{i=1}^s \norm{f_{i,v}}^4 \\
+& \le  (2s+1)^{2s+1} (2 \cdot 2^s)^{2s + 1} \; .
+\end{align*}
+Using parts 3 and 2 of \autoref{lemma:properties-of-norm-of-polynomials} we upper bound the norm of $a_v$ as
+\begin{align*}
+\norm{a_v}^2
+& \le 2\norm{(q_v)^r}^2 + 2\norm{(q_{-v})^r}^2 \\
+& \le 2 r^{r(2s+1)} \norm{q_v}^{2r} + 2 r^{r(2s+1)} \norm{q_{-v}}^{2r} \\
+& \le 4 r^{r(2s+1)} \left((2s+1)^{2s+1} (2 \cdot 2^s)^{2s + 1} \right)^{2r} \\
+& = 4 \left(2^{2s} r (4s+2)^2 \right)^{(2s+1)r} \; .
+\end{align*}
+The same upper bound holds for $\norm{b_v}^2$. Finally,
+\begin{align*}
+& \norm{p} \\
+& \le \left[ \sum_{i=1}^m \norm{a_{v_i} \prod_{\substack{j ~:~ 1 \le j \le m \\ j \neq i}} b_{v_j}} \right] + \left(m - \frac{1}{2} \right) \norm{\prod_{j=1}^m b_{v_j}} \\
+& \le \left[ \sum_{i=1}^m m^{(s+1/2)rm} \norm{a_{v_i}} \prod_{\substack{j ~:~ 1 \le j \le m \\ j \neq i}} \norm{b_{v_j}} \right] \\
+& \qquad + \left(m - \frac{1}{2} \right) m^{(s+1/2)rm} \prod_{j=1}^m \norm{b_{v_j}} \\
+& \le (2m-1/2) m^{(s+1/2)rm} \left(4 \left(2^{2s} r (4s+2)^2 \right)^{(2s+1)r} \right)^{m/2} \\
+& = (2m-1/2) 2^m \cdot \left(2^{2s} rm (4s+2)^2 \right)^{(s+1/2)rm} \; .
+\end{align*}
