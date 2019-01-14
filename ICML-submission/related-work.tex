@@ -1,8 +1,22 @@
 \section{Related work}
 \label{section:related-work}
 
-The problem of bandit multiclass linear classification was initially formulated
-in the pioneering work of~\citet{Kakade-Shalev-Shwartz-Tewari-2008}. They proposed
+The problem of online bandit multiclass learning was initially formulated
+in the pioneering work of~\cite{Auer-Long-1999}, under the name of
+``weak reinforcement model''. They show that if the set of examples shown is
+separable by a classifier in a prespecified hypothesis class $\calH$, then the optimal
+ mistake bound in the bandit setting can be upper bounded by the optimal mistake
+ bound in the full-information setting, times a factor of $(2.01 + o(1))K \ln K$.
+ (See~\cite{Long-2017} for improvements of the factor to $(1 + o(1)) K \ln K$.)
+ ~\cite{Daniely-Helbertal-2013} extend the results to the setting where the
+ performance of the algorithm is measured by its regret, i.e. the difference
+ between the number of mistake made by the algorithm and the number of mistake
+ made by the best classifier in $\calH$ in hindsight. However, all algorithms developed in
+ this context are computationally inefficient.
+
+
+The linear classification version of this problem
+is initially studied by~\citet{Kakade-Shalev-Shwartz-Tewari-2008}. They proposed
 two computationally inefficient algorithms that work in the standard
 linearly separable setting, one with a mistake bound of $O(K^2 d
 \ln(\frac{d}{\gamma^2}))$, the other with a mistake bound of
