@@ -1,13 +1,13 @@
-\section{From linear separability to strong linear separability}
-\label{section:from-linear-separability-to-strong-linear-separability}
+\section{From weak separability to strong separability}
+\label{section:from-weak-separability-to-strong-separability}
 
 In this section, we construct and analyze a mapping $\phi$ from the unit ball of
 $\R^d$ into a infinite-dimensional inner product space that has the property
 that if a set of labeled examples in the unit ball is \emph{weakly} linearly
-separable with a margin $\gamma$, applying the mapping $\phi$ makes the examples
-\emph{strongly} linearly separable with a margin $\gamma'$ and their norms are
-bounded by $2$. The parameter $\gamma'$ is a function of the old margin $\gamma$
-and the number of classes $K$, and is specified in the
+separable with a margin $\gamma$ after applying the mapping $\phi$ the examples
+become \emph{strongly} linearly separable with a margin $\gamma'$ and their
+norms are bounded by $2$. The parameter $\gamma'$ is a function of the old
+margin $\gamma$ and the number of classes $K$, and is specified in the
 \autoref{theorem:margin-transformation} below.
 
 The domain of $\phi$ is the unit ball of $\R^d$. The co-domain of $\phi$ is the
@@ -23,18 +23,17 @@ integers. The mapping is defined by
 where $\binom{\alpha_1 + \alpha_2 + \dots + \alpha_d}{\alpha_1, \alpha_2, \dots, \alpha_d} = \frac{(\alpha_1 + \alpha_2 + \dots + \alpha_d)!}{\alpha_1! \alpha_2! \dots \alpha_d!}$
 is the multinomial coefficient. The corresponding kernel is
 $$
-k(x,x') = \ip{\phi(x)}{\phi(x')}_{\ell_2} = \frac{1}{1 - \frac{1}{2}\ip{x}{x'}} \; .
+k(x,x') = \ip{\phi(x)}{\phi(x')}_{\ell_2} = \frac{1}{1 - \frac{1}{2}\ip{x}{x'}_{\R^d}} \; .
 $$
-In passing we note that the formula for $k$ implies the mapping $\phi$ is
-well defined. Indeed, since $k(x,x) < +\infty$ for any $x$ in the unit
-ball of $\R^d$, it means that $\phi(x)$ indeed lies in $\ell_2$.
+We note that the formula for $k$ implies that $k(x,x) < +\infty$ for any $x$ in
+the unit ball of $\R^d$ and therefore $\phi(x)$ lies in $\ell_2$. We also note
+that kernel function $k(x,x')$ can be evaluated in $O(d)$ time.
 
-Equipped with the mapping $\phi$, we can utilize
-Algorithm~\ref{algorithm:kernelized} with kernel function $k(x,x') =
-\ip{\phi(x)}{\phi(x')}$ and
-\autoref{theorem:strongly-separable-example-mistake-upper-bound} from the
-previous section and we obtain an algorithm for weakly linearly separable
-examples and an upper bound on its number of mistakes.
+We derive a mistake bound for Algorithm~\ref{algorithm:kernelized} with kernel
+function $k(x,x') = \ip{\phi(x)}{\phi(x')}_{\ell_2}$ by simply invoking
+\autoref{theorem:strongly-separable-examples-mistake-upper-bound} with the
+modified margin $\gamma'$ from \autoref{theorem:margin-transformation} below.
+The mistake bound is stated as \autoref{corollary:weakly-separable-examples-mistake-upper-bound}.
 
 The idea behind construction and analysis of the mapping $\phi$ is polynomial
 approximation. According to the well known Stone-Weierstrass theorem (see
@@ -44,11 +43,10 @@ Intuitively speaking, we use a multivariate polynomial to approximate, on the
 unit ball of $\R^d$, the indicator function corresponding to the intersection of
 $m=K-1$ halfspaces. Within margin $\gamma$ along the decision boundary, we allow
 the polynomial to attain arbitrary value. The polynomial separates examples in
-one class from examples in the other classes. To be able to quantify $R'$,
-$\gamma'$ and time complexities of evaluating $\phi(x)$ and $k(x,x')$, we need
-to quantify certain parameters of the approximating polynomial. We construct two
-different polynomials with different parameters. The parameters are quantified
-in
+one class from examples in the other classes. To be able to quantify $\gamma'$
+we need to quantify certain parameters of the approximating polynomial. We
+construct two different polynomials with different parameters. The parameters
+are quantified in
 Theorems~\ref{theorem:polynomial-approximation-1}~and~\ref{theorem:polynomial-approximation-2}
 stated below.
 
@@ -109,8 +107,10 @@ The proofs of the theorems can be found in
 Section~\ref{section:proof-of-polynomial-approximation}. The geometric
 interpretation of the two regions described in parts 1 and 2 of the theorems is
 explained in Figure~\ref{figure:pizza-slice}. Similar but weaker results were
-proved by~\cite{Klivans-Servedio-2008}. In particular, the bounds in parts
-1, 2, 3, 4 of the theorems are independent of the dimension $d$.
+proved by~\citet{Klivans-Servedio-2008}. In particular, our bounds in parts 1,
+2, 3, 4 of
+Theorems~\ref{theorem:polynomial-approximation-1}~and~\ref{theorem:polynomial-approximation-2}
+are independent of the dimension $d$.
 
 \begin{figure}
 \begin{center}
@@ -134,7 +134,7 @@ as a linear function in $\ell_2$ and gives an upper bound its the norm.
 \begin{lemma}[Norm bound]
 \label{lemma:norm-bound}
 Let $p:\R^d \to \R$ be a multivariate polynomial.
-There exists $c \in \ell_2$ such that $p(x) = \ip{c}{\psi_n(x)}_{\ell_2}$
+There exists $c \in \ell_2$ such that $p(x) = \ip{c}{\phi(x)}_{\ell_2}$
 and $\norm{c}_{\ell_2} \le 2^{\deg(p)/2} \norm{p}$.
 \end{lemma}
 
@@ -160,7 +160,7 @@ we have
 \begin{align*}
 \norm{c}_{\ell_2}
 & \le 2^{\deg(p)/2} \sqrt{\sum_{\alpha_1, \alpha_2, \dots, \alpha_d} (c'_{\alpha_1, \alpha_2, \dots, \alpha_d})^2} \\
-& = 2^{\deg(p)/2} \norm{p} \; .
+& = 2^{\deg(p)/2} \norm{p} \; . \qquad \qedhere
 \end{align*}
 \end{proof}
 
@@ -175,9 +175,11 @@ labeled examples that are weakly linearly separable with margin $\gamma > 0$
 such that $\norm{x_1}, \norm{x_2}, \dots, \norm{x_T} \le 1$.
 Let
 \begin{align*}
-r & = 2 \left\lceil \frac{1}{4} \log_2(4K-3) \right\rceil + 1 \quad \text{and} \quad s = \left \lceil \log_2(1/\gamma) \right \rceil \\
-\gamma_1 & = \frac{1}{2\sqrt{K} \left(376 \lceil \log_2(2m) \rceil \cdot \left \lceil \sqrt{\frac{2}{\gamma}} \right \rceil \right)^{\frac{1}{2} \lceil \log_2(2K-2) \rceil \cdot \left \lceil \sqrt{\frac{2}{\gamma}} \right \rceil}} \\
-\gamma_2 & = ??
+r & = 2 \left\lceil \frac{1}{4} \log_2(4K-3) \right\rceil + 1 \quad \text{and} \quad s = \left \lceil \log_2(2/\gamma) \right \rceil \\
+\gamma_1 & = \frac{1}{2\sqrt{K}}  \\
+& \ \cdot \left(376 \lceil \log_2(2m) \rceil \cdot \left \lceil \sqrt{\frac{2}{\gamma}} \right \rceil \right)^{-\frac{1}{2} \lceil \log_2(2K-2) \rceil \cdot \left \lceil \sqrt{\frac{2}{\gamma}} \right \rceil} \; , \\
+\gamma_2 & = \frac{2^{s(s+1)r(K-1)} }{4(2K-5/2) 2^{K-1}} \\
+& \ \cdot \left(2^{2s+1} r(K-1) (4s+2)^2 \right)^{-(s+1/2)r(K-1)} \; .
 \end{align*}
 Then, the labeled examples $(\phi(x_1), y_1), (\phi(x_2), y_2), \dots,
 (\phi(x_T), y_T)$ are strongly linearly separable with margin $\gamma' =
@@ -188,7 +190,7 @@ Then, the labeled examples $(\phi(x_1), y_1), (\phi(x_2), y_2), \dots,
 \begin{proof}
 First osberve that for any $t=1,2,\dots,T$,
 $$
-\norm{\phi(x_t)}_{\ell_2} = K_{\phi}(x_t,x_t) = \frac{1}{1 - \frac{1}{2} \norm{x_t}^2} \le 2 \; .
+\norm{\phi(x_t)}_{\ell_2} = k(x_t,x_t) = \frac{1}{1 - \frac{1}{2} \norm{x_t}^2} \le 2 \; .
 $$
 
 Since the examples $(x_1, y_1), (x_2, y_2), \dots, (x_T, y_T)$ are weakly
@@ -204,16 +206,16 @@ imply that there exists multivariate polynomials $p_i:\R^d \to \R$ and $q_i:\R^d
 \to \R$ such that
 \begin{align*}
 \deg(p_i) & = \lceil \log_2(2K-2) \rceil \cdot \left\lceil \sqrt{\frac{2}{\gamma}} \right\rceil \; , \\
-\deg(q_i) & = (2K-5/2) 2^m \\
-& \qquad \cdot \left(2^{2s} r(K-1) (4s+2)^2 \right)^{(s+1/2)r(K-1)} \; .
+\deg(q_i) & = (2s+1) r(K-1) \; .
 \end{align*}
-Futhermore, for all $t=1,2,\dots,T$, if $y_t = i$ then $p_i(x_t) \ge 1/2$, $q_i(x_t) \ge ???$ and if $y_t \neq i$ then $p_i(x_t) \le -1/2$,
-$q_i(x) \le - ???$
-and
+Futhermore, for all $t=1,2,\dots,T$, if $y_t = i$ then $p_i(x_t) \ge 1/2$,
+$q_i(x_t) \ge \frac{1}{4} \cdot 2^{s(s+1)r(K-1)}$ and if $y_t \neq i$ then
+$p_i(x_t) \le -1/2$, $q_i(x) \le - \frac{1}{4} \cdot 2^{s(s+1)r(K-1)}$ and
 \begin{align*}
 \norm{p_i} & \le \left(188 \lceil \log_2(2K-2) \rceil \cdot \left \lceil \sqrt{\frac{2}{\gamma}} \right \rceil \right)^{\frac{1}{2} \lceil \log_2(2K-2) \rceil
 \cdot \left \lceil \sqrt{\frac{2}{\gamma}} \right \rceil} \; , \\
-\norm{p_i} & \le ??? .
+\norm{q_i} & \le (2K-5/2) 2^{K-1} \\
+& \qquad \cdot \left(2^{2s} r(K-1) (4s+2)^2 \right)^{(s+1/2)r(K-1)} \; .
 \end{align*}
 By \autoref{lemma:norm-bound} there exists $c_i, c_i' \in \ell_2$ such that
 $\ip{c_i}{\phi(x)} = p_i(x)$ and $\ip{c_i'}{\phi(x)} = q_i(x)$ and
@@ -221,13 +223,14 @@ $\ip{c_i}{\phi(x)} = p_i(x)$ and $\ip{c_i'}{\phi(x)} = q_i(x)$ and
 \norm{c_i}_{\ell_2}
 & \le \left(376 \lceil \log_2(2K-2) \rceil \cdot \left \lceil \sqrt{\frac{2}{\gamma}} \right \rceil \right)^{\frac{1}{2} \lceil \log_2(2K-2) \rceil
 \cdot \left \lceil \sqrt{\frac{2}{\gamma}} \right \rceil} \\
-\norm{c'_i}_{\ell_2} & \le ??? \\
+\norm{c'_i}_{\ell_2} & \le (2K-5/2) 2^{K-1} \\
+& \qquad \cdot \left(2^{2s+1} r(K-1) (4s+2)^2 \right)^{(s+1/2)r(K-1)} \; .
 \end{align*}
 Define vectors $u_i, u_i' \in \ell_2$ as
 \begin{align*}
 u_i & = \frac{c_i}{\sqrt{K} \left(376 \lceil \log_2(2K-2) \rceil \cdot \left \lceil \sqrt{\frac{2}{\gamma}} \right \rceil \right)^{\frac{1}{2} \lceil \log_2(2K-2) \rceil
 \cdot \left \lceil \sqrt{\frac{2}{\gamma}} \right \rceil}} \; . \\
-u_i' & = ???
+u_i' & = \frac{c_i'  \cdot \left(2^{2s+1} r(K-1) (4s+2)^2 \right)^{-(s+1/2)r(K-1)}}{(2K-5/2) 2^{K-1}} \; .
 \end{align*}
 
 Then, $\norm{u_1}^2 + \norm{u_2}^2 + \dots + \norm{u_K}^2 \le 1$ and
@@ -237,6 +240,28 @@ $\ip{u'_{y_t}}{x_t} \ge \gamma_2$
 and for all $j \in \{1,2,\dots,K\} \setminus \{y_t\}$,
 $\ip{u_j}{x_t} \le - \gamma_1$ and $\ip{u'_j}{x_t} \le - \gamma_2$. In other words,
 $(\phi(x_1), y_1), (\phi(x_2), y_2), \dots, (\phi(x_T), y_T)$ are
-strongly linearly separable with margin $\gamma_1$ and also strongly separable with
-margin $\gamma_2$. Therefore, the examples are strongly separable with margin $\gamma' = \max\{\gamma_1, \gamma_2\}$.
+strongly linearly separable with margin $\gamma_1$ and also strongly linearly
+separable with margin $\gamma_2$. Therefore, the examples are strongly separable
+with margin $\gamma' = \max\{\gamma_1, \gamma_2\}$.
 \end{proof}
+
+As a corollary of \autoref{theorem:margin-transformation} and
+\autoref{theorem:strongly-separable-examples-mistake-upper-bound}
+we get the mistake bound for Algorithm~\ref{algorithm:kernelized}
+under the weak separability condition.
+
+\begin{corollary}[Mistake upper bound]
+\label{corollary:weakly-separable-examples-mistake-upper-bound}
+Let $K$ be a positive
+integer, $\gamma$ be a positive real number, $R$ be a non-negative real number. If
+$(x_1, y_1), (x_2, y_2), \dots, (x_T, y_T)$ is a sequence of labeled examples in
+$V \times \{1,2,\dots,K\}$ such that
+\begin{enumerate}
+  \item the examples are weakly linearly separable with margin $\gamma$ (Definition~\ref{definition:weak-linear-separability}),
+  \item $\norm{x_1}, \norm{x_2}, \dots, \norm{x_T} \le 1$,
+\end{enumerate}
+then the expected number of mistakes
+Algorithm~\ref{algorithm:kernelized}
+makes is at most $2^{\widetilde{O}(\min(K \log^2
+\frac{1}{\gamma}, \sqrt{\frac{1}{\gamma}} \log K))}$.
+\end{corollary}

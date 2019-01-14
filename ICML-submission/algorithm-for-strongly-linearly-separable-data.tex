@@ -7,7 +7,7 @@ mistakes under the assumption that the examples are strongly linearly separable
 with a margin. The algorithm is stated as
 Algorithm~\ref{algorithm:algorithm-for-strongly-linearly-separable-examples} and
 the mistake upper bound is stated as
-\autoref{theorem:strongly-separable-example-mistake-upper-bound}.
+\autoref{theorem:strongly-separable-examples-mistake-upper-bound}.
 
 The idea behind the algorithm is to use $K$ copies of the \textsc{Binary
 Perceptron} algorithm, where each copy corresponds to a class. In each round,
@@ -56,7 +56,7 @@ makes a prediction uniformly at random.
 \end{algorithm}
 
 \begin{theorem}[Mistake upper bound]
-\label{theorem:strongly-separable-example-mistake-upper-bound}
+\label{theorem:strongly-separable-examples-mistake-upper-bound}
 Let $(V, \ip{\cdot}{\cdot})$ be an inner product space, $K$ be a positive
 integer, $\gamma$ be a positive real number, $R$ be a non-negative real number. If
 $(x_1, y_1), (x_2, y_2), \dots, (x_T, y_T)$ is a sequence of labeled examples in
@@ -180,10 +180,10 @@ mistakes of
 Algorithm~\ref{algorithm:algorithm-for-strongly-linearly-separable-examples} is
 optimal to within constant factor as long as the number of classes $K$ is
 at most $O((R/\gamma)^2)$. This is proved in
-\autoref{theorem:strongly-separable-example-mistake-lower-bound} below.
+\autoref{theorem:strongly-separable-examples-mistake-lower-bound} below.
 
 \begin{theorem}[Mistake lower bound]
-\label{theorem:strongly-separable-example-mistake-lower-bound}
+\label{theorem:strongly-separable-examples-mistake-lower-bound}
 Let $\gamma$ be a positive real number, and $R$ be a non-negative real
 number. For any (possibly randomized) algorithm $\calA$ for the \textsc{Online
 Multiclass Classification with Bandit Feedback} with $K \le
