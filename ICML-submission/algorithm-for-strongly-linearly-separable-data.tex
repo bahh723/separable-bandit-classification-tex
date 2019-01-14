@@ -66,13 +66,13 @@ integer, $\gamma$ be a positive real number, $R$ be a non-negative real number. 
 $(x_1, y_1), (x_2, y_2), \dots, (x_T, y_T)$ is a sequence of labeled examples in
 $V \times \{1,2,\dots,K\}$ such that
 \begin{enumerate}
-  \item the examples are strongly separable with margin $\gamma$,
+  \item the examples are strongly linearly separable with margin $\gamma$ (Definition~\ref{definition:strong-linear-separability}),
   \item $\norm{x_1}, \norm{x_2}, \dots, \norm{x_T} \le R$,
 \end{enumerate}
 then the
 expected number of mistakes
 Algorithm~\ref{algorithm:algorithm-for-strongly-linearly-separable-examples}
-makes is at most $(K-1) \lfloor (R/\gamma)^2 \rfloor$.
+makes is at most $(K-1) \lfloor 4(R/\gamma)^2 \rfloor$.
 \end{theorem}
 
 \begin{proof}
@@ -93,13 +93,14 @@ The key observation is that $\Exp[B] = (K-1) \Exp[C]$. The equality holds
 because if $S_t = \emptyset$, there is $1/K$ probability that the algorithm
 guesses the correct label and with probability $(K-1)/K$ algorithm's guess is
 incorrect. Putting all the information together, we get that
-\begin{align*}
+\begin{align}
 \Exp[M]
-& = \Exp[A] + \Exp[B] \\
-& = \Exp[A] + (K-1) \Exp[C]  \\
-& \le (K-1) \Exp[A + C] \\
+& = \Exp[A] + \Exp[B] \nonumber \\
+& = \Exp[A] + (K-1) \Exp[C] \nonumber \\
+& \le (K-1) \Exp[A + C] \nonumber\\
 & = (K-1) \Exp[U]  \; .
-\end{align*}
+\label{eqn:mistake-update}
+\end{align}
 
 To finish the proof, we need to upper bound the number of updates $U$. We claim
 that $U \le \lfloor (R/\gamma)^2 \rfloor$. The proof of this upper bound is
@@ -128,9 +129,10 @@ Therefore,
 \end{align*}
 \endgroup
 Hence, after $U$ updates,
-$$
+\begin{equation}
 \sum_{i=1}^K \norm{w_i^{(T+1)}}^2 \le R^2 U \; .
-$$
+\label{eqn:norm-ub}
+\end{equation}
 Similarly, if there is an update in round $t$, we have
 \begin{align*}
 & \sum_{i=1}^K \ip{w_i^*}{w_i^{(t)}} \\
@@ -138,14 +140,23 @@ Similarly, if there is an update in round $t$, we have
 & = \left( \sum_{i \in \{1,2,\dots,K\} \setminus \{\widehat y_t\}} \ip{w_i^*}{w_i^{(t)}} \right) \\
 & \qquad + \ip{w_{\widehat y_t}^*}{w_{\widehat y_t}^{(t)} + (-1)^{z_t} x_t} \\
 & = \left( \sum_{i=1}^K \ip{w_i^*}{w_i^{(t)}} \right) + (-1)^{z_t} \ip{w_{\widehat y_t}^*}{x_t} \\
-& \ge \left( \sum_{i=1}^K \ip{w_i^*}{w_i^{(t)}} \right) + \gamma
+& \ge \left( \sum_{i=1}^K \ip{w_i^*}{w_i^{(t)}} \right) + \frac \gamma 2,
 \end{align*}
-where the last inequality follows from \eqref{equation:strong-linear-separability-2}
-and \eqref{equation:strong-linear-separability-3} and analysis of the cases $z_t = 0$ and $z_t = 1$.
+where the last inequality follows from a case analysis on $z_t$ and
+Definition~\ref{definition:strong-linear-separability}: if $z_t = 0$, then
+$\widehat y_t = y_t$, by Equation~\eqref{equation:strong-linear-separability-2}, we have
+that $\ip{w_{\widehat y_t}^*}{x_t} \geq \frac \gamma 2$;
+if $z_t = 1$, then $\widehat y_t \neq y_t$, by Equation~\eqref{equation:strong-linear-separability-3},
+we have that $\ip{w_{\widehat y_t}^*}{x_t} \leq -\frac \gamma 2$.
+
+%\eqref{equation:strong-linear-separability-2}
+%and \eqref{equation:strong-linear-separability-3} and analysis of the cases $z_t = 0$ and $z_t = 1$.
+
 Thus, after $U$ updates,
-$$
-\sum_{i=1}^K \ip{w_i^*}{w_i^{(T+1)}} \ge \gamma U \; .
-$$
+\begin{equation}
+\sum_{i=1}^K \ip{w_i^*}{w_i^{(T+1)}} \ge \frac {\gamma U} 2 \; .
+\label{eqn:norm-lb}
+\end{equation}
 Applying Cauchy-Schwartz's inequality twice, and using assumption
 \eqref{equation:strong-linear-separability-1}, we get that
 \begin{align*}
@@ -154,93 +165,109 @@ Applying Cauchy-Schwartz's inequality twice, and using assumption
 & \le \sqrt{\sum_{i=1}^K \norm{w_i^*}^2} \sqrt{\sum_{i=1}^K \norm{w_i^{(T+1)}}^2} \\
 & \le \sqrt{\sum_{i=1}^K \norm{w_i^{(T+1)}}^2} \; .
 \end{align*}
-Combining the upper and lower bounds on $\sum_{i=1}^K \norm{w_i^{(T+1)}}^2$ inequalities, we get
+Combining the above inequality with Equations~\eqref{eqn:norm-ub} and~\eqref{eqn:norm-lb}, we get
 $$
-(\gamma U)^2 \le \sum_{i=1}^K \norm{w_i^{(T+1)}}^2 \le R^2 U \; .
+(\frac{\gamma U}{2})^2 \le \sum_{i=1}^K \norm{w_i^{(T+1)}}^2 \le R^2 U \; .
 $$
-We conclude that $U \le (R/\gamma)^2$. Since $U$ is an integer, $U \le \lfloor (R/\gamma)^2 \rfloor$.
+We conclude that $U \le 4(R/\gamma)^2$. Since $U$ is an integer, $U \le \lfloor 4(R/\gamma)^2 \rfloor$.
+
+Applying Equation~\eqref{eqn:mistake-update}, we get
+\[ \Exp[M] \leq (K-1) \Exp[U] \leq (K-1) \lfloor 4(R/\gamma)^2 \rfloor. \qedhere \]
 \end{proof}
 
-The upper bound $(K-1) \lfloor (R/\gamma)^2 \rfloor$ on the expected number of
+The upper bound $(K-1) \lfloor 4(R/\gamma)^2 \rfloor$ on the expected number of
 mistakes of
 Algorithm~\ref{algorithm:algorithm-for-strongly-linearly-separable-examples} is
 optimal to within constant factor as long as the number of classes $K$ is
 at most $O((R/\gamma)^2)$. This is proved in
 \autoref{theorem:strongly-separable-example-mistake-lower-bound} below.
 
-Irrespective of any conditions on $K$, $R$, and $\gamma$, a trivial lower bound
+\begin{theorem}[Mistake lower bound]
+\label{theorem:strongly-separable-example-mistake-lower-bound}
+Let $\gamma$ be a positive real number, and $R$ be a non-negative real
+number. For any (possibly randomized) algorithm $\calA$ for the \textsc{Online
+Multiclass Classification with Bandit Feedback} with $K \le
+(R/\gamma)^2$ classes there exists an inner product space $(V,
+\ip{\cdot}{\cdot})$, a non-negative integer $T$ and a sequence of labeled
+examples $(x_1, y_1), (x_2, y_2), \dots, (x_T, y_T)$ in $V \times
+\{1,2,\dots,K\}$ that are strongly linearly separable with margin $\gamma$, the
+norms satisfy $\norm{x_1}, \norm{x_2}, \dots, \norm{x_T} \le R$ and the expected
+number of mistakes $\calA$ makes is at least $\frac{K-1}{2} \left\lfloor
+\frac{1}{4} (R/\gamma)^2 \right\rfloor$.
+\end{theorem}
+
+\paragraph{Remark.} Irrespective of any conditions on $K$, $R$, and $\gamma$, a trivial lower bound
 on the expected number of mistakes of any randomized algorithm is
 $\frac{K-1}{2}$. (Adversary chooses the same example over and over.) However, it
 is unclear if the trivial lower bound is the best possible if $K$ is large,
 i.e., $\omega((R/\gamma)^2)$. We leave this as an open problem.
 
-\begin{theorem}[Mistake lower bound]
-\label{theorem:strongly-separable-example-mistake-lower-bound}
-Let $\gamma$ be a positive real number and let $R$ be a non-negative real
-number. For any (possibly randomized) algorithm for the \textsc{Online
-Multiclass Classification with Bandit Feedback} with $K \le
-\frac{1}{4}(R/\gamma)^2$ classes there exists an inner product space $(V,
-\ip{\cdot}{\cdot})$, a non-negative integer $T$ and a sequence of labeled
-examples $(x_1, y_1), (x_2, y_2), \dots, (x_T, y_T)$ in $V \times
-\{1,2,\dots,K\}$ that are strongly linearly separable with margin $\gamma$, the
-norms satisfy $\norm{x_1}, \norm{x_2}, \dots, \norm{x_T} \le R$ and the expected
-number of mistakes the algorithm makes is at least $\frac{K-1}{2} \left\lfloor
-\frac{1}{16} (R/\gamma)^2 \right\rfloor$.
-\end{theorem}
-
 \begin{proof}
-We use probabilistic method. Let $M = \left\lfloor \frac{1}{16} (R/\gamma)^2
+We use probabilistic method. Let $M = \left\lfloor \frac{1}{4} (R/\gamma)^2
 \right\rfloor$. Let $V = \R^{M+1}$ equipped with the standard inner product.
 Let $e_1, e_2, \dots, e_{M+1}$ be the standard orthonormal basis of $V$. We
-define vectors $v_1, v_2, \dots, v_M \in V$ where $v_i = \frac{R}{\sqrt{2}}(e_i
-+ e_{M+1})$ for $i=1,2,\dots,M$. Let $\ell_1, \ell_2, \dots, \ell_M$ be chosen
+define vectors $v_1, v_2, \dots, v_M \in V$ where $v_j = \frac{R}{\sqrt{2}}(e_j
++ e_{M+1})$ for $j=1,2,\dots,M$. Let $\ell_1, \ell_2, \dots, \ell_M$ be chosen
 i.i.d. uniformly at random from $\{1,2,\dots,K\}$ and independently of any
-randomness used the by the algorithm. Let $T = M K$. We define examples $(x_1,
+randomness used the by algorithm $\calA$. Let $T = M (K - 1)$. We define examples $(x_1,
 y_1), (x_2, y_2), \dots, (x_T, y_T)$ as follows. For any $j=1,2,\dots,M$ and any
-$i=1,2,\dots,K$,
+$h=1,2,\dots,K-1$,
 $$
-(x_{(j-1)K + i}, y_{(j-1)K + i}) = (v_j, \ell_j)
+(x_{(j-1)(K-1) + h}, y_{(j-1)(K-1) + h}) = (v_j, \ell_j)
 $$
 
 
-With probability one, norm of each example is $R$. We show that with probability
-one, the examples are strongly separable with margin $\gamma$. In order to see
-that consider $w_1^*, w_2^*, \dots, w_K^* \in V$ defined by
+With probability one, the norm of each example is exactly $R$.
+We show that with probability
+one, the examples are strongly separable with margin $\gamma$. To see
+that, consider $w_1^*, w_2^*, \dots, w_K^* \in V$ defined by
 $$
-w_i^* = 2 \sqrt{2} \frac{\gamma}{R} \left( \sum_{j ~:~ \ell_j = i} e_j \right) - \sqrt{2} \frac{\gamma}{R} e_{M+1}
+w_i^* = \sqrt{2} \frac{\gamma}{R} \left( \sum_{j ~:~ \ell_j = i} e_j \right) - \frac{\sqrt{2}}2 \frac{\gamma}{R} e_{M+1}
 $$
-for $i=1,2,\dots,K$. Since for any $i \in \{1,2,\dots,K\}$ and any $j \in
-\{1,2,\dots,M\}$,
-$$
-\ip{w_i^*}{v_j} =
-\begin{cases}
-\gamma & \text{if $\ell_j = i$,} \\
-- \gamma & \text{if $\ell_j \neq i$,}
-\end{cases}
-$$
-it means that $w_1^*, w_2^*, \dots, w_K^*$ satisfy
+for $i=1,2,\dots,K$.
+
+for $i \in \{1,2,\dots,K\}$ and any $j \in
+\{1,2,\dots,M\}$, we consider the inner product of $w_i^*$ and $v_j$.
+If $i = \ell_j$, $\ip{w_i^*}{v_j} = \gamma - \frac \gamma 2 = \frac \gamma 2$;
+otherwise $i \neq \ell_j$, in this case,
+$\ip{w_i^*}{v_j} = 0 - \frac \gamma 2 = - \frac \gamma 2$.
+This means that $w_1^*, w_2^*, \dots, w_K^*$ satisfy
+conditions
 \eqref{equation:strong-linear-separability-2} and
 \eqref{equation:strong-linear-separability-3}. Condition \eqref{equation:strong-linear-separability-1}
 is satisfied since
 \begin{multline*}
 \sum_{i=1}^K \norm{w_i^*}^2
-= 8 \frac{\gamma^2}{R^2} \sum_{j=1}^M \norm{e_j}^2 + 2 \frac{\gamma^2}{R^2} K \norm{e_{M+1}}^2 \\
-= 8 \frac{\gamma^2}{R^2} M + 2 \frac{\gamma^2}{R^2} K
+= 2 \frac{\gamma^2}{R^2} \sum_{j=1}^M \norm{e_j}^2 +  \frac{\gamma^2}{2 R^2} K \norm{e_{M+1}}^2 \\
+= 2 \frac{\gamma^2}{R^2} M + \frac{\gamma^2}{2 R^2} K
 \le \frac{1}{2} + \frac{1}{2}
 = 1 \; .
 \end{multline*}
 
-It remains to lower bound the expected number of mistakes of the algorithm. For
+It remains to lower bound the expected number of mistakes of $\calA$. For
 any $j \in \{1,2,\dots,M\}$, consider the expected number of mistakes the
-algorithm makes in rounds $K(j-1) + 1, K(j-1) + 2, \dots, Kj$. In these rounds,
-the algorithm is guessing the label $\ell_j$. Since $\ell_j$ is chosen uniformly
-at random from the set $\{1,2,\dots,K\}$ and feedback is only binary, the
-expected number of mistakes the algorithm makes in these rounds is at least
-$\frac{K-1}{2}$. Altogether, the algorithm makes at least $\frac{K-1}{2} M$
-mistakes in expectation.
+algorithm makes in rounds $(K-1)(j-1) + 1, (K-1)(j-1) + 2, \dots, (K-1)j$.
 
-\chicheng{I think this part need to be formalized, by directly using
-~\cite{Daniely-Helbertal-2013}, Claim 2.}
+Define a filtration $\cbr{\calB_j}_{j=0}^M$,
+where $\calB_j = \sigma((x_1, y_1), \ldots, (x_{(K-1)j}, y_{(K-1)j}))$
+for every $j$ in $\{1,2,\dots,M\}$.
+By Claim 2 of~\cite{Daniely-Helbertal-2013}, as $\ell_j$
+is chosen uniformly from $\cbr{1,\ldots,K}$ and independent of $\calB_{j-1}$,
+\[ \Exp \sbr{ \sum_{t=(K-1)(j-1) + 1}^{(K-1)j} z_t \Bigg| \calB_{j-1} } \geq \frac{K-1}2. \]
+This implies that
+\[ \Exp \sbr{ \sum_{t=(K-1)(j-1) + 1}^{(K-1)j} z_t } \geq \frac{K-1}2. \]
+Summing over all $j$ in $\{1,2,\dots,M\}$,
+\[ \Exp \sbr{ \sum_{t=1}^{(K-1)M} z_t} \geq \frac{K-1}2 \cdot M = \frac{K-1}2 \left\lfloor \frac 1 4 (R/\gamma)^2 \right\rfloor. \]
+
+%In these rounds,
+%the algorithm is guessing the label $\ell_j$. Since $\ell_j$ is chosen uniformly
+%at random from the set $\{1,2,\dots,K\}$ and feedback is only binary, the
+%expected number of mistakes the algorithm makes in these rounds is at least
+%$\frac{K-1}{2}$. Altogether, the algorithm makes at least $\frac{K-1}{2} M$
+%mistakes in expectation.
+
+%\chicheng{I think this part need to be formalized, by directly using
+%~\cite{Daniely-Helbertal-2013}, Claim 2.}
 %Can we assume without loss of generality
 %that a deterministic prediction algorithm will have a smaller expected cost?
 %If so, define $F(k)$ be the number of mistake that will be made by the algorithm,
@@ -251,16 +278,16 @@ mistakes in expectation.
 
 Finally, since strong separability and norm condition hold with probability one,
 there exists a particular (i.e. deterministic) sequence of examples for which
-the algorithm makes at least $\frac{K-1}{2} M$ mistakes in expectation
+the algorithm makes at least $\frac{K-1}2 \left\lfloor \frac 1 4 (R/\gamma)^2 \right\rfloor$ mistakes in expectation
 over its internal randomization.
 \end{proof}
 
 Algorithm~\ref{algorithm:algorithm-for-strongly-linearly-separable-examples}
 can be extended to nonlinear classification using kernels~\cite{Scholkopf-Smola-Bach-2002}.
 For each class, as opposed
-to explicitly maintaining the weights for each class, we maintain
-the set of examples whose scaled feature transformations are added to the weights.
-We give a formal description in Algorithm~\ref{algorithm:kernelized}.
+to explicitly maintaining the predictor's weights for each class, we maintain
+the set of examples whose scaled feature transformations are added to the weights in Perceptron updates.
+We give a formal description of the kernelized algorithm in Algorithm~\ref{algorithm:kernelized}.
 
 \begin{algorithm}[h]
 \caption{\textsc{Kernelized Bandit Algorithm}
