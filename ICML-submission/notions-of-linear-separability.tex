@@ -63,11 +63,11 @@ completeness, we state the \textsc{Multiclass Perceptron} algorithm
 and give proofs of both of these results in
 Appendix~\ref{section:multiclass-perceptron-proofs}.
 
-The notion of strong linear separability has appeared in the literature
-(see e.g.~\cite{Chen-Chen-Zhang-Chen-Zhang-2009}).
+The notion of strong linear separability has appeared in the literature;
+see e.g.~\citet{Chen-Chen-Zhang-Chen-Zhang-2009}.
 \footnote{Although~\cite{Chen-Chen-Zhang-Chen-Zhang-2009} claimed that their
 Conservative OVA algorithm with PA-I update has a finite mistake bound under the strong
-linear separability assumption, their proof of Theorem 2 is problematic: their
+linear separability assumption, their proof of Theorem 2 is incorrect. Their
 Lemma 4 cannot be directly applied to the bandit setting,
 as the algorithm only makes updates on a subset of the $w_i$'s.}
 Intuitively, strong linear
