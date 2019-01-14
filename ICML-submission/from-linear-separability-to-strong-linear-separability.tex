@@ -1,34 +1,43 @@
 \section{From linear separability to strong linear separability}
 \label{section:from-linear-separability-to-strong-linear-separability}
 
-In this section, we show how to construct a mapping $\phi$ from the unit ball of
-$\R^d$ into a high dimensional inner product space that has the property that if
-a set of labeled examples in the unit ball is linearly separable with a margin
-$\gamma$, applying the mapping $\phi$ makes the examples \emph{strongly}
-linearly separable with a margin $\gamma'$ and their norms are bounded by $R'$.
-The parameters $\gamma'$ and $R'$ are functions of the old margin $\gamma$ and
-the number of classes $K$, and are specified in the theorems below.
+In this section, we construct and analyze a mapping $\phi$ from the unit ball of
+$\R^d$ into a infinite-dimensional inner product space that has the property
+that if a set of labeled examples in the unit ball is \emph{weakly} linearly
+separable with a margin $\gamma$, applying the mapping $\phi$ makes the examples
+\emph{strongly} linearly separable with a margin $\gamma'$ and their norms are
+bounded by $2$. The parameter $\gamma'$ is a function of the old margin $\gamma$
+and the number of classes $K$, and is specified in the
+\autoref{theorem:margin-transformation} below.
+
+The domain of $\phi$ is the unit ball of $\R^d$. The co-domain of $\phi$ is the classical real separable Hilbert space
+$\ell_2 = \{ x \in \R^\infty ~:~ \sum_{i=1}^\infty x_i^2 < + \infty \}$ equipped
+with the standard inner product $\ip{x}{x'}_{\ell_2} = \sum_{i=1}^\infty x_i x'_i$. We index the coordinates of
+$\ell_2$ by $d$-tuples $(\alpha_1, \alpha_2, \dots, \alpha_d)$ of non-negative
+integers. The mapping is defined by
+\begin{align*}
+& \left(\phi(x_1, x_2, \dots, x_d)\right)_{(\alpha_1, \alpha_2, \dots, \alpha_d)} = x_1^{\alpha_1} x_2^{\alpha_2} \dots x_d^{\alpha_d} \\
+& \qquad \cdot \sqrt{2^{-(\alpha_1 + \alpha_2 + \dots + \alpha_d)} \binom{\alpha_1 + \alpha_2 + \dots + \alpha_d}{\alpha_1, \alpha_2, \dots, \alpha_d}}
+\end{align*}
+where $\binom{\alpha_1 + \alpha_2 + \dots + \alpha_d}{\alpha_1, \alpha_2, \dots, \alpha_d} = \frac{(\alpha_1 + \alpha_2 + \dots + \alpha_d)!}{\alpha_1! \alpha_2! \dots \alpha_d!}$
+is the multinomial coefficient. The corresponding kernel is
+$$
+k(x,x') = \ip{\phi(x)}{\phi(x')}_{\ell_2} = \frac{1}{1 - \frac{1}{2}\ip{x}{x'}} \; .
+$$
+In passing we note that the formula for $k$ implies the mapping $\phi$ is
+well defined. Indeed, since $k(x,x) < +\infty$ for any $x$ in the unit
+ball of $\R^d$, it means that $\phi(x)$ indeed lies in $\ell_2$.
 
 Equipped with the mapping $\phi$, we can utilize
-Algorithm~\ref{algorithm:algorithm-for-strongly-linearly-separable-examples} and
+Algorithm~\ref{algorithm:kernelized} with kernel function $k(x,x') =
+\ip{\phi(x)}{\phi(x')}$ and
 \autoref{theorem:strongly-separable-example-mistake-upper-bound} from the
-previous section and we obtain an algorithm for linearly separable examples and
-an upper bound on its number of mistakes. As a computational speed up, instead
-of working with the mapped examples $\phi(x_1), \phi(x_2), \dots$ explicitly, we
-can use the kernelized version of
-Algorithm~\ref{algorithm:algorithm-for-strongly-linearly-separable-examples}
-that uses a kernel function $k(x,x') = \ip{\phi(x)}{\phi(x')}$.
+previous section and we obtain an algorithm for weakly linearly separable
+examples and an upper bound on its number of mistakes.
 
-We construct several different mappings $\phi$. The mappings differ in the
-parameters $R'$, $\gamma'$, time complexity of evaluating $\phi(x)$, and time
-complexity of evaluating $k(x,x')$. Some of the mappings depend the original
-margin $\gamma$. In practice, the margin parameter $\gamma$ is not known, which
-makes these mappings impractical. However, one of the mappings we construct
-does \emph{not} depend on $\gamma$.
-
-The idea behind all the mappings is polynomial approximation. According to the
-well known Stone-Weierstrass theorem (see
-e.g.~\citep[Section~10.10]{Davidson-Donsig-2010}), on a compact set,
+The idea behind construction and analysis of the mapping $\phi$ is polynomial
+approximation. According to the well known Stone-Weierstrass theorem (see
+e.g.~\citet[Section~10.10]{Davidson-Donsig-2010}), on a compact set,
 multivariate polynomials uniformly approximate any continuous function.
 Intuitively speaking, we use a multivariate polynomial to approximate, on the
 unit ball of $\R^d$, the indicator function corresponding to the intersection of
@@ -95,7 +104,6 @@ for all $\displaystyle x \in \bigcup_{i=1}^m \left\{ x \in \R^d ~:~ \norm{x} \le
 \end{enumerate}
 \end{theorem}
 
-
 The proofs of the theorems can be found in
 Section~\ref{section:proof-of-polynomial-approximation}. The geometric
 interpretation of the two regions described in parts 1 and 2 of the theorems is
@@ -117,104 +125,50 @@ The separating hyperplanes $\ip{v_1}{x} = 0$ and $\ip{v_2}{x} = 0$ are shown as 
 \label{figure:pizza-slice}
 \end{figure}
 
-We construct the three different mappings $\phi_n, \psi_n, \rho$. The first two
-are parameterized by a non-negative integer $n$. The domain of $\phi_n$ and
-$\psi_n$ is $\R^d$. The domain of $\rho$ is the unit ball of $\R^d$. The
-co-domain of $\phi_n$ and $\psi_n$ is $\R^q$ where $q = \sum_{i=0}^n
-\binom{i+d-1}{d-1}$ equipped with the standard inner product $\ip{x}{x'}_{\R^q} =
-\sum_{i=1}^p x_i x'_i$. The co-domain of $\rho$ is the classical real separable Hilbert space
-$\ell_2 = \{ x \in \R^\infty ~:~ \sum_{i=1}^\infty x_i^2 < + \infty \}$ equipped
-with the standard inner product $\ip{x}{x'}_{\ell_2} = \sum_{i=1}^\infty x_i x'_i$. We
-index the coordinates of the co-domain $\R^q$ by $d$-tuples $(\alpha_1,
-\alpha_2, \dots, \alpha_d)$ of non-negative integers such that $\alpha_1 +
-\alpha_2 + \dots + \alpha_d \le n$. Similarly, we index the coordinates of
-$\ell_2$ by $d$-tuples $(\alpha_1, \alpha_2, \dots, \alpha_d)$ of non-negative
-integers. The mappings are defined by
-\begin{align*}
-& \left(\phi_n(x_1, x_2, \dots, x_d)\right)_{(\alpha_1, \alpha_2, \dots, \alpha_d)}
-= x_1^{\alpha_1} x_2^{\alpha_2} \dots x_d^{\alpha_d}
-\\
-& \left(\psi_n(x_1, x_2, \dots, x_d)\right)_{(\alpha_1, \alpha_2, \dots, \alpha_d)} = x_1^{\alpha_1} x_2^{\alpha_2} \dots x_d^{\alpha_d} \\
-& \qquad \cdot \sqrt{\binom{n}{\alpha_1 + \alpha_2 + \dots + \alpha_d} \binom{\alpha_1 + \alpha_2 + \dots + \alpha_d}{\alpha_1, \alpha_2, \dots, \alpha_d}}
-\\
-& \left(\rho(x_1, x_2, \dots, x_d)\right)_{(\alpha_1, \alpha_2, \dots, \alpha_d)} = x_1^{\alpha_1} x_2^{\alpha_2} \dots x_d^{\alpha_d} \\
-& \qquad \cdot \sqrt{2^{-(\alpha_1 + \alpha_2 + \dots + \alpha_d)} \binom{\alpha_1 + \alpha_2 + \dots + \alpha_d}{\alpha_1, \alpha_2, \dots, \alpha_d}}
-\end{align*}
-where $\binom{\alpha_1 + \alpha_2 + \dots + \alpha_d}{\alpha_1, \alpha_2, \dots, \alpha_d} = \frac{(\alpha_1 + \alpha_2 + \dots + \alpha_d)!}{\alpha_1! \alpha_2! \dots \alpha_d!}$
-is the multinomial coefficient and $\binom{n}{k} = \frac{n!}{(n-k)!k!}$ is the binomial coefficient.
 
-Mappings $\psi_n$ and $\rho$ have simple-to-compute kernels
-\begin{align*}
-K_{\psi_n}(x,x') & = \ip{\psi_n(x)}{\psi_n(x')}_{\R^q} = \left( 1 + \ip{x}{x'} \right)^n \; , \\
-K_{\rho}(x,x') & = \ip{\rho(x)}{\rho(x')}_{\ell_2} = \frac{1}{1 - \frac{1}{2}\ip{x}{x'}} \; .
-\end{align*}
-In passing we note that the formula for $K_\rho$ implies the mapping $\rho$ is
-well defined. Indeed, since $K_{\rho}(x,x) < +\infty$ for any $x$ in the unit
-ball of $\R^d$, it means that $\rho(x)$ indeed lies in $\ell_2$.
 
-Any mutlivariate polynomial in the orginal space $\R^d$ can be expressed as a
-linear function in the new feature spaces given by mappings $\phi_n, \psi_n,
-\rho$. The following lemma bounds the norm of the linear function in the terms
-of the norm of the polynomial. Recall that a linear function in a Hilbert space
-$(H, \ip{\cdot}{\cdot}_H)$ has the form $\ip{c}{x}_H$ for some vector $c \in H$
-and its norm is $\norm{c}_H = \sqrt{\ip{c}{c}}$.
+The following lemma expresses any multivariate polynomial in $\R^d$
+as a linear function in $\ell_2$ and gives an upper bound its the norm.
 
 \begin{lemma}[Norm bound]
 \label{lemma:norm-bound}
-Let $d \ge 1$ and $n \ge 0$ be integers and let $q = \sum_{i=0}^n \binom{i+d-1}{d-1}$.
 Let $p:\R^d \to \R$ be a multivariate polynomial.
-\begin{enumerate}
-\item If $n \ge \deg(p)$ then there exists $c \in \R^q$ such that $p(x) = \ip{c}{\phi_n(x)}_{\R^q}$
-and $\norm{c}_{\R^q} = \norm{p}$.
-\item If $n \ge \deg(p)$ then there exists $c' \in \R^q$ such that $p(x) = \ip{c'}{\psi_n(x)}_{\R^q}$
-and $\norm{c'}_{\R^q} \le \norm{p}$.
-\item There exists $c'' \in \ell_2$ such that $p(x) = \ip{c''}{\psi_n(x)}_{\ell_2}$
-and $\norm{c''}_{\R^q} \le 2^{\deg(p)/2} \norm{p}$.
-\end{enumerate}
+There exists $c \in \ell_2$ such that $p(x) = \ip{c}{\psi_n(x)}_{\ell_2}$
+and $\norm{c}_{\ell_2} \le 2^{\deg(p)/2} \norm{p}$.
 \end{lemma}
 
 \begin{proof}
 Note that the polynomial $p$ can be written as
-$p(x) = \sum_{\alpha_1, \alpha_2, \dots, \alpha_d} c_{\alpha_1, \alpha_2, \dots, \alpha_d} x_1^{\alpha_1} x_2^{\alpha_2} \dots x_d^{\alpha_d}$.
-There are $\sum_{i=0}^{\deg(p)} \binom{i+d-1}{d-1}$ coefficients $c_{\alpha_1, \alpha_2, \dots, \alpha_d}$.
-If $n \ge \deg(p)$ these can be expressed as a vector in $c \in \R^q$. Thus, $p(x) = \ip{c}{\phi_n(x)}_{\R^q}$
-and
+$p(x) = \sum_{\alpha_1, \alpha_2, \dots, \alpha_d} c'_{\alpha_1, \alpha_2, \dots, \alpha_d} x_1^{\alpha_1} x_2^{\alpha_2} \dots x_d^{\alpha_d}$.
+We define $c \in \ell_2$ using the multi-index notation as
 $$
-\norm{c}_{\R^p} = \sqrt{\sum_{\alpha_1, \alpha_2, \dots, \alpha_d} (c_{\alpha_1, \alpha_2, \dots, \alpha_d})^2} =  \norm{p} \; .
-$$
-
-We define $c' \in \R^q$ using the multi-index notation as
-$$
-c'_{\alpha_1, \alpha_2, \dots, \alpha_d}
-= \frac{c_{\alpha_1, \alpha_2, \dots, \alpha_d}}{\sqrt{\binom{n}{\alpha_1 + \alpha_2 + \dots + \alpha_d} \binom{\alpha_1 + \alpha_2 + \dots + \alpha_d}{\alpha_1, \alpha_2, \dots, \alpha_d}}} \; .
-$$
-We have $\ip{c'}{\psi_n(x)}_{\R^q} = \ip{c}{\phi_n(x)}_{\R^q} = p(x)$. Since
-$$
-|c'_{\alpha_1, \alpha_2, \dots, \alpha_d}| \le |c_{\alpha_1, \alpha_2, \dots, \alpha_d}| \; ,
-$$
-we have $\norm{c'}_{\R^q} \le \norm{c}_{\R^q} = \norm{p}$.
-
-Similarly, we define $c'' \in \ell_2$ using the multi-index notation as
-$$
-c''_{\alpha_1, \alpha_2, \dots, \alpha_d}
-= \frac{c_{\alpha_1, \alpha_2, \dots, \alpha_d} 2^{(\alpha_1 + \alpha_2 + \dots + \alpha_d)/2}}{\sqrt{\binom{\alpha_1 + \alpha_2 + \dots + \alpha_d}{\alpha_1, \alpha_2, \dots, \alpha_d}}}
+c_{\alpha_1, \alpha_2, \dots, \alpha_d}
+= \frac{c'_{\alpha_1, \alpha_2, \dots, \alpha_d} 2^{(\alpha_1 + \alpha_2 + \dots + \alpha_d)/2}}{\sqrt{\binom{\alpha_1 + \alpha_2 + \dots + \alpha_d}{\alpha_1, \alpha_2, \dots, \alpha_d}}}
 $$
 for all tuples $(\alpha_1, \alpha_2, \dots, \alpha_d)$ such that $\alpha_1 + \alpha_2 + \dots + \alpha_d \le \deg(p)$.
-Otherwise, we define $c''_{\alpha_1, \alpha_2, \dots, \alpha_d} = 0$. We have
-$\ip{c''}{\rho(x)}_{\ell_2} = \ip{c}{\phi_n(x)}_{\R^q} = p(x)$. Since
+Otherwise, we define $c_{\alpha_1, \alpha_2, \dots, \alpha_d} = 0$. Clearly,
+$\ip{c}{\phi(x)}_{\ell_2} = p(x)$.
+
+Since
 \begin{align*}
-|c''_{\alpha_1, \alpha_2, \dots, \alpha_d}|
-& \le 2^{(\alpha_1 + \alpha_2 + \dots + \alpha_d)/2} |c''_{\alpha_1, \alpha_2, \dots, \alpha_d}| \\
-& \le 2^{\deg(p)/2} |c''_{\alpha_1, \alpha_2, \dots, \alpha_d}| \; ,
+|c_{\alpha_1, \alpha_2, \dots, \alpha_d}|
+& \le 2^{(\alpha_1 + \alpha_2 + \dots + \alpha_d)/2} |c'_{\alpha_1, \alpha_2, \dots, \alpha_d}| \\
+& \le 2^{\deg(p)/2} |c'_{\alpha_1, \alpha_2, \dots, \alpha_d}| \; ,
 \end{align*}
-we have $\norm{c''}_{\ell_2} \le 2^{\deg(p)/2} \norm{c}_{\R^q} = 2^{\deg(p)/2} \norm{p}$.
+we have
+\begin{align*}
+\norm{c}_{\ell_2}
+& \le 2^{\deg(p)/2} \sqrt{\sum_{\alpha_1, \alpha_2, \dots, \alpha_d} (c'_{\alpha_1, \alpha_2, \dots, \alpha_d})^2} \\
+& = 2^{\deg(p)/2} \norm{p} \; .
+\end{align*}
 \end{proof}
 
 Using the lemma and the polynomial approximation theorems, we can prove
 the mappings $\phi_n, \psi_n, \rho$ map any a weakly separable data
 to a strongly separable data set.
 
-\begin{theorem}
+\begin{theorem}[Margin transformation]
+\label{theorem:margin-transformation}
 Let $(x_1, y_1), (x_2, y_2), \dots, (x_T, y_T) \in \R^d \times \{1,2,\dots,K\}$
 labeled examples that are weakly linearly separable with margin $\gamma > 0$
 such that $\norm{x_1}, \norm{x_2}, \dots, \norm{x_T} \le 1$. Then, the labeled
