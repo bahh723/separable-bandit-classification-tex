@@ -239,3 +239,46 @@ there exists a particular (i.e. deterministic) sequence of examples for which
 the algorithm makes at least $\frac{K-1}{2} M$ mistakes in expectation
 over its internal randomization.
 \end{proof}
+
+Algorithm~\ref{algorithm:algorithm-for-strongly-linearly-separable-examples}
+can be extended to nonlinear classification using kernels~\cite{Scholkopf-Smola-Bach-2002}.
+For each class, as opposed
+to explicitly maintaining the weights for each class, we maintain
+the set of examples whose scaled feature transformations are added to the weights.
+We give a formal description in Algorithm~\ref{algorithm:kernelized}.
+
+\begin{algorithm}[h]
+\caption{\textsc{Kernelized Bandit Algorithm}
+\label{algorithm:kernelized}}
+\begin{algorithmic}[1]
+{
+\REQUIRE{Number of classes $K$.}
+\REQUIRE{Number of rounds $T$.}
+\REQUIRE{Kernel function  $k(\cdot, \cdot)$.}
+\STATE{Initialize $J_1^{(1)} = J_2^{(1)} = \dots = J_K^{(1)} = \emptyset$}
+\FOR{$t=1,2,\dots,T$}
+\STATE{Observe feature vector $x_t$.}
+\STATE{Compute $S_t = \left\{ i ~:~ 1 \le i \le K, \ \sum_{(x,y) \in J_i^{(t)}} y k(x, x_t) \ge 0 \right\}$}
+\IF{$S_t = \emptyset$}
+\STATE{Predict $\widehat y_t \sim \text{Uniform}(\{1,2,\dots,K\})$}
+\STATE{Observe feedback $z_t \in \{0,1\}$ \\ \qquad where $z_t = \indicator{\widehat y_t \neq y_t}$}
+\IF{$z_t = 1$}
+\STATE{Set $J_i^{(t+1)} = J_i^{(t)}$ for all $i \in \{1,2,\dots,K\}$}
+\ELSE
+\STATE{Set $J_i^{(t+1)} = J_i^{(t)}$ \\ \qquad  for all $i \in \{1,2,\dots,K\} \setminus \{\widehat y_t\}$}
+\STATE{Update $J_{\widehat y_t}^{(t+1)} = J_{\widehat y_t}^{(t)} \cup \cbr{(x_t, +1)}$}
+\ENDIF
+\ELSE
+\STATE{Predict $\widehat y_t \in S_t$ chosen arbitrarily}
+\STATE{Observe feedback $z_t \in \{0,1\}$ \\ \qquad where $z_t = \indicator{\widehat y_t \neq y_t}$}
+\IF{$z_t = 1$}
+\STATE{Set $J_i^{(t+1)} = J_i^{(t)}$ \\ \qquad for all $i \in \{1,2,\dots,K\} \setminus \{\widehat y_t\}$}
+\STATE{Update $J_{\widehat y_t}^{(t+1)} = J_{\widehat y_t}^{(t)} \cup \cbr{(x_t, -1)}$}
+\ELSE
+\STATE{Set $J_i^{(t+1)} = J_i^{(t)}$ for all $i \in \{1,2,\dots,K\}$}
+\ENDIF
+\ENDIF
+\ENDFOR
+}
+\end{algorithmic}
+\end{algorithm}

@@ -13,17 +13,18 @@ setting (where the feedback given is the correct label $y_t$), here the feedback
 is only a binary indicator of whether the prediction was correct or not. The
 protocol of the problem is formally stated below.
 
-\begin{algorithm}[h]
+\begin{protocol}[h]
 \caption{\textsc{Online Multiclass Classification with Bandit Feedback}
 \label{algorithm:game-protocol}}
 \begin{algorithmic}[1]
 {
-\REQUIRE{Number of classes $K$.}
-\REQUIRE{Number of rounds $T$.}
+\REQUIRE{Number of classes $K$, number of rounds $T$.}
+%\REQUIRE{.}
 \FOR{$t=1,2,\dots,T$}
-\STATE{Observe feature vector $x_t$}
-\STATE{Adversary \emph{secretly} chooses correct class label $y_t \in \{1,2,\dots,K\}$}
-\chicheng{Or we simply say: Adversary chooses example $(x_t, y_t)$, where $x_t$ is reveal to the learner.}
+\STATE Adversary chooses example $(x_t, y_t)$, where $x_t$ is revealed to the learner.
+%\STATE{Observe feature vector $x_t$}
+%\STATE{Adversary \emph{secretly} chooses correct class label $y_t \in \{1,2,\dots,K\}$}
+%\chicheng{Or we simply say: Adversary chooses example $(x_t, y_t)$, where $x_t$ is revealed to the learner.}
 \STATE{Predict class label $\widehat y_t \in \{1,2,\dots,K\}$}
 \STATE{Observe feedback $z_t \in \{0,1\}$ \\ \qquad where $z_t = \begin{cases}
 0 & \text{if $\widehat y_t = y_t$,} \\
@@ -33,7 +34,7 @@ protocol of the problem is formally stated below.
 \ENDFOR
 }
 \end{algorithmic}
-\end{algorithm}
+\end{protocol}
 
 The performance is of the learner is measured by its cumulative number of
 mistakes $\sum_{t=1}^T z_t = \sum_{t=1}^T \indicator{\widehat y_t \neq y_t}$.

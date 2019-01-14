@@ -63,3 +63,10 @@
 \newcommand{\deva}[1]{\kibitz{teal}{[DT: #1]}}
 \newcommand{\chenyu}[1]{\kibitz{orange}{[CW: #1]}}
 \newcommand{\chicheng}[1]{\kibitz{blue}{[CZ: #1]}}
+
+\makeatletter
+\newenvironment{protocol}[1][htb]{%
+    \renewcommand{\ALG@name}{Protocol}% Update algorithm name
+   \begin{algorithm}[#1]%
+  }{\end{algorithm}}
+\makeatother
