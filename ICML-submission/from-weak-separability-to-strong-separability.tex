@@ -177,8 +177,8 @@ Let
 \begin{align*}
 r & = 2 \left\lceil \frac{1}{4} \log_2(4K-3) \right\rceil + 1 \quad \text{and} \quad s = \left \lceil \log_2(2/\gamma) \right \rceil \\
 \gamma_1 & = \frac{1}{2\sqrt{K}}  \\
-& \ \cdot \left(376 \lceil \log_2(2m) \rceil \cdot \left \lceil \sqrt{\frac{2}{\gamma}} \right \rceil \right)^{-\frac{1}{2} \lceil \log_2(2K-2) \rceil \cdot \left \lceil \sqrt{\frac{2}{\gamma}} \right \rceil} \; , \\
-\gamma_2 & = \frac{2^{s(s+1)r(K-1)} }{4(2K-5/2) 2^{K-1}} \\
+& \ \cdot \left(376 \lceil \log_2(2K-2) \rceil \cdot \left \lceil \sqrt{\frac{2}{\gamma}} \right \rceil \right)^{-\frac{1}{2} \lceil \log_2(2K-2) \rceil \cdot \left \lceil \sqrt{\frac{2}{\gamma}} \right \rceil} \\
+\gamma_2 & = \frac{2^{s(s+1)r(K-1)} }{4\sqrt{K}(2K-5/2) 2^{K-1}} \\
 & \ \cdot \left(2^{2s+1} r(K-1) (4s+2)^2 \right)^{-(s+1/2)r(K-1)} \; .
 \end{align*}
 Then, the labeled examples $(\phi(x_1), y_1), (\phi(x_2), y_2), \dots,
@@ -230,7 +230,7 @@ Define vectors $u_i, u_i' \in \ell_2$ as
 \begin{align*}
 u_i & = \frac{c_i}{\sqrt{K} \left(376 \lceil \log_2(2K-2) \rceil \cdot \left \lceil \sqrt{\frac{2}{\gamma}} \right \rceil \right)^{\frac{1}{2} \lceil \log_2(2K-2) \rceil
 \cdot \left \lceil \sqrt{\frac{2}{\gamma}} \right \rceil}} \; . \\
-u_i' & = \frac{c_i'  \cdot \left(2^{2s+1} r(K-1) (4s+2)^2 \right)^{-(s+1/2)r(K-1)}}{(2K-5/2) 2^{K-1}} \; .
+u_i' & = \frac{c_i'  \cdot \left(2^{2s+1} r(K-1) (4s+2)^2 \right)^{-(s+1/2)r(K-1)}}{\sqrt{K} (2K-5/2) 2^{K-1}} \; .
 \end{align*}
 
 Then, $\norm{u_1}^2 + \norm{u_2}^2 + \dots + \norm{u_K}^2 \le 1$ and
@@ -241,8 +241,8 @@ and for all $j \in \{1,2,\dots,K\} \setminus \{y_t\}$,
 $\ip{u_j}{x_t} \le - \gamma_1$ and $\ip{u'_j}{x_t} \le - \gamma_2$. In other words,
 $(\phi(x_1), y_1), (\phi(x_2), y_2), \dots, (\phi(x_T), y_T)$ are
 strongly linearly separable with margin $\gamma_1$ and also strongly linearly
-separable with margin $\gamma_2$. Therefore, the examples are strongly separable
-with margin $\gamma' = \max\{\gamma_1, \gamma_2\}$.
+separable with margin $\gamma_2$. Therefore, the examples are strongly
+linearly separable with margin $\gamma' = \max\{\gamma_1, \gamma_2\}$.
 \end{proof}
 
 As a corollary of \autoref{theorem:margin-transformation} and
