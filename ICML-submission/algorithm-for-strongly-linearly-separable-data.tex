@@ -10,12 +10,16 @@ the mistake upper bound is stated as
 \autoref{theorem:strongly-separable-example-mistake-upper-bound}.
 
 The idea behind the algorithm is to use $K$ copies of the \textsc{Binary
-Perceptron} algorithm. Each copy corresponds to a class. In each round, each
-copy makes a binary decision whether the feature vector belongs its respective
-class or not. If at least one copy makes a positive prediction, the algorithm
-predicts accordingly. If multiple copies make positive predictions, the
-algorithm chooses one of them arbitrarily. If all copies make negative
-predictions, the algorithms makes a uniformly random guess.
+Perceptron} algorithm, where each copy corresponds to a class.
+In each round, copy $i$
+makes a binary prediction, indicating whether the example belongs to class $i$ or not.
+If at least one copy makes a positive prediction, the algorithm
+chooses its prediction as one of the classes corresponding to a positive prediction.
+If all copies make negative
+predictions, the algorithms makes a prediction uniformly at random.
+
+%accordingly. If multiple copies make positive predictions, the
+%algorithm chooses one of them arbitrarily
 
 \begin{algorithm}[h]
 \caption{\textsc{Bandit Algorithm for Strongly Linearly Separable Examples}
@@ -37,6 +41,7 @@ predictions, the algorithms makes a uniformly random guess.
 \ELSE
 \STATE{Set $w_i^{(t+1)} = w_i^{(t)}$ \\ \qquad  for all $i \in \{1,2,\dots,K\} \setminus \{\widehat y_t\}$}
 \STATE{Update $w_{\widehat y_t}^{(t+1)} = w_{\widehat y_t}^{(t)} + x_t$}
+\label{line:pos-update}
 \ENDIF
 \ELSE
 \STATE{Predict $\widehat y_t \in S_t$ chosen arbitrarily}
@@ -44,6 +49,7 @@ predictions, the algorithms makes a uniformly random guess.
 \IF{$z_t = 1$}
 \STATE{Set $w_i^{(t+1)} = w_i^{(t)}$ \\ \qquad for all $i \in \{1,2,\dots,K\} \setminus \{\widehat y_t\}$}
 \STATE{Update $w_{\widehat y_t}^{(t+1)} = w_{\widehat y_t}^{(t)} - x_t$}
+\label{line:neg-update}
 \ELSE
 \STATE{Set $w_i^{(t+1)} = w_i^{(t)}$ for all $i \in \{1,2,\dots,K\}$}
 \ENDIF
@@ -55,27 +61,33 @@ predictions, the algorithms makes a uniformly random guess.
 
 \begin{theorem}[Mistake upper bound]
 \label{theorem:strongly-separable-example-mistake-upper-bound}
-Let $(V, \ip{\cdot}{\cdot})$ be any inner product space, let $K$ be a positive
-integer, let $\gamma$ a positive real number, let $R$ be a non-negative real number. If
+Let $(V, \ip{\cdot}{\cdot})$ be an inner product space, $K$ be a positive
+integer, $\gamma$ be a positive real number, $R$ be a non-negative real number. If
 $(x_1, y_1), (x_2, y_2), \dots, (x_T, y_T)$ is a sequence of labeled examples in
-$V \times \{1,2,\dots,K\}$ such that the examples are strongly separable with
-margin $\gamma$ and $\norm{x_1}, \norm{x_2}, \dots, \norm{x_T} \le R$ then the
+$V \times \{1,2,\dots,K\}$ such that
+\begin{enumerate}
+  \item the examples are strongly separable with margin $\gamma$,
+  \item $\norm{x_1}, \norm{x_2}, \dots, \norm{x_T} \le R$,
+\end{enumerate}
+then the
 expected number of mistakes
 Algorithm~\ref{algorithm:algorithm-for-strongly-linearly-separable-examples}
 makes is at most $(K-1) \lfloor (R/\gamma)^2 \rfloor$.
 \end{theorem}
 
 \begin{proof}
-Let $M = \sum_{t=1}^T z_t$ be the number of mistakes the algorithm makes. Let $A
+Let $M = \sum_{t=1}^T z_t$ be the number of
+mistakes Algorithm~\ref{algorithm:algorithm-for-strongly-linearly-separable-examples} makes.
+Let $A
 = \sum_{t ~:~ S_t \neq \emptyset} z_t$ be the number of mistakes in the rounds
 when $S_t \neq \emptyset$ and let $B = \sum_{t ~:~ S_t = \emptyset} z_t$ be the
-number of mistakes in the rounds when $S_t = \emptyset$. Obviously, $M = A + B$.
-We upper bound $A$ and $B$ separately.
+number of mistakes in the rounds when $S_t = \emptyset$.
+It can be easily seen that $M = A + B$. %We now upper bound $A$ and $B$ separately.
 
-Let $C$ be the number of times line 12 gets executed. Let $U$ be the number of
-times line 12 and line 19 get executed. In other words, $U$ is the number of
+Let $C$ be the number of times line~\ref{line:pos-update} gets executed. Let $U$ be the number of
+times line~\ref{line:pos-update} and line~\ref{line:neg-update} get executed. In other words, $U$ is the number of
 times the $K$-tuple of vectors $(w_1^{(t)}, w_2^{(t)}, \dots, w_K^{(t)})$ gets
-updated. Clearly, $U = A + C$.
+updated. It can be easily seen that $U = A + C$.
 
 The key observation is that $\Exp[B] = (K-1) \Exp[C]$. The equality holds
 because if $S_t = \emptyset$, there is $1/K$ probability that the algorithm
@@ -89,7 +101,7 @@ incorrect. Putting all the information together, we get that
 & = (K-1) \Exp[U]  \; .
 \end{align*}
 
-To finish the proof, we need to upper bound the number of updates, $U$. We claim
+To finish the proof, we need to upper bound the number of updates $U$. We claim
 that $U \le \lfloor (R/\gamma)^2 \rfloor$. The proof of this upper bound is
 similar to the proof of the mistake bound for \textsc{Multiclass Perceptron}
 algorithm. Let $w_1^*, w_2^*, \dots, w_K^* \in V$ be vectors that satisfy
@@ -100,7 +112,10 @@ The $K$-tuple $(w_1^{(t)}, w_2^{(t)}, \dots, w_K^{(t)})$
 changes only if there is an update in round $t$.
 We investigate how $\sum_{i=1}^K \norm{w_i^{(t)}}^2$ and
 $\sum_{i=1}^K \ip{w_i^*}{w_i^{(t)}}$ change. If there is an update in round $t$,
-we have
+by lines~\ref{line:pos-update} and~\ref{line:neg-update}, we always have
+$ w_{\widehat y_t}^{(t+1)} = w_{\widehat y_t}^{(t)} + (-1)^{z_t} x_t $,
+and for all $i \neq \widehat y_t$, $w_{i}^{(t+1)} = w_{i}^{(t)}$.
+Therefore,
 \begingroup
 \allowdisplaybreaks
 \begin{align*}
@@ -112,7 +127,7 @@ we have
 & \le \left( \sum_{i=1}^K \norm{w_i^{(t)}}^2 \right) + R^2 \; .
 \end{align*}
 \endgroup
-Therefore, after $U$ updates,
+Hence, after $U$ updates,
 $$
 \sum_{i=1}^K \norm{w_i^{(T+1)}}^2 \le R^2 U \; .
 $$
@@ -131,7 +146,7 @@ Thus, after $U$ updates,
 $$
 \sum_{i=1}^K \ip{w_i^*}{w_i^{(T+1)}} \ge \gamma U \; .
 $$
-Applying Cauchy-Schwartz's inequality twice and assumption
+Applying Cauchy-Schwartz's inequality twice, and using assumption
 \eqref{equation:strong-linear-separability-1}, we get that
 \begin{align*}
 \sum_{i=1}^K \ip{w_i^*}{w_i^{(T+1)}}
