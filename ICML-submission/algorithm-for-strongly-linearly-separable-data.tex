@@ -10,16 +10,12 @@ the mistake upper bound is stated as
 \autoref{theorem:strongly-separable-example-mistake-upper-bound}.
 
 The idea behind the algorithm is to use $K$ copies of the \textsc{Binary
-Perceptron} algorithm, where each copy corresponds to a class.
-In each round, copy $i$
-makes a binary prediction, indicating whether the example belongs to class $i$ or not.
-If at least one copy makes a positive prediction, the algorithm
-chooses its prediction as one of the classes corresponding to a positive prediction.
-If all copies make negative
-predictions, the algorithms makes a prediction uniformly at random.
-
-%accordingly. If multiple copies make positive predictions, the
-%algorithm chooses one of them arbitrarily
+Perceptron} algorithm, where each copy corresponds to a class. In each round,
+copy $i$ makes a binary prediction, indicating whether the example belongs to
+class $i$ or not. If at least one copy makes a positive prediction, the
+algorithm chooses its prediction as one of the classes corresponding to a
+positive prediction. If all copies make negative predictions, the algorithms
+makes a prediction uniformly at random.
 
 \begin{algorithm}[h]
 \caption{\textsc{Bandit Algorithm for Strongly Linearly Separable Examples}
@@ -82,12 +78,13 @@ Let $A
 = \sum_{t ~:~ S_t \neq \emptyset} z_t$ be the number of mistakes in the rounds
 when $S_t \neq \emptyset$ and let $B = \sum_{t ~:~ S_t = \emptyset} z_t$ be the
 number of mistakes in the rounds when $S_t = \emptyset$.
-It can be easily seen that $M = A + B$. %We now upper bound $A$ and $B$ separately.
+It can be easily seen that $M = A + B$.
 
-Let $C$ be the number of times line~\ref{line:pos-update} gets executed. Let $U$ be the number of
-times line~\ref{line:pos-update} and line~\ref{line:neg-update} get executed. In other words, $U$ is the number of
-times the $K$-tuple of vectors $(w_1^{(t)}, w_2^{(t)}, \dots, w_K^{(t)})$ gets
-updated. It can be easily seen that $U = A + C$.
+Let $C$ be the number of times line~\ref{line:pos-update} gets executed. Let $U$
+be the number of times line~\ref{line:pos-update} or line~\ref{line:neg-update}
+get executed. In other words, $U$ is the number of times the $K$-tuple of
+vectors $(w_1^{(t)}, w_2^{(t)}, \dots, w_K^{(t)})$ gets updated. It can be
+easily seen that $U = A + C$.
 
 The key observation is that $\Exp[B] = (K-1) \Exp[C]$. The equality holds
 because if $S_t = \emptyset$, there is $1/K$ probability that the algorithm
@@ -103,7 +100,7 @@ incorrect. Putting all the information together, we get that
 \end{align}
 
 To finish the proof, we need to upper bound the number of updates $U$. We claim
-that $U \le \lfloor (R/\gamma)^2 \rfloor$. The proof of this upper bound is
+that $U \le \lfloor 4(R/\gamma)^2 \rfloor$. The proof of this upper bound is
 similar to the proof of the mistake bound for \textsc{Multiclass Perceptron}
 algorithm. Let $w_1^*, w_2^*, \dots, w_K^* \in V$ be vectors that satisfy
 \eqref{equation:strong-linear-separability-1},
@@ -134,6 +131,8 @@ Hence, after $U$ updates,
 \label{eqn:norm-ub}
 \end{equation}
 Similarly, if there is an update in round $t$, we have
+\begingroup
+\allowdisplaybreaks
 \begin{align*}
 & \sum_{i=1}^K \ip{w_i^*}{w_i^{(t)}} \\
 & = \left( \sum_{i \in \{1,2,\dots,K\} \setminus \{\widehat y_t\}} \ip{w_i^*}{w_i^{(t)}} \right) + \ip{w_{\widehat y_t}^*}{w_{\widehat y_t}^{(t+1)}} \\
@@ -142,15 +141,14 @@ Similarly, if there is an update in round $t$, we have
 & = \left( \sum_{i=1}^K \ip{w_i^*}{w_i^{(t)}} \right) + (-1)^{z_t} \ip{w_{\widehat y_t}^*}{x_t} \\
 & \ge \left( \sum_{i=1}^K \ip{w_i^*}{w_i^{(t)}} \right) + \frac \gamma 2,
 \end{align*}
+\endgroup
 where the last inequality follows from a case analysis on $z_t$ and
 Definition~\ref{definition:strong-linear-separability}: if $z_t = 0$, then
-$\widehat y_t = y_t$, by Equation~\eqref{equation:strong-linear-separability-2}, we have
-that $\ip{w_{\widehat y_t}^*}{x_t} \geq \frac \gamma 2$;
-if $z_t = 1$, then $\widehat y_t \neq y_t$, by Equation~\eqref{equation:strong-linear-separability-3},
-we have that $\ip{w_{\widehat y_t}^*}{x_t} \leq -\frac \gamma 2$.
-
-%\eqref{equation:strong-linear-separability-2}
-%and \eqref{equation:strong-linear-separability-3} and analysis of the cases $z_t = 0$ and $z_t = 1$.
+$\widehat y_t = y_t$, by Equation~\eqref{equation:strong-linear-separability-2},
+we have that $\ip{w_{\widehat y_t}^*}{x_t} \geq \frac \gamma 2$; if $z_t = 1$,
+then $\widehat y_t \neq y_t$, by
+Equation~\eqref{equation:strong-linear-separability-3}, we have that
+$\ip{w_{\widehat y_t}^*}{x_t} \le -\frac \gamma 2$.
 
 Thus, after $U$ updates,
 \begin{equation}
@@ -167,12 +165,14 @@ Applying Cauchy-Schwartz's inequality twice, and using assumption
 \end{align*}
 Combining the above inequality with Equations~\eqref{eqn:norm-ub} and~\eqref{eqn:norm-lb}, we get
 $$
-(\frac{\gamma U}{2})^2 \le \sum_{i=1}^K \norm{w_i^{(T+1)}}^2 \le R^2 U \; .
+\left(\frac{\gamma U}{2} \right)^2 \le \sum_{i=1}^K \norm{w_i^{(T+1)}}^2 \le R^2 U \; .
 $$
 We conclude that $U \le 4(R/\gamma)^2$. Since $U$ is an integer, $U \le \lfloor 4(R/\gamma)^2 \rfloor$.
 
 Applying Equation~\eqref{eqn:mistake-update}, we get
-\[ \Exp[M] \leq (K-1) \Exp[U] \leq (K-1) \lfloor 4(R/\gamma)^2 \rfloor. \qedhere \]
+$$
+\Exp[M] \leq (K-1) \Exp[U] \leq (K-1) \lfloor 4(R/\gamma)^2 \rfloor \; . \qedhere
+$$
 \end{proof}
 
 The upper bound $(K-1) \lfloor 4(R/\gamma)^2 \rfloor$ on the expected number of
@@ -251,13 +251,19 @@ algorithm makes in rounds $(K-1)(j-1) + 1, (K-1)(j-1) + 2, \dots, (K-1)j$.
 Define a filtration $\cbr{\calB_j}_{j=0}^M$,
 where $\calB_j = \sigma((x_1, y_1), \ldots, (x_{(K-1)j}, y_{(K-1)j}))$
 for every $j$ in $\{1,2,\dots,M\}$.
-By Claim 2 of~\cite{Daniely-Helbertal-2013}, as $\ell_j$
-is chosen uniformly from $\cbr{1,\ldots,K}$ and independent of $\calB_{j-1}$,
-\[ \Exp \sbr{ \sum_{t=(K-1)(j-1) + 1}^{(K-1)j} z_t \Bigg| \calB_{j-1} } \geq \frac{K-1}2. \]
+By Claim 2 of~\citet{Daniely-Helbertal-2013}, as $\ell_j$
+is chosen uniformly from $\cbr{1,\dots,K}$ and independent of $\calB_{j-1}$,
+$$
+\Exp \sbr{ \sum_{t=(K-1)(j-1) + 1}^{(K-1)j} z_t ~\Bigg|~ \calB_{j-1} } \geq \frac{K-1}2 \; .
+$$
 This implies that
-\[ \Exp \sbr{ \sum_{t=(K-1)(j-1) + 1}^{(K-1)j} z_t } \geq \frac{K-1}2. \]
+$$
+\Exp \sbr{ \sum_{t=(K-1)(j-1) + 1}^{(K-1)j} z_t } \ge \frac{K-1}2 \; .
+$$
 Summing over all $j$ in $\{1,2,\dots,M\}$,
-\[ \Exp \sbr{ \sum_{t=1}^{(K-1)M} z_t} \geq \frac{K-1}2 \cdot M = \frac{K-1}2 \left\lfloor \frac 1 4 (R/\gamma)^2 \right\rfloor. \]
+$$
+\Exp \sbr{ \sum_{t=1}^{(K-1)M} z_t} \geq \frac{K-1}2 \cdot M = \frac{K-1}2 \left\lfloor \frac 1 4 (R/\gamma)^2 \right\rfloor \; .
+$$
 
 %In these rounds,
 %the algorithm is guessing the label $\ell_j$. Since $\ell_j$ is chosen uniformly
@@ -282,12 +288,13 @@ the algorithm makes at least $\frac{K-1}2 \left\lfloor \frac 1 4 (R/\gamma)^2 \r
 over its internal randomization.
 \end{proof}
 
-Algorithm~\ref{algorithm:algorithm-for-strongly-linearly-separable-examples}
-can be extended to nonlinear classification using kernels~\cite{Scholkopf-Smola-2002, Shawe-Taylor-Cristianini-2004}.
-For each class, as opposed
-to explicitly maintaining the predictor's weights for each class, we maintain
-the set of examples whose scaled feature transformations are added to the weights in Perceptron updates.
-We give a formal description of the kernelized algorithm in Algorithm~\ref{algorithm:kernelized}.
+Algorithm~\ref{algorithm:algorithm-for-strongly-linearly-separable-examples} can
+be extended to nonlinear classification using
+kernels~\cite{Scholkopf-Smola-2002, Shawe-Taylor-Cristianini-2004}. For each
+class, as opposed to explicitly maintaining the predictor's weights for each
+class, we maintain the set of examples whose scaled feature transformations are
+added to the weights in Perceptron updates. We give a formal description of the
+kernelized algorithm in Algorithm~\ref{algorithm:kernelized}.
 
 \begin{algorithm}[h]
 \caption{\textsc{Kernelized Bandit Algorithm}
@@ -300,7 +307,7 @@ We give a formal description of the kernelized algorithm in Algorithm~\ref{algor
 \STATE{Initialize $J_1^{(1)} = J_2^{(1)} = \dots = J_K^{(1)} = \emptyset$}
 \FOR{$t=1,2,\dots,T$}
 \STATE{Observe feature vector $x_t$.}
-\STATE{Compute $S_t = \left\{ i ~:~ 1 \le i \le K, \ \sum_{(x,y) \in J_i^{(t)}} y k(x, x_t) \ge 0 \right\}$}
+\STATE{Compute \\ $S_t = \left\{ i ~:~ 1 \le i \le K, \ \sum_{(x,y) \in J_i^{(t)}} y k(x, x_t) \ge 0 \right\}$}
 \IF{$S_t = \emptyset$}
 \STATE{Predict $\widehat y_t \sim \text{Uniform}(\{1,2,\dots,K\})$}
 \STATE{Observe feedback $z_t \in \{0,1\}$ \\ \qquad where $z_t = \indicator{\widehat y_t \neq y_t}$}

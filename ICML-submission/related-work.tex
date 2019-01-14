@@ -1,36 +1,35 @@
 \section{Related work}
 \label{section:related-work}
 
-The problem of online bandit multiclass learning was initially formulated
-in the pioneering work of~\cite{Auer-Long-1999}, under the name of
-``weak reinforcement model''. They show that if the set of examples shown is
-separable by a classifier in a prespecified hypothesis class $\calH$, then the optimal
- mistake bound in the bandit setting can be upper bounded by the optimal mistake
- bound in the full-information setting, times a factor of $(2.01 + o(1))K \ln K$.
- (See~\cite{Long-2017} for improvements of the factor to $(1 + o(1)) K \ln K$.)
- ~\cite{Daniely-Helbertal-2013} extend the results to the setting where the
- performance of the algorithm is measured by its regret, i.e. the difference
- between the number of mistake made by the algorithm and the number of mistake
- made by the best classifier in $\calH$ in hindsight. However, all algorithms developed in
- this context are computationally inefficient.
+The problem of online bandit multiclass learning was initially formulated in the
+pioneering work of~\citet{Auer-Long-1999} under the name of ``weak reinforcement
+model''. They show that if the set of examples shown is separable by a
+classifier in a prespecified hypothesis class $\calH$, then the optimal mistake
+bound in the bandit setting can be upper bounded by the optimal mistake bound in
+the full-information setting, times a factor of $(2.01 + o(1))K \ln K$.
+\citet{Long-2017} later improved the factor to $(1 + o(1)) K \ln K$.
+\citet{Daniely-Helbertal-2013} extend the results to the setting where the
+performance of the algorithm is measured by its regret, i.e. the difference
+between the number of mistake made by the algorithm and the number of mistake
+made by the best classifier in $\calH$ in hindsight. However, all algorithms
+developed in this context are computationally inefficient.
 
-
-The linear classification version of this problem
-is initially studied by~\citet{Kakade-Shalev-Shwartz-Tewari-2008}. They proposed
-two computationally inefficient algorithms that work in the standard
-linearly separable setting, one with a mistake bound of $O(K^2 d
-\ln(\frac{d}{\gamma^2}))$, the other with a mistake bound of
-$\widetilde{O}(\frac{K^2}{\gamma^2} \ln T)$. In addition, the authors propose
-the \textsc{Banditron} algorithm, a computationally efficient algorithm that has
-a $O(T^{2/3})$ regret against the multiclass hinge loss in the general setting,
-and has a $O(\sqrt{T})$ mistake bound in the $\gamma$-weak linearly separable
-setting. The polynomial dependence of \textsc{Banditron}'s mistake bound on the
-time horizon is undesirable for problems with a long time horizon. One key open
-question left by~\citet{Kakade-Shalev-Shwartz-Tewari-2008} is whether one can
-design computationally efficient algorithms that achieve mistake bounds that
-match or improve over those of inefficient algorithms. In this paper, we take a
-step towards answering this question, showing that efficient algorithms with
-mistake bounds quasipolynomial in the margin parameter can be obtained.
+The linear classification version of this problem is initially studied
+by~\citet{Kakade-Shalev-Shwartz-Tewari-2008}. They proposed two computationally
+inefficient algorithms that work in the standard linearly separable setting, one
+with a mistake bound of $O(K^2 d \ln(\frac{d}{\gamma^2}))$, the other with a
+mistake bound of $\widetilde{O}(\frac{K^2}{\gamma^2} \ln T)$. In addition, the
+authors propose the \textsc{Banditron} algorithm, a computationally efficient
+algorithm that has a $O(T^{2/3})$ regret against the multiclass hinge loss in
+the general setting, and has a $O(\sqrt{T})$ mistake bound in the $\gamma$-weak
+linearly separable setting. The polynomial dependence of \textsc{Banditron}'s
+mistake bound on the time horizon is undesirable for problems with a long time
+horizon. One key open question left by~\citet{Kakade-Shalev-Shwartz-Tewari-2008}
+is whether one can design computationally efficient algorithms that achieve
+mistake bounds that match or improve over those of inefficient algorithms. In
+this paper, we take a step towards answering this question, showing that
+efficient algorithms with mistake bounds quasipolynomial in the margin parameter
+can be obtained.
 
 %Whether one can design an efficient algorithm with a finite mistake bound that
 %has no dimensionality dependence is mentioned as an open problem in
