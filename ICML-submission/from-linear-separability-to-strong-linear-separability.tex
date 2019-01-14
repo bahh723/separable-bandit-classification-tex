@@ -10,9 +10,10 @@ bounded by $2$. The parameter $\gamma'$ is a function of the old margin $\gamma$
 and the number of classes $K$, and is specified in the
 \autoref{theorem:margin-transformation} below.
 
-The domain of $\phi$ is the unit ball of $\R^d$. The co-domain of $\phi$ is the classical real separable Hilbert space
-$\ell_2 = \{ x \in \R^\infty ~:~ \sum_{i=1}^\infty x_i^2 < + \infty \}$ equipped
-with the standard inner product $\ip{x}{x'}_{\ell_2} = \sum_{i=1}^\infty x_i x'_i$. We index the coordinates of
+The domain of $\phi$ is the unit ball of $\R^d$. The co-domain of $\phi$ is the
+classical real separable Hilbert space $\ell_2 = \{ x \in \R^\infty ~:~
+\sum_{i=1}^\infty x_i^2 < + \infty \}$ equipped with the standard inner product
+$\ip{x}{x'}_{\ell_2} = \sum_{i=1}^\infty x_i x'_i$. We index the coordinates of
 $\ell_2$ by $d$-tuples $(\alpha_1, \alpha_2, \dots, \alpha_d)$ of non-negative
 integers. The mapping is defined by
 \begin{align*}
@@ -163,66 +164,79 @@ we have
 \end{align*}
 \end{proof}
 
-Using the lemma and the polynomial approximation theorems, we can prove
-the mappings $\phi_n, \psi_n, \rho$ map any a weakly separable data
-to a strongly separable data set.
+Using the lemma and the polynomial approximation theorems, we can prove the
+mapping $\phi$ maps any a weakly separable data to a strongly separable data
+set.
 
 \begin{theorem}[Margin transformation]
 \label{theorem:margin-transformation}
 Let $(x_1, y_1), (x_2, y_2), \dots, (x_T, y_T) \in \R^d \times \{1,2,\dots,K\}$
 labeled examples that are weakly linearly separable with margin $\gamma > 0$
-such that $\norm{x_1}, \norm{x_2}, \dots, \norm{x_T} \le 1$. Then, the labeled
-examples $(\rho(x_1), y_1), (\rho(x_2), y_2), \dots, (\rho(x_T), y_T)$ are
-strongly linearly separable with margin
-$$
-\gamma' = \frac{1}{2\sqrt{K} \left(376 \lceil \log_2(2m) \rceil \cdot \left \lceil \sqrt{\frac{2}{\gamma}} \right \rceil \right)^{\frac{1}{2} \lceil \log_2(2m) \rceil \cdot \left \lceil \sqrt{\frac{2}{\gamma}} \right \rceil}}
-$$
-and $\norm{\rho(x_1)}_{\ell_2}, \norm{\rho(x_2)}_{\ell_2}, \dots, \norm{\rho(x_T)}_{\ell_2} \le 2$.
-TODO
+such that $\norm{x_1}, \norm{x_2}, \dots, \norm{x_T} \le 1$.
+Let
+\begin{align*}
+r & = 2 \left\lceil \frac{1}{4} \log_2(4K-3) \right\rceil + 1 \quad \text{and} \quad s = \left \lceil \log_2(1/\gamma) \right \rceil \\
+\gamma_1 & = \frac{1}{2\sqrt{K} \left(376 \lceil \log_2(2m) \rceil \cdot \left \lceil \sqrt{\frac{2}{\gamma}} \right \rceil \right)^{\frac{1}{2} \lceil \log_2(2K-2) \rceil \cdot \left \lceil \sqrt{\frac{2}{\gamma}} \right \rceil}} \\
+\gamma_2 & = ??
+\end{align*}
+Then, the labeled examples $(\phi(x_1), y_1), (\phi(x_2), y_2), \dots,
+(\phi(x_T), y_T)$ are strongly linearly separable with margin $\gamma' =
+\max\{\gamma_1, \gamma_2\}$ and $\norm{\phi(x_1)}_{\ell_2},
+\norm{\phi(x_2)}_{\ell_2}, \dots, \norm{\phi(x_T)}_{\ell_2} \le 2$.
 \end{theorem}
 
 \begin{proof}
 First osberve that for any $t=1,2,\dots,T$,
 $$
-\norm{\rho(x_t)}_{\ell_2} = K_{\rho}(x_t,x_t) = \frac{1}{1 - \frac{1}{2} \norm{x_t}^2} \le 2 \; .
+\norm{\phi(x_t)}_{\ell_2} = K_{\phi}(x_t,x_t) = \frac{1}{1 - \frac{1}{2} \norm{x_t}^2} \le 2 \; .
 $$
 
-Since the examples $(x_1, y_1), (x_2, y_2), \dots, (x_T, y_T)$ are weakly linearly separable
-with margin $\gamma$ there are vectors $w_1, w_2, \dots, w_K$ satisfying
-\eqref{equation:weak-linear-separability-1} anf \eqref{equation:weak-linear-separability-2}.
+Since the examples $(x_1, y_1), (x_2, y_2), \dots, (x_T, y_T)$ are weakly
+linearly separable with margin $\gamma$ there are vectors $w_1, w_2, \dots, w_K$
+satisfying \eqref{equation:weak-linear-separability-1} anf
+\eqref{equation:weak-linear-separability-2}.
 
-Fix any $i \in \{1,2,\dots,K\}$. Consider the $K-1$ vectors
-$(w_i - w_j)/2$ for $j \in \{1,2,\dots,K\} \setminus \{i\}$. Note that the vectors
-have norm at most $1$.
-\autoref{theorem:polynomial-approximation-1} implies that
-there exists a polynomial $p_i:\R^d \to \R$ such
-that
-$$
-\deg(p) = \lceil \log_2(2m) \rceil \cdot \lceil \sqrt{\frac{2}{\gamma}} \rceil \; ,
-$$
-for all $t=1,2,\dots,T$, if $y_t = i$ then $p_i(x_t) \ge 1/2$ and if $y_t \neq i$ then $p_i(x_t) \le -1/2$,
+Fix any $i \in \{1,2,\dots,K\}$. Consider the $K-1$ vectors $(w_i - w_j)/2$ for
+$j \in \{1,2,\dots,K\} \setminus \{i\}$. Note that the vectors have norm at most
+$1$.
+Theorems~\ref{theorem:polynomial-approximation-1}~and~\ref{theorem:polynomial-approximation-2}
+imply that there exists multivariate polynomials $p_i:\R^d \to \R$ and $q_i:\R^d
+\to \R$ such that
+\begin{align*}
+\deg(p_i) & = \lceil \log_2(2K-2) \rceil \cdot \left\lceil \sqrt{\frac{2}{\gamma}} \right\rceil \; , \\
+\deg(q_i) & = (2K-5/2) 2^m \\
+& \qquad \cdot \left(2^{2s} r(K-1) (4s+2)^2 \right)^{(s+1/2)r(K-1)} \; .
+\end{align*}
+Futhermore, for all $t=1,2,\dots,T$, if $y_t = i$ then $p_i(x_t) \ge 1/2$, $q_i(x_t) \ge ???$ and if $y_t \neq i$ then $p_i(x_t) \le -1/2$,
+$q_i(x) \le - ???$
 and
-$$
-\norm{p} \le \left(188 \lceil \log_2(2m) \rceil \cdot \left \lceil \sqrt{\frac{2}{\gamma}} \right \rceil \right)^{\frac{1}{2} \lceil \log_2(2m) \rceil
-\cdot \left \lceil \sqrt{\frac{2}{\gamma}} \right \rceil} \; .
-$$
-By \autoref{lemma:norm-bound} there exists $c_i \in \ell_2$ such that
-$\ip{c_i}{\rho(x)} = p(x)$ and
-$$
+\begin{align*}
+\norm{p_i} & \le \left(188 \lceil \log_2(2K-2) \rceil \cdot \left \lceil \sqrt{\frac{2}{\gamma}} \right \rceil \right)^{\frac{1}{2} \lceil \log_2(2K-2) \rceil
+\cdot \left \lceil \sqrt{\frac{2}{\gamma}} \right \rceil} \; , \\
+\norm{p_i} & \le ??? .
+\end{align*}
+By \autoref{lemma:norm-bound} there exists $c_i, c_i' \in \ell_2$ such that
+$\ip{c_i}{\phi(x)} = p_i(x)$ and $\ip{c_i'}{\phi(x)} = q_i(x)$ and
+\begin{align*}
 \norm{c_i}_{\ell_2}
-\le \left(376 \lceil \log_2(2m) \rceil \cdot \left \lceil \sqrt{\frac{2}{\gamma}} \right \rceil \right)^{\frac{1}{2} \lceil \log_2(2m) \rceil
-\cdot \left \lceil \sqrt{\frac{2}{\gamma}} \right \rceil} \; .
-$$
-Define vector $u_i \in \ell_2$ as
-$$
-u_i = \frac{c_i}{\sqrt{K} \left(376 \lceil \log_2(2m) \rceil \cdot \left \lceil \sqrt{\frac{2}{\gamma}} \right \rceil \right)^{\frac{1}{2} \lceil \log_2(2m) \rceil
-\cdot \left \lceil \sqrt{\frac{2}{\gamma}} \right \rceil}} \; .
-$$
+& \le \left(376 \lceil \log_2(2K-2) \rceil \cdot \left \lceil \sqrt{\frac{2}{\gamma}} \right \rceil \right)^{\frac{1}{2} \lceil \log_2(2K-2) \rceil
+\cdot \left \lceil \sqrt{\frac{2}{\gamma}} \right \rceil} \\
+\norm{c'_i}_{\ell_2} & \le ??? \\
+\end{align*}
+Define vectors $u_i, u_i' \in \ell_2$ as
+\begin{align*}
+u_i & = \frac{c_i}{\sqrt{K} \left(376 \lceil \log_2(2K-2) \rceil \cdot \left \lceil \sqrt{\frac{2}{\gamma}} \right \rceil \right)^{\frac{1}{2} \lceil \log_2(2K-2) \rceil
+\cdot \left \lceil \sqrt{\frac{2}{\gamma}} \right \rceil}} \; . \\
+u_i' & = ???
+\end{align*}
 
 Then, $\norm{u_1}^2 + \norm{u_2}^2 + \dots + \norm{u_K}^2 \le 1$ and
-for all $t=1,2,\dots,T$, $\ip{u_{y_t}}{x_t} \ge \gamma'$
+$\norm{u_1'}^2 + \norm{u_2'}^2 + \dots + \norm{u_K'}^2 \le 1$.
+Futhermore, for all $t=1,2,\dots,T$, $\ip{u_{y_t}}{x_t} \ge \gamma_1$ and
+$\ip{u'_{y_t}}{x_t} \ge \gamma_2$
 and for all $j \in \{1,2,\dots,K\} \setminus \{y_t\}$,
-$\ip{u_j}{x_t} \le - \gamma'$. In other words,
-$(\rho(x_1), y_1), (\rho(x_2), y_2), \dots, (\rho(x_T), y_T)$ are
-strongly linearly separable with margin $\gamma'$.
+$\ip{u_j}{x_t} \le - \gamma_1$ and $\ip{u'_j}{x_t} \le - \gamma_2$. In other words,
+$(\phi(x_1), y_1), (\phi(x_2), y_2), \dots, (\phi(x_T), y_T)$ are
+strongly linearly separable with margin $\gamma_1$ and also strongly separable with
+margin $\gamma_2$. Therefore, the examples are strongly separable with margin $\gamma' = \max\{\gamma_1, \gamma_2\}$.
 \end{proof}
