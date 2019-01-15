@@ -1,74 +1,67 @@
 \section{From weak separability to strong separability}
 \label{section:from-weak-separability-to-strong-separability}
 
-In this section, we focus on the setting of online bandit multiclass
-linear prediction, where the set of examples shown by the adversary is weakly
-linearly separable (Definition~\ref{definition:weak-linear-separability}).
-Throughout this section, we assume without loss of generality that
-all examples lie in $\B(0,1)$, the unit $\ell_2$ ball of
-$\R^d$.\footnote{Consider the following preprocessing step: upon seeing every
-example $x_t$, we define $\hat{x}_t = \frac{x_t}{\|x_t\|}$ as its $\ell_2$ normalization.
-It can be easily checked that if $(x_1,y_1), \ldots, (x_T,y_T)$ is weakly linearly
-separable by margin $\gamma$ and all $\| x_t \|$'s' have norm at most $R$, then the set of
-normalized examples $(\hat{x}_1,y_1), \ldots, (\hat{x}_T,y_T)$ is weakly linearly
-separable by margin $\gamma/R$.}
-Note that Algorithm~\ref{algorithm:algorithm-for-strongly-linearly-separable-examples}
-alone does not guarantee a finite mistake bound in this setting, as weak linear separability
-does not imply strong linear separability.
+In this section, we case when the sequence of examples shown by the adversary is
+weakly linearly separable
+(Definition~\ref{definition:weak-linear-separability}). Throughout this section,
+we assume without loss of generality that all examples lie in the unit ball
+$\B(0,1) \subseteq \R^d$.\footnote{Consider the following preprocessing step:
+upon seeing every example $x_t$, we define $\hat{x}_t = \frac{x_t}{\norm{x_t}}$
+as its normalization. It can be easily checked that if $(x_1,y_1), \dots,
+(x_T,y_T)$ is weakly linearly separable by margin $\gamma$ and $\norm{x_t} \le
+\R$ for all $t$, then the set of normalized examples $(\hat{x}_1,y_1), \dots,
+(\hat{x}_T,y_T)$ is weakly linearly separable by margin $\gamma/R$.} Note that
+Algorithm~\ref{algorithm:algorithm-for-strongly-linearly-separable-examples}
+alone does not guarantee a finite mistake bound in this setting, as weak linear
+separability does not imply strong linear separability.
 
-%from the unit ball of
-%$\R^d$ into a infinite-dimensional inner product space that
+We consider a kernel function $k(\cdot, \cdot)$ whose corresponding feature map
+$\phi(\cdot)$ transforms any sequence of \emph{weakly} linearly separable
+examples to \emph{strongly} linearly separable sequence of examples.
+Specifically, $\phi$ has the property that if a set of labeled examples in
+$B(0,1)$ is weakly linearly separable with a margin $\gamma$, then after
+applying $\phi$ the examples become strongly linearly separable with a margin
+$\gamma'$ and their norms are bounded by $2$. The parameter $\gamma'$ is a
+function of the old margin $\gamma$ and the number of classes $K$, and is
+specified in \autoref{theorem:margin-transformation} below.
 
-In this section, we consider a kernel function $k(\cdot, \cdot)$
-whose corresponding feature map $\phi(\cdot)$ can transform a set of
-\emph{weakly} linear separable examples to \emph{strongly} separable.
-Specifically, $\phi$
-has the property
-that if a set of labeled examples in the unit ball is weakly linearly
-separable with a margin $\gamma$, then after applying $\phi$ the examples
-become strongly linearly separable with a margin $\gamma'$ and their
-norms are bounded by $2$. The parameter $\gamma'$ is a function of the old
-margin $\gamma$ and the number of classes $K$, and is specified in
-\autoref{theorem:margin-transformation} below.
-
-Specifically, the kernel function $k: \B(0,1) \times \B(0,1) \to \R$ is defined as:
+The kernel function $k:\B(0,1) \times \B(0,1) \to \R$ is defined as
 $$
-k(x,x') = \frac{1}{1 - \frac{1}{2}\ip{x}{x'}_{\R^d}} \; ,
+k(x,x') = \frac{1}{1 - \frac{1}{2}\ip{x}{x'}_{\R^d}} \; .
 $$
-We note that the formula for $k$ implies that $k(x,x) < +\infty$ for any $x$ in
-$\B(0,1)$. We also note
-that kernel function $k(x,x')$ can be evaluated in $O(d)$ time.
+Note that kernel function $k(x,x')$ can be evaluated in $O(d)$ time.
 
-Consider the
-classical real separable Hilbert space $\ell_2 = \{ x \in \R^\infty ~:~
-\sum_{i=1}^\infty x_i^2 < + \infty \}$ equipped with the standard inner product
-$\ip{x}{x'}_{\ell_2} = \sum_{i=1}^\infty x_i x'_i$.
-Through indexing the coordinates of
-$\ell_2$ by $d$-tuples $(\alpha_1, \alpha_2, \dots, \alpha_d)$ of non-negative
-integers, the feature map that corresponds to $k$, $\phi: \B(0,1) \to \ell_2$, is defined as follows:
+Consider the classical real separable Hilbert space $\ell_2 = \{ x \in \R^\infty
+~:~ \sum_{i=1}^\infty x_i^2 < + \infty \}$ equipped with the standard inner
+product $\ip{x}{x'}_{\ell_2} = \sum_{i=1}^\infty x_i x'_i$. If we index the
+coordinates of $\ell_2$ by $d$-tuples $(\alpha_1, \alpha_2, \dots, \alpha_d)$ of
+non-negative integers, the feature map that corresponds to $k$ is $\phi: \B(0,1)
+\to \ell_2$,
 \begin{align}
 & \left(\phi(x_1, x_2, \dots, x_d)\right)_{(\alpha_1, \alpha_2, \dots, \alpha_d)} = x_1^{\alpha_1} x_2^{\alpha_2} \dots x_d^{\alpha_d} \nonumber \\
 & \qquad \cdot \sqrt{2^{-(\alpha_1 + \alpha_2 + \dots + \alpha_d)} \binom{\alpha_1 + \alpha_2 + \dots + \alpha_d}{\alpha_1, \alpha_2, \dots, \alpha_d}}
-\label{eqn:phi}
+\label{equation:phi}
 \end{align}
-where $\binom{\alpha_1 + \alpha_2 + \dots + \alpha_d}{\alpha_1, \alpha_2, \dots, \alpha_d} = \frac{(\alpha_1 + \alpha_2 + \dots + \alpha_d)!}{\alpha_1! \alpha_2! \dots \alpha_d!}$
-is the multinomial coefficient.
-It can be easily checked that
-\[ k(x,x') = \ip{\phi(x)}{\phi(x')}_{\ell_2}. \]
+where $\binom{\alpha_1 + \alpha_2 + \dots + \alpha_d}{\alpha_1, \alpha_2, \dots,
+\alpha_d} = \frac{(\alpha_1 + \alpha_2 + \dots + \alpha_d)!}{\alpha_1! \alpha_2!
+\dots \alpha_d!}$ is the multinomial coefficient. It can be easily checked that
+$$
+k(x,x') = \ip{\phi(x)}{\phi(x')}_{\ell_2}.
+$$
+The last equality together with the formula for $k$ implies that $k(x,x) <
++\infty$ for any $x$ in $\B(0,1)$.
 
-%The mapping is defined by
-%and therefore $\phi(x)$ lies in $\ell_2$.
-%The domain of $\phi$ is the unit ball of $\R^d$. The co-domain of $\phi$ is
-
-The following theorem is our main technical result in this section; we defer its
-proof to Section~\ref{sec:margin-trans}.
+The following theorem is our main technical result in this section. We defer its
+proof to Section~\ref{section:margin-transformation}.
 
 \begin{theorem}[Margin transformation]
 \label{theorem:margin-transformation}
-Let $(x_1, y_1)$, $(x_2, y_2)$, $\dots$, $(x_T, y_T)$ in $\R^d \times \{1,2,\dots,K\}$
-be a set of labeled examples that is weakly linearly separable with margin $\gamma > 0$.
-In addition, for all $t$ in $\cbr{1,\ldots,T}$, $\norm{x_t} \le 1$.
-Let $\phi$ be as defined in Equation~\eqref{eqn:phi}, and
+Let $(x_1, y_1)$, $(x_2, y_2)$, $\dots$, $(x_T, y_T)$ in $\B(0,1) \times
+\{1,2,\dots,K\}$ be a sequence of labeled examples that is weakly linearly
+separable with margin $\gamma > 0$. Let $\phi$ be as defined in
+Equation~\eqref{equation:phi}, and
+\begingroup
+\allowdisplaybreaks
 \begin{align*}
 r & = 2 \left\lceil \frac{1}{4} \log_2(4K-3) \right\rceil + 1, \quad \quad s = \left \lceil \log_2(2/\gamma) \right \rceil, \\
 \gamma_1 & = \frac{1}{2\sqrt{K}}  \\
@@ -76,6 +69,7 @@ r & = 2 \left\lceil \frac{1}{4} \log_2(4K-3) \right\rceil + 1, \quad \quad s = \
 \gamma_2 & = \frac{2^{s(s+1)r(K-1)} }{4\sqrt{K}(2K-5/2) 2^{K-1}} \\
 & \ \cdot \left(2^{2s+1} r(K-1) (4s+2)^2 \right)^{-(s+1/2)r(K-1)} \; .
 \end{align*}
+\endgroup
 Then, the set of labeled examples transformed by $\phi$,
 namely $(\phi(x_1), y_1), (\phi(x_2), y_2), \dots,
 (\phi(x_T), y_T)$, is strongly linearly separable with margin $\gamma' =
@@ -83,75 +77,67 @@ namely $(\phi(x_1), y_1), (\phi(x_2), y_2), \dots,
 \norm{\phi(x_2)}_{\ell_2}, \dots, \norm{\phi(x_T)}_{\ell_2} \le 2$.
 \end{theorem}
 
-We are now ready to derive a mistake bound for Algorithm~\ref{algorithm:kernelized} with kernel
-function $k(x,x') = \ip{\phi(x)}{\phi(x')}_{\ell_2}$. This is done by simply invoking
-\autoref{theorem:kernelized-upper-bound} with the
-modified margin $\gamma'$ from \autoref{theorem:margin-transformation}.
-The mistake bound is stated as \autoref{corollary:weakly-separable-examples-mistake-upper-bound}.
-
-%As a corollary of \autoref{theorem:margin-transformation} and
-%\autoref{theorem:strongly-separable-examples-mistake-upper-bound}
-%we get the mistake bound for Algorithm~\ref{algorithm:kernelized}
-%under the weak separability condition.
+Using this theorem we derive a mistake bound for
+Algorithm~\ref{algorithm:kernelized} with kernel function $k(x,x') =
+\ip{\phi(x)}{\phi(x')}_{\ell_2}$. This is done by simply invoking
+\autoref{theorem:kernelized-upper-bound} with the modified margin $\gamma'$ from
+\autoref{theorem:margin-transformation}. The mistake bound is stated as
+\autoref{corollary:weakly-separable-examples-mistake-upper-bound} below.
 
 \begin{corollary}[Mistake upper bound]
 \label{corollary:weakly-separable-examples-mistake-upper-bound}
-Let $K$ be a positive
-integer, $\gamma$ be a positive real number, $R$ be a non-negative real number. If
-$L = ((x_1, y_1), (x_2, y_2), \dots, (x_T, y_T))$ is a sequence of labeled examples in
-$V \times \{1,2,\dots,K\}$ such that
+Let $K$ be a positive integer and let $\gamma$ be a positive real number. If $L
+= ((x_1, y_1), (x_2, y_2), \dots, (x_T, y_T))$ is a sequence of labeled examples
+in $V \times \{1,2,\dots,K\}$ such that
 \begin{enumerate}
-  \item $L$ is weakly linearly separable with margin $\gamma$,
-  \item for all $t$ in $\cbr{1,2,\ldots,T}$, $\norm{x_t} \le 1$,
+\item $L$ is weakly linearly separable with margin $\gamma$,
+\item for all $t$ in $\cbr{1,2,\dots,T}$, $\norm{x_t} \le 1$,
 \end{enumerate}
-then the expected number of mistakes
-Algorithm~\ref{algorithm:kernelized}
-makes is at most $2^{\widetilde{O}(\min(K \log^2
-\frac{1}{\gamma}, \sqrt{\frac{1}{\gamma}} \log K))}$.
+then the expected number of mistakes Algorithm~\ref{algorithm:kernelized} makes
+is at most $2^{\widetilde{O}(\min(K \log^2 \frac{1}{\gamma},
+\sqrt{\frac{1}{\gamma}} \log K))}$.
 \end{corollary}
-%, \norm{x_2}, \dots, \norm{x_T}
-% (Definition~\ref{definition:weak-linear-separability})
 
 \subsection{Proof of Theorem~\ref{theorem:margin-transformation}}
-\label{sec:margin-trans}
-\paragraph{Overview.} The idea behind construction and analysis of the mapping $\phi$ is polynomial
-approximation. Specifically, we give $k$ polynomials $p_1$, $\ldots$, $p_k$,
-such that:
-\begin{equation}
-  \forall t \in \cbr{1,2,\ldots,T}, p_{y_t}(x_t) \geq \frac{\gamma'}2,
-  \label{eqn:poly-pos}
-\end{equation}
-\begin{equation}
-  \forall t \in \cbr{1,2,\ldots,T}, \forall i \in \cbr{1,2,\ldots,K} \setminus \cbr{y_t}, p_i(x_t) \leq -\frac{\gamma'}2.
-  \label{eqn:poly-neg}
-\end{equation}
-As each polynomial $p_i$ can be written as
-$\ip{c_i}{\phi(x)}$ for some $c_i \in \ell_2$, it immediately shows that
-the set of examples $(\phi(x_1),y_1), \ldots, (\phi(x_T),y_T)$ is strongly linear separable.
+\label{section:margin-transformation}
 
-To construct $p_1, \ldots, p_k$ that satisfy Equations~\eqref{eqn:poly-pos}
-and~\eqref{eqn:poly-neg}, we consider constructing each $p_i$ separately.
-Specifically, $p_i$ needs to satisfy that:
-\begin{equation}
-  \forall t \in \cbr{1,2,\ldots,T}, y_t = i \Rightarrow p_i(y_t) \geq \frac{\gamma'}2,
-  \label{eqn:poly-pos-i}
-\end{equation}
-\begin{equation}
-  \forall t \in \cbr{1,2,\ldots,T}, y_t \neq i \Rightarrow p_i(y_t) \leq -\frac{\gamma'}2.
-  \label{eqn:poly-neg-i}
-\end{equation}
+\paragraph{Overview.} The idea behind construction and analysis of the mapping
+$\phi$ is polynomial approximation. Specifically, we give $k$ polynomials $p_1$,
+$\ldots$, $p_k$, such that:
+\begin{align}
+\label{equation:poly-pos}
+& \forall t \in \cbr{1,2,\dots,T}, p_{y_t}(x_t) \ge \frac{\gamma'}2 \; ,
+\\
+\label{equation:poly-neg}
+& \begin{gathered}
+\forall t \in \cbr{1,2,\dots,T} \ \forall i \in \cbr{1,2,\ldots,K} \setminus \cbr{y_t} \\
+p_i(x_t) \leq -\frac{\gamma'}2 \; .
+\end{gathered}
+\end{align}
+As each polynomial $p_i$ can be written as $\ip{c_i}{\phi(x)}$ for some $c_i \in
+\ell_2$, it immediately shows that the set of examples $(\phi(x_1),y_1), \ldots,
+(\phi(x_T),y_T)$ is strongly linear separable.
 
-Under the weak linear separability assumption, we note that all examples from class $i$
-lie in
-\[ R_i^+ := \cap_{j \in \cbr{1,\ldots,K} \setminus \cbr{i}} \cbr{x: \ip{w_i - w_j}{x} \geq \gamma}, \] and all examples from the remaining classes lie in
-\[ R_i^- := \cup_{j \in \cbr{1,\ldots,K} \setminus \cbr{i}} \cbr{x: \ip{w_i - w_j}{x} \leq  -\gamma}. \]
-Therefore, to satisfy Equations~\eqref{eqn:poly-pos-i} and~\eqref{eqn:poly-neg-i},
-it suffices to construct $p_i$ such that:
+To construct $p_1, p_2, \dots, p_k$ that satisfy
+Equations~\eqref{equation:poly-pos} and~\eqref{equation:poly-neg}, we consider
+constructing each $p_i$ separately. Specifically, $p_i$ needs to satisfy that:
+\begin{align}
+\label{equation:poly-pos-i}
+\forall t \in \cbr{1,2,\dots,T}, y_t = i \Rightarrow p_i(y_t) \ge \frac{\gamma'}2 \; , \\
+\label{equation:poly-neg-i}
+\forall t \in \cbr{1,2,\dots,T}, y_t \neq i \Rightarrow p_i(y_t) \le -\frac{\gamma'}2 \; .
+\end{align}
+
+Under the weak linear separability assumption, we note that all examples from
+class $i$ lie in
+\[ R_i^+ = \bigcap_{j \in \cbr{1,\ldots,K} \setminus \cbr{i}} \cbr{x: \ip{w_i - w_j}{x} \geq \gamma}, \] and all examples from the remaining classes lie in
+\[ R_i^- = \bigcup_{j \in \cbr{1,\ldots,K} \setminus \cbr{i}} \cbr{x: \ip{w_i - w_j}{x} \leq  -\gamma}. \]
+Therefore, to satisfy Equations~\eqref{equation:poly-pos-i}
+and~\eqref{equation:poly-neg-i}, it suffices to construct $p_i$ such that:
 \begin{align*}
-  x \in R_i^+ & \Rightarrow p_i(x) \geq \frac {\gamma'} 2\\
-  x \in R_i^- & \Rightarrow p_i(x) \leq - \frac {\gamma'} 2
+x \in R_i^+ & \Rightarrow p_i(x) \ge \frac {\gamma'} 2 \\
+x \in R_i^- & \Rightarrow p_i(x) \le - \frac {\gamma'} 2
 \end{align*}
-
 
 According to the well known Stone-Weierstrass theorem (see
 e.g.~\citet[Section~10.10]{Davidson-Donsig-2010}), on a compact set,
@@ -243,8 +229,6 @@ $R^- = \displaystyle \bigcup_{i=1}^m \left\{ x \in \R^d ~:~ \norm{x} \le 1, \ \i
 The separating hyperplanes $\ip{v_1}{x} = 0$ and $\ip{v_2}{x} = 0$ are shown as dashed lines.}
 \label{figure:pizza-slice}
 \end{figure}
-
-
 
 The following lemma expresses any multivariate polynomial in $\R^d$
 as a linear function in $\ell_2$ and gives an upper bound its the norm.
