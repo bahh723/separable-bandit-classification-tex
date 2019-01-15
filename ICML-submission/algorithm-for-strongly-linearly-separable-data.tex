@@ -2,16 +2,23 @@
 \label{section:algorithm-for-strongly-linearly-separable-data}
 
 In this section, we present an algorithm for \textsc{Online Multiclass
-Classification with Bandit Feedback} and prove an upper bound on the number of
-mistakes under the assumption that the examples are strongly linearly separable
-with a margin. The algorithm is stated as
-Algorithm~\ref{algorithm:algorithm-for-strongly-linearly-separable-examples} and
-the mistake upper bound is stated as
-\autoref{theorem:strongly-separable-examples-mistake-upper-bound}.
+Classification with Bandit Feedback}, namely Algorithm~\ref{algorithm:algorithm-for-strongly-linearly-separable-examples}.
+Under the assumption that the examples are strongly linearly separable
+with a margin (Definition~\ref{definition:strong-linear-separability}),
+we prove \autoref{theorem:strongly-separable-examples-mistake-upper-bound},
+which gives an upper bound on its number of mistakes.
 
-The idea behind the algorithm is to use $K$ copies of the \textsc{Binary
-Perceptron} algorithm, where each copy corresponds to a class. In each round,
-copy $i$ makes a binary prediction, indicating whether the example belongs to
+%The algorithm is stated as
+% and
+%the mistake upper bound is stated as.
+
+The idea behind Algorithm~\ref{algorithm:algorithm-for-strongly-linearly-separable-examples}
+ is to use $K$ copies of the \textsc{Binary
+Perceptron} algorithm,
+\chicheng{Shall we define the binary Perceptron algorithm?}
+where each copy corresponds to a class. At each timestep $t$, upon seeing
+example $x_t$,
+copy $i$ makes a binary prediction on whether $x_t$ belongs to
 class $i$ or not. If at least one copy makes a positive prediction, the
 algorithm chooses its prediction as one of the classes corresponding to a
 positive prediction. If all copies make negative predictions, the algorithms
@@ -55,14 +62,15 @@ makes a prediction uniformly at random.
 \end{algorithmic}
 \end{algorithm}
 
+
 \begin{theorem}[Mistake upper bound]
 \label{theorem:strongly-separable-examples-mistake-upper-bound}
 Let $(V, \ip{\cdot}{\cdot})$ be an inner product space, $K$ be a positive
 integer, $\gamma$ be a positive real number, $R$ be a non-negative real number. If
-$(x_1, y_1), (x_2, y_2), \dots, (x_T, y_T)$ is a sequence of labeled examples in
-$V \times \{1,2,\dots,K\}$ such that
+$L = ((x_1, y_1), (x_2, y_2), \dots, (x_T, y_T))$ is a sequence of labeled examples in
+$V \times \{1,2,\dots,K\}$ such that:
 \begin{enumerate}
-  \item the examples are strongly linearly separable with margin $\gamma$ (Definition~\ref{definition:strong-linear-separability}),
+  \item $L$ is strongly linearly separable with margin $\gamma$,
   \item $\norm{x_1}, \norm{x_2}, \dots, \norm{x_T} \le R$,
 \end{enumerate}
 then the
@@ -71,25 +79,37 @@ Algorithm~\ref{algorithm:algorithm-for-strongly-linearly-separable-examples}
 makes is at most $(K-1) \lfloor 4(R/\gamma)^2 \rfloor$.
 \end{theorem}
 
+%$A
+%= \sum_{t ~:~ S_t \neq \emptyset} z_t$
+%B = \sum_{t ~:~ S_t = \emptyset} z_t
+%\sum_{t ~:~ S_t = \emptyset}
 \begin{proof}
 Let $M = \sum_{t=1}^T z_t$ be the number of
 mistakes Algorithm~\ref{algorithm:algorithm-for-strongly-linearly-separable-examples} makes.
-Let $A
-= \sum_{t ~:~ S_t \neq \emptyset} z_t$ be the number of mistakes in the rounds
-when $S_t \neq \emptyset$ and let $B = \sum_{t ~:~ S_t = \emptyset} z_t$ be the
+Let $A = \sum_{t=1}^T \one[S_t \neq \emptyset] z_t$ be the number of mistakes in the rounds
+when $S_t \neq \emptyset$, i.e. the number of rounds line~\ref{line:neg-update} is
+executed.
+In addition, let $B = \sum_{t=1}^T \one[S_t = \emptyset] z_t$ be the
 number of mistakes in the rounds when $S_t = \emptyset$.
 It can be easily seen that $M = A + B$.
 
-Let $C$ be the number of times line~\ref{line:pos-update} gets executed. Let $U$
-be the number of times line~\ref{line:pos-update} or line~\ref{line:neg-update}
-get executed. In other words, $U$ is the number of times the $K$-tuple of
+Let $C = \sum_{t=1}^T \one[S_t = \emptyset](1 - z_t)$ be the number of rounds
+line~\ref{line:pos-update} gets executed. Let
+$U = \sum_{t=1}^T (\one[S_t \neq \emptyset] z_t + \one[S_t = \emptyset](1 - z_t))$
+be the number of rounds line~\ref{line:pos-update} or~\ref{line:neg-update}
+gets executed. In other words, $U$ is the number of times the $K$-tuple of
 vectors $(w_1^{(t)}, w_2^{(t)}, \dots, w_K^{(t)})$ gets updated. It can be
 easily seen that $U = A + C$.
 
-The key observation is that $\Exp[B] = (K-1) \Exp[C]$. The equality holds
-because if $S_t = \emptyset$, there is $1/K$ probability that the algorithm
-guesses the correct label and with probability $(K-1)/K$ algorithm's guess is
-incorrect. Putting all the information together, we get that
+The key observation is that $\Exp[B] = (K-1) \Exp[C]$.
+To see this, note that if $S_t = \emptyset$, there is $1/K$ probability that the algorithm
+guesses the correct label ($z_t = 0$) and with probability $(K-1)/K$ algorithm's guess is
+incorrect ($z_t = 1$). Therefore,
+\[ \Exp[ z_t |S_t = \emptyset] = \frac{K-1}{K}, \]
+\[ \Exp[B] = \frac{K-1}{K} \Exp \sbr{ \sum_{t=1}^T \one[S_t = \emptyset] }, \]
+\[ \Exp[C] = \frac{1}{K} \Exp \sbr{ \sum_{t=1}^T \one[S_t = \emptyset] }. \]
+
+Putting all the information together, we get that
 \begin{align}
 \Exp[M]
 & = \Exp[A] + \Exp[B] \nonumber \\
