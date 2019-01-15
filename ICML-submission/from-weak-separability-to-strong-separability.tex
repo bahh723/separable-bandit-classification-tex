@@ -46,10 +46,11 @@ $\ip{x}{x'}_{\ell_2} = \sum_{i=1}^\infty x_i x'_i$.
 Through indexing the coordinates of
 $\ell_2$ by $d$-tuples $(\alpha_1, \alpha_2, \dots, \alpha_d)$ of non-negative
 integers, the feature map that corresponds to $k$, $\phi: \B(0,1) \to \ell_2$, is defined as follows:
-\begin{align*}
-& \left(\phi(x_1, x_2, \dots, x_d)\right)_{(\alpha_1, \alpha_2, \dots, \alpha_d)} = x_1^{\alpha_1} x_2^{\alpha_2} \dots x_d^{\alpha_d} \\
+\begin{align}
+& \left(\phi(x_1, x_2, \dots, x_d)\right)_{(\alpha_1, \alpha_2, \dots, \alpha_d)} = x_1^{\alpha_1} x_2^{\alpha_2} \dots x_d^{\alpha_d} \nonumber \\
 & \qquad \cdot \sqrt{2^{-(\alpha_1 + \alpha_2 + \dots + \alpha_d)} \binom{\alpha_1 + \alpha_2 + \dots + \alpha_d}{\alpha_1, \alpha_2, \dots, \alpha_d}}
-\end{align*}
+\label{eqn:phi}
+\end{align}
 where $\binom{\alpha_1 + \alpha_2 + \dots + \alpha_d}{\alpha_1, \alpha_2, \dots, \alpha_d} = \frac{(\alpha_1 + \alpha_2 + \dots + \alpha_d)!}{\alpha_1! \alpha_2! \dots \alpha_d!}$
 is the multinomial coefficient.
 It can be easily checked that
@@ -59,54 +60,60 @@ It can be easily checked that
 %and therefore $\phi(x)$ lies in $\ell_2$.
 %The domain of $\phi$ is the unit ball of $\R^d$. The co-domain of $\phi$ is
 
+The following theorem is our main technical result in this section; we defer its
+proof to Section~\ref{sec:margin-trans}.
 
 \begin{theorem}[Margin transformation]
 \label{theorem:margin-transformation}
-Let $(x_1, y_1), (x_2, y_2), \dots, (x_T, y_T) \in \R^d \times \{1,2,\dots,K\}$
-labeled examples that are weakly linearly separable with margin $\gamma > 0$
-such that $\norm{x_1}, \norm{x_2}, \dots, \norm{x_T} \le 1$.
-Let
+Let $(x_1, y_1)$, $(x_2, y_2)$, $\dots$, $(x_T, y_T)$ in $\R^d \times \{1,2,\dots,K\}$
+be a set of labeled examples that is weakly linearly separable with margin $\gamma > 0$.
+In addition, for all $t$ in $\cbr{1,\ldots,T}$, $\norm{x_t} \le 1$.
+Let $\phi$ be as defined in Equation~\eqref{eqn:phi}, and
 \begin{align*}
-r & = 2 \left\lceil \frac{1}{4} \log_2(4K-3) \right\rceil + 1 \quad \text{and} \quad s = \left \lceil \log_2(2/\gamma) \right \rceil \\
+r & = 2 \left\lceil \frac{1}{4} \log_2(4K-3) \right\rceil + 1, \quad \quad s = \left \lceil \log_2(2/\gamma) \right \rceil, \\
 \gamma_1 & = \frac{1}{2\sqrt{K}}  \\
-& \ \cdot \left(376 \lceil \log_2(2K-2) \rceil \cdot \left \lceil \sqrt{\frac{2}{\gamma}} \right \rceil \right)^{-\frac{1}{2} \lceil \log_2(2K-2) \rceil \cdot \left \lceil \sqrt{\frac{2}{\gamma}} \right \rceil} \\
+& \ \cdot \left(376 \lceil \log_2(2K-2) \rceil \cdot \left \lceil \sqrt{\frac{2}{\gamma}} \right \rceil \right)^{-\frac{1}{2} \lceil \log_2(2K-2) \rceil \cdot \left \lceil \sqrt{\frac{2}{\gamma}} \right \rceil}, \\
 \gamma_2 & = \frac{2^{s(s+1)r(K-1)} }{4\sqrt{K}(2K-5/2) 2^{K-1}} \\
 & \ \cdot \left(2^{2s+1} r(K-1) (4s+2)^2 \right)^{-(s+1/2)r(K-1)} \; .
 \end{align*}
-Then, the labeled examples $(\phi(x_1), y_1), (\phi(x_2), y_2), \dots,
-(\phi(x_T), y_T)$ are strongly linearly separable with margin $\gamma' =
-\max\{\gamma_1, \gamma_2\}$ and $\norm{\phi(x_1)}_{\ell_2},
+Then, the set of labeled examples transformed by $\phi$,
+namely $(\phi(x_1), y_1), (\phi(x_2), y_2), \dots,
+(\phi(x_T), y_T)$, is strongly linearly separable with margin $\gamma' =
+\max\{\gamma_1, \gamma_2\}$. In addition, $\norm{\phi(x_1)}_{\ell_2},
 \norm{\phi(x_2)}_{\ell_2}, \dots, \norm{\phi(x_T)}_{\ell_2} \le 2$.
 \end{theorem}
 
-We derive a mistake bound for Algorithm~\ref{algorithm:kernelized} with kernel
-function $k(x,x') = \ip{\phi(x)}{\phi(x')}_{\ell_2}$ by simply invoking
-\autoref{theorem:strongly-separable-examples-mistake-upper-bound} with the
-modified margin $\gamma'$ from \autoref{theorem:margin-transformation} below.
+We are now ready to derive a mistake bound for Algorithm~\ref{algorithm:kernelized} with kernel
+function $k(x,x') = \ip{\phi(x)}{\phi(x')}_{\ell_2}$. This is done by simply invoking
+\autoref{theorem:kernelized-upper-bound} with the
+modified margin $\gamma'$ from \autoref{theorem:margin-transformation}.
 The mistake bound is stated as \autoref{corollary:weakly-separable-examples-mistake-upper-bound}.
 
-As a corollary of \autoref{theorem:margin-transformation} and
-\autoref{theorem:strongly-separable-examples-mistake-upper-bound}
-we get the mistake bound for Algorithm~\ref{algorithm:kernelized}
-under the weak separability condition.
+%As a corollary of \autoref{theorem:margin-transformation} and
+%\autoref{theorem:strongly-separable-examples-mistake-upper-bound}
+%we get the mistake bound for Algorithm~\ref{algorithm:kernelized}
+%under the weak separability condition.
 
 \begin{corollary}[Mistake upper bound]
 \label{corollary:weakly-separable-examples-mistake-upper-bound}
 Let $K$ be a positive
 integer, $\gamma$ be a positive real number, $R$ be a non-negative real number. If
-$(x_1, y_1), (x_2, y_2), \dots, (x_T, y_T)$ is a sequence of labeled examples in
+$L = ((x_1, y_1), (x_2, y_2), \dots, (x_T, y_T))$ is a sequence of labeled examples in
 $V \times \{1,2,\dots,K\}$ such that
 \begin{enumerate}
-  \item the examples are weakly linearly separable with margin $\gamma$ (Definition~\ref{definition:weak-linear-separability}),
-  \item $\norm{x_1}, \norm{x_2}, \dots, \norm{x_T} \le 1$,
+  \item $L$ is weakly linearly separable with margin $\gamma$,
+  \item for all $t$ in $\cbr{1,2,\ldots,T}$, $\norm{x_t} \le 1$,
 \end{enumerate}
 then the expected number of mistakes
 Algorithm~\ref{algorithm:kernelized}
 makes is at most $2^{\widetilde{O}(\min(K \log^2
 \frac{1}{\gamma}, \sqrt{\frac{1}{\gamma}} \log K))}$.
 \end{corollary}
+%, \norm{x_2}, \dots, \norm{x_T}
+% (Definition~\ref{definition:weak-linear-separability})
 
 \subsection{Proof of Theorem~\ref{theorem:margin-transformation}}
+\label{sec:margin-trans}
 The idea behind construction and analysis of the mapping $\phi$ is polynomial
 approximation. According to the well known Stone-Weierstrass theorem (see
 e.g.~\citet[Section~10.10]{Davidson-Donsig-2010}), on a compact set,
