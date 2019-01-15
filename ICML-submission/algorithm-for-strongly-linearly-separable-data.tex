@@ -120,7 +120,8 @@ Putting all the information together, we get that
 \end{align}
 
 To finish the proof, we need to upper bound the number of updates $U$. We claim
-that $U \le \lfloor 4(R/\gamma)^2 \rfloor$. The proof of this upper bound is
+that $U \le \lfloor 4(R/\gamma)^2 \rfloor$ with probability 1.
+The proof of this upper bound is
 similar to the proof of the mistake bound for \textsc{Multiclass Perceptron}
 algorithm. Let $w_1^*, w_2^*, \dots, w_K^* \in V$ be vectors that satisfy
 \eqref{equation:strong-linear-separability-1},
@@ -145,6 +146,9 @@ Therefore,
 & \le \left( \sum_{i=1}^K \norm{w_i^{(t)}}^2 \right) + R^2 \; .
 \end{align*}
 \endgroup
+The inequality that $(-1)^{z_t} 2 \ip{w_{\widehat y_t}^{(t)}}{x_t} \leq 0$ is from a case analysis: if line~\ref{line:pos-update} is executed, then $z_t = 0$ and $\ip{w_i^{(t)}}{x_t} \ge 0$; otherwise line~\ref{line:neg-update} is executed, in which case $z_t = 1$ and $\ip{w_i^{(t)}}{x_t} \le 0$.
+
+
 Hence, after $U$ updates,
 \begin{equation}
 \sum_{i=1}^K \norm{w_i^{(T+1)}}^2 \le R^2 U \; .
@@ -198,7 +202,7 @@ $$
 The upper bound $(K-1) \lfloor 4(R/\gamma)^2 \rfloor$ on the expected number of
 mistakes of
 Algorithm~\ref{algorithm:algorithm-for-strongly-linearly-separable-examples} is
-optimal to within constant factor as long as the number of classes $K$ is
+optimal upto constant factor, as long as the number of classes $K$ is
 at most $O((R/\gamma)^2)$. This is proved in
 \autoref{theorem:strongly-separable-examples-mistake-lower-bound} below.
 
@@ -218,8 +222,11 @@ number of mistakes $\calA$ makes is at least $\frac{K-1}{2} \left\lfloor
 
 \paragraph{Remark.} Irrespective of any conditions on $K$, $R$, and $\gamma$, a trivial lower bound
 on the expected number of mistakes of any randomized algorithm is
-$\frac{K-1}{2}$. (Adversary chooses the same example over and over.) However, it
-is unclear if the trivial lower bound is the best possible if $K$ is large,
+$\frac{K-1}{2}$. To see this, note that the adversary can choose an example $(R e_1, y)$,
+where $y$ is a label chosen uniformly from $\cbr{1,2\ldots,K}$, and show this example $K-1$ times.
+The sequence of examples trivially satisfies the strong linear separability condition, and
+the $\frac{K-1}{2}$ expected mistake lower bound follows from Claim 2 of~\citet{Daniely-Helbertal-2013}.
+However, it is unclear if the trivial lower bound is the best possible if $K$ is large,
 i.e., $\omega((R/\gamma)^2)$. We leave this as an open problem.
 
 \begin{proof}
@@ -246,10 +253,10 @@ w_i^* = \sqrt{2} \frac{\gamma}{R} \left( \sum_{j ~:~ \ell_j = i} e_j \right) - \
 $$
 for $i=1,2,\dots,K$.
 
-for $i \in \{1,2,\dots,K\}$ and any $j \in
+for $i \in \{1,2,\dots,K\}$ and $j \in
 \{1,2,\dots,M\}$, we consider the inner product of $w_i^*$ and $v_j$.
 If $i = \ell_j$, $\ip{w_i^*}{v_j} = \gamma - \frac \gamma 2 = \frac \gamma 2$;
-otherwise $i \neq \ell_j$, in this case,
+otherwise $i \neq \ell_j$, in which case 
 $\ip{w_i^*}{v_j} = 0 - \frac \gamma 2 = - \frac \gamma 2$.
 This means that $w_1^*, w_2^*, \dots, w_K^*$ satisfy
 conditions
