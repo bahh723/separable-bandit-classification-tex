@@ -68,9 +68,12 @@
 \newcommand{\chenyu}[1]{\kibitz{orange}{[CW: #1]}}
 \newcommand{\chicheng}[1]{\kibitz{blue}{[CZ: #1]}}
 
+\newcounter{protocol}
 \makeatletter
 \newenvironment{protocol}[1][htb]{%
-    \renewcommand{\ALG@name}{Protocol}% Update algorithm name
-   \begin{algorithm}[#1]%
-  }{\end{algorithm}}
+  \let\c@algorithm\c@protocol
+  \renewcommand{\ALG@name}{Protocol}% Update algorithm name
+  \begin{algorithm}[#1]%
+  }{\end{algorithm}
+}
 \makeatother

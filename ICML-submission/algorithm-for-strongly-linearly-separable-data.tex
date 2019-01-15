@@ -71,7 +71,7 @@ $L = ((x_1, y_1), (x_2, y_2), \dots, (x_T, y_T))$ is a sequence of labeled examp
 $V \times \{1,2,\dots,K\}$ such that:
 \begin{enumerate}
   \item $L$ is strongly linearly separable with margin $\gamma$,
-  \item $\norm{x_1}, \norm{x_2}, \dots, \norm{x_T} \le R$,
+  \item for all $t$ in $\cbr{1,\ldots,T}$, $\norm{x_t} \le R$,
 \end{enumerate}
 then the
 expected number of mistakes
@@ -79,6 +79,7 @@ Algorithm~\ref{algorithm:algorithm-for-strongly-linearly-separable-examples}
 makes is at most $(K-1) \lfloor 4(R/\gamma)^2 \rfloor$.
 \end{theorem}
 
+%$\norm{x_1}, \norm{x_2}, \dots, \norm{x_T} \le R$
 %$A
 %= \sum_{t ~:~ S_t \neq \emptyset} z_t$
 %B = \sum_{t ~:~ S_t = \emptyset} z_t
@@ -256,7 +257,7 @@ for $i=1,2,\dots,K$.
 for $i \in \{1,2,\dots,K\}$ and $j \in
 \{1,2,\dots,M\}$, we consider the inner product of $w_i^*$ and $v_j$.
 If $i = \ell_j$, $\ip{w_i^*}{v_j} = \gamma - \frac \gamma 2 = \frac \gamma 2$;
-otherwise $i \neq \ell_j$, in which case 
+otherwise $i \neq \ell_j$, in which case
 $\ip{w_i^*}{v_j} = 0 - \frac \gamma 2 = - \frac \gamma 2$.
 This means that $w_1^*, w_2^*, \dots, w_K^*$ satisfy
 conditions
@@ -322,6 +323,24 @@ class, as opposed to explicitly maintaining the predictor's weights for each
 class, we maintain the set of examples whose scaled feature transformations are
 added to the weights in Perceptron updates. We give a formal description of the
 kernelized algorithm in Algorithm~\ref{algorithm:kernelized}.
+
+The following theorem is a direct consequence of Theorem~\ref{theorem:strongly-separable-examples-mistake-upper-bound}.
+
+\begin{theorem}[Mistake upper bound for kernelized algorithm]
+\label{theorem:kernelized-upper-bound}
+Let $k(\cdot, \cdot)$ be a kernel function with feature map $\phi$, $K$ be a positive
+integer, $\gamma$ be a positive real number, $R$ be a non-negative real number. If
+$L = ((x_1, y_1), (x_2, y_2), \dots, (x_T, y_T))$ is a sequence of labeled examples in
+$V \times \{1,2,\dots,K\}$ such that:
+\begin{enumerate}
+  \item $((\phi(x_1), y_1), (\phi(x_2), y_2), \dots, (\phi(x_T), y_T))$ is strongly linearly separable with margin $\gamma$,
+  \item for all $t$ in $\cbr{1,\ldots,T}$, $k(x_t,x_t) \le R^2$,
+\end{enumerate}
+then the
+expected number of mistakes
+Algorithm~\ref{algorithm:kernelized}
+makes is at most $(K-1) \lfloor 4(R/\gamma)^2 \rfloor$.
+\end{theorem}
 
 \begin{algorithm}[h]
 \caption{\textsc{Kernelized Bandit Algorithm}
