@@ -1,29 +1,21 @@
-filename_submission=main-submission
-filename_supplementary=main-supplementary
+filename=main-all
+filename_submission=main-first-12-pages
 
 .PHONY: all clean
 
-all: submission supplementary
-
-submission:
-	pdflatex ${filename_submission}
-	bibtex ${filename_submission} || true
-	pdflatex ${filename_submission}
-	pdflatex ${filename_submission}
-	pdflatex ${filename_submission}
-
-supplementary:
-	pdflatex ${filename_supplementary}
-	bibtex ${filename_supplementary} || true
-	pdflatex ${filename_supplementary}
-	pdflatex ${filename_supplementary}
-	pdflatex ${filename_supplementary}
+all:
+	pdflatex ${filename}
+	bibtex ${filename} || true
+	pdflatex ${filename}
+	pdflatex ${filename}
+	pdflatex ${filename}
+	pdftk ${filename}.pdf cat 1-12 output ${filename_submission}.pdf
 
 read:
-	evince ${filename_submission}.pdf || open ${filename_submission}.pdf &
+	evince ${filename}.pdf || open ${filename}.pdf &
 
 spell:
 	find . -name "*.tex" -exec aspell --lang=en --mode=tex check "{}" \;
 
 clean:
-	rm -f *.aux *.dvi *.bak *.bbl *.blg *.log *.nav *.out *.toc ${filename_submission}.pdf ${filename_supplementary}.pdf
+	rm -f *.aux *.dvi *.bak *.bbl *.blg *.log *.nav *.out *.toc ${filename}.pdf ${filename_submission}.pdf
