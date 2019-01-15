@@ -114,8 +114,46 @@ makes is at most $2^{\widetilde{O}(\min(K \log^2
 
 \subsection{Proof of Theorem~\ref{theorem:margin-transformation}}
 \label{sec:margin-trans}
-The idea behind construction and analysis of the mapping $\phi$ is polynomial
-approximation. According to the well known Stone-Weierstrass theorem (see
+\paragraph{Overview.} The idea behind construction and analysis of the mapping $\phi$ is polynomial
+approximation. Specifically, we give $k$ polynomials $p_1$, $\ldots$, $p_k$,
+such that:
+\begin{equation}
+  \forall t \in \cbr{1,2,\ldots,T}, p_{y_t}(x_t) \geq \frac{\gamma'}2,
+  \label{eqn:poly-pos}
+\end{equation}
+\begin{equation}
+  \forall t \in \cbr{1,2,\ldots,T}, \forall i \in \cbr{1,2,\ldots,K} \setminus \cbr{y_t}, p_i(x_t) \leq -\frac{\gamma'}2.
+  \label{eqn:poly-neg}
+\end{equation}
+As each polynomial $p_i$ can be written as
+$\ip{c_i}{\phi(x)}$ for some $c_i \in \ell_2$, it immediately shows that
+the set of examples $(\phi(x_1),y_1), \ldots, (\phi(x_T),y_T)$ is strongly linear separable.
+
+To construct $p_1, \ldots, p_k$ that satisfy Equations~\eqref{eqn:poly-pos}
+and~\eqref{eqn:poly-neg}, we consider constructing each $p_i$ separately.
+Specifically, $p_i$ needs to satisfy that:
+\begin{equation}
+  \forall t \in \cbr{1,2,\ldots,T}, y_t = i \Rightarrow p_i(y_t) \geq \frac{\gamma'}2,
+  \label{eqn:poly-pos-i}
+\end{equation}
+\begin{equation}
+  \forall t \in \cbr{1,2,\ldots,T}, y_t \neq i \Rightarrow p_i(y_t) \leq -\frac{\gamma'}2.
+  \label{eqn:poly-neg-i}
+\end{equation}
+
+Under the weak linear separability assumption, we note that all examples from class $i$
+lie in
+$R_i^+ := \cap_{j \in \cbr{1,\ldots,K} \setminus \cbr{i}} \cbr{x: \ip{w_i - w_j}{x} \geq \gamma}$, and all examples from other classes lie in
+$R_i^- := \cup_{j \in \cbr{1,\ldots,K} \setminus \cbr{i}} \cbr{x: \ip{w_i - w_j}{x} \leq  -\gamma}$.
+Therefore, to satisfy Equations~\eqref{eqn:poly-pos-i} and~\eqref{eqn:poly-neg-i},
+it suffices to construct $p_i$ such that:
+\begin{align*}
+  x \in R_i^+ & \Rightarrow p_i(x) \geq \frac {\gamma'} 2\\
+  x \in R_i^- & \Rightarrow p_i(x) \leq - \frac {\gamma'} 2
+\end{align*}
+
+
+According to the well known Stone-Weierstrass theorem (see
 e.g.~\citet[Section~10.10]{Davidson-Donsig-2010}), on a compact set,
 multivariate polynomials uniformly approximate any continuous function.
 Intuitively speaking, we use a multivariate polynomial to approximate, on the
