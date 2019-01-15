@@ -143,8 +143,8 @@ Specifically, $p_i$ needs to satisfy that:
 
 Under the weak linear separability assumption, we note that all examples from class $i$
 lie in
-$R_i^+ := \cap_{j \in \cbr{1,\ldots,K} \setminus \cbr{i}} \cbr{x: \ip{w_i - w_j}{x} \geq \gamma}$, and all examples from other classes lie in
-$R_i^- := \cup_{j \in \cbr{1,\ldots,K} \setminus \cbr{i}} \cbr{x: \ip{w_i - w_j}{x} \leq  -\gamma}$.
+\[ R_i^+ := \cap_{j \in \cbr{1,\ldots,K} \setminus \cbr{i}} \cbr{x: \ip{w_i - w_j}{x} \geq \gamma}, \] and all examples from the remaining classes lie in
+\[ R_i^- := \cup_{j \in \cbr{1,\ldots,K} \setminus \cbr{i}} \cbr{x: \ip{w_i - w_j}{x} \leq  -\gamma}. \]
 Therefore, to satisfy Equations~\eqref{eqn:poly-pos-i} and~\eqref{eqn:poly-neg-i},
 it suffices to construct $p_i$ such that:
 \begin{align*}
