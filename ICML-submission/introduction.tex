@@ -8,7 +8,7 @@ timestep $t$, the adversary chooses a labeled example $(x_t, y_t)$ where the
 feature vector $x_t \in \R^d$ is revealed to the learner and the correct label
 $y_t$ is kept secret by the adversary. Upon receiving the feature vector $x_t$,
 the learner is asked to make a prediction $\widehat{y}_t$. Immediately after
-making its prediction, the learner receives a feedback. In contrast with the
+making its prediction, the learner receives feedback. In contrast with the
 standard full information setting (where the feedback given is the correct label
 $y_t$), here the feedback is only a binary indicator of whether the prediction
 was correct or not. The protocol of the problem is formally stated below.
@@ -21,8 +21,8 @@ was correct or not. The protocol of the problem is formally stated below.
 \REQUIRE{Number of classes $K$, number of rounds $T$.}
 \FOR{$t=1,2,\dots,T$}
 \STATE Adversary chooses example $(x_t, y_t)$, where $x_t$ is revealed to the learner.
-\STATE{Predict class label $\widehat y_t \in \{1,2,\dots,K\}$}
-\STATE{Observe feedback $z_t \in \{0,1\}$ \\ \qquad where $z_t = \begin{cases}
+\STATE{Predict class label $\widehat y_t \in \{1,2,\dots,K\}$.}
+\STATE{Observe feedback $z_t \in \{0,1\}$, \\ \qquad where $z_t = \begin{cases}
 0 & \text{if $\widehat y_t = y_t$,} \\
 1 & \text{if $\widehat y_t \neq y_t$.}
 \end{cases}$
@@ -36,10 +36,11 @@ The performance of the learner is measured by its cumulative number of
 mistakes $\sum_{t=1}^T z_t = \sum_{t=1}^T \indicator{\widehat y_t \neq y_t}$.
 The bandit feedback is a natural feedback model motivated by applications
 including online advertising and online content optimization.
+\chicheng{Perhaps cite~\cite{Kakade-Shalev-Shwartz-Tewari-2008}?}
 
 In this paper, we focus on the special case when the examples chosen by the
 adversary lie in $\R^d$ and are linearly separable with a margin. We introduce
-two notions of linear separability, \emph{weak} and \emph{strong}. These are
+two notions of linear separability, \emph{weak} and \emph{strong},
 formally stated in
 Definitions~\ref{definition:weak-linear-separability}~and~\ref{definition:strong-linear-separability}.
 The standard notion of multiclass linear separability corresponds to the weak
@@ -52,17 +53,31 @@ the complement of the intersection of the halfspaces. Strong linear separability
 means that examples from each class are separated from the remaining examples by
 a \emph{single} hyperplane.
 
-In the full-information feedback setting, it is well known that if the examples
-have norm at most $R$ and are weakly linearly separable with a margin $\gamma$
+In the full-information feedback setting, it is well known that if all examples
+have norm at most $R$ and are weakly linearly separable with a margin $\gamma$,
 then the \textsc{Multiclass Perceptron} algorithm makes at most $\lfloor
-2(R/\gamma)^2 \rfloor$ mistakes. This result is very satisfying since the upper
-bound on the number of mistakes is information-theoretically optimal and at the
-same time the \textsc{Multiclass Perceptron} algorithm has low time and memory
-complexity.
+2(R/\gamma)^2 \rfloor$ mistakes.
+The guarantees provided by \textsc{Multiclass Perceptron} is very satisfying,
+since it achieves an information-theoretically optimal mistake upper bound,
+while having low time and memory complexities.
+\footnote{These results are standard in the literature. For completeness, we present Theorems~\ref{theorem:mutliclass-perceptron-mistake-upper-bound}
+and~\ref{theorem:online-multiclass-classification-mistake-lower-bound},
+along with their proofs in Appendix~\ref{section:multiclass-perceptron-proofs}.}
+%the \textsc{Multiclass Perceptron} algorithm
 
 The bandit feedback setting, however, is much more challenging. For the case
-when the examples are strongly linearly separable, we design a simple and
-efficient algorithm with an expected number of mistakes at most $(K-1) \lfloor
+when the examples are strongly linearly separable, to the best
+of our knowledge, it is not known how to design
+an efficient algorithm with a finite mistake bound before our work.
+\footnote{Although~\cite{Chen-Chen-Zhang-Chen-Zhang-2009} claimed that their
+Conservative OVA algorithm with PA-I update has a finite mistake bound under the
+strong linear separability condition, their proof of Theorem 2 is incorrect.
+Their Lemma 4 cannot be directly applied to the bandit setting, as the algorithm
+only makes updates on a subset of the $w_i$'s.}
+We design a simple and
+efficient algorithm, namely
+Algorithm~\ref{algorithm:algorithm-for-strongly-linearly-separable-examples},
+that has an expected number of mistakes at most $(K-1) \lfloor
 4(R/\gamma)^2 \rfloor$. The algorithm can be viewed as running $K$ copies of the
 \textsc{Binary Perceptron} algorithm, one copy for each class. Intuitively
 speaking, the factor $K-1$ is the price we pay for the bandit feedback, or more
@@ -70,10 +85,12 @@ precisely, the lack of full-information feedback. We also prove that any
 (possibly randomized) algorithm makes $\Omega(K (R/\gamma)^2))$ mistakes in the
 worst case.
 
-For the case when examples are weakly linearly separable, we construct a feature
-mapping $\phi$ such that makes them \emph{strongly} linearly separable. We then
-use the kernelized version of the algorithm for the strongly separable case; for
-more details on kernel methods see e.g.~\citet{Scholkopf-Smola-2002} and
+For the case when examples are weakly linearly separable,
+we construct a feature
+mapping $\phi$ that makes them \emph{strongly} linearly separable. We then
+use the kernelized version of the algorithm, namely Algorithm~\ref{algorithm:kernelized},
+ for the strongly separable case; for
+ more details on kernel methods see e.g.~\citet{Scholkopf-Smola-2002} and
 \citet{Shawe-Taylor-Cristianini-2004}. The kernel $k(x,y)$ corresponding to the
 feature mapping $\phi$ has a simple explicit formula and can be computed in
 $O(d)$ time.
@@ -83,13 +100,17 @@ corresponding feature space. We analyze how the margin parameter of weak
 separability in the original space $\R^d$ gets transformed into a margin
 parameter of strong separability in the new feature space. This problem is
 related to the problem of learning intersection of halfspaces and has been
-studied previously by \citet{Klivans-Servedio-2008}. In fact, our analysis can
-be viewed as a follow up on their work. We improve on the results of
-\citet{Klivans-Servedio-2008} by removing the dependency on the original
-dimension $d$.
+studied previously by \citet{Klivans-Servedio-2008}.
+As a side result, we improve on the results of
+\citet{Klivans-Servedio-2008} by removing the dependency of the margin parameter
+ on the original dimension $d$.
+%inspired by~\cite{Klivans-Servedio-2008},
+%In fact, our analysis can
+%be viewed as a follow up on their work.
 
 The resulting kernelized algorithm runs in time that is polynomial in the
 original dimension of the feature vectors $d$, the number of classes $K$, and
 the number of rounds $T$. We prove that if the examples lie in unit ball of
 $\R^d$ and are weakly separable with margin $\gamma$, the algorithm makes at
-most $O(???)$ mistakes.
+most $2^{\widetilde{O}(\min(K \log^2
+\frac{1}{\gamma}, \sqrt{\frac{1}{\gamma}} \log K))}$ mistakes.

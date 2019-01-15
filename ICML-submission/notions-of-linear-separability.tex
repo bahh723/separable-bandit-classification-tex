@@ -64,11 +64,7 @@ results in Appendix~\ref{section:multiclass-perceptron-proofs}.
 
 The notion of strong linear separability has appeared in the literature; see
 e.g.~\citet{Chen-Chen-Zhang-Chen-Zhang-2009}.
-\footnote{Although~\cite{Chen-Chen-Zhang-Chen-Zhang-2009} claimed that their
-Conservative OVA algorithm with PA-I update has a finite mistake bound under the
-strong linear separability assumption, their proof of Theorem 2 is incorrect.
-Their Lemma 4 cannot be directly applied to the bandit setting, as the algorithm
-only makes updates on a subset of the $w_i$'s.} Intuitively, strong linear
+Intuitively, strong linear
 separability means that, for each class $i$, the set of examples belonging to
 class $i$ and the set of example belonging to the remaining $K-1$ classes are
 separated by a linear classifier $w_i$ by a margin $\frac \gamma 2$.
