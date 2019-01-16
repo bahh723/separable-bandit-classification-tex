@@ -112,12 +112,12 @@ Suppose we are given a set splitting problem, and we construct a weak labeling p
  \ \\
  $(\Longleftarrow)$ Given the solution $w_1, w_2, w_3$ of the weak labeling problem, we define 
  \begin{align*}
-     S_1 = \left\{i\in [N] \Big| \ip{w_1-w_3}{(\e_i, 1)} > 0 \right\}, \\
-     S_2 = \left\{i\in [N] \Big| \ip{w_2-w_3}{(\e_i, 1)} > 0 \right\}.
+     S_1 &= \left\{i\in [N] \Big| \ip{w_1-w_3}{(\e_i, 1)} > 0 \right\}, \\
+     S_2 &= \left\{i\in [N] \Big| \ip{w_2-w_3}{(\e_i, 1)} > 0 \text{\ and\ } i\notin S_1 \right\}.
  \end{align*}
- It is not hard to see $S_1\cup S_2 = [N]$. Note that $(\e_i, 1)$ is the feature vector for Type 2 samples. Because Type 2 samples all have label $\overline{3}$, for any $i\in [N]$, one of the following must hold: $\ip{w_1-w_3}{(\e_i, 1)}>0$ or $\ip{w_2-w_3}{(\e_i, 1)}>0$. Thus $i\in S_1$ or $i\in S_2$. 
+ It is not hard to see $S_1 \cap S_2 = \emptyset$ and $S_1\cup S_2 = [N]$. The former is because $S_2$ only includes elements that are not in $S_1$. For the latter, note that $(\e_i, 1)$ is the feature vector for Type 2 samples. Because Type 2 samples all have label $\overline{3}$, for any $i\in [N]$, one of the following must hold: $\ip{w_1-w_3}{(\e_i, 1)}>0$ or $\ip{w_2-w_3}{(\e_i, 1)}>0$. This implies $i\in S_1$ or $i\in S_2$. 
  
- Now we show $\forall j$, $c_j \not\subset S_1$ and $c_j \not\subset S_2$ by contraction. Without loss of generality, suppose there exists some $j$ such that $c_j \subset S_1$. By our definition of $S_1$, we have $\ip{w_1-w_3}{(\e_i, 1)} > 0$ for all $i\in c_j$. Therefore, 
+ Now we show $\forall j$, $c_j \not\subset S_1$ and $c_j \not\subset S_2$ by contraction. Assume there exists some $j$ such that $c_j \subset S_1$. By our definition of $S_1$, we have $\ip{w_1-w_3}{(\e_i, 1)} > 0$ for all $i\in c_j$. Therefore, 
  \begin{align*}
      \sum_{i\in c_j}\ip{w_1-w_3}{\left(\e_i, 1\right)} = \ip{w_1-w_3}{\left(\sum_{i\in c_j}\e_i, |c_j|\right)} > 0. 
  \end{align*}
@@ -129,5 +129,5 @@ Suppose we are given a set splitting problem, and we construct a weak labeling p
  \begin{align*}
      \ip{w_1-w_3}{\left(\sum_{i\in c_j}\e_i, 1\right)} = \ip{w_1-w_3}{\left(\sum_{i\in c_j}\e_i, |c_j|\right)} - (|c_j|-1)\ip{w_1-w_3}{\left(\zero, 1\right)}>0.  
  \end{align*}
- Note that $\left(\sum_{i\in c_j}\e_i, 1\right)$ is a feature vector for Type 3 samples. Thus the above inequality contradicts that Type 3 samples have label 3. Therefore, $c_j \not\subset S_1$. Similarly we can prove $c_j \not\subset S_2$. 
+ Note that $\left(\sum_{i\in c_j}\e_i, 1\right)$ is a feature vector for Type 3 samples. Thus the above inequality contradicts that Type 3 samples have label 3. Therefore, $c_j \subset S_1$. If we assume there exists some $c_j \not\subset S_2$, same arguments apply and also lead to contradiction. 
 \end{proof}
