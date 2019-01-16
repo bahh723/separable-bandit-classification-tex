@@ -277,10 +277,11 @@ any $j \in \{1,2,\dots,M\}$, consider the expected number of mistakes the
 algorithm makes in rounds $(K-1)(j-1) + 1, (K-1)(j-1) + 2, \dots, (K-1)j$.
 
 Define a filtration $\cbr{\calB_j}_{j=0}^M$,
-where $\calB_j = \sigma((x_1, y_1), \ldots, (x_{(K-1)j}, y_{(K-1)j}))$
+where $\calB_j = \sigma((x_1, y_1, \hat{y}_1), \ldots, (x_{(K-1)j}, y_{(K-1)j}, \hat{y}_{(K-1)j}))$
 for every $j$ in $\{1,2,\dots,M\}$.
 By Claim 2 of~\citet{Daniely-Helbertal-2013}, as $\ell_j$
-is chosen uniformly from $\cbr{1,\dots,K}$ and independent of $\calB_{j-1}$,
+is chosen uniformly from $\cbr{1,\dots,K}$ and independent of $\calB_{j-1}$ and $\calA$'s
+randomness,
 $$
 \Exp \sbr{ \sum_{t=(K-1)(j-1) + 1}^{(K-1)j} z_t ~\Bigg|~ \calB_{j-1} } \geq \frac{K-1}2 \; .
 $$
