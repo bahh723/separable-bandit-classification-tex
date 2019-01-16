@@ -12,12 +12,11 @@ Section~\ref{section:algorithm-for-strongly-linearly-separable-data}.
 \label{definition:weak-linear-separability}
 Let $(V,\ip{\cdot}{\cdot})$ be an inner product space, $K$ be a positive
 integer, and $\gamma$ be a positive real number. Let $L = ((x_1, y_1), (x_2,
-y_2), \dots, (x_T, y_T))$ be a set of labeled examples in $V \times \{1,2,\dots,K\}$.
-\chicheng{This $L$ notion may be a bit confusing - feel free to edit}
+y_2), \dots, (x_T, y_T))$ be a sequence of labeled examples in $V \times
+\{1,2,\dots,K\}$.
 
-$L$ is said to be \emph{weakly linearly separable with a
-margin $\gamma$} if there exist vectors $w_1, w_2, \dots, w_K \in V$ such
-that
+$L$ is said to be \emph{weakly linearly separable with a margin $\gamma$} if
+there exist vectors $w_1, w_2, \dots, w_K \in V$ such that
 \begin{align}
 \label{equation:weak-linear-separability-1}
 & \sum_{i=1}^K \norm{w_i}^2 \le 1 \; , \\
@@ -33,7 +32,8 @@ that
 \label{definition:strong-linear-separability}
 Let $(V,\ip{\cdot}{\cdot})$ be an inner product space, $K$ be a positive
 integer, and $\gamma$ be a positive real number. Let $L = ((x_1, y_1), (x_2,
-y_2), \dots, (x_T, y_T))$ be labeled examples in $V \times \{1,2,\dots,K\}$.
+y_2), \dots, (x_T, y_T))$ be a sequence of labeled examples in $V \times
+\{1,2,\dots,K\}$.
 
 $L$ is said to be \emph{strongly linearly separable with a
 margin $\gamma$} if there exist vectors $w_1, w_2, \dots, w_K \in V$ such
@@ -58,33 +58,33 @@ of labeled examples is separable with a margin $\gamma$ and the norm of the
 examples is bounded by $R$, then \textsc{Multiclass Perceptron} algorithm makes
 at most $\left\lfloor 2(R/\gamma)^2 \right \rfloor$ mistakes. Another folklore
 result is that \textsc{Multiclass Perceptron} is essentially optimal in the
-sense that any deterministic algorithm must make $\frac 1 2 \left\lfloor (R/\gamma)^2
-\right \rfloor$ mistakes in the worst case.
-For completeness, we state the
-\textsc{Multiclass Perceptron} algorithm and give proofs of both of these
-results in Appendix~\ref{section:multiclass-perceptron-proofs}.
+sense that any (possibly randomized) algorithm must make $\frac{1}{2}
+\left\lfloor (R/\gamma)^2 \right \rfloor$ mistakes in the worst case. For
+completeness, we state the \textsc{Multiclass Perceptron} algorithm and give
+proofs of both of these results in
+Appendix~\ref{section:multiclass-perceptron-proofs} in the supplementary
+material.
 
 \chicheng{Shall we mention that this multiclass margin notion has also appeared in e.g.~\cite{Crammer-Singer-2003}?}
 
 The notion of strong linear separability has appeared in the literature; see
-e.g.~\citet{Chen-Chen-Zhang-Chen-Zhang-2009}.
-Intuitively, strong linear
+e.g.~\citet{Chen-Chen-Zhang-Chen-Zhang-2009}. Intuitively, strong linear
 separability means that, for each class $i$, the set of examples belonging to
 class $i$ and the set of examples belonging to the remaining $K-1$ classes are
-separated by a linear classifier $w_i$ by a margin $\frac \gamma 2$.
+separated by a linear classifier $w_i$ with margin $\frac{\gamma}{2}$.
 
-It is easy to see that if a set of labeled examples are strongly linearly
+It is easy to see that if a sequence of labeled examples is strongly linearly
 separable with margin $\gamma$, then it is also weakly linearly separable with
-the same margin. Indeed, if $w_1, w_2, \dots, w_K \in V$
-satisfy \eqref{equation:strong-linear-separability-1},
+the same margin. Indeed, if $w_1, w_2, \dots, w_K \in V$ satisfy
+\eqref{equation:strong-linear-separability-1},
 \eqref{equation:strong-linear-separability-2},
 \eqref{equation:strong-linear-separability-3} then they satisfy
 \eqref{equation:weak-linear-separability-1} and
 \eqref{equation:weak-linear-separability-2}.
 
-In the special case of $K=2$, if a set of labeled examples are weakly linearly
-separable with a margin $\gamma$, then it is also strongly linearly separable with
-the same margin. Indeed, if $w_1, w_2$ satisfy
+In the special case of $K=2$, if a sequence of labeled examples is weakly
+linearly separable with a margin $\gamma$, then it is also strongly linearly
+separable with the same margin. Indeed, if $w_1, w_2$ satisfy
 \eqref{equation:weak-linear-separability-1} and
 \eqref{equation:weak-linear-separability-2} then $w_1' = \frac{w_1 - w_2}{2}$,
 $w_2' = \frac{w_2 - w_1}{2}$ satisfy
@@ -94,7 +94,9 @@ $w_2' = \frac{w_2 - w_1}{2}$ satisfy
 Equation~\eqref{equation:strong-linear-separability-1} follows from
 $\norm{w_i'}^2 \le (\frac{1}{2} \norm{w_1} + \frac{1}{2} \norm{w_2})^2 \le
 \frac{1}{2}\norm{w_1}^2 + \frac{1}{2}\norm{w_2}^2 \le \frac{1}{2}$ for $i=1,2$.
-Equations~\eqref{equation:strong-linear-separability-2} and~\eqref{equation:strong-linear-separability-3} follow from the fact that $w_1' - w_2' = w_1 - w_2$.
+Equations~\eqref{equation:strong-linear-separability-2}
+and~\eqref{equation:strong-linear-separability-3} follow from the fact that
+$w_1' - w_2' = w_1 - w_2$.
 
 However, for any $K \ge 3$ and any inner product space of dimension at least
 $2$, there exists a set of labeled examples that is weakly linearly separable
@@ -115,9 +117,9 @@ to provide it.}
 
 While the examples are weakly linearly separable with a positive margin
 $\gamma$, they are \emph{not} strongly linearly separable with any positive
-margin $\gamma$. For instance, there do not exist linear separators that
-separates the examples belonging to the gray class from the examples belonging
-to the remaining two classes.
+margin $\gamma$. For instance, there does \emph{not} exist a linear separator
+that separates the examples belonging to the gray class from the examples
+belonging to the remaining two classes.
 }
 \label{figure:weakly-linearly-separable-examples-with-margin}
 \end{figure}
