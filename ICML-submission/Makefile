@@ -1,5 +1,5 @@
 filename=main-all
-filename_submission=main-first-12-pages
+filename_submission=main-first-10-pages
 
 .PHONY: all clean
 
@@ -9,7 +9,7 @@ all:
 	pdflatex ${filename}
 	pdflatex ${filename}
 	pdflatex ${filename}
-	pdftk ${filename}.pdf cat 1-12 output ${filename_submission}.pdf
+	pdftk ${filename}.pdf cat 1-10 output ${filename_submission}.pdf
 
 read:
 	evince ${filename}.pdf || open ${filename}.pdf &
