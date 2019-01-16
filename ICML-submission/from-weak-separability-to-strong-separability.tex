@@ -1,28 +1,27 @@
 \section{From weak separability to strong separability}
 \label{section:from-weak-separability-to-strong-separability}
 
-In this section, we case when the sequence of examples shown by the adversary is
-weakly linearly separable
-(Definition~\ref{definition:weak-linear-separability}). Throughout this section,
-we assume without loss of generality that all examples lie in the unit ball
-$\B(0,1) \subseteq \R^d$.\footnote{Consider the following preprocessing step:
-upon seeing every example $x_t$, we define $\hat{x}_t = \frac{x_t}{\norm{x_t}}$
-as its normalization. It can be easily checked that if $(x_1,y_1), \dots,
-(x_T,y_T)$ is weakly linearly separable by margin $\gamma$ and $\norm{x_t} \le
-\R$ for all $t$, then the set of normalized examples $(\hat{x}_1,y_1), \dots,
-(\hat{x}_T,y_T)$ is weakly linearly separable by margin $\gamma/R$.} Note that
+In this section, we consider case when the examples are weakly linearly
+separable. Throughout this section, we assume without loss of generality that
+all examples lie in the unit ball $\B(0,1) \subseteq \R^d$.\footnote{Instead of
+working with feature vector $x_t$ we can work with normalized feature vectors
+$\widehat{x}_t = \frac{x_t}{\norm{x_t}}$. It can be easily checked that if
+$(x_1,y_1), (x_2,y_2), \dots, (x_T,y_T)$ are weakly linearly separable with
+margin $\gamma$ and $\norm{x_t} \le R$ for all $t$, then the normalized examples
+$(\widehat{x}_1,y_1), \widehat{x}_2,y_2), \dots, (\widehat{x}_T,y_T)$ are weakly
+linearly separable by margin $\gamma/R$.} Note that
 Algorithm~\ref{algorithm:algorithm-for-strongly-linearly-separable-examples}
 alone does not guarantee a finite mistake bound in this setting, as weak linear
 separability does not imply strong linear separability.
 
-We consider a kernel function $k(\cdot, \cdot)$ whose corresponding feature map
-$\phi(\cdot)$ transforms any sequence of \emph{weakly} linearly separable
-examples to \emph{strongly} linearly separable sequence of examples.
-Specifically, $\phi$ has the property that if a set of labeled examples in
-$B(0,1)$ is weakly linearly separable with a margin $\gamma$, then after
-applying $\phi$ the examples become strongly linearly separable with a margin
-$\gamma'$ and their norms are bounded by $2$. The parameter $\gamma'$ is a
-function of the old margin $\gamma$ and the number of classes $K$, and is
+We construct a positive definite kernel function $k(\cdot, \cdot)$ whose
+corresponding feature map $\phi(\cdot)$ transforms any sequence of \emph{weakly}
+linearly separable examples to \emph{strongly} linearly separable sequence of
+examples. Specifically, $\phi$ has the property that if a set of labeled
+examples in $\B(0,1)$ is weakly linearly separable with a margin $\gamma$, then
+after applying $\phi$ the examples become strongly linearly separable with a
+margin $\gamma'$ and their norms are bounded by $2$. The parameter $\gamma'$ is
+a function of the old margin $\gamma$ and the number of classes $K$, and is
 specified in \autoref{theorem:margin-transformation} below.
 
 The kernel function $k:\B(0,1) \times \B(0,1) \to \R$ is defined as
@@ -49,7 +48,8 @@ $$
 k(x,x') = \ip{\phi(x)}{\phi(x')}_{\ell_2}.
 $$
 The last equality together with the formula for $k$ implies that $k(x,x) <
-+\infty$ for any $x$ in $\B(0,1)$.
++\infty$ for any $x$ in $\B(0,1)$ and thus in particular implies that $\phi(x)$
+indeed lies in $\ell_2$.
 
 The following theorem is our main technical result in this section. We defer its
 proof to Section~\ref{section:margin-transformation}.
@@ -59,7 +59,7 @@ proof to Section~\ref{section:margin-transformation}.
 Let $(x_1, y_1)$, $(x_2, y_2)$, $\dots$, $(x_T, y_T)$ in $\B(0,1) \times
 \{1,2,\dots,K\}$ be a sequence of labeled examples that is weakly linearly
 separable with margin $\gamma > 0$. Let $\phi$ be as defined in
-Equation~\eqref{equation:phi}, and
+equation~\eqref{equation:phi} and let
 \begingroup
 \allowdisplaybreaks
 \begin{align*}
@@ -70,7 +70,7 @@ r & = 2 \left\lceil \frac{1}{4} \log_2(4K-3) \right\rceil + 1, \quad \quad s = \
 & \ \cdot \left(2^{2s+1} r(K-1) (4s+2)^2 \right)^{-(s+1/2)r(K-1)} \; .
 \end{align*}
 \endgroup
-Then, the set of labeled examples transformed by $\phi$,
+Then, the sequence of labeled examples transformed by $\phi$,
 namely $(\phi(x_1), y_1), (\phi(x_2), y_2), \dots,
 (\phi(x_T), y_T)$, is strongly linearly separable with margin $\gamma' =
 \max\{\gamma_1, \gamma_2\}$. In addition, $\norm{\phi(x_1)}_{\ell_2},
@@ -79,24 +79,22 @@ namely $(\phi(x_1), y_1), (\phi(x_2), y_2), \dots,
 
 Using this theorem we derive a mistake bound for
 Algorithm~\ref{algorithm:kernelized} with kernel function $k(x,x') =
-\ip{\phi(x)}{\phi(x')}_{\ell_2}$. This is done by simply invoking
-\autoref{theorem:kernelized-upper-bound} with the modified margin $\gamma'$ from
-\autoref{theorem:margin-transformation}. The mistake bound is stated as
-\autoref{corollary:weakly-separable-examples-mistake-upper-bound} below.
+\ip{\phi(x)}{\phi(x')}_{\ell_2}$.
 
 \begin{corollary}[Mistake upper bound]
 \label{corollary:weakly-separable-examples-mistake-upper-bound}
-Let $K$ be a positive integer and let $\gamma$ be a positive real number. If $L
-= ((x_1, y_1), (x_2, y_2), \dots, (x_T, y_T))$ is a sequence of labeled examples
-in $V \times \{1,2,\dots,K\}$ such that
-\begin{enumerate}
-\item $L$ is weakly linearly separable with margin $\gamma$,
-\item for all $t$ in $\cbr{1,2,\dots,T}$, $\norm{x_t} \le 1$,
-\end{enumerate}
-then the expected number of mistakes Algorithm~\ref{algorithm:kernelized} makes
+Let $K$ be a positive integer and let $\gamma$ be a positive real number. If
+$(x_1, y_1), (x_2, y_2), \dots, (x_T, y_T) \in \B(0,1) \times \{1,2,\dots,K\}$
+is a sequence of weakly separable labeled examples with margin $\gamma > 0$,
+then the expected number of mistakes made by Algorithm~\ref{algorithm:kernelized}
+with kernel $k(x,x') = \frac{1}{1 - \frac{1}{2}\ip{x}{x'}_{\R^d}}$
 is at most $2^{\widetilde{O}(\min(K \log^2 \frac{1}{\gamma},
 \sqrt{\frac{1}{\gamma}} \log K))}$.
 \end{corollary}
+
+This corollary follows direcly from
+Theorems~\ref{theorem:kernelized-upper-bound}
+and~\ref{theorem:margin-transformation}.
 
 \subsection{Proof of Theorem~\ref{theorem:margin-transformation}}
 \label{section:margin-transformation}
