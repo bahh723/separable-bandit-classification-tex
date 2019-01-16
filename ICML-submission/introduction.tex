@@ -43,28 +43,28 @@ Definitions~\ref{definition:weak-linear-separability}~and~\ref{definition:strong
 The standard notion of multiclass linear separability corresponds to the weak
 linear separability. For binary classification, the weak and strong separability
 are identical. However, they differ for multiclass classification with $K \ge 3$
-classes. For multiclass classification with $K$ classes, the standard notion of
-linear separability means that the examples from each class lie in an
-intersection of $K-1$ halfspaces and the examples outside of the class lie in
-the complement of the intersection of the halfspaces. Strong linear separability
-means that examples from each class are separated from the remaining examples by
-a \emph{single} hyperplane.
+classes. For multiclass classification with $K$ classes, weak linear
+separability means that the examples from each class lie in an intersection of
+$K-1$ halfspaces and the examples outside of the class lie in the complement of
+the intersection of the halfspaces. Strong linear separability means that
+examples from each class are separated from the remaining examples by a
+\emph{single} hyperplane.
 
 In the full-information feedback setting, it is well known that if all examples
 have norm at most $R$ and are weakly linearly separable with a margin $\gamma$,
 then the \textsc{Multiclass Perceptron} algorithm makes at most $\lfloor
 2(R/\gamma)^2 \rfloor$ mistakes. The guarantees provided by \textsc{Multiclass
 Perceptron} is very satisfying, since it achieves an information-theoretically
-optimal mistake upper bound, while having low time and memory complexities.
-\footnote{These results are standard in the literature. For completeness, we
-present Theorems~\ref{theorem:mutliclass-perceptron-mistake-upper-bound}
-and~\ref{theorem:online-multiclass-classification-mistake-lower-bound}, along
-with their proofs in Appendix~\ref{section:multiclass-perceptron-proofs}.}
+optimal mistake upper bound, while having low time and memory
+complexities.~\footnote{These results are standard in the literature. For
+completeness, we present these results along with their proofs in
+Appendix~\ref{section:multiclass-perceptron-proofs} in the supplementary
+material.}
 
 The bandit feedback setting, however, is much more challenging. For the case
 when the examples are strongly linearly separable, to the best of our knowledge,
 it is not known how to design an efficient algorithm with a finite mistake bound
-before our work. \footnote{Although~\cite{Chen-Chen-Zhang-Chen-Zhang-2009}
+before our work.~\footnote{Although~\cite{Chen-Chen-Zhang-Chen-Zhang-2009}
 claimed that their Conservative OVA algorithm with PA-I update has a finite
 mistake bound under the strong linear separability condition, their proof of
 Theorem 2 is incorrect. Their Lemma 4 cannot be directly applied to the bandit
@@ -72,25 +72,26 @@ setting, as the algorithm only makes updates on a subset of the $w_i$'s.} We
 design a simple and efficient algorithm, namely
 Algorithm~\ref{algorithm:algorithm-for-strongly-linearly-separable-examples},
 that has an expected number of mistakes at most $(K-1) \lfloor 4(R/\gamma)^2
-\rfloor$. The algorithm can be viewed as running $K$ copies of the
-\textsc{Binary Perceptron} algorithm, one copy for each class. Intuitively
-speaking, the $O(K)$ multiplicative factor is the price we pay for the bandit
-feedback, or more precisely, the lack of full-information feedback. We also
-prove that any (possibly randomized) algorithm makes $\Omega(K (R/\gamma)^2))$
+\rfloor$. The memory complexity and per-round time complexity are both $O(dK)$.
+The algorithm can be viewed as running $K$ copies of the \textsc{Binary
+Perceptron} algorithm, one copy for each class. Intuitively speaking, the $O(K)$
+multiplicative factor in the mistake bound is the price we pay for the bandit
+feedback, or more precisely, the lack of full-information feedback. We prove
+that any (possibly randomized) algorithm must make $\Omega(K (R/\gamma)^2))$
 mistakes in the worst case.
 
-For the case when examples are weakly linearly separable, we construct a feature
-mapping $\phi$ that makes them \emph{strongly} linearly separable. We then use
-the kernelized version of the algorithm, namely
-Algorithm~\ref{algorithm:kernelized}, for the strongly separable case; for more
-details on kernel methods see e.g.~\citet{Scholkopf-Smola-2002} and
-\citet{Shawe-Taylor-Cristianini-2004}. The kernel $k(x,x')$ corresponding to the
-feature mapping $\phi$ has a simple explicit formula and can be computed in
-$O(d)$ time.
+For the case when examples are weakly linearly separable, we construct a
+non-linear feature mapping $\phi$ and associated positive definite kernel
+$k(x,x')$ that makes the examples \emph{strongly} linearly separable. We then
+use the kernelized version of the algorithm for the strongly separable case,
+Algorithm~\ref{algorithm:kernelized}. (For details on kernel methods see
+e.g.~\citet{Scholkopf-Smola-2002} or \citet{Shawe-Taylor-Cristianini-2004}.)
+The kernel $k(x,x')$ corresponding to the feature mapping $\phi$ has a simple
+explicit formula and can be computed in $O(d)$ time.
 
 The number of mistakes of the kernelized algorithm depends on the margin in the
-corresponding feature space. We analyze how the margin parameter of weak
-separability in the original space $\R^d$ gets transformed into a margin
+corresponding feature space. We analyze how the mapping $\phi$ transforms the
+margin parameter of weak separability in the original space $\R^d$ into a margin
 parameter of strong separability in the new feature space. This problem is
 related to the problem of learning intersection of halfspaces and has been
 studied previously by \citet{Klivans-Servedio-2008}. As a side result, we
