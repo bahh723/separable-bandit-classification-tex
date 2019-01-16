@@ -1,11 +1,10 @@
 \section{Algorithm for strongly linearly separable data}
 \label{section:algorithm-for-strongly-linearly-separable-data}
 
-In this section, we present an algorithm for \textsc{Online Multiclass
-Classification with Bandit Feedback}, namely
-Algorithm~\ref{algorithm:algorithm-for-strongly-linearly-separable-examples}.
-Under the assumption that the examples are strongly linearly separable with a
-margin, we give an upper bound on its number of mistakes. This is stated as
+In this section, we consider the case when the examples are strongly linearly
+separable. We present an algorithm for this setting
+(Algorithm~\ref{algorithm:algorithm-for-strongly-linearly-separable-examples})
+and we give an upper bound on its number of mistakes, stated as
 \autoref{theorem:strongly-separable-examples-mistake-upper-bound} below. The
 proof of the theorem can be found in
 Appendix~\ref{section:proofs-for-stringly-separable-examples} in the
@@ -80,7 +79,7 @@ Algorithm~\ref{algorithm:algorithm-for-strongly-linearly-separable-examples} is
 optimal upto a constant factor, as long as the number of classes $K$ is at most
 $O((R/\gamma)^2)$. This lower bound is stated as
 \autoref{theorem:strongly-separable-examples-mistake-lower-bound} below. The
-proof of the theorem can be foudn in
+proof of the theorem can be found in
 Appendix~\ref{section:proofs-for-stringly-separable-examples} in the
 supplementary material.
 
@@ -102,7 +101,7 @@ number of mistakes $\calA$ makes is at least $\frac{K-1}{2} \left\lfloor
 trivial lower bound on the expected number of mistakes of any randomized
 algorithm is $\frac{K-1}{2}$. To see this, note that the adversary can choose an
 example $(R e_1, y)$, where $y$ is a label chosen uniformly from
-$\cbr{1,2\ldots,K}$, and show this example $K-1$ times. The sequence of examples
+$\cbr{1,2,\dots,K}$, and show this example $K$ times. The sequence of examples
 trivially satisfies the strong linear separability condition, and the
 $\frac{K-1}{2}$ expected mistake lower bound follows from Claim 2
 of~\citet{Daniely-Helbertal-2013}. However, it is unclear if the trivial lower
@@ -111,29 +110,28 @@ leave this as an open problem.
 
 Algorithm~\ref{algorithm:algorithm-for-strongly-linearly-separable-examples} can
 be extended to nonlinear classification using
-kernels~\cite{Scholkopf-Smola-2002, Shawe-Taylor-Cristianini-2004}. For each
-class, as opposed to explicitly maintaining the predictor's weights for each
-class, we maintain the set of examples whose scaled feature transformations are
-added to the weights in Perceptron updates. We give a formal description of the
-kernelized algorithm in Algorithm~\ref{algorithm:kernelized}.
-
-The following theorem is a direct consequence of
-Theorem~\ref{theorem:strongly-separable-examples-mistake-upper-bound}.
+kernels~\cite{Scholkopf-Smola-2002, Shawe-Taylor-Cristianini-2004}. The formal
+description of the kernelized algorithm is given in
+Algorithm~\ref{algorithm:kernelized}. As opposed to explicitly maintaining the
+weight vector for each class, the algorithm maintains the set of example-scalar
+pairs corresponding to the updates of the non-kernelized algorithm. As a direct
+consequence of
+Theorem~\ref{theorem:strongly-separable-examples-mistake-upper-bound} we get a
+mistake bound for the kernelized algorithm.
 
 \begin{theorem}[Mistake upper bound for kernelized algorithm]
 \label{theorem:kernelized-upper-bound}
-Let $k(\cdot, \cdot)$ be a kernel function with feature map $\phi$, $K$ be a positive
-integer, $\gamma$ be a positive real number, $R$ be a non-negative real number. If
-$L = ((x_1, y_1), (x_2, y_2), \dots, (x_T, y_T))$ is a sequence of labeled examples in
-$V \times \{1,2,\dots,K\}$ such that:
+Let $k(\cdot, \cdot)$ be a positive definite kernel function and let
+$\phi(\cdot)$ be the associated feature map. Let $K$ be a positive integer,
+$\gamma$ be a positive real number, $R$ be a non-negative real number. If $L =
+((x_1, y_1), (x_2, y_2), \dots, (x_T, y_T))$ is a sequence of labeled examples
+such that:
 \begin{enumerate}
   \item $((\phi(x_1), y_1), (\phi(x_2), y_2), \dots, (\phi(x_T), y_T))$ is strongly linearly separable with margin $\gamma$,
   \item for all $t$ in $\cbr{1,\ldots,T}$, $k(x_t,x_t) \le R^2$,
 \end{enumerate}
-then the
-expected number of mistakes
-Algorithm~\ref{algorithm:kernelized}
-makes is at most $(K-1) \lfloor 4(R/\gamma)^2 \rfloor$.
+then the expected number of mistakes Algorithm~\ref{algorithm:kernelized} makes
+is at most $(K-1) \lfloor 4(R/\gamma)^2 \rfloor$.
 \end{theorem}
 
 \begin{algorithm}[h]
