@@ -1,6 +1,23 @@
 \section{Proof of Theorems~\ref{theorem:polynomial-approximation-1}~and~\ref{theorem:polynomial-approximation-2}}
 \label{section:proof-of-polynomial-approximation}
 
+In this section, we follow the construction of~\citet{Klivans-Servedio-2008}
+(which in turn uses the constructions of~\citet{Beigel-Reingold-Spielman-1995})
+to establish two polynomials of low norm, such that it takes large positive values
+in
+\[ \bigcap_{i=1}^m \left\{ x \in \R^d ~:~ \norm{x} \le 1, \ \ip{v_i}{x} \ge \gamma \right\} \]
+and takes large negative values in
+\[ \bigcup_{i=1}^m \left\{ x \in \R^d ~:~ \norm{x} \le 1, \ \ip{v_i}{x} \le -\gamma \right\} . \]
+We improve the norm bound analysis of~\citet{Klivans-Servedio-2008} in two aspects:
+\begin{enumerate}
+  \item Our upper bounds on the norm of the polynomials do not have any dependency on the
+  dimensionality $d$.
+  \item We remove the requirement that the fractional part of input $x$ must be above some threshold in
+  Theorem~\ref{theorem:polynomial-approximation-2}.
+\end{enumerate}
+A lot of the proof details are similar to those of~\citet{Klivans-Servedio-2008}; nevertheless,
+we provide a self-contained full proof here.
+
 For the proofs of the theorems we need several auxiliary results.
 
 \begin{lemma}[Simple inequality]
@@ -349,6 +366,32 @@ Substituting for $r$ and $s$ finishes the proof.
 \subsection{Proof of \autoref{theorem:polynomial-approximation-2}}
 \label{section:proof-of-polynomial-approximation-2}
 
+We prove the following lemma in this section.
+\autoref{theorem:polynomial-approximation-2} immediately
+follows from this lemma by considering $p' = p \cdot 2^{-s(s+1)rm+1})$
+and algebra.
+
+\begin{lemma}
+\label{lemma:polynomial-approximation-2}
+Let $v_1, v_2, \dots, v_m \in \R^d$ be vectors such that $\norm{v_1},
+\norm{v_2}, \dots, \norm{v_m} \le 1$. Let $\gamma \in (0,1)$.
+Define
+$$
+r = 2 \left\lceil \frac{1}{4} \log_2(4m + 1) \right\rceil + 1 \quad \text{and} \quad s = \left \lceil \log_2(1/\gamma) \right \rceil \; .
+$$
+Then, there exists a multivariate polynomial $p:\R^d \to \R$ such that
+\begin{enumerate}
+\item $\displaystyle p(x) \ge \frac{1}{4} \cdot 2^{s(s+1)rm}$ \\
+for all $\displaystyle x \in \bigcap_{i=1}^m \left\{ x \in \R^d ~:~ \norm{x} \le 1, \ \ip{v_i}{x} \ge \gamma \right\}$,
+
+\item $\displaystyle p(x) \le - \frac{1}{4} \cdot 2^{s(s+1)rm}$ \\
+for all $\displaystyle x \in \bigcup_{i=1}^m \left\{ x \in \R^d ~:~ \norm{x} \le 1, \ \ip{v_i}{x} \le - \gamma \right\}$,
+
+\item $\deg(p) \le (2s+1) rm$,
+\item $\norm{p} \le (2m-1/2) 2^m \cdot \left(2^{2s} rm (4s+2)^2 \right)^{(s+1/2)rm}$.
+\end{enumerate}
+\end{lemma}
+
 We define several univariate polynomials
 \begin{align*}
 P_n(z) & = (z - 1) \prod_{i=1}^n (z - 2^i)^2 && \text{for $n \ge 0$,} \\
@@ -369,7 +412,7 @@ and a multivariate rational function
 $$
 Q(x) = \left( \sum_{i=1}^m S_{s,r}\left( \frac{\ip{v_i}{x}}{\gamma} \right) \right) - \left(m - \frac{1}{2} \right) \; .
 $$
-It easy to verify that
+It is easy to verify that
 $$
 p(x) = Q(x) \prod_{j=1}^m B_{s,r} \left( \frac{\ip{v_j}{x}}{\gamma} \right) \; .
 $$

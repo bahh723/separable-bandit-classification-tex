@@ -51,7 +51,11 @@ that
 \end{align}
 \end{definition}
 
-The notion of weak linear separability with a margin is standard. It is used in
+The notion of weak linear separability with a margin is standard;
+using the notion of multiclass margin~\citep[see e.g.][]{Crammer-Singer-2003},
+weak linear separability with margin $\gamma$ is equivalent to that
+there is a linear classifier that has multiclass margin $\gamma$ on
+all the examples. It is used in
 the full-information setting to upper bound the number of mistakes of the
 \textsc{Multiclass Perceptron} algorithm. It is a folklore result that if a set
 of labeled examples is separable with a margin $\gamma$ and the norm of the
@@ -65,7 +69,7 @@ proofs of both of these results in
 Appendix~\ref{section:multiclass-perceptron-proofs} in the supplementary
 material.
 
-\chicheng{Shall we mention that this multiclass margin notion has also appeared in e.g.~\cite{Crammer-Singer-2003}?}
+%\chicheng{Shall we mention that this multiclass margin notion has also appeared in e.g.?}
 
 The notion of strong linear separability has appeared in the literature; see
 e.g.~\citet{Chen-Chen-Zhang-Chen-Zhang-2009}. Intuitively, strong linear

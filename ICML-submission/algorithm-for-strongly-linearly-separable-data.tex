@@ -4,7 +4,7 @@
 In this section, we consider the case when the examples are strongly linearly
 separable. We present an algorithm for this setting
 (Algorithm~\ref{algorithm:algorithm-for-strongly-linearly-separable-examples})
-and we give an upper bound on its number of mistakes, stated as
+and give an upper bound on its number of mistakes, stated as
 \autoref{theorem:strongly-separable-examples-mistake-upper-bound} below. The
 proof of the theorem can be found in
 Appendix~\ref{section:proofs-for-stringly-separable-examples} in the
@@ -18,7 +18,8 @@ classes. At each timestep $t$, upon seeing example $x_t$, copy $i$ makes a
 binary prediction on whether $x_t$ belongs to class $i$ or not. If at least one
 copy makes a positive prediction, the algorithm chooses its prediction as one of
 the classes corresponding to a positive prediction. If all copies make negative
-predictions, the algorithms makes a prediction uniformly at random.
+predictions, the algorithms makes a prediction uniformly at random from
+$\cbr{1,\ldots,K}$.
 
 \begin{algorithm}[h]
 \caption{\textsc{Bandit Algorithm for Strongly Linearly Separable Examples}
@@ -87,8 +88,8 @@ supplementary material.
 \label{theorem:strongly-separable-examples-mistake-lower-bound}
 Let $\gamma$ be a positive real number, and $R$ be a non-negative real
 number. For any (possibly randomized) algorithm $\calA$ for the \textsc{Online
-Multiclass Classification with Bandit Feedback} with $K \le
-(R/\gamma)^2$ classes there exists an inner product space $(V,
+Multiclass Classification with Bandit Feedback} problem with $K \le
+(R/\gamma)^2$ classes, there exists an inner product space $(V,
 \ip{\cdot}{\cdot})$, a non-negative integer $T$ and a sequence of labeled
 examples $(x_1, y_1), (x_2, y_2), \dots, (x_T, y_T)$ in $V \times
 \{1,2,\dots,K\}$ that are strongly linearly separable with margin $\gamma$, the
@@ -127,7 +128,9 @@ $\gamma$ be a positive real number, $R$ be a non-negative real number. If $L =
 ((x_1, y_1), (x_2, y_2), \dots, (x_T, y_T))$ is a sequence of labeled examples
 such that:
 \begin{enumerate}
-  \item $((\phi(x_1), y_1), (\phi(x_2), y_2), \dots, (\phi(x_T), y_T))$ is strongly linearly separable with margin $\gamma$,
+  \item $((\phi(x_1), y_1), (\phi(x_2), y_2), \dots, (\phi(x_T), y_T))$,
+  the set of examples in $L$ after feature transformation $\phi$,
+  is strongly linearly separable with margin $\gamma$,
   \item for all $t$ in $\cbr{1,\ldots,T}$, $k(x_t,x_t) \le R^2$,
 \end{enumerate}
 then the expected number of mistakes Algorithm~\ref{algorithm:kernelized} makes
