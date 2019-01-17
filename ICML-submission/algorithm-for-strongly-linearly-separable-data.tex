@@ -26,8 +26,7 @@ $\cbr{1,\ldots,K}$.
 \label{algorithm:algorithm-for-strongly-linearly-separable-examples}}
 \begin{algorithmic}[1]
 {
-\REQUIRE{Number of classes $K$.}
-\REQUIRE{Number of rounds $T$.}
+\REQUIRE{Number of classes $K$, number of rounds $T$.}
 \REQUIRE{Inner product space $(V,\ip{\cdot}{\cdot})$.}
 \STATE{Initialize $w_1^{(1)} = w_2^{(1)} = \dots = w_K^{(1)} = 0$}
 \FOR{$t=1,2,\dots,T$}
@@ -62,14 +61,11 @@ $\cbr{1,\ldots,K}$.
 \begin{theorem}[Mistake upper bound]
 \label{theorem:strongly-separable-examples-mistake-upper-bound}
 Let $(V, \ip{\cdot}{\cdot})$ be an inner product space, $K$ be a positive
-integer, $\gamma$ be a positive real number, $R$ be a non-negative real number. If
-$L = ((x_1, y_1), (x_2, y_2), \dots, (x_T, y_T))$ is a sequence of labeled examples in
-$V \times \{1,2,\dots,K\}$ such that:
-\begin{enumerate}
-  \item $L$ is strongly linearly separable with margin $\gamma$,
-  \item for all $t$ in $\cbr{1,\ldots,T}$, $\norm{x_t} \le R$,
-\end{enumerate}
-then the expected number of mistakes
+integer, $\gamma$ be a positive real number, $R$ be a non-negative real number.
+If the examples $(x_1, y_1), (x_2, y_2), \dots, (x_T, y_T) \in V \times
+\{1,2,\dots,K\}$ are strongly linearly separable with margin $\gamma$ and for
+all $t \in \cbr{1,\ldots,T}$ satisfy $\norm{x_t} \le R$ then the expected number
+of mistakes
 Algorithm~\ref{algorithm:algorithm-for-strongly-linearly-separable-examples}
 makes is at most $(K-1) \lfloor 4(R/\gamma)^2 \rfloor$.
 \end{theorem}
@@ -122,16 +118,16 @@ mistake bound for the kernelized algorithm.
 
 \begin{theorem}[Mistake upper bound for kernelized algorithm]
 \label{theorem:kernelized-upper-bound}
-Let $k(\cdot, \cdot)$ be a positive definite kernel function and let
-$\phi(\cdot)$ be the associated feature map. Let $K$ be a positive integer,
-$\gamma$ be a positive real number, $R$ be a non-negative real number. If $L =
-((x_1, y_1), (x_2, y_2), \dots, (x_T, y_T))$ is a sequence of labeled examples
-such that:
+Let $X$ be a non-empty set, let $(V, \ip{\cdot}{\cdot})$ be an inner product
+space. Let $\phi:X \to V$ be a feature map and let $k:X \times X \to \R$,
+$k(x,x') = \ip{\phi(x)}{\phi(x')}$ the associated positive positive definite
+kernel. Let $K$ be a positive integer, $\gamma$ be a positive real number, $R$
+be a non-negative real number. If $(x_1, y_1), (x_2, y_2), \dots, (x_T, y_T) \in
+X \times \{1,2,\dots,K\}$ are labeled examples such that:
 \begin{enumerate}
-  \item $((\phi(x_1), y_1), (\phi(x_2), y_2), \dots, (\phi(x_T), y_T))$,
-  the set of examples in $L$ after feature transformation $\phi$,
-  is strongly linearly separable with margin $\gamma$,
-  \item for all $t$ in $\cbr{1,\ldots,T}$, $k(x_t,x_t) \le R^2$,
+\item the mapped examples $(\phi(x_1), y_1)$, $(\phi(x_2), y_2)$, $\dots$, $(\phi(x_T), y_T)$
+are strongly linearly separable with margin $\gamma$,
+\item for all $t$ in $\cbr{1,\ldots,T}$, $k(x_t,x_t) \le R^2$,
 \end{enumerate}
 then the expected number of mistakes Algorithm~\ref{algorithm:kernelized} makes
 is at most $(K-1) \lfloor 4(R/\gamma)^2 \rfloor$.
@@ -142,8 +138,7 @@ is at most $(K-1) \lfloor 4(R/\gamma)^2 \rfloor$.
 \label{algorithm:kernelized}}
 \begin{algorithmic}[1]
 {
-\REQUIRE{Number of classes $K$.}
-\REQUIRE{Number of rounds $T$.}
+\REQUIRE{Number of classes $K$, number of rounds $T$.}
 \REQUIRE{Kernel function  $k(\cdot, \cdot)$.}
 \STATE{Initialize $J_1^{(1)} = J_2^{(1)} = \dots = J_K^{(1)} = \emptyset$}
 \FOR{$t=1,2,\dots,T$}

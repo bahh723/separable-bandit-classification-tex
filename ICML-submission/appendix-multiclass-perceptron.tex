@@ -55,9 +55,8 @@ must make at least $\lfloor (R/\gamma)^2 \rfloor$ mistakes in the worst case.
 \end{algorithmic}
 \end{algorithm}
 
-\begin{theorem}[Mistake upper bound]
+\begin{theorem}[Mistake upper bound~\cite{Crammer-Singer-2003}]
 \label{theorem:mutliclass-perceptron-mistake-upper-bound}
-\chicheng{Cite~\cite{Crammer-Singer-2003} here?}
 Let $(V, \ip{\cdot}{\cdot})$ be an inner product space, let $K$ be a positive
 integer, let $\gamma$ be a positive real number and let $R$ be a non-negative real
 number. If $(x_1, y_1), (x_2, y_2), \dots, (x_T, y_T)$ is a sequence of labeled
@@ -91,6 +90,8 @@ Let $w_1^*, w_2^*, \dots, w_K^* \in V$ be vectors satisfying the
 \eqref{equation:weak-linear-separability-1} and
 \eqref{equation:weak-linear-separability-2}. We lower bound $\sum_{i=1}^K \ip{w_i^*}{w_i^{(t)}}$. This quantity changes
 only when a mistakes happens. If mistake happens in round $t$, we have
+\begingroup
+\allowdisplaybreaks
 \begin{align*}
 & \sum_{i=1}^K \ip{w_i^*}{w_i^{(t+1)}} \\
 & = \left( \sum_{i \in \{1,2,\dots,K\} \setminus \{y_t, \widehat y_t\}} \ip{w_i^*}{w_i^{(t)}} \right) \\
@@ -98,6 +99,7 @@ only when a mistakes happens. If mistake happens in round $t$, we have
 & = \left( \sum_{i=1}^K \ip{w_i^*}{w_i^{(t)}} \right) + \ip{w_{y_t}^* - w_{\widehat y_t}^*}{x_t} \\
 & \ge  \left( \sum_{i=1}^K \ip{w_i^*}{w_i^{(t)}} \right) + \gamma \; .
 \end{align*}
+\endgroup
 Thus, after $M$ mistakes,
 $$
 \sum_{i=1}^K \ip{w_i^*}{w_i^{(T+1)}} \ge \gamma M \; .
@@ -123,13 +125,13 @@ We conclude that $M \le 2(R/\gamma)^2$. Since $M$ is an integer, $M \le \lfloor 
 \label{theorem:online-multiclass-classification-mistake-lower-bound}
 Let $K$ be a positive integer, let $\gamma$ be a positive real number and let
 $R$ be a non-negative real number. For any (possibly randomized) algorithm
-$\calA$ for the
-\textsc{Online Multiclass Classification} problem there exists an
-inner product space $(V, \ip{\cdot}{\cdot})$, a non-negative integer $T$ and a
-sequence of labeled examples $(x_1, y_1), (x_2, y_2), \dots, (x_T, y_T)$
-examples in $V \times \{1,2,\dots,K\}$ that are weakly linearly separable with margin
-$\gamma$, the norms satisfy $\norm{x_1}, \norm{x_2}, \dots, \norm{x_T} \le R$
-and the algorithm makes at least $\frac 1 2 \lfloor (R/\gamma)^2 \rfloor$ mistakes.
+$\calA$ for the \textsc{Online Multiclass Classification} problem there exists
+an inner product space $(V, \ip{\cdot}{\cdot})$, a non-negative integer $T$ and
+a sequence of labeled examples $(x_1, y_1), (x_2, y_2), \dots, (x_T, y_T)$
+examples in $V \times \{1,2,\dots,K\}$ that are weakly linearly separable with
+margin $\gamma$, the norms satisfy $\norm{x_1}, \norm{x_2}, \dots, \norm{x_T}
+\le R$ and the algorithm makes at least $\frac 1 2 \lfloor (R/\gamma)^2 \rfloor$
+mistakes.
 \end{theorem}
 
 \begin{proof}
