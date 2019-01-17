@@ -76,8 +76,6 @@ namely $(\phi(x_1), y_1), (\phi(x_2), y_2), \dots,
 \max\{\gamma_1, \gamma_2\}$. In addition, for all $t$ in $\cbr{1,\ldots,T}$,
 $k(x_t,x_t) \leq 2$.
 \end{theorem}
-%$\norm{\phi(x_1)}_{\ell_2},
-%\norm{\phi(x_2)}_{\ell_2}, \dots, \norm{\phi(x_T)}_{\ell_2} \le 2$
 
 Using this theorem we derive a mistake bound for
 Algorithm~\ref{algorithm:kernelized} with kernel function $k(x,x') =
@@ -101,45 +99,51 @@ and~\ref{theorem:margin-transformation}.
 \subsection{Proof of Theorem~\ref{theorem:margin-transformation}}
 \label{section:margin-transformation}
 
-\paragraph{Overview.} The idea behind the construction and analysis of the mapping
-$\phi$ is polynomial approximation. Specifically, we give $k$ polynomials $p_1$,
-$\ldots$, $p_k$, such that:
+\paragraph{Overview.} The idea behind the construction and analysis of the
+mapping $\phi$ is polynomial approximation. Specifically, we construct $K$
+multivariate polynomials $p_1, p_2, \dots,p_K$ such that:
 \begin{align}
 \label{equation:poly-pos}
-& \forall t \in \cbr{1,2,\dots,T}, p_{y_t}(x_t) \ge \frac{\gamma'}2 \; ,
+& \forall t \in \cbr{1,2,\dots,T}, p_{y_t}(x_t) \ge \frac{\gamma'}{2} \; ,
 \\
 \label{equation:poly-neg}
 & \begin{gathered}
 \forall t \in \cbr{1,2,\dots,T} \ \forall i \in \cbr{1,2,\ldots,K} \setminus \cbr{y_t} \\
-p_i(x_t) \leq -\frac{\gamma'}2 \; .
+p_i(x_t) \le - \frac{\gamma'}{2} \; .
 \end{gathered}
 \end{align}
-As each polynomial $p_i$ can be written as $\ip{c_i}{\phi(x)}$ for some $c_i \in
-\ell_2$, it immediately shows that the set of examples $(\phi(x_1),y_1), \ldots,
-(\phi(x_T),y_T)$ is strongly linear separable.
+We then show (\autoref{lemma:norm-bound}) that each polynomial $p_i$ can be
+expressed as $\ip{c_i}{\phi(x)}_{\ell_2}$ for some $c_i \in \ell_2$. This
+immediately implies that that the examples $(\phi(x_1),y_1), \ldots,
+(\phi(x_T),y_T)$ are strongly linearly separable with margin $\gamma'$.
 
-To construct $p_1, p_2, \dots, p_k$ that satisfy
-Equations~\eqref{equation:poly-pos} and~\eqref{equation:poly-neg}, we consider
-constructing each $p_i$ separately. Specifically, $p_i$ needs to satisfy that:
+The conditions \eqref{equation:poly-pos} and~\eqref{equation:poly-neg} are
+equivalent to that
 \begin{align}
 \label{equation:poly-pos-i}
-\forall t \in \cbr{1,2,\dots,T}, y_t = i \Rightarrow p_i(y_t) \ge \frac{\gamma'}2 \; , \\
+\forall t \in \cbr{1,2,\dots,T}, y_t = i \quad \Rightarrow \quad p_i(y_t) \ge \frac{\gamma'}{2} \; , \\
 \label{equation:poly-neg-i}
-\forall t \in \cbr{1,2,\dots,T}, y_t \neq i \Rightarrow p_i(y_t) \le -\frac{\gamma'}2 \; .
+\forall t \in \cbr{1,2,\dots,T}, y_t \neq i \quad \Rightarrow \quad p_i(y_t) \le -\frac{\gamma'}{2} \; .
 \end{align}
+hold for all $i \in \{1,2,\dots,K\}$. We can thus fix $i$ and focus on
+construction of one particular polynomial $p_i$.
 
-Under the weak linear separability assumption, we note that all examples from
-class $i$ lie in
-\[ R_i^+ = \bigcap_{j \in \cbr{1,\ldots,K} \setminus \cbr{i}} \cbr{x: \norm{x} \le 1, \ip{w_i^* - w_j^*}{x} \geq \gamma}, \] and all examples from the remaining classes lie in
-\[ R_i^- = \bigcup_{j \in \cbr{1,\ldots,K} \setminus \cbr{i}} \cbr{x: \norm{x} \le 1, \ip{w_i^* - w_j^*}{x} \leq  -\gamma}. \]
-Therefore, to satisfy Equations~\eqref{equation:poly-pos-i}
+Since examples $(x_1,y_1), (x_2, y_2), \dots, (x_T,y_T)$ are weakly linearly separable,
+all examples from class $i$ lie in
+$$
+R_i^+ = \!\!\!\!\! \!\!\!\!\! \bigcap_{j \in \cbr{1,2,\dots,K} \setminus \cbr{i}} \cbr{x \in \B(0,1) ~:~ \ip{w_i^* - w_j^*}{x} \ge \gamma},
+$$
+and all examples from the remaining classes lie in
+$$
+R_i^- = \!\!\!\!\! \!\!\!\!\! \bigcup_{j \in \cbr{1,2,\dots,K} \setminus \cbr{i}} \cbr{x \in \B(0,1) ~:~ \ip{w_i^* - w_j^*}{x} \le -\gamma}.
+$$
+Therefore, to satisfy conditions~\eqref{equation:poly-pos-i}
 and~\eqref{equation:poly-neg-i}, it suffices to construct $p_i$ such that:
 \begin{align}
-x \in R_i^+ & \Rightarrow p_i(x) \ge \frac {\gamma'} 2
 \label{eqn:r-plus}
-\\
-x \in R_i^- & \Rightarrow p_i(x) \le - \frac {\gamma'} 2
+x \in R_i^+ & \Rightarrow p_i(x) \ge \frac {\gamma'} 2 \\
 \label{eqn:r-minus}
+x \in R_i^- & \Rightarrow p_i(x) \le - \frac {\gamma'} 2
 \end{align}
 
 According to the well known Stone-Weierstrass theorem~\citep[see
