@@ -129,5 +129,5 @@ Suppose we are given a set splitting problem, and we construct a weak labeling p
  \begin{align*}
      \ip{w_1-w_3}{\left(\sum_{i\in c_j}\e_i, 1\right)} = \ip{w_1-w_3}{\left(\sum_{i\in c_j}\e_i, |c_j|\right)} - (|c_j|-1)\ip{w_1-w_3}{\left(\zero, 1\right)}>0.  
  \end{align*}
- Note that $\left(\sum_{i\in c_j}\e_i, 1\right)$ is a feature vector for Type 3 samples. Thus the above inequality contradicts that Type 3 samples have label 3. Therefore, $c_j \subset S_1$. If we assume there exists some $c_j \not\subset S_2$, same arguments apply and also lead to contradiction. 
+ Note that $\left(\sum_{i\in c_j}\e_i, 1\right)$ is a feature vector for Type 3 samples. Thus the above inequality contradicts that Type 3 samples have label 3. Therefore, $c_j \not\subset S_1$. If we assume there exists some $c_j \subset S_2$, same arguments apply and also lead to contradiction. 
 \end{proof}
