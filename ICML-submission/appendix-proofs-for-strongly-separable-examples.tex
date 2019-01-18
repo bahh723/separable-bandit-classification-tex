@@ -29,8 +29,8 @@ To see this, note that if $S_t = \emptyset$, there is $1/K$ probability that the
 guesses the correct label ($z_t = 0$) and with probability $(K-1)/K$ algorithm's guess is
 incorrect ($z_t = 1$). Therefore,
 \[ \Exp[ z_t |S_t = \emptyset] = \frac{K-1}{K}, \]
-\[ \Exp[B] = \frac{K-1}{K} \Exp \sbr{ \sum_{t=1}^T \one[S_t = \emptyset] }, \]
-\[ \Exp[C] = \frac{1}{K} \Exp \sbr{ \sum_{t=1}^T \one[S_t = \emptyset] }. \]
+\[ \Exp[B] = \frac{K-1}{K} \Exp \sbr{ \sum_{t=1}^T \indicator{S_t = \emptyset} }, \]
+\[ \Exp[C] = \frac{1}{K} \Exp \sbr{ \sum_{t=1}^T \indicator{S_t = \emptyset} }. \]
 
 Putting all the information together, we get that
 \begin{align}

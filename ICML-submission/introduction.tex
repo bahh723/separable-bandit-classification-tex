@@ -9,7 +9,7 @@ feature vector $x_t \in \R^d$ is revealed to the learner and the correct label
 $y_t$ is kept secret by the adversary. Upon receiving the feature vector $x_t$,
 the learner is asked to make a prediction $\widehat{y}_t$. Immediately after
 making its prediction, the learner receives feedback. In contrast with the
-standard full information setting (where the feedback given is the correct label
+standard full-information setting (where the feedback given is the correct label
 $y_t$), here the feedback is only a binary indicator of whether the prediction
 was correct or not. The protocol of the problem is formally stated below.
 
@@ -70,28 +70,28 @@ claimed that their Conservative OVA algorithm with PA-I update has a finite
 mistake bound under the strong linear separability condition, their proof of
 Theorem 2 is incorrect: their Lemma 4 cannot be directly applied to the bandit
 setting, as the algorithm only makes updates on a subset of the $w_i$'s.} We
-design a simple and efficient algorithm, namely
-Algorithm~\ref{algorithm:algorithm-for-strongly-linearly-separable-examples},
-that has an expected number of mistakes at most $O(K (R/\gamma)^2))$.
-The memory complexity and per-round time complexity are both $O(dK)$.
-The algorithm can be viewed as running $K$ copies of the \textsc{Binary
-Perceptron} algorithm, one copy for each class. Intuitively speaking, the $O(K)$
-multiplicative factor in the mistake bound is the price we pay for the bandit
-feedback, or more precisely, the lack of full-information feedback. We prove
-that any (possibly randomized) algorithm must make $\Omega(K (R/\gamma)^2))$
-mistakes in the worst case.
+design a simple and efficient algorithm
+(Algorithm~\ref{algorithm:algorithm-for-strongly-linearly-separable-examples})
+that makes at most $O(K (R/\gamma)^2))$ mistakes in expectation. Its memory
+complexity and per-round time complexity are both $O(dK)$. The algorithm can be
+viewed as running $K$ copies of the \textsc{Binary Perceptron} algorithm, one
+copy for each class. We prove that any (possibly randomized) algorithm must make
+$\Omega(K (R/\gamma)^2))$ mistakes in the worst case. The extra $O(K)$
+multiplicative factor the mistake bound, as compared to the full-information
+setting, is the price we pay for the bandit feedback, or more precisely, the
+lack of full-information feedback.
 
 For the case when the examples are weakly linearly separable, we construct a
 non-linear feature mapping $\phi$ and associated positive definite kernel
 $k(x,x')$ that makes the examples \emph{strongly} linearly separable. We then
 use the kernelized version of
 Algorithm~\ref{algorithm:algorithm-for-strongly-linearly-separable-examples} for
-the strongly separable case, namely Algorithm~\ref{algorithm:kernelized}. (For
-details on kernel methods see e.g.~\citet{Scholkopf-Smola-2002} or
-\citet{Shawe-Taylor-Cristianini-2004}.) The kernel $k(x,x')$ corresponding to
-the feature mapping $\phi$ has a simple explicit formula and can be computed in
-$O(d)$ time, making Algorithm~\ref{algorithm:kernelized} computationally
-efficient.
+the strongly separable case (Algorithm~\ref{algorithm:kernelized}). The kernel
+$k(x,x')$ corresponding to the feature mapping $\phi$ has a simple explicit
+formula and can be computed in $O(d)$ time, making
+Algorithm~\ref{algorithm:kernelized} computationally efficient. For details on
+kernel methods see e.g.~\citet{Scholkopf-Smola-2002} or
+\citet{Shawe-Taylor-Cristianini-2004}.
 
 The number of mistakes of the kernelized algorithm depends on the margin in the
 corresponding feature space. We analyze how the mapping $\phi$ transforms the

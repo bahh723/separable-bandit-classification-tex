@@ -79,22 +79,24 @@ such that all examples $x$ in $R_i^+$ (resp. $R_i^-$) satisfy $p_i(x) \geq 1/2$
 (resp. $p_i(x) \leq -1/2$).
 Therefore, for all $t=1,2,\dots,T$, if $y_t = i$ then $p_i(x_t) \ge 1/2$,
  and if $y_t \neq i$ then $p_i(x_t) \le -1/2$, and
-\begin{align*}
-\norm{p_i} & \le \left(188 \lceil \log_2(2K-2) \rceil \cdot \left \lceil \sqrt{\frac{2}{\gamma}} \right \rceil \right)^{\frac{1}{2} \lceil \log_2(2K-2) \rceil
-\cdot \left \lceil \sqrt{\frac{2}{\gamma}} \right \rceil} \; , \\
-\end{align*}
+\begin{multline*}
+\norm{p_i} \le \\
+\left(188 \lceil \log_2(2K-2) \rceil \cdot \left \lceil \sqrt{\frac{2}{\gamma}} \right \rceil \right)^{\frac{1}{2} \lceil \log_2(2K-2) \rceil
+\cdot \left \lceil \sqrt{\frac{2}{\gamma}} \right \rceil} \; .
+\end{multline*}
 By \autoref{lemma:norm-bound}, there exists $c_i \in \ell_2$ such that
 $\ip{c_i}{\phi(x)} = p_i(x)$, and
-\begin{align*}
-\norm{c_i}_{\ell_2}
-& \le \left(376 \lceil \log_2(2K-2) \rceil \cdot \left \lceil \sqrt{\frac{2}{\gamma}} \right \rceil \right)^{\frac{1}{2} \lceil \log_2(2K-2) \rceil
+\begin{multline*}
+\norm{c_i}_{\ell_2} \le \\
+\left(376 \lceil \log_2(2K-2) \rceil \cdot \left \lceil \sqrt{\frac{2}{\gamma}} \right \rceil \right)^{\frac{1}{2} \lceil \log_2(2K-2) \rceil
 \cdot \left \lceil \sqrt{\frac{2}{\gamma}} \right \rceil} \; .
-\end{align*}
+\end{multline*}
 Define vectors $u_i \in \ell_2$ as
-\begin{align*}
-u_i & = \frac{c_i}{\sqrt{K} \left(376 \lceil \log_2(2K-2) \rceil \cdot \left \lceil \sqrt{\frac{2}{\gamma}} \right \rceil \right)^{\frac{1}{2} \lceil \log_2(2K-2) \rceil
+\begin{multline*}
+u_i = \frac{1}{\sqrt{K}} \\
+\cdot \frac{c_i}{\left(376 \lceil \log_2(2K-2) \rceil \cdot \left \lceil \sqrt{\frac{2}{\gamma}} \right \rceil \right)^{\frac{1}{2} \lceil \log_2(2K-2) \rceil
 \cdot \left \lceil \sqrt{\frac{2}{\gamma}} \right \rceil}} \; . \\
-\end{align*}
+\end{multline*}
 
 Then, $\norm{u_1}^2 + \norm{u_2}^2 + \dots + \norm{u_K}^2 \le 1$.
 Furthermore, for all $t=1,2,\dots,T$, $\ip{u_{y_t}}{x_t} \ge \gamma_1$

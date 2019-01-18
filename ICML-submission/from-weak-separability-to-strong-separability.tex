@@ -101,7 +101,7 @@ and~\ref{theorem:margin-transformation}.
 
 \paragraph{Overview.} The idea behind the construction and analysis of the
 mapping $\phi$ is polynomial approximation. Specifically, we construct $K$
-multivariate polynomials $p_1, p_2, \dots,p_K$ such that:
+multivariate polynomials $p_1, p_2, \dots,p_K$ such that
 \begin{align}
 \label{equation:poly-pos}
 & \forall t \in \cbr{1,2,\dots,T}, p_{y_t}(x_t) \ge \frac{\gamma'}{2} \; ,
@@ -138,12 +138,12 @@ $$
 R_i^- = \!\!\!\!\! \!\!\!\!\! \bigcup_{j \in \cbr{1,2,\dots,K} \setminus \cbr{i}} \cbr{x \in \B(0,1) ~:~ \ip{w_i^* - w_j^*}{x} \le -\gamma}.
 $$
 Therefore, to satisfy conditions~\eqref{equation:poly-pos-i}
-and~\eqref{equation:poly-neg-i}, it suffices to construct $p_i$ such that:
+and~\eqref{equation:poly-neg-i}, it suffices to construct $p_i$ such that
 \begin{align}
 \label{eqn:r-plus}
-x \in R_i^+ & \Rightarrow p_i(x) \ge \frac {\gamma'} 2 \\
+x \in R_i^+ \qquad & \Longrightarrow \qquad p_i(x) \ge \frac {\gamma'} 2 \; , \\
 \label{eqn:r-minus}
-x \in R_i^- & \Rightarrow p_i(x) \le - \frac {\gamma'} 2
+x \in R_i^- \qquad & \Longrightarrow \qquad p_i(x) \le - \frac {\gamma'} 2 \; .
 \end{align}
 
 According to the well known Stone-Weierstrass theorem~\citep[see

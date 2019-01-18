@@ -175,8 +175,8 @@ y_t)$. Then, for any $i$ in $\cbr{1,\ldots,K}$, by the definition of $w_i$, we h
 \begin{align*}
 \ip{w_i}{x_t}
 & = \frac{\gamma}{R} \sum_{\substack{s : 1 \le s \le T \\ y_s = i}} \ip{e_s}{R e_t} \\
-& = \gamma \cdot \sum_{\substack{s : 1 \le s \le T \\ y_s = i}} \one[s = t] \\
-& = \gamma \cdot \one[y_t = i]
+& = \gamma \cdot \sum_{\substack{s : 1 \le s \le T \\ y_s = i}} \indicator{s = t} \\
+& = \gamma \cdot \indicator{y_t = i}
 \; .
 \end{align*}
 Therefore, if $i = y_t$, $\ip{w_i}{x_t} = \gamma$;
