@@ -55,9 +55,18 @@ In the full-information feedback setting, it is well known
 \citep{Crammer-Singer-2003} that if all examples have norm at most $R$ and are
 weakly linearly separable with a margin $\gamma$, then the \textsc{Multiclass
 Perceptron} algorithm makes at most $\lfloor 2(R/\gamma)^2 \rfloor$ mistakes.
-The guarantees provided by \textsc{Multiclass Perceptron} is very satisfying,
-since it achieves an information-theoretically optimal mistake upper bound,
-while having low time and memory complexities.~\footnote{These are
+%%%%%
+It is also known that any (possibly randomized) algorithm must
+make $\frac{1}{2} \left\lfloor (R/\gamma)^2 \right \rfloor$ mistakes in the
+worst case.
+These results guarantee that the \textsc{Multiclass Perceptron} achieves an
+information-theoretically optimal mistake upper bound, meanwhile it has
+low time and memory complexities.%
+%The guarantees provided by \textsc{Multiclass Perceptron} is very satisfying,
+%since it achieves an information-theoretically optimal mistake upper bound,
+%while having low time and memory complexities.
+%%%%%
+~\footnote{These are
 folklore results. For completeness, we present these results along
 with their proofs in Appendix~\ref{section:multiclass-perceptron-proofs} in the
 supplementary material.}
