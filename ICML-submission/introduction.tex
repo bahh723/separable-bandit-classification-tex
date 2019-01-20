@@ -22,10 +22,12 @@ was correct or not. The protocol of the problem is formally stated below.
 \FOR{$t=1,2,\dots,T$}
 \STATE Adversary chooses example $(x_t, y_t)$, where $x_t$ is revealed to the learner.
 \STATE{Predict class label $\widehat y_t \in \{1,2,\dots,K\}$.}
-\STATE{Observe feedback $z_t \in \{0,1\}$, \\ \qquad where $z_t = \begin{cases}
-0 & \text{if $\widehat y_t = y_t$,} \\
-1 & \text{if $\widehat y_t \neq y_t$.}
-\end{cases}$
+\STATE{Observe feedback
+$z_t = \indicator{\widehat y_t \neq y_t} \in \{0,1\}$
+%$z_t \in \{0,1\}$, \\ \qquad where $z_t = \begin{cases}
+%0 & \text{if $\widehat y_t = y_t$,} \\
+%1 & \text{if $\widehat y_t \neq y_t$.}
+%\end{cases}$
 }
 \ENDFOR
 }
@@ -33,7 +35,8 @@ was correct or not. The protocol of the problem is formally stated below.
 \end{protocol}
 
 The performance of the learner is measured by its cumulative number of
-mistakes $\sum_{t=1}^T z_t = \sum_{t=1}^T \indicator{\widehat y_t \neq y_t}$.
+mistakes $\sum_{t=1}^T z_t = \sum_{t=1}^T \indicator{\widehat y_t \neq y_t}$,
+where $\one$ denotes the indicator function..
 
 In this paper, we focus on the special case when the examples chosen by the
 adversary lie in $\R^d$ and are linearly separable with a margin. We introduce
