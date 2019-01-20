@@ -8,11 +8,16 @@ notion is stronger, i.e. more restrictive. However, it is more suitable for the
 bandit setting, since it allows for a simple and efficient algorithm; see
 Section~\ref{section:algorithm-for-strongly-linearly-separable-data}.
 
-\begin{definition}[Weak linear separability]
+\begin{definition}
+[Linear separability]
 \label{definition:weak-linear-separability}
 Let $(V,\ip{\cdot}{\cdot})$ be an inner product space, $K$ be a positive
-integer, and $\gamma$ be a positive real number. Labeled examples $(x_1, y_1),
-(x_2, y_2), \dots, (x_T, y_T) \in V \times \{1,2,\dots,K\}$ are said to be
+integer, and $\gamma$ be a positive real number. 
+We say that labeled examples $(x_1, y_1),
+(x_2, y_2), \dots, (x_T, y_T) \in V \times \{1,2,\dots,K\}$ are 
+%said to be
+\begin{enumerate}
+\item
 \emph{weakly linearly separable with a margin $\gamma$} if there exist vectors
 $w_1, w_2, \dots, w_K \in V$ such that
 \begin{align}
@@ -21,16 +26,10 @@ $w_1, w_2, \dots, w_K \in V$ such that
 \label{equation:weak-linear-separability-2}
 & \begin{gathered}
 \forall t \in \{1,2,\dots,T\} \quad \forall i \in \{1,2,\dots, K\} \setminus \{y_t\} \\
-\ip{x_t}{w_{y_t}} \ge \ip{x_t}{w_i} + \gamma \; .
+\ip{x_t}{w_{y_t}} \ge \ip{x_t}{w_i} + \gamma \; ,
 \end{gathered}
 \end{align}
-\end{definition}
-
-\begin{definition}[Strong linear separability]
-\label{definition:strong-linear-separability}
-Let $(V,\ip{\cdot}{\cdot})$ be an inner product space, $K$ be a positive
-integer, and $\gamma$ be a positive real number. Labeled examples $(x_1, y_1),
-(x_2, y_2), \dots, (x_T, y_T) \in V \times \{1,2,\dots,K\}$ are said to be
+\item
 \emph{strongly linearly separable with a margin $\gamma$} if there exist vectors
 $w_1, w_2, \dots, w_K \in V$ such that
 \begin{align}
@@ -40,10 +39,11 @@ $w_1, w_2, \dots, w_K \in V$ such that
 & \forall t \in \{1,2,\dots,T\} \qquad \qquad \ip{x_t}{w_{y_t}} \ge \frac \gamma 2 \; , \\
 \label{equation:strong-linear-separability-3}
 & \begin{gathered}
-\forall t \in \{1,2,\dots,T\} \qquad \forall i \in \{1,2,\dots, K\} \setminus \{y_t\} \\
+\forall t \in \{1,2,\dots,T\} \quad \forall i \in \{1,2,\dots, K\} \setminus \{y_t\} \\
 \ip{x_t}{w_i} \le - \frac \gamma 2 \; .
 \end{gathered}
 \end{align}
+\end{enumerate}
 \end{definition}
 
 The notion of weak linear separability is a standard assumption used in the
