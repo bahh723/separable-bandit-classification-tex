@@ -18,11 +18,14 @@ all algorithms developed in this context are computationally inefficient.
 The linear classification version of this problem is initially studied
 by~\citet{Kakade-Shalev-Shwartz-Tewari-2008}. They proposed two computationally
 inefficient algorithms that work in the weakly linearly separable setting, one
-with a mistake bound of $O(K^2 d \ln(\frac{d}{\gamma}))$, the other with a
-mistake bound of $\widetilde{O}(\frac{K^2}{\gamma^2} \ln T)$. The latter result
+with a mistake bound of 
+$O(K^2 d \ln(d/\gamma))$,
+the other with a
+mistake bound of $\widetilde{O}((K^2/\gamma^2) \ln T)$. The latter result
 was later improved by \citet{Daniely-Helbertal-2013}, which gives a
 computationally inefficient algorithm with a mistake upper bound of
-$\widetilde{O}(\frac{K}{\gamma^2})$. In addition, the authors propose the
+$\widetilde{O}(K/\gamma^2)$. 
+In addition, the authors propose the
 \textsc{Banditron} algorithm, a computationally efficient algorithm that has a
 $O(T^{2/3})$ regret against the multiclass hinge loss in the general setting,
 and has a $O(\sqrt{T})$ mistake bound in the $\gamma$-weakly linearly separable
