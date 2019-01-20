@@ -41,11 +41,11 @@ towards this problem. We consider two notions of linear separability,
 \begin{enumerate}
 \item Under the strong linear separability condition, we design an efficient
 algorithm that achieves a near-optimal mistake bound of
-$O\left(\frac{K}{\gamma^2} \right)$.
+$O\left( K/\gamma^2 \right)$.
 
 \item Under the more challenging weak linear separability condition, we design
 an efficient algorithm with a mistake bound of $2^{\widetilde{O}(\min(K \log^2
-\frac{1}{\gamma}, \sqrt{\frac{1}{\gamma}} \log K))}$ \footnote{We use the notation
+(1/\gamma), \sqrt{1/\gamma} \log K))}$ \footnote{We use the notation
 $\widetilde{O}(f(\cdot)) = O(f(\cdot) \polylog(f(\cdot)))$.}. Our algorithm
 is based on kernel Perceptron, which is inspired by the work
 of \citet{Klivans-Servedio-2008} on improperly learning intersection of halfspaces.
