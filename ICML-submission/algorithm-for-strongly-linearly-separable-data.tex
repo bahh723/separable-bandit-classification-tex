@@ -34,7 +34,7 @@ $\cbr{1,\ldots,K}$.
 \STATE{Compute $S_t = \left\{ i ~:~ 1 \le i \le K, \ \ip{w_i^{(t)}}{x_t} \ge 0 \right\}$}
 \IF{$S_t = \emptyset$}
 \STATE{Predict $\widehat y_t \sim \text{Uniform}(\{1,2,\dots,K\})$}
-\STATE{Observe feedback $z_t \in \{0,1\}$ \\ \qquad where $z_t = \indicator{\widehat y_t \neq y_t}$}
+\STATE{Observe feedback $z_t = \indicator{\widehat y_t \neq y_t}$}
 \IF{$z_t = 1$}
 \STATE{Set $w_i^{(t+1)} = w_i^{(t)}$ for all $i \in \{1,2,\dots,K\}$}
 \ELSE
@@ -44,7 +44,7 @@ $\cbr{1,\ldots,K}$.
 \ENDIF
 \ELSE
 \STATE{Predict $\widehat y_t \in S_t$ chosen arbitrarily}
-\STATE{Observe feedback $z_t \in \{0,1\}$ \\ \qquad where $z_t = \indicator{\widehat y_t \neq y_t}$}
+\STATE{Observe feedback $z_t  = \indicator{\widehat y_t \neq y_t}$}
 \IF{$z_t = 1$}
 \STATE{Set $w_i^{(t+1)} = w_i^{(t)}$ \\ \qquad for all $i \in \{1,2,\dots,K\} \setminus \{\widehat y_t\}$}
 \STATE{Update $w_{\widehat y_t}^{(t+1)} = w_{\widehat y_t}^{(t)} - x_t$}
@@ -63,8 +63,12 @@ $\cbr{1,\ldots,K}$.
 Let $(V, \ip{\cdot}{\cdot})$ be an inner product space, $K$ be a positive
 integer, $\gamma$ be a positive real number, $R$ be a non-negative real number.
 If the examples $(x_1, y_1), (x_2, y_2), \dots, (x_T, y_T) \in V \times
-\{1,2,\dots,K\}$ are strongly linearly separable with margin $\gamma$ and for
-all $t \in \cbr{1,\ldots,T}$ satisfy $\norm{x_t} \le R$ then the expected number
+\{1,2,\dots,K\}$ are strongly linearly separable with margin $\gamma$ and 
+%%%%%
+$\norm{x_1}, \norm{x_2}, \dots, \norm{x_T} \le R$
+%for all $t \in \cbr{1,\ldots,T}$ satisfy $\norm{x_t} \le R$ 
+%%%%%
+then the expected number
 of mistakes
 Algorithm~\ref{algorithm:algorithm-for-strongly-linearly-separable-examples}
 makes is at most $(K-1) \lfloor 4(R/\gamma)^2 \rfloor$.
@@ -83,24 +87,40 @@ supplementary material.
 \begin{theorem}[Mistake lower bound]
 \label{theorem:strongly-separable-examples-mistake-lower-bound}
 Let $\gamma$ be a positive real number, and $R$ be a non-negative real
-number. For any (possibly randomized) algorithm $\calA$ for the \textsc{Online
+number. 
+%%%%%
+Any (possibly randomized) algorithm makes at least 
+$((K-1)/2)\left\lfloor (R/\gamma)^2/4 \right\rfloor$ mistakes in expectation 
+on some \textsc{Online
 Multiclass Classification with Bandit Feedback} problem with $K \le
-(R/\gamma)^2$ classes, there exists an inner product space $(V,
-\ip{\cdot}{\cdot})$, a non-negative integer $T$ and a sequence of labeled
-examples $(x_1, y_1), (x_2, y_2), \dots, (x_T, y_T)$ in $V \times
-\{1,2,\dots,K\}$ that are strongly linearly separable with margin $\gamma$, the
-norms satisfy $\norm{x_1}, \norm{x_2}, \dots, \norm{x_T} \le R$ and the expected
-number of mistakes $\calA$ makes is at least $\frac{K-1}{2} \left\lfloor
-\frac{1}{4} (R/\gamma)^2 \right\rfloor$.
+(R/\gamma)^2$ classes and labeled
+examples $(x_1, y_1), (x_2, y_2), \dots, (x_T, y_T) \in V \times
+\{1,2,\dots,K\}$ for some inner product space $(V,
+\ip{\cdot}{\cdot})$ that are strongly linearly separable with margin $\gamma$ and satisfy $\norm{x_1}, \norm{x_2}, \dots, \norm{x_T} \le R$ .
+%
+%For any (possibly randomized) algorithm $\calA$ for the \textsc{Online
+%Multiclass Classification with Bandit Feedback} problem with $K \le
+%(R/\gamma)^2$ classes, there exists an inner product space $(V,
+%\ip{\cdot}{\cdot})$, a non-negative integer $T$ and a sequence of labeled
+%examples $(x_1, y_1), (x_2, y_2), \dots, (x_T, y_T)$ in $V \times
+%\{1,2,\dots,K\}$ that are strongly linearly separable with margin $\gamma$, the
+%norms satisfy $\norm{x_1}, \norm{x_2}, \dots, \norm{x_T} \le R$ and the expected
+%number of mistakes $\calA$ makes is at least $\frac{K-1}{2} \left\lfloor
+%\frac{1}{4} (R/\gamma)^2 \right\rfloor$.
+%%%%%
 \end{theorem}
 
-\paragraph{Remark.} Irrespective of any conditions on $K$, $R$, and $\gamma$, a
-trivial lower bound on the expected number of mistakes of any randomized
-algorithm is $\frac{K-1}{2}$. To see this, note that the adversary can choose an
-example $(R e_1, y)$, where $y$ is a label chosen uniformly from
+\paragraph{Remark.} 
+%%%%%
+If $\gamma \le R$ then, irrespective 
+%%%%%
+of any other conditions on $K$, $R$, and $\gamma$, 
+a trivial lower bound on the expected number of mistakes of any randomized
+algorithm is $(K-1)/2$. To see this, note that the adversary can choose an
+example $(R e_1, y)$, where $e_1$ is some arbitrary unit vector in $V$ and $y$ is a label chosen uniformly from
 $\cbr{1,2,\dots,K}$, and show this example $K$ times. The sequence of examples
 trivially satisfies the strong linear separability condition, and the
-$\frac{K-1}{2}$ expected mistake lower bound follows from ~\citep[][Claim 2]{Daniely-Helbertal-2013}. However, it is unclear if the trivial lower
+$(K-1)/2$ expected mistake lower bound follows from ~\citep[][Claim 2]{Daniely-Helbertal-2013}. However, it is unclear if the trivial lower
 bound is the best possible if $K$ is large, i.e., $\omega((R/\gamma)^2)$. We
 leave this as an open problem.
 
@@ -119,7 +139,7 @@ mistake bound for the kernelized algorithm.
 \label{theorem:kernelized-upper-bound}
 Let $X$ be a non-empty set, let $(V, \ip{\cdot}{\cdot})$ be an inner product
 space. Let $\phi:X \to V$ be a feature map and let $k:X \times X \to \R$,
-$k(x,x') = \ip{\phi(x)}{\phi(x')}$ the associated positive positive definite
+$k(x,x') = \ip{\phi(x)}{\phi(x')}$ be the associated positive definite
 kernel. Let $K$ be a positive integer, $\gamma$ be a positive real number, $R$
 be a non-negative real number. If $(x_1, y_1), (x_2, y_2), \dots, (x_T, y_T) \in
 X \times \{1,2,\dots,K\}$ are labeled examples such that:
@@ -145,7 +165,7 @@ is at most $(K-1) \lfloor 4(R/\gamma)^2 \rfloor$.
 \STATE{Compute \\ $S_t = \left\{ i ~:~ 1 \le i \le K, \ \sum_{(x,y) \in J_i^{(t)}} y k(x, x_t) \ge 0 \right\}$}
 \IF{$S_t = \emptyset$}
 \STATE{Predict $\widehat y_t \sim \text{Uniform}(\{1,2,\dots,K\})$}
-\STATE{Observe feedback $z_t \in \{0,1\}$ \\ \qquad where $z_t = \indicator{\widehat y_t \neq y_t}$}
+\STATE{Observe feedback $z_t = \indicator{\widehat y_t \neq y_t}$}
 \IF{$z_t = 1$}
 \STATE{Set $J_i^{(t+1)} = J_i^{(t)}$ for all $i \in \{1,2,\dots,K\}$}
 \ELSE
@@ -154,7 +174,7 @@ is at most $(K-1) \lfloor 4(R/\gamma)^2 \rfloor$.
 \ENDIF
 \ELSE
 \STATE{Predict $\widehat y_t \in S_t$ chosen arbitrarily}
-\STATE{Observe feedback $z_t \in \{0,1\}$ \\ \qquad where $z_t = \indicator{\widehat y_t \neq y_t}$}
+\STATE{Observe feedback $z_t =  \indicator{\widehat y_t \neq y_t}$}
 \IF{$z_t = 1$}
 \STATE{Set $J_i^{(t+1)} = J_i^{(t)}$ \\ \qquad for all $i \in \{1,2,\dots,K\} \setminus \{\widehat y_t\}$}
 \STATE{Update $J_{\widehat y_t}^{(t+1)} = J_{\widehat y_t}^{(t)} \cup \cbr{(x_t, -1)}$}
