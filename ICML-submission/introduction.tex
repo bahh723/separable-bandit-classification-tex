@@ -16,22 +16,18 @@ was correct or not. The protocol of the problem is formally stated below.
 \begin{protocol}[h]
 \caption{\textsc{Online Multiclass Linear Classification with Bandit Feedback}
 \label{algorithm:game-protocol}}
-\begin{algorithmic}[1]
-{
-\REQUIRE{Number of classes $K$, number of rounds $T$.}
-\FOR{$t=1,2,\dots,T$}
-\STATE Adversary chooses example $(x_t, y_t)$, where $x_t$ is revealed to the learner.
-\STATE{Predict class label $\widehat y_t \in \{1,2,\dots,K\}$.}
-\STATE{Observe feedback
-$z_t = \indicator{\widehat y_t \neq y_t} \in \{0,1\}$
+\textbf{Require:} Number of classes $K$, number of rounds $T$.\\
+\For{$t=1,2,\dots,T$}{
+     Adversary chooses example $(x_t, y_t)$, where $x_t$ is revealed to the learner.\\
+     Predict class label $\widehat y_t \in \{1,2,\dots,K\}$.
+     Observe feedback
+          $z_t = \indicator{\widehat y_t \neq y_t} \in \{0,1\}$
 %$z_t \in \{0,1\}$, \\ \qquad where $z_t = \begin{cases}
 %0 & \text{if $\widehat y_t = y_t$,} \\
 %1 & \text{if $\widehat y_t \neq y_t$.}
 %\end{cases}$
 }
-\ENDFOR
-}
-\end{algorithmic}
+
 \end{protocol}
 
 The performance of the learner is measured by its cumulative number of
@@ -102,10 +98,20 @@ multiplicative factor the mistake bound, as compared to the full-information
 setting, is the price we pay for the bandit feedback, or more precisely, the
 lack of full-information feedback.
 
-For the case when the examples are weakly linearly separable, we construct a
+For the case when the examples are weakly linearly separable, it was open for a long 
+time whether there exist \textit{efficient} algorithms with finite mistake 
+bound~\cite{Kakade-Shalev-Shwartz-Tewari-2008, Beygelzimer-Orabona-Zhang-2017}. 
+Furthermore, in~\cite{Kakade-Shalev-Shwartz-Tewari-2008}, they ask the following question:
+is there \textit{any} algorithm with a finite mistake bound that has no explicit dependence 
+on the dimensionality of the feature vectors? We answer both questions affirmatively by
+providing an efficient algorithm with finite dimensionless mistake bound 
+(Algorithm~\ref{algorithm:kernelized}) (Note: the second question was previously 
+answered by~\cite{Daniely-Helbertal-2013} with an inefficient algorithm). 
+
+The strategy used in Algorithm~\ref{algorithm:kernelized} is to construct a
 non-linear feature mapping $\phi$ and associated positive definite kernel
-$k(x,x')$ that makes the examples \emph{strongly} linearly separable. We then
-use the kernelized version of
+$k(x,x')$ that makes the examples \emph{strongly} linearly separable in a higher-dimensional space. 
+We then use the kernelized version of
 Algorithm~\ref{algorithm:algorithm-for-strongly-linearly-separable-examples} for
 the strongly separable case (Algorithm~\ref{algorithm:kernelized}). The kernel
 $k(x,x')$ corresponding to the feature mapping $\phi$ has a simple explicit
