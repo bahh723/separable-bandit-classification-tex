@@ -66,7 +66,7 @@ $\cbr{1,\ldots,K}$.
 \label{algorithm:algorithm-for-strongly-linearly-separable-examples}}
 \textbf{Require:} Number of classes $K$, number of rounds $T$. \\
 \textbf{Require:} Inner product space $(V,\ip{\cdot}{\cdot})$.  \\
-\nl Initialize $w_1^{(1)} = w_2^{(1)} = \dots = w_K^{(1)} = 0$\\ 
+\nl Initialize $w_1^{(1)} = w_2^{(1)} = \dots = w_K^{(1)} = 0$\\
 \nl \For{$t=1,2,\dots,T$}{
 \nl    Observe feature vector $x_t \in V$ \\
 \nl    Compute $S_t = \left\{ i ~:~ 1 \le i \le K, \ \ip{w_i^{(t)}}{x_t} \ge 0 \right\}$\\
@@ -78,7 +78,7 @@ $\cbr{1,\ldots,K}$.
               }
 \nl          \Else{
 \nl               Set $w_i^{(t+1)} = w_i^{(t)}$, $\forall i \in \{1,2,\dots,K\} \setminus \{\widehat y_t\}$ \\
-\nl Update $w_{\widehat y_t}^{(t+1)} = w_{\widehat y_t}^{(t)} + x_t$  \label{line:pos-update}      
+\nl Update $w_{\widehat y_t}^{(t+1)} = w_{\widehat y_t}^{(t)} + x_t$  \label{line:pos-update}
               }
         }
 \nl     \Else{
@@ -86,7 +86,7 @@ $\cbr{1,\ldots,K}$.
 \nl           Observe feedback $z_t  = \indicator{\widehat y_t \neq y_t}$ \\
 \nl            \If{$z_t = 1$}{
 \nl                Set $w_i^{(t+1)} = w_i^{(t)}$, $\forall i \in \{1,2,\dots,K\} \setminus \{\widehat y_t\}$ \\
-\nl  Update $w_{\widehat y_t}^{(t+1)} = w_{\widehat y_t}^{(t)} - x_t$   \label{line:neg-update}            
+\nl  Update $w_{\widehat y_t}^{(t+1)} = w_{\widehat y_t}^{(t)} - x_t$   \label{line:neg-update}
                }
 \nl           \Else{
 \nl                 Set $w_i^{(t+1)} = w_i^{(t)}$, $\forall i \in \{1,2,\dots,K\}$
@@ -100,14 +100,9 @@ $\cbr{1,\ldots,K}$.
 \label{theorem:strongly-separable-examples-mistake-upper-bound}
 Let $(V, \ip{\cdot}{\cdot})$ be an inner product space, $K$ be a positive
 integer, $\gamma$ be a positive real number, $R$ be a non-negative real number.
-If the examples $(x_1, y_1), \dots, (x_T, y_T) \in V \times
-\{1,2,\dots,K\}$ are strongly linearly separable with margin $\gamma$ and 
-%%%%%
-$\norm{x_1}, \dots, \norm{x_T} \le R$
-%for all $t \in \cbr{1,\ldots,T}$ satisfy $\norm{x_t} \le R$ 
-%%%%%
-then the expected number
-of mistakes
+If the examples $(x_1, y_1), \dots, (x_T, y_T) \in V \times \{1,2,\dots,K\}$ are
+strongly linearly separable with margin $\gamma$ and $\norm{x_1}, \norm{x_2},
+\dots, \norm{x_T} \le R$ then the expected number of mistakes
 Algorithm~\ref{algorithm:algorithm-for-strongly-linearly-separable-examples}
 makes is at most $(K-1) \lfloor 4(R/\gamma)^2 \rfloor$.
 \end{theorem}
@@ -124,58 +119,38 @@ supplementary material.
 
 \begin{theorem}[Mistake lower bound]
 \label{theorem:strongly-separable-examples-mistake-lower-bound}
-Let $\gamma$ be a positive real number, and $R$ be a non-negative real
-number. 
-%%%%%
-Any (possibly randomized) algorithm makes at least 
-$((K-1)/2)\left\lfloor (R/\gamma)^2/4 \right\rfloor$ mistakes in expectation 
-on some \textsc{Online
-Multiclass Classification with Bandit Feedback} problem with $K \le
-(R/\gamma)^2$ classes and labeled
-examples $(x_1, y_1), (x_2, y_2), \dots, (x_T, y_T) \in V \times
-\{1,2,\dots,K\}$ for some inner product space $(V,
-\ip{\cdot}{\cdot})$ that are strongly linearly separable with margin $\gamma$ and satisfy $\norm{x_1}, \norm{x_2}, \dots, \norm{x_T} \le R$ .
-%
-%For any (possibly randomized) algorithm $\calA$ for the \textsc{Online
-%Multiclass Classification with Bandit Feedback} problem with $K \le
-%(R/\gamma)^2$ classes, there exists an inner product space $(V,
-%\ip{\cdot}{\cdot})$, a non-negative integer $T$ and a sequence of labeled
-%examples $(x_1, y_1), (x_2, y_2), \dots, (x_T, y_T)$ in $V \times
-%\{1,2,\dots,K\}$ that are strongly linearly separable with margin $\gamma$, the
-%norms satisfy $\norm{x_1}, \norm{x_2}, \dots, \norm{x_T} \le R$ and the expected
-%number of mistakes $\calA$ makes is at least $\frac{K-1}{2} \left\lfloor
-%\frac{1}{4} (R/\gamma)^2 \right\rfloor$.
-%%%%%
+Let $\gamma$ be a positive real number, $R$ be a non-negative real number and
+let $K \le (R/\gamma)^2$ be a positive integer. Any (possibly randomized)
+algorithm makes at least $((K-1)/2)\left\lfloor (R/\gamma)^2/4 \right\rfloor$
+mistakes in expectation on some \textsc{Online Multiclass Classification with
+Bandit Feedback} problem with $K$ classes and labeled examples $(x_1, y_1),
+(x_2, y_2), \dots, (x_T, y_T) \in V \times \{1,2,\dots,K\}$ for some inner
+product space $(V, \ip{\cdot}{\cdot})$ that are strongly linearly separable with
+margin $\gamma$ and satisfy $\norm{x_1}, \norm{x_2}, \dots, \norm{x_T} \le R$.
 \end{theorem}
 
-\paragraph{Remark.} 
-%%%%%
-If $\gamma \le R$ then, irrespective 
-%%%%%
-of any other conditions on $K$, $R$, and $\gamma$, 
-a trivial lower bound on the expected number of mistakes of any randomized
-algorithm is $(K-1)/2$. To see this, note that the adversary can choose an
-example $(R e_1, y)$, where $e_1$ is some arbitrary unit vector in $V$ and $y$ is a label chosen uniformly from
-$\cbr{1,2,\dots,K}$, and show this example $K$ times. The sequence of examples
-trivially satisfies the strong linear separability condition, and the
-$(K-1)/2$ expected mistake lower bound follows from ~\citep[][Claim 2]{Daniely-Helbertal-2013}. However, it is unclear if the trivial lower
-bound is the best possible if $K$ is large, i.e., $\omega((R/\gamma)^2)$. We
-leave this as an open problem.
+\paragraph{Remark.}
+If $\gamma \le R$ then, irrespective of any other conditions on $K$, $R$, and
+$\gamma$, a trivial lower bound on the expected number of mistakes of any
+randomized algorithm is $(K-1)/2$. To see this, note that the adversary can
+choose an example $(R e_1, y)$, where $e_1$ is some arbitrary unit vector in $V$
+and $y$ is a label chosen uniformly from $\cbr{1,2,\dots,K}$, and show this
+example $K$ times. The sequence of examples trivially satisfies the strong
+linear separability condition, and the $(K-1)/2$ expected mistake lower bound
+follows from ~\citep[][Claim 2]{Daniely-Helbertal-2013}. However, it is unclear
+if the trivial lower bound is the best possible if $K$ is large, i.e.,
+$\omega((R/\gamma)^2)$. We leave this as an open problem.
 
 Algorithm~\ref{algorithm:algorithm-for-strongly-linearly-separable-examples} can
-be extended to nonlinear classification using
-\emph{positive definite kernels} (or \emph{kernels}, for short), which are 
-functions of the form $k: X^2 \to V$ for some set $X$ and inner product space 
-$(V, \ip{\cdot}{\cdot})$ such that the matrix $\left(k(x_i,x_j)\right)_{i,j=1}^m$ 
-is positive semidefinite for any positive integer $m$ and $x_1, \dots, x_m \in X$
-~\citep[][Definition 2.5]{Scholkopf-Smola-2002}. 
-%kernels~\cite{Scholkopf-Smola-2002, Shawe-Taylor-Cristianini-2004}. The formal
-%description of the kernelized algorithm is given in
-%Algorithm~\ref{algorithm:kernelized}. 
-As opposed to explicitly maintaining the
-weight vector for each class, the algorithm maintains the set of example-scalar
-pairs corresponding to the updates of the non-kernelized algorithm. As a direct
-consequence of
+be extended to nonlinear classification using \emph{positive definite kernels}
+(or \emph{kernels}, for short), which are functions of the form $k: X \times X
+\to V$ for some set $X$ and inner product space $(V, \ip{\cdot}{\cdot})$ such
+that the matrix $\left(k(x_i,x_j)\right)_{i,j=1}^m$ is a symmetric positive
+semidefinite for any positive integer $m$ and $x_1, x_2, \dots, x_m \in X$
+\citep[Definition 2.5]{Scholkopf-Smola-2002}. As opposed to explicitly
+maintaining the weight vector for each class, the algorithm maintains the set of
+example-scalar pairs corresponding to the updates of the non-kernelized
+algorithm. As a direct consequence of
 Theorem~\ref{theorem:strongly-separable-examples-mistake-upper-bound} we get a
 mistake bound for the kernelized algorithm.
 
@@ -221,7 +196,7 @@ Initialize $J_1^{(1)} = J_2^{(1)} = \dots = J_K^{(1)} = \emptyset$ \\
            Observe feedback $z_t =  \indicator{\widehat y_t \neq y_t}$ \\
            \If{$z_t = 1$}{
                 Set $J_i^{(t+1)} = J_i^{(t)}$, $\forall i \in \{1,2,\dots,K\} \setminus \{\widehat y_t\}$\\
-                Update $J_{\widehat y_t}^{(t+1)} = J_{\widehat y_t}^{(t)} \cup \cbr{(x_t, -1)}$ 
+                Update $J_{\widehat y_t}^{(t+1)} = J_{\widehat y_t}^{(t)} \cup \cbr{(x_t, -1)}$
            }
            \Else {
                 Set $J_i^{(t+1)} = J_i^{(t)}$ for all $i \in \{1,2,\dots,K\}$

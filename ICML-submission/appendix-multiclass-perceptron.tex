@@ -184,15 +184,15 @@ otherwise $i \neq y_t$, in which case $\ip{w_i}{x_t} = 0$.
 Hence, condition \eqref{equation:weak-linear-separability-2} holds.
 
 We now give a lower bound on the number of mistakes $\calA$ makes.
-Define a filtration $\cbr{\calB_t}_{t=0}^T$,
-where $\calB_t = \sigma((x_1, y_1, \hat{y}_1), \ldots, (x_t, y_t, \hat{y}_t))$.
-As $y_t$ is chosen uniformly from $\cbr{1,\ldots,K}$ and independent of
-$\calB_{t-1}$ and $\hat{y}_t$,
-\[ \Exp[ \indicator{\widehat y_t \neq y_t} | \calB_{t-1} ] \geq 1 - \frac 1 K \geq \frac 1 2. \]
-This implies that
-\[ \Exp[ \indicator{\widehat y_t \neq y_t} ] \geq \frac 1 2. \]
+As $y_t$ is chosen uniformly from $\{1,2,\dots,K\}$ and independent of
+$\calA$'s randomization
+$$
+\Exp[ \indicator{\widehat y_t \neq y_t} ] \ge 1 - \frac{1}{K} \ge \frac{1}{2} \; .
+$$
 Summing over all $t$ in $\cbr{1,\ldots,T}$, we conclude that
-\[ \Exp \sbr{ \sum_{t=1}^T \indicator{\widehat y_t \neq y_t} } \geq \frac T 2 = \frac 1 2 \lfloor (R/\gamma)^2 \rfloor, \]
+$$
+\Exp \sbr{ \sum_{t=1}^T \indicator{\widehat y_t \neq y_t} } \geq \frac T 2 = \frac 1 2 \lfloor (R/\gamma)^2 \rfloor,
+$$
 which completes the proof.
 \end{proof}
 
