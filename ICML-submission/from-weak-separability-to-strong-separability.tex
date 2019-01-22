@@ -212,7 +212,7 @@ multivariate polynomial $p:\R^d \to \R$ such that
 \begin{enumerate}
 \item $p(x) \ge 1/2$ \\ for all $\displaystyle x \in R^+ = \bigcap_{i=1}^m \left\{ x \in \B(\zero,1) ~:~  \ip{v_i}{x} \ge \gamma \right\}$,
 \item $p(x) \le -1/2$ \\ for all $\displaystyle x \in R^- = \bigcup_{i=1}^m \left\{ x \in \B(\zero,1) ~:~  \ip{v_i}{x} \le - \gamma \right\}$,
-\item $\displaystyle \deg(p) = \left\lceil \log_2(2m) \right\rceil \cdot \left\lceil \sqrt{\frac{1}{\gamma}} \right\rceil$,
+\item $\displaystyle \deg(p) = \left\lceil \log_2(2m) \right\rceil \cdot \left\lceil \sqrt{{1}/{\gamma}} \right\rceil$,
 \item $\displaystyle \norm{p} \le \left[ 188 \left\lceil \log_2(2m) \right\rceil \cdot \left\lceil \sqrt{{1}/{\gamma}} \right\rceil \right]^{
   \frac{
     \left\lceil \log_2(2m) \right\rceil \cdot \left\lceil \sqrt{{1}/{\gamma}} \right\rceil
@@ -253,7 +253,7 @@ are independent of the dimension $d$.
 
 \begin{figure}
 \begin{center}
-\input{figures/pizza-slice}
+ \scalebox{.65}{\input{figures/pizza-slice}}
 \end{center}
 \caption[]{The figure shows the two regions $R^+$ and $R^-$ used in parts 1 and
 2 of
@@ -283,7 +283,7 @@ proof of Theorem~\ref{theorem:margin-transformation} here, and defer the full
 proof to Appendix~\ref{section:full-proof-of-theorem-margin-transformation}.
 
 \begin{proof}[Proof sketch of Theorem~\ref{theorem:margin-transformation}]
-Since the examples $(x_1, y_1)$, $(x_2, y_2)$, $\dots$, $(x_T, y_T)$ are weakly
+Since the examples $(x_1, y_1)$,  $\dots$, $(x_T, y_T)$ are weakly
 linearly separable with margin $\gamma$, there are vectors $w_1, w_2, \dots, w_K$
 satisfying \eqref{equation:weak-linear-separability-1} and
 \eqref{equation:weak-linear-separability-2}.
