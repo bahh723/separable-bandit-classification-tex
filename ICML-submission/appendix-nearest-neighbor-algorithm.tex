@@ -1,82 +1,106 @@
 \section{Nearest neighbor algorithm}
 \label{section:nearest-neighbor-algorithm}
 
-\begin{algorithm}
-\caption{A nearest-neighbor algorithm for \textsc{Online Multiclass Linear Classification with
-Bandit Feedback}}
+\begin{algorithm}[H]
+\caption{\textsc{Nearest-Neighbor Algorithm}}
 \begin{algorithmic}[1]
+\REQUIRE{Number of classes $K$, number of rounds $T$.}
+\REQUIRE{Inner product space $(V,\ip{\cdot}{\cdot})$.}
 \STATE $S \gets \emptyset$.
 \FOR{$t=1,2,\ldots,T$:}
-\IF{$\min_{(x,y) \in S} \| x_t - x \|_2 \leq \gamma$}
-	\STATE $\hat{y}_t \gets \tilde{y}$, where $(\tilde{x}, \tilde{y}) = \argmin_{(x,y) \in S} \norm{x_t - x}_2$.
+\IF{$\min_{(x,y) \in S} \norm{x_t - x} \le \gamma$}
+  \STATE{Find nearest neighbor \\ $(\widetilde{x}, \widetilde{y}) = \argmin_{(x,y) \in S} \norm{x_t - x}$}
+	\STATE{Predict $\widehat{y}_t = \widetilde{y}$}
 \ELSE
-	\STATE Predict $\hat{y}_t$ uniformly at random from $\cbr{1,2,\dots,K}$, receive feedback $z_t = \indicator{\hat{y}_t \neq y_t}$.
-  \label{line:nn-explore}
+	\STATE{Predict $\widehat y_t \sim \text{Uniform}(\{1,2,\dots,K\})$}
+	\STATE{Receive feedback $z_t = \indicator{\widehat{y}_t \neq y_t}$}
+  \label{line:nearest-neighbor-explore}
 	\IF{$z_t = 0$}
-    \STATE $S \gets S \cup \cbr{(x_t, \hat{y}_t)}$.
+    \STATE $S \gets S \cup \cbr{(x_t, \widehat{y}_t)}$.
   \ENDIF
 \ENDIF
 \ENDFOR
 \end{algorithmic}
-\label{alg:nn}
+\label{algorithm:nearest-neighbor}
 \end{algorithm}
 
-We present Algorithm~\ref{alg:nn} in this section. The algorithm is based on the
-following insight.
+In this section we analyze \textsc{Nearest-Neighbor Algorithm} shown as
+Algorithm~\ref{algorithm:nearest-neighbor}. The algorithm is based on the idea
+that two examples that are close to each other must have the same label. Lemma
+below formalizes this intuition.
 
 \begin{lemma}
-Suppose $(x_1,y_1), \ldots, (x_T, y_T)$ is a set of $\gamma$-weakly linearly
-separable examples. For $i$, $j$ in $\cbr{1,\ldots,T}$, if $x_i$ and $x_j$ have
-$\ell_2$ distance at most $\gamma$, then $y_i = y_j$. \label{lem:nn}
+\label{lemma:nearest-neighbor}
+Let $(V,\ip{\cdot}{\cdot})$ be a vector space, $K$ be a positive integer and let
+$\gamma$ be a positive real number. Suppose $(x_1,y_1), (x_2,y_2), \dots, (x_T,
+y_T) \in V \times \{1,2,\dots,K\}$ are labeled examples that are weakly linearly
+separable with margin $\gamma$. For $i$, $j$ in $\cbr{1,2,\dots,T}$, if
+$\norm{x_i - x_j}_2 \le \gamma$ then $y_i = y_j$.
 \end{lemma}
 
 \begin{proof}
 Suppose for the sake on contradiction that $y_i \neq y_j$. By
-Definition~\ref{definition:weak-linear-separability}, there exists a set of $k$
+Definition~\ref{definition:linear-separability}, there exists a set of $k$
 vectors $(w_1, \ldots, w_k)$, such that
-Equations~\eqref{equation:weak-linear-separability-1}
-and~\eqref{equation:weak-linear-separability-1} are satisfied.
+conditions~\eqref{equation:weak-linear-separability-1}
+and~\eqref{equation:weak-linear-separability-2} are satisfied.
 
 Specifically,
-\[ \ip{w_{y_i} - w_{y_j}}{x_i} \geq \gamma \]
-\[ \ip{w_{y_j} - w_{y_i}}{x_j} \geq \gamma \]
-
+\begin{align*}
+\ip{w_{y_i} - w_{y_j}}{x_i} & \ge \gamma \; , \\
+\ip{w_{y_j} - w_{y_i}}{x_j} & \ge \gamma \; .
+\end{align*}
 This implies that
-\[ \ip{w_{y_i} - w_{y_j}}{x_i - x_j} \geq 2\gamma \]
+$$
+\ip{w_{y_i} - w_{y_j}}{x_i - x_j} \ge 2\gamma \; .
+$$
 
 On the other hand,
-\[ \ip{w_{y_i} - w_{y_j}}{x_i - x_j} \leq \| w_{y_i} - w_{y_j} \| \| x_i - x_j \| \leq \sqrt{2} \gamma \]
-where the first inequality is from Cauchy-Schwarz,
-the second inequality is from that
-$\|w_{y_i} - w_{y_j}\| \leq \sqrt{2(\|w_{y_i}\|^2 + \|w_{y_j}\|^2)} \leq \sqrt{2}$ and our assumption
-on $x_i$ and $x_j$. Therefore, we reach a contradiction.
+$$
+\ip{w_{y_i} - w_{y_j}}{x_i - x_j} \le \norm{w_{y_i} - w_{y_j}} \cdot \norm{x_i - x_j} < \sqrt{2} \gamma
+$$
+where the first inequality is from Cauchy-Schwartz inequality, the second
+inequality is from that $\norm{w_{y_i} - w_{y_j}} \le \sqrt{2(\norm{w_{y_i}}^2 +
+\norm{w_{y_j}}^2)} \leq \sqrt{2}$ and our assumption on $x_i$ and $x_j$.
+Therefore, we reach a contradiction.
 \end{proof}
 
-
 \begin{theorem}
-\label{thm:margin_at_upper}
-Suppose $(x_1,y_1), \ldots, (x_T, y_T)$ is a set of $\gamma$-weakly linearly
-separable examples. In addition, for all $t$ in $\cbr{1,2,\dots,T}$, $\| x_t \|
-\leq R$. Then, the expected number of mistakes made by Algorithm~\ref{alg:nn} is
-such that \[\Exp[M] \le (K-1) (\frac R \gamma)^d. \]
+\label{theorem:margin_at_upper}
+Let $K$ and $d$ be positive integers and let $\gamma$ be a positive real number.
+Suppose $(x_1,y_1), \ldots, (x_T, y_T) \in \R^d \times \{1,2,\dots,K\}$ are
+labeled examples that are weakly linearly separable with margin $\gamma$ and
+satisfy $\norm{x_1}, \norm{x_2}, \dots, \norm{x_T} \le R$. Then, the expected
+number of mistakes made by Algorithm~\ref{algorithm:nearest-neighbor} is at most
+$$
+(K-1) \left( \frac{R}{\gamma} \right)^d \; .
+$$
 \end{theorem}
 
 \begin{proof}
-Let $b_t$ be the indicator that line~\ref{line:nn-explore} is executed at
-timestep $t$, i.e. we fall into the ``else'' case. Note that if $b_t = 0$, then
-by Lemma~\ref{lem:nn}, the prediction $\hat{y}_t$ must equal $y_t$, i.e. $z_t =
-0$. Therefore, $M = \sum_{t=1}^T z_t = \sum_{t=1}^T b_t z_t$. Let $U =
-\sum_{t=1}^T b_t (1-z_t)$; it can be seen that $U$ is the number of times when
-$S$ gets updated. As $S$ is a $\gamma$-packing over $\cbr{x: \|x\|_2 \leq R}$,
-the size of $S$ is at most $(\frac R \gamma)^d$, which is also an upper bound on
-$U$.
+Let $M$ be the number of mistakes made by the algorithm. Let $b_t$ be the
+indicator that line~\ref{line:nearest-neighbor-explore} is executed at timestep
+$t$, i.e. we fall into the ``else'' case. Note that if $b_t = 0$, then by
+Lemma~\ref{lemma:nearest-neighbor}, the prediction $\widehat{y}_t$ must equal
+$y_t$, i.e. $z_t = 0$. Therefore, $M = \sum_{t=1}^T z_t = \sum_{t=1}^T b_t z_t$.
+Let $U = \sum_{t=1}^T b_t (1-z_t)$. Clearly, $|S| = U$. Since $S$ is a
+$\gamma$-packing over $\cbr{x \in \R^d ~:~ \norm{x} \le R}$, the size of $S$ is
+at most $(\frac R \gamma)^d$, which is also an upper bound on $U$.
 
-Note that when $b_t = 1$, $\hat{y}_t$ is chosen uniformly at random, we have
-\[ \Exp[ z_t | b_t = 1] = \frac{K-1}{K} \]
+Note that when $b_t = 1$, $\widehat{y}_t$ is chosen uniformly at random, we have
+$$
+\Exp[ z_t | b_t = 1] = \frac{K-1}{K} \; .
+$$
 Therefore,
-\[ \Exp[M] = \Exp[\sum_{t=1}^T b_t z_t] = \frac{K-1}{K} \Exp[\sum_{t=1}^T b_t]. \]
+$$
+\Exp[M] = \Exp \left[ \sum_{t=1}^T b_t z_t \right] = \frac{K-1}{K} \Exp \left[ \sum_{t=1}^T b_t \right] \; .
+$$
 On the other hand,
-\[ \Exp[U] = \Exp[\sum_{t=1}^T b_t (1-z_t)] = \frac 1 K \Exp[\sum_{t=1}^T b_t]. \]
+$$
+\Exp[U] = \Exp \left[ \sum_{t=1}^T b_t (1-z_t) \right] = \frac 1 K \Exp \left[\sum_{t=1}^T b_t \right] \; .
+$$
 Therefore,
-\[ \Exp[M] = (K-1) \Exp[U] \leq (K-1) (\frac R \gamma)^d. \]
+$$
+\Exp[M] = (K-1) \Exp[U] \leq (K-1) \left(\frac{R}{\gamma} \right)^d \; .
+$$
 \end{proof}
