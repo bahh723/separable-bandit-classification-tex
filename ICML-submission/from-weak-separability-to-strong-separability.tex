@@ -25,9 +25,10 @@ a function of the old margin $\gamma$ and the number of classes $K$, and is
 specified in \autoref{theorem:margin-transformation} below.
 
 The kernel function $k:\B(\zero,1) \times \B(\zero,1) \to \R$ is defined as
-$$
+\begin{equation}
+\label{equation:rational-kernel}
 k(x,x') = \frac{1}{1 - \frac{1}{2}\ip{x}{x'}_{\R^d}} \; .
-$$
+\end{equation}
 Note that kernel function $k(x,x')$ can be evaluated in $O(d)$ time.
 
 Consider the classical real separable Hilbert space $\ell_2 = \{ x \in \R^\infty
@@ -278,9 +279,8 @@ and $\norm{c}_{\ell_2} \le 2^{\deg(p)/2} \norm{p}$.
 
 Using the lemma and the polynomial approximation theorems, we can prove that the
 mapping $\phi$ maps any set of weakly linearly separable examples to a strongly
-linearly separable set of examples. Due to space constraints, we only sketch the
-proof of Theorem~\ref{theorem:margin-transformation} here, and defer the full
-proof to Appendix~\ref{section:full-proof-of-theorem-margin-transformation}.
+linearly separable set of examples. Due to space constraints, we defer the full
+proof to Appendix~\ref{section:proof-of-theorem-margin-transformation}.
 
 %\begin{proof}[Proof sketch of Theorem~\ref{theorem:margin-transformation}]
 %Since the examples $(x_1, y_1)$,  $\dots$, $(x_T, y_T)$ are weakly

@@ -1,8 +1,10 @@
-\section{Supplementary Materials for Section~\ref{sec:experiments}}
-\label{sec:supp-to-experiment}
+\section{Supplementary Materials for Section~\ref{section:experiments}}
+\label{section:supp-to-experiment}
 
 
-However, in 2D, the samples in Figure~\ref{fig:strong-points} do not satisfy the strong linear separability defined in Definition~\ref{definition:weak-linear-separability}, which requires that any class can be separated from all the others by a hyperplane that \textit{passes through the origin}. We therefore raise the dimensionality to 3D by adding a constant feature to all samples. This is equivalent to allowing the separating hyperplanes to have a bias, so that they do not need to pass through the origin. Thus Figure~\ref{fig:strong-points} becomes strongly linearly separable. To better understand how each algorithm works, we plot in Figure~\ref{fig:banditron-points},~\ref{fig:linearova-points},~\ref{fig:rationalova-points} the final decision boundary that is learned by each algorithm.
+To better understand how each algorithm works, we plot in
+Figure~\ref{fig:banditron-points},~\ref{fig:linearova-points},~\ref{fig:rationalova-points}
+the final decision boundary that is learned by each algorithm.
 
 \begin{figure}[h!]
     \centering
@@ -23,7 +25,6 @@ However, in 2D, the samples in Figure~\ref{fig:strong-points} do not satisfy the
     \vspace*{-0.2cm}
     \caption{\textsc{Banditron}'s decision boundary}
      \label{fig:banditron-points}
-    % \caption{Comparison between our algorithm and Banditron with different exploration parameter $\epsilon$ under $\gamma=0.05$ and $K=3$. }
 \end{figure}
 
 \begin{figure}[h!]
@@ -45,7 +46,6 @@ However, in 2D, the samples in Figure~\ref{fig:strong-points} do not satisfy the
     \vspace*{-0.2cm}
     \caption{Our Algorithm with linear kernel (Algorithm~\ref{algorithm:algorithm-for-strongly-linearly-separable-examples})'s decision boundary}
     \label{fig:linearova-points}
-   % \caption{Comparison between our algorithm and Banditron with different exploration parameter $\epsilon$ under $\gamma=0.05$ and $K=3$. }
 \end{figure}
 
 \begin{figure}[h!]
@@ -67,5 +67,4 @@ However, in 2D, the samples in Figure~\ref{fig:strong-points} do not satisfy the
     \vspace*{-0.2cm}
     \caption{Our Algorithm with rational kernel (Algorithm~\ref{algorithm:kernelized})'s decision boundary}
     \label{fig:rationalova-points}
-    % \caption{Comparison between our algorithm and Banditron with different exploration parameter $\epsilon$ under $\gamma=0.05$ and $K=3$. }
 \end{figure}
