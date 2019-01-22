@@ -120,7 +120,8 @@ therefore
 \ip{w_1}{x}
 & = a_{i'}x_{i'} + \sum_{i\in \{1,2,\dots,N\} \setminus \{i'\}} a_ix_i - \frac{1}{2} \\
 & \le -N + (N-1)-\frac{1}{2} \\
-& < 0 = \ip{w_3}{x} \; .
+& < 0  \\
+& = \ip{w_3}{x} \; .
 \end{align*}
 Because $c_j \not\subset S_2$ also holds, we also have
 $\ip{w_2}{x}<\ip{w_3}{x}$. This direction is therefore proved. \\
@@ -128,7 +129,8 @@ $\ip{w_2}{x}<\ip{w_3}{x}$. This direction is therefore proved. \\
 $(\Longleftarrow)$ Given the solution $w_1, w_2, w_3$ of the weak labeling problem, we define
 \begin{align*}
 S_1 &= \left\{i \in \{1,2,\dots,n\} ~:~ \ip{w_1-w_3}{(\e_i, 1)} > 0 \right\}, \\
-S_2 &= \left\{i \in \{1,2,\dots,n\} ~:~ \ip{w_2-w_3}{(\e_i, 1)} > 0 \text{\ and\ } i\notin S_1 \right\}.
+S_2 &= \left\{i \in \{1,2,\dots,n\} ~:~ \ip{w_2-w_3}{(\e_i, 1)} > 0 \right. \\
+& \qquad \qquad \qquad \left. \text{\ and\ } i \notin S_1 \right\}.
 \end{align*}
 It is not hard to see $S_1 \cap S_2 = \emptyset$ and $S_1\cup S_2 =
 \{1,2,\dots,N\}$. The former is because $S_2$ only includes elements that are

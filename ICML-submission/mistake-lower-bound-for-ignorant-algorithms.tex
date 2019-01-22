@@ -1,55 +1,85 @@
 \section{Mistake lower bound for ignorant algorithms}
 \label{section:mistake-lower-bound-for-ignorant-algorithms}
 
-In this section, we prove a mistake lower bound for a family of algorithms called \textit{ignorant algorithms}.
-For simplicity, we assume $(x_t, y_t)\in\mathbb{R}^{d}\times [K]$ in this section.
-As the name suggests, ignorant algorithms ignore the examples on which they make mistakes.
-This assumption seems strong, but as we will explain below, it is actually natural,
-and several recently proposed bandit classification algorithms that achieve the $\sqrt{T}$-regret bound belong to this family, e.g., SOBA~\citep{Beygelzimer-Orabona-Zhang-2017}, OBAMA~\citep{Foster-Kale-Luo-Mohri-Sridharan-2018}.
-We will see that under the $\gamma$-weak linearly separability assumption,
-if a bandit classification algorithm wants to achieve a mistake bound better than $\Theta\left(\min\{\sqrt{T}, (1/\gamma)^{\Theta(d)}\}\right)$, where $d$ is the feature dimension, it must perform some meaningful update when it makes a mistake.
+In this section, we prove a mistake lower bound for a family of algorithms
+called \textit{ignorant algorithms}. Ignorant algorithms ignore the examples on
+which they make mistakes. As an example, \textsc{Nearest-Neighbor Algorithm}
+(Algorithm~\ref{algorithm:nearest-neighbor}) presented in
+Appendix~\ref{section:nearest-neighbor-algorithm} is an ingnorant algorithm.
+This assumption seems strong, but as we will explain below, it is actually
+natural, and several recently proposed bandit classification algorithms that
+achieve the $\sqrt{T}$-regret bound belong to this family, e.g.,
+SOBA~\citep{Beygelzimer-Orabona-Zhang-2017},
+OBAMA~\citep{Foster-Kale-Luo-Mohri-Sridharan-2018}. We will see that under the
+$\gamma$-weak linearly separability assumption, if a bandit classification
+algorithm wants to achieve a mistake bound better than
+$\Theta\left(\min\{\sqrt{T}, (1/\gamma)^{\Theta(d)}\}\right)$, where $d$ is the
+feature dimension, it must perform some meaningful update when it makes a
+mistake.
 
 The ignorant algorithm is formally defined as follows.
 \begin{definition} \label{definition:ignorant-algorithm}
-    A bandit classification algorithm $\mathcal{A}$ is ignorant if for all $t\in[T]$,
-    $\widehat y_t\in \{1,2\}$ is drawn from some distribution that is jointly determined by
-    \begin{enumerate}
-        \item $x_t$
-        \item $H_t\triangleq \left( (x_{\tau_1}, y_{\tau_1}), (x_{\tau_2}, y_{\tau_2}), \ldots, (x_{\tau_{n_t}}, y_{\tau_{n_t}}) \right)$,
-        where $1 \leq \tau_1<\ldots <\tau_{n_t} < t$, and $\{\tau_1, \ldots, \tau_{n_t}\}$
-        are the rounds in which the algorithm predicts correctly (that is,
-        $\{\tau_1, \ldots, \tau_{n_t}\} = \{1\leq \tau<t: \widehat y_\tau=y_\tau\}$).
-    \end{enumerate}
-    We use $p_t(\cdot|x_t)\in \{p\in \mathbb{R}_+^2: p^\top\mathbf{1}=1\}$ to denote the distribution $\widehat y_t$ is drawn from. Note that we let the current feature vector $x_t$ be an argument to $p_t$ to incorporate its dependency on $x_t$. Therefore, for an ignorant algorithm, the function $p_t(\cdot|\cdot)$ is only determined by $H_t$.
+A bandit classification algorithm $\mathcal{A}$ is ignorant if for all
+$t\in[T]$, $\widehat y_t\in \{1,2\}$ is drawn from some distribution that is
+jointly determined by
+\begin{enumerate}
+\item $x_t$
+\item $H_t\triangleq \left( (x_{\tau_1}, y_{\tau_1}), (x_{\tau_2}, y_{\tau_2}), \ldots, (x_{\tau_{n_t}}, y_{\tau_{n_t}}) \right)$,
+where $1 \leq \tau_1 < \dots < \tau_{n_t} < t$, and $\{\tau_1, \ldots, \tau_{n_t}\}$
+are the rounds in which the algorithm predicts correctly (that is,
+$\{\tau_1, \ldots, \tau_{n_t}\} = \{1 \le \tau < t ~:~ \widehat y_\tau=y_\tau\}$).
+\end{enumerate}
+We use $p_t(\cdot|x_t)\in \{p\in \mathbb{R}_+^2: p^\top\mathbf{1}=1\}$ to denote
+the distribution $\widehat y_t$ is drawn from. Note that we let the current
+feature vector $x_t$ be an argument to $p_t$ to incorporate its dependency on
+$x_t$. Therefore, for an ignorant algorithm, the function $p_t(\cdot|\cdot)$ is
+only determined by $H_t$.
 \end{definition}
 
-An ignorant algorithm does not learn from mistakes in the following sense. Suppose that an ignorant algorithm predicts incorrectly at time $t$ ($\widehat y_t \neq y_t$).
-Then at time $t+1$, if it is given the same feature vector $x_{t+1}=x_t$, it will predict the label with the same distribution $p_{t+1}(\cdot|x_{t+1})=p_{t+1}(\cdot|x_t)=p_t(\cdot|x_t)$.
-Below we describe the difficulty of learning from mistakes using a class of natural approaches under the weak separability assumption.
-Consider an approach similar to OBAMA: in each round $t$,
-we create a \textit{convex} loss function $\widehat \ell_t: \mathbb{R}^{K\times d}\rightarrow \mathbb{R}$ that gives a loss value $\widehat \ell_t(W)$ to
-all linear models $W\in\mathbb{R}^{K\times d}$ ($W=[w_1 \ldots w_K]^\top$ for $w_1, \ldots, w_K$ defined in Definition~\ref{definition:linear-separability}).
-The requirement for $\widehat{\ell}_t$ to be convex is due to computational efficiency.
-To let $\widehat{\ell}_t$ reflect the loss, if $\widehat y_t \neq y_t$, we want to assign larger loss values $\widehat{\ell_t}(W)$ to the inconsistent models $\mathcal{W}=\{W: \ip{w_{\widehat y_t}}{x_t} \geq \ip{w_i}{x_t}, \forall i\in[K]\}$,
-while for other $W$'s, we want $\widehat{\ell_t}(W)$ to be smaller.
-The following fact can be verified when $K\geq 3$, which suggests there is no way to define the loss $\widehat \ell_t$ that satisfies the above properties constraints:
-there exists $W_1, W_2, W_3$, where $W_2$ is in the line segment between $W_1$ and $W_3$, such that $W_2\in \mathcal{W}$, while $W_1, W_3 \notin \mathcal{W}$.
-On one hand, by convexity, we should have $\widehat{\ell}_t(W_2)\leq \max\{\widehat{\ell}_t(W_1), \widehat{\ell}_t(W_3)\}$;
-on the other hand, to penalize $\mathcal{W}$, we should have $\widehat{\ell}_t(W_2) > \widehat{\ell}_t(W_1)$ and $\widehat{\ell}_t(W_2) > \widehat{\ell}_t(W_3)$.
-Clearly, these two requirements contradict each other.
+An ignorant algorithm does not learn from mistakes in the following sense.
+Suppose that an ignorant algorithm predicts incorrectly at time $t$ ($\widehat
+y_t \neq y_t$). Then at time $t+1$, if it is given the same feature vector
+$x_{t+1}=x_t$, it will predict the label with the same distribution
+$p_{t+1}(\cdot|x_{t+1})=p_{t+1}(\cdot|x_t)=p_t(\cdot|x_t)$. Below we describe
+the difficulty of learning from mistakes using a class of natural approaches
+under the weak separability assumption. Consider an approach similar to OBAMA:
+in each round $t$, we create a \textit{convex} loss function $\widehat \ell_t:
+\mathbb{R}^{K\times d}\rightarrow \mathbb{R}$ that gives a loss value $\widehat
+\ell_t(W)$ to all linear models $W\in\mathbb{R}^{K\times d}$ ($W=[w_1 \ldots
+w_K]^\top$ for $w_1, \ldots, w_K$ defined in
+Definition~\ref{definition:linear-separability}). The requirement for
+$\widehat{\ell}_t$ to be convex is due to computational efficiency. To let
+$\widehat{\ell}_t$ reflect the loss, if $\widehat y_t \neq y_t$, we want to
+assign larger loss values $\widehat{\ell_t}(W)$ to the inconsistent models
+$\mathcal{W}=\{W: \ip{w_{\widehat y_t}}{x_t} \geq \ip{w_i}{x_t}, \forall
+i\in[K]\}$, while for other $W$'s, we want $\widehat{\ell_t}(W)$ to be smaller.
+The following fact can be verified when $K\geq 3$, which suggests there is no
+way to define the loss $\widehat \ell_t$ that satisfies the above properties
+constraints: there exists $W_1, W_2, W_3$, where $W_2$ is in the line segment
+between $W_1$ and $W_3$, such that $W_2\in \mathcal{W}$, while $W_1, W_3 \notin
+\mathcal{W}$. On one hand, by convexity, we should have
+$\widehat{\ell}_t(W_2)\leq \max\{\widehat{\ell}_t(W_1),
+\widehat{\ell}_t(W_3)\}$; on the other hand, to penalize $\mathcal{W}$, we
+should have $\widehat{\ell}_t(W_2) > \widehat{\ell}_t(W_1)$ and
+$\widehat{\ell}_t(W_2) > \widehat{\ell}_t(W_3)$. Clearly, these two requirements
+contradict each other.
 
 The following theorem states the mistake lower bound for ignorant algorithms.
+
 \begin{theorem}[Mistake Lower Bound for Ignorant Algorithms]
 \label{theorem:ignorant_lower_bound}
-    Suppose $\mathcal{A}$ is an ignorant bandit classification algorithm.
-    There exists an adversary that can sequentially choose $(x_1, y_1), (x_2, y_2), \ldots, (x_T, y_T) \in \mathbb{R}^d\times \{1,2\}$,
-    such that $\forall t\in[T], \|x_t\|\leq 1$, $\{(x_t, y_t)\}_{t=1}^T$ is $\gamma$-strongly linearly separable,
-    and the expected number of mistakes made by $\mathcal{A}$ is lower bounded as
-    \begin{align*}
-        \Exp\left[ \sum_{t=1}^T \indicator{\widehat y_t \neq y_t} \right] \geq \frac{1}{10}\min\left\{\sqrt{T},
-        \left(\frac{1}{160\gamma}\right)^{\frac{d-2}{4}} \right\}.
-    \end{align*}
+Suppose $\mathcal{A}$ is an ignorant bandit classification algorithm. There
+exists an adversary that can sequentially choose $(x_1, y_1), (x_2, y_2),
+\ldots, (x_T, y_T) \in \mathbb{R}^d\times \{1,2\}$, such that $\forall t\in[T],
+\|x_t\|\leq 1$, $\{(x_t, y_t)\}_{t=1}^T$ is $\gamma$-strongly linearly
+separable, and the expected number of mistakes made by $\mathcal{A}$ is lower
+bounded as
+\begin{align*}
+\Exp\left[ \sum_{t=1}^T \indicator{\widehat y_t \neq y_t} \right]
+\geq \frac{1}{10}\min\left\{\sqrt{T}, \left(\frac{1}{160\gamma}\right)^{\frac{d-2}{4}} \right\} \; .
+\end{align*}
 \end{theorem}
+
 Before proving the theorem, we need the following lemma.
 \begin{lemma}
 \label{lem:embed_d_gamma}
@@ -59,13 +89,20 @@ $\| v_i \|_2 \leq 1$, $\| u_i \|_2 \leq 1$ for all $i$ in $[N]$, and for all $i,
 \[ u_i \cdot v_j \begin{cases} \geq \gamma ,& i = j, \\ \leq -\gamma ,& i \neq j. \end{cases} \]
 \end{lemma}
 \begin{proof}
-By Lemma 6 of~\cite{Long-1995}, there exists a set of $N = (\frac{1}{2\sqrt{40\gamma}})^{d-2}$ $(d-1)$-dimensional vectors $z_1, \ldots, z_N$ on the unit sphere $\mathbb{S}^{d-2}$, such that
-$\theta(z_i, z_j) \geq \sqrt{40 \gamma}$. As $\cos\theta \leq 1-\theta^2/5$ for every $\theta \in [0,\pi]$,
-this implies that
+By Lemma 6 of~\cite{Long-1995}, there exists a set of $N =
+(\frac{1}{2\sqrt{40\gamma}})^{d-2}$ $(d-1)$-dimensional vectors $z_1, \ldots,
+z_N$ on the unit sphere $\mathbb{S}^{d-2}$, such that $\theta(z_i, z_j) \geq
+\sqrt{40 \gamma}$. As $\cos\theta \leq 1-\theta^2/5$ for every $\theta \in
+[0,\pi]$, this implies that
 \[ z_i \cdot z_j \begin{cases} = 1 ,& i = j, \\ \leq 1- 8\gamma ,& i \neq j. \end{cases} \]
 
-Define $v_i = (\frac12 z_i, \frac12)$, and $u_i = (\frac 12 z_i, -\frac 12(1-4\gamma))$ for all $i$ in $[N]$. It can be easily checked that for all $i$, $\|v_i\| \leq 1$ and $\|u_i\| \leq 1$. In addition,
-\[ u_i \cdot v_j = \frac 1 4 z_i \cdot z_j - \frac {1-4\gamma} 4 \begin{cases} \geq \gamma ,& i = j, \\ \leq -\gamma ,& i \neq j. \end{cases}\]
+Define $v_i = (\frac12 z_i, \frac12)$, and $u_i = (\frac 12 z_i, -\frac
+12(1-4\gamma))$ for all $i$ in $[N]$. It can be easily checked that for all $i$,
+$\|v_i\| \leq 1$ and $\|u_i\| \leq 1$. In addition,
+$$
+u_i \cdot v_j
+= \frac 1 4 z_i \cdot z_j - \frac {1-4\gamma} 4 \begin{cases} \geq \gamma ,& i = j, \\ \leq -\gamma ,& i \neq j. \end{cases}
+$$
 \end{proof}
 
 \begin{proof}[Proof for Theorem~\ref{theorem:ignorant_lower_bound} (PartI: Mistake lower bound)]
@@ -106,43 +143,58 @@ B_t &= \indicator{\exists \tau\leq t, p_\tau(1|x_\tau)\geq 1-q_0
 \end{align*}
 Then we have
 \begin{align}
-    \mathbf{E}\left[\sum_{t=1}^{T} \indicator{\widehat y_t\neq y_t}\right]
-    &\geq \mathbf{E}\left[\sum_{t=1}^{\min\{T,N\}} \indicator{\widehat y_t\neq y_t}\right] \nonumber \\
-    & \geq \mathbf{E}\left[\sum_{t=1}^{\min\{T,N\}} \indicator{\widehat y_t\neq y_t}A_t\right] + \mathbf{E}\left[\sum_{t=1}^{\min\{T,N\}} \indicator{\widehat y_t\neq y_t}B_t\right] \nonumber \\
-    & = \mathbf{E}\left[\sum_{t=1}^{\min\{T,N\}} \mathbf{E}_t\left[\indicator{\widehat y_t\neq y_t}A_t\right]\right] + \mathbf{E}\left[\sum_{t=1}^{\min\{T,N\}} B_{t+1}\right] \nonumber \\
-    & \geq \mathbf{E}\left[\sum_{t=1}^{\min\{T,N\}} q_0 A_t\right] + \mathbf{E}\left[\sum_{t=1}^{\min\{T,N\}} B_{t+1}\right],
-    \label{eqn:mistake_lower_bound_temp}
+& \mathbf{E}\left[\sum_{t=1}^{T} \indicator{\widehat y_t\neq y_t}\right] \nonumber \\
+& \ge \mathbf{E}\left[\sum_{t=1}^{\min\{T,N\}} \indicator{\widehat y_t\neq y_t}\right] \nonumber \\
+& \ge \mathbf{E}\left[\sum_{t=1}^{\min\{T,N\}} \indicator{\widehat y_t\neq y_t}A_t\right] \nonumber \\
+& \qquad + \mathbf{E}\left[\sum_{t=1}^{\min\{T,N\}} \indicator{\widehat y_t\neq y_t}B_t\right] \nonumber \\
+& = \mathbf{E}\left[\sum_{t=1}^{\min\{T,N\}} \mathbf{E}_t\left[\indicator{\widehat y_t\neq y_t}A_t\right]\right] + \mathbf{E}\left[\sum_{t=1}^{\min\{T,N\}} B_{t+1}\right] \nonumber \\
+& \ge \mathbf{E}\left[\sum_{t=1}^{\min\{T,N\}} q_0 A_t\right] + \mathbf{E}\left[\sum_{t=1}^{\min\{T,N\}} B_{t+1}\right],
+\label{eqn:mistake_lower_bound_temp}
 \end{align}
-where in the first inequality we use $A_t+B_t\leq 1$;
-in the equality, we use  $B_{t+1}=B_t\indicator{\widehat y_t\neq y_t}$ by $B_t$'s definition;
-in the last inequality we use the fact that when $t\leq N$ and $A_t=1$, it must be $y_t=1$.
-Now, denote $T_1 = \argmin_{\tau} \{ p_\tau(1|x_\tau) \geq 1-q_0 \}$ (if such $\tau$ does not exist or is larger than $\min\{T,N\}$, we simply let $T_1=\min\{T,N\}+1$).
-Then $A_t=1$ for all $t\leq T_1-1$.
+where in the first inequality we use $A_t+B_t\leq 1$; in the equality, we use
+$B_{t+1}=B_t\indicator{\widehat y_t\neq y_t}$ by $B_t$'s definition; in the last
+inequality we use the fact that when $t\leq N$ and $A_t=1$, it must be $y_t=1$.
+Now, denote $T_1 = \argmin_{\tau} \{ p_\tau(1|x_\tau) \ge 1-q_0 \}$ (if such
+$\tau$ does not exist or is larger than $\min\{T,N\}$, we simply let
+$T_1=\min\{T,N\}+1$). Then $A_t=1$ for all $t\leq T_1-1$.
 
-Note that $B_{T_1}=1$, and for $t\geq T_1$ we have $\Exp[B_{t+1}=0|B_t=1]=\Pr[\widehat y_t=y_t|B_t=1]=\Pr[\widehat y_t=2|B_t=1]\leq q_0$ because the algorithm is ignorant. Thus the second term in \eqref{eqn:mistake_lower_bound_temp} can be calculated as
+Note that $B_{T_1}=1$, and for $t \ge T_1$ we have
+$\Exp[B_{t+1}=0|B_t=1]=\Pr[\widehat y_t=y_t~|~B_t=1] = \Pr[\widehat y_t=2|B_t=1] \le
+q_0$ because the algorithm is ignorant. Thus the second term in
+\eqref{eqn:mistake_lower_bound_temp} can be calculated as
 
 \begin{align*}
-    \mathbf{E}\left[\sum_{t=1}^{\min\{T,N\}}B_{t+1}\right]\geq \mathbf{E}\left[\sum_{t=T_1}^{\min\{ T,N \}} (1-q_0)^{t-T_1+1} \right]
-    = \frac{1-q_0}{q_0}\mathbf{E}\left[1-(1-q_0)^{\min\{T,N\}-T_1+1}\right].
+& \mathbf{E}\left[\sum_{t=1}^{\min\{T,N\}}B_{t+1}\right] \\
+& \ge \mathbf{E}\left[\sum_{t=T_1}^{\min\{ T,N \}} (1-q_0)^{t-T_1+1} \right] \\
+& = \frac{1-q_0}{q_0}\mathbf{E}\left[1-(1-q_0)^{\min\{T,N\}-T_1+1}\right] \; .
 \end{align*}
 Combining \eqref{eqn:mistake_lower_bound_temp} and the above inequalities, we get
-\begin{align}
-    \mathbf{E}\left[\sum_{t=1}^T \indicator{\widehat y_t\neq y_t}\right]\geq \mathbf{E}\left[q_0(T_1-1)+\frac{1-q_0}{q_0}\left(1-(1-q_0)^{\min\{T,N\}-T_1+1}\right)\right]. \label{eqn:mistake_lower_bound_temp2}
-\end{align}
-In the case $T_1\geq \frac{1}{2}\min\{T,N\}+1$, the right-hand side of \eqref{eqn:mistake_lower_bound_temp2} is lower bounded by $\frac{1}{2}q_0\min\{T,N\}=\frac{1}{2}\min\{\sqrt{T}, \sqrt{N}\}$; in the case $T_1< \frac{1}{2}\min\{T,N\}+1$, it is lower bounded by
+\begin{multline}
+\label{eqn:mistake_lower_bound_temp2}
+\mathbf{E} \left[\sum_{t=1}^T \indicator{\widehat y_t\neq y_t}\right] \ge
+\\ \mathbf{E}\left[q_0(T_1-1)+\frac{1-q_0}{q_0}\left(1-(1-q_0)^{\min\{T,N\}-T_1+1}\right)\right].
+\end{multline}
+In the case $T_1\geq \frac{1}{2}\min\{T,N\}+1$, the right-hand side of
+\eqref{eqn:mistake_lower_bound_temp2} is lower bounded by
+$\frac{1}{2}q_0\min\{T,N\}=\frac{1}{2}\min\{\sqrt{T}, \sqrt{N}\}$; in the case
+$T_1< \frac{1}{2}\min\{T,N\}+1$, it is lower bounded by
 \begin{align*}
-    \frac{1-q_0}{q_0}\left(1-(1-q_0)^{\frac{1}{2}\min\{T,N\}}\right)= \frac{1-q_0}{q_0}\left(1-(1-q_0)^{\frac{1}{2q_0^2}}\right)\geq \frac{1-\frac{1}{\sqrt{2}}}{q_0}\left(1-\frac{1}{\sqrt{e}}\right)\geq \frac{1}{10}\min\{\sqrt{T}, \sqrt{N}\}.
+& \frac{1-q_0}{q_0}\left(1-(1-q_0)^{\frac{1}{2}\min\{T,N\}}\right) \\
+& = \frac{1-q_0}{q_0}\left(1-(1-q_0)^{\frac{1}{2q_0^2}}\right) \\
+& \ge \frac{1-\frac{1}{\sqrt{2}}}{q_0}\left(1-\frac{1}{\sqrt{e}}\right) \\
+& \ge \frac{1}{10}\min\{\sqrt{T}, \sqrt{N}\} \; .
 \end{align*}
 Combining both cases concludes the proof.
 \end{proof}
 
 \begin{proof}[Proof for Theorem~\ref{theorem:ignorant_lower_bound} (Part II: linear separability)]
-Observe that in Algorithm~\ref{algorithm:adversary-strategy}, in the beginning the adversary always set the label to $1$;
-once it sets $y_t=2$ at some $t$, it lets $(x_s, y_s)=(x_t, y_t)=(v_t, 2)$ for all $s\geq t$.
-Consider $w_2=u_t$ and $w_1=-u_t$, for $u_t$ as defined in Lemma~\ref{lem:embed_d_gamma}.
-Then by Lemma~\ref{lem:embed_d_gamma}, we have $\ip{w_2}{x_s} = \ip{u_t}{v_t} \geq \gamma, \forall s \geq t$
-and $\ip{w_2}{x_s} = \ip{u_t}{v_s} \leq - \gamma, \forall s< t$;
-also $\ip{w_1}{x_s} \leq -\gamma, \forall s \geq t$
-and $\ip{w_1}{x_s} \geq  \gamma, \forall s<t$.
-Thus, the example set is always $\gamma$-strongly separable.
+Observe that in Algorithm~\ref{algorithm:adversary-strategy}, in the beginning
+the adversary always set the label to $1$; once it sets $y_t=2$ at some $t$, it
+lets $(x_s, y_s)=(x_t, y_t)=(v_t, 2)$ for all $s\geq t$. Consider $w_2=u_t$ and
+$w_1=-u_t$, for $u_t$ as defined in Lemma~\ref{lem:embed_d_gamma}. Then by
+Lemma~\ref{lem:embed_d_gamma}, we have $\ip{w_2}{x_s} = \ip{u_t}{v_t} \geq
+\gamma, \forall s \geq t$ and $\ip{w_2}{x_s} = \ip{u_t}{v_s} \leq - \gamma,
+\forall s< t$; also $\ip{w_1}{x_s} \leq -\gamma, \forall s \geq t$ and
+$\ip{w_1}{x_s} \geq  \gamma, \forall s<t$. Thus, the example set is always
+$\gamma$-strongly separable.
 \end{proof}
