@@ -4,15 +4,15 @@
 \begin{proof}[Proof of \autoref{theorem:strongly-separable-examples-mistake-upper-bound}]
 Let $M = \sum_{t=1}^T z_t$ be the number of mistakes
 Algorithm~\ref{algorithm:algorithm-for-strongly-linearly-separable-examples}
-makes. Let $A = \sum_{t=1}^T \one[S_t \neq \emptyset] z_t$ be the number of
+makes. Let $A = \sum_{t=1}^T \indicator{S_t \neq \emptyset} z_t$ be the number of
 mistakes in the rounds when $S_t \neq \emptyset$, i.e. the number of rounds
 line~\ref{line:neg-update} is executed. In addition, let $B = \sum_{t=1}^T
-\one[S_t = \emptyset] z_t$ be the number of mistakes in the rounds when $S_t =
+\indicator{S_t = \emptyset} z_t$ be the number of mistakes in the rounds when $S_t =
 \emptyset$. It can be easily seen that $M = A + B$.
 
-Let $C = \sum_{t=1}^T \one[S_t = \emptyset](1 - z_t)$ be the number of rounds
-line~\ref{line:pos-update} gets executed. Let $U = \sum_{t=1}^T (\one[S_t \neq
-\emptyset] z_t + \one[S_t = \emptyset](1 - z_t))$ be the number of rounds
+Let $C = \sum_{t=1}^T \indicator{S_t = \emptyset}(1 - z_t)$ be the number of rounds
+line~\ref{line:pos-update} gets executed. Let $U = \sum_{t=1}^T (\indicator{S_t \neq
+\emptyset} z_t + \indicator{S_t = \emptyset}(1 - z_t))$ be the number of rounds
 line~\ref{line:pos-update} or~\ref{line:neg-update} gets executed. In other
 words, $U$ is the number of times the $K$-tuple of vectors $(w_1^{(t)},
 w_2^{(t)}, \dots, w_K^{(t)})$ gets updated. It can be easily seen that $U = A +

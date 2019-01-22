@@ -1,4 +1,6 @@
 \section{Nearest neighbor algorithm}
+\label{section:nearest-neighbor-algorithm}
+
 \begin{algorithm}
 \caption{A nearest-neighbor algorithm for \textsc{Online Multiclass Linear Classification with
 Bandit Feedback}}
@@ -6,9 +8,9 @@ Bandit Feedback}}
 \STATE $S \gets \emptyset$.
 \FOR{$t=1,2,\ldots,T$:}
 \IF{$\min_{(x,y) \in S} \| x_t - x \|_2 \leq \gamma$}
-	\STATE $\hat{y}_t \gets \tilde{y}$, where $(\tilde{x}, \tilde{y}) = \argmin_{(x,y) \in S} \| x_t - x \|_2$.
+	\STATE $\hat{y}_t \gets \tilde{y}$, where $(\tilde{x}, \tilde{y}) = \argmin_{(x,y) \in S} \norm{x_t - x}_2$.
 \ELSE
-	\STATE Predict $\hat{y}_t$ uniformly at random from $\cbr{1,\ldots,K}$, receive feedback $z_t = \one[\hat{y}_t \neq y_t]$.
+	\STATE Predict $\hat{y}_t$ uniformly at random from $\cbr{1,2,\dots,K}$, receive feedback $z_t = \indicator{\hat{y}_t \neq y_t}$.
   \label{line:nn-explore}
 	\IF{$z_t = 0$}
     \STATE $S \gets S \cup \cbr{(x_t, \hat{y}_t)}$.
@@ -19,15 +21,20 @@ Bandit Feedback}}
 \label{alg:nn}
 \end{algorithm}
 
-We present Algorithm~\ref{alg:nn} in this section. The algorithm is based on the following insight.
+We present Algorithm~\ref{alg:nn} in this section. The algorithm is based on the
+following insight.
 
 \begin{lemma}
-Suppose $(x_1,y_1), \ldots, (x_T, y_T)$ is a set of $\gamma$-weakly linearly separable examples.
-For $i$, $j$ in $\cbr{1,\ldots,T}$, if $x_i$ and $x_j$ have $\ell_2$ distance at most $\gamma$, then $y_i = y_j$.
-\label{lem:nn}
+Suppose $(x_1,y_1), \ldots, (x_T, y_T)$ is a set of $\gamma$-weakly linearly
+separable examples. For $i$, $j$ in $\cbr{1,\ldots,T}$, if $x_i$ and $x_j$ have
+$\ell_2$ distance at most $\gamma$, then $y_i = y_j$. \label{lem:nn}
 \end{lemma}
+
 \begin{proof}
-Suppose for the sake on contradiction that $y_i \neq y_j$. By Definition~\ref{definition:weak-linear-separability}, there exists a set of $k$ vectors $(w_1, \ldots, w_k)$, such that Equations~\eqref{equation:weak-linear-separability-1}
+Suppose for the sake on contradiction that $y_i \neq y_j$. By
+Definition~\ref{definition:weak-linear-separability}, there exists a set of $k$
+vectors $(w_1, \ldots, w_k)$, such that
+Equations~\eqref{equation:weak-linear-separability-1}
 and~\eqref{equation:weak-linear-separability-1} are satisfied.
 
 Specifically,
@@ -47,16 +54,22 @@ on $x_i$ and $x_j$. Therefore, we reach a contradiction.
 
 
 \begin{theorem}
-Suppose $(x_1,y_1), \ldots, (x_T, y_T)$ is a set of $\gamma$-weakly linearly separable examples. In addition, for all $t$ in $\cbr{1,\ldots,T}$, $\| x_t \| \leq R$. Then, the expected number of mistakes made by Algorithm~\ref{alg:nn} is such that
-\[\Exp[M] \leq (K-1) (\frac R \gamma)^d. \]
 \label{thm:margin_at_upper}
+Suppose $(x_1,y_1), \ldots, (x_T, y_T)$ is a set of $\gamma$-weakly linearly
+separable examples. In addition, for all $t$ in $\cbr{1,2,\dots,T}$, $\| x_t \|
+\leq R$. Then, the expected number of mistakes made by Algorithm~\ref{alg:nn} is
+such that \[\Exp[M] \le (K-1) (\frac R \gamma)^d. \]
 \end{theorem}
+
 \begin{proof}
-Let $b_t$ be the indicator that line~\ref{line:nn-explore} is executed at timestep $t$,
-i.e. we fall into the ``else'' case.
-Note that if $b_t = 0$, then by Lemma~\ref{lem:nn}, the prediction $\hat{y}_t$ must equal $y_t$, i.e. $z_t = 0$.
-Therefore, $M = \sum_{t=1}^T z_t = \sum_{t=1}^T b_t z_t$. Let $U = \sum_{t=1}^T b_t (1-z_t)$; it can be seen that $U$ is the number of times when $S$ gets updated. As $S$ is a $\gamma$-packing over
-$\cbr{x: \|x\|_2 \leq R}$, the size of $S$ is at most $(\frac R \gamma)^d$, which is also an upper bound on $U$.
+Let $b_t$ be the indicator that line~\ref{line:nn-explore} is executed at
+timestep $t$, i.e. we fall into the ``else'' case. Note that if $b_t = 0$, then
+by Lemma~\ref{lem:nn}, the prediction $\hat{y}_t$ must equal $y_t$, i.e. $z_t =
+0$. Therefore, $M = \sum_{t=1}^T z_t = \sum_{t=1}^T b_t z_t$. Let $U =
+\sum_{t=1}^T b_t (1-z_t)$; it can be seen that $U$ is the number of times when
+$S$ gets updated. As $S$ is a $\gamma$-packing over $\cbr{x: \|x\|_2 \leq R}$,
+the size of $S$ is at most $(\frac R \gamma)^d$, which is also an upper bound on
+$U$.
 
 Note that when $b_t = 1$, $\hat{y}_t$ is chosen uniformly at random, we have
 \[ \Exp[ z_t | b_t = 1] = \frac{K-1}{K} \]
