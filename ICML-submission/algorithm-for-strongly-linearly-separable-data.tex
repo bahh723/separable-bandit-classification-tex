@@ -164,9 +164,15 @@ leave this as an open problem.
 
 Algorithm~\ref{algorithm:algorithm-for-strongly-linearly-separable-examples} can
 be extended to nonlinear classification using
-kernels~\cite{Scholkopf-Smola-2002, Shawe-Taylor-Cristianini-2004}. The formal
-description of the kernelized algorithm is given in
-Algorithm~\ref{algorithm:kernelized}. As opposed to explicitly maintaining the
+\emph{positive definite kernels} (or \emph{kernels}, for short), which are 
+functions of the form $k: X^2 \to V$ for some set $X$ and inner product space 
+$(V, \ip{\cdot}{\cdot})$ such that the matrix $\left(k(x_i,x_j)\right)_{i,j=1}^m$ 
+is positive semidefinite for any positive integer $m$ and $x_1, \dots, x_m \in X$
+~\citep[][Definition 2.5]{Scholkopf-Smola-2002}. 
+%kernels~\cite{Scholkopf-Smola-2002, Shawe-Taylor-Cristianini-2004}. The formal
+%description of the kernelized algorithm is given in
+%Algorithm~\ref{algorithm:kernelized}. 
+As opposed to explicitly maintaining the
 weight vector for each class, the algorithm maintains the set of example-scalar
 pairs corresponding to the updates of the non-kernelized algorithm. As a direct
 consequence of
