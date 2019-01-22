@@ -2,26 +2,29 @@
 \label{section:nearest-neighbor-algorithm}
 
 \begin{algorithm}[H]
-\caption{\textsc{Nearest-Neighbor Algorithm}}
-\begin{algorithmic}[1]
-\REQUIRE{Number of classes $K$, number of rounds $T$.}
-\REQUIRE{Inner product space $(V,\ip{\cdot}{\cdot})$.}
-\STATE $S \gets \emptyset$.
-\FOR{$t=1,2,\ldots,T$:}
-\IF{$\min_{(x,y) \in S} \norm{x_t - x} \le \gamma$}
-  \STATE{Find nearest neighbor \\ $(\widetilde{x}, \widetilde{y}) = \argmin_{(x,y) \in S} \norm{x_t - x}$}
-	\STATE{Predict $\widehat{y}_t = \widetilde{y}$}
-\ELSE
-	\STATE{Predict $\widehat y_t \sim \text{Uniform}(\{1,2,\dots,K\})$}
-	\STATE{Receive feedback $z_t = \indicator{\widehat{y}_t \neq y_t}$}
-  \label{line:nearest-neighbor-explore}
-	\IF{$z_t = 0$}
-    \STATE $S \gets S \cup \cbr{(x_t, \widehat{y}_t)}$.
-  \ENDIF
-\ENDIF
-\ENDFOR
-\end{algorithmic}
+\SetAlgoLined
+\LinesNumbered
+\caption{\textsc{Nearest-Neighbor Algorithm}
 \label{algorithm:nearest-neighbor}
+}
+\textbf{Require:} Number of classes $K$, number of rounds $T$. \\
+\textbf{Require:} Inner product space $(V,\ip{\cdot}{\cdot})$. \\
+\nl Initialize $S \gets \emptyset$ \\
+\nl \For{$t=1,2,\ldots,T$:}{
+\nl  \If{$\min_{(x,y) \in S} \norm{x_t - x} \le \gamma$}{
+\nl    Find nearest neighbor \\
+       \qquad \qquad $(\widetilde{x}, \widetilde{y}) = \argmin_{(x,y) \in S} \norm{x_t - x}$ \\
+\nl	  Predict $\widehat{y}_t = \widetilde{y}$ \\
+  }
+  \Else{
+\nl	  Predict $\widehat y_t \sim \text{Uniform}(\{1,2,\dots,K\})$ \\
+\nl	  Receive feedback $z_t = \indicator{\widehat{y}_t \neq y_t}$
+      \label{line:nearest-neighbor-explore} \\
+\nl	  \If{$z_t = 0$}{
+\nl      $S \gets S \cup \cbr{(x_t, \widehat{y}_t)}$ \\
+    }
+  }
+}
 \end{algorithm}
 
 In this section we analyze \textsc{Nearest-Neighbor Algorithm} shown as

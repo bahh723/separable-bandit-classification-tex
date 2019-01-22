@@ -14,9 +14,10 @@ correct or not. The protocol of the problem is formally stated below.
 \begin{protocol}[h]
 \caption{\textsc{Online Multiclass Linear Classification with Bandit Feedback}
 \label{algorithm:game-protocol}}
-\textbf{Require:} Number of classes $K$, number of rounds $T$.\\
+\textbf{Require:} Number of classes $K$, number of rounds $T$. \\
+\textbf{Require:} Inner product space $(V,\ip{\cdot}{\cdot})$. \\
 \For{$t=1,2,\dots,T$}{
-Adversary chooses example $(x_t, y_t)$, where $x_t$ is revealed to the learner.\\
+Adversary chooses example $(x_t, y_t) \in V \times \{1,2,\dots,K\}$ where $x_t$ is revealed to the learner.\\
 Predict class label $\widehat y_t \in \{1,2,\dots,K\}$.\\
 Observe feedback $z_t = \indicator{\widehat y_t \neq y_t} \in \{0,1\}$
 }

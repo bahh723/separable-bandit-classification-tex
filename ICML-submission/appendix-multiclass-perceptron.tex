@@ -20,39 +20,34 @@ must make at least $\lfloor (R/\gamma)^2 \rfloor$ mistakes in the worst case.
 \begin{protocol}[h]
 \caption{\textsc{Online Multiclass Classification}
 \label{algorithm:mutliclass-classification}}
-\begin{algorithmic}[1]
-{
-\REQUIRE{Number of classes $K$. Number of rounds $T$.}
-\FOR{$t=1,2,\dots,T$}
-\STATE{Observe feature vector $x_t$}
-\STATE{Predict $\widehat y_t \in \{1,2,\dots,K\}$}
-\STATE{Observe $y_t \in \{1,2,\dots,K\}$}
-\ENDFOR
+\textbf{Require:} Number of classes $K$, number of rounds $T$. \\
+\textbf{Require:} Inner product space $(V,\ip{\cdot}{\cdot})$. \\
+\For{$t=1,2,\dots,T$}{
+Adversary chooses example $(x_t, y_t) \in V \times \{1,2,\dots,K\}$, where $x_t$ is revealed to the learner.\\
+Predict class label $\widehat y_t \in \{1,2,\dots,K\}$.\\
+Observe feedback $y_t$
 }
-\end{algorithmic}
 \end{protocol}
 
 \begin{algorithm}[h]
 \caption{\textsc{Multiclass Perceptron}
 \label{algorithm:mutliclass-perceptron}}
-\begin{algorithmic}[1]
-{
-\REQUIRE{Number of classes $K$. Number of rounds $T$. Inner product space $(V,\ip{\cdot}{\cdot})$.}
-\STATE{Initialize $w_1^{(1)} = w_2^{(1)} = \dots = w_K^{(1)} = 0$}
-\FOR{$t=1,2,\dots,T$}
-\STATE{Observe feature vector $x_t \in V$}
-\STATE{Predict $\widehat y_t = \argmax_{i \in \{1,2,\dots,K\}} \ip{w_t^{(i)}}{x_t}$}
-\STATE{Observe $y_t \in \{1,2,\dots,K\}$}
-\IF{$\widehat y_t \neq y_t$}
-\STATE{Set $w_i^{(t+1)} = w_i^{(t)}$ \\ \qquad for all $i \in \{1,2,\dots,K\} \setminus \{y_t, \widehat y_t\}$}
-\STATE{Update $w_{y_t}^{(t+1)} = w_{y_t}^{(t)} + x_t$}
-\STATE{Update $w_{\widehat y_t}^{(t+1)} = w_{\widehat y_t}^{(t)} - x_t$}
-\ELSE
-\STATE{Set $w_i^{(t+1)} = w_i^{(t)}$ for all $i \in \{1,2,\dots,K\}$}
-\ENDIF
-\ENDFOR
+\textbf{Require:} Number of classes $K$, number of rounds $T$. \\
+\textbf{Require:} Inner product space $(V,\ip{\cdot}{\cdot})$. \\
+Initialize $w_1^{(1)} = w_2^{(1)} = \dots = w_K^{(1)} = 0$ \\
+\For{$t=1,2,\dots,T$}{
+  Observe feature vector $x_t \in V$ \\
+  Predict $\widehat y_t = \argmax_{i \in \{1,2,\dots,K\}} \ip{w_t^{(i)}}{x_t}$ \\
+  Observe $y_t \in \{1,2,\dots,K\}$ \\
+  \If{$\widehat y_t \neq y_t$}{
+    Set $w_i^{(t+1)} = w_i^{(t)}$ \\ \qquad for all $i \in \{1,2,\dots,K\} \setminus \{y_t, \widehat y_t\}$ \\
+    Update $w_{y_t}^{(t+1)} = w_{y_t}^{(t)} + x_t$ \\
+    Update $w_{\widehat y_t}^{(t+1)} = w_{\widehat y_t}^{(t)} - x_t$ \\
+  }
+  \Else{
+    Set $w_i^{(t+1)} = w_i^{(t)}$ for all $i \in \{1,2,\dots,K\}$ \\
+  }
 }
-\end{algorithmic}
 \end{algorithm}
 
 \begin{theorem}[Mistake upper bound~\cite{Crammer-Singer-2003}]
