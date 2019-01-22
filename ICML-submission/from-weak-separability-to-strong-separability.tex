@@ -100,8 +100,8 @@ $k(x_t,x_t) \leq 2$.
 \end{theorem}
 
 Using this theorem we derive a mistake bound for
-Algorithm~\ref{algorithm:kernelized} with kernel function $k(x,x') =
-\ip{\phi(x)}{\phi(x')}_{\ell_2}$, under the weak linear separability assumption.
+Algorithm~\ref{algorithm:kernelized} with kernel \eqref{equation:rational-kernel}
+under the weak linear separability assumption.
 
 \begin{corollary}[Mistake upper bound]
 \label{corollary:weakly-separable-examples-mistake-upper-bound}
@@ -109,7 +109,7 @@ Let $K$ be a positive integer and let $\gamma$ be a positive real number. If
 $(x_1, y_1), (x_2, y_2), \dots, (x_T, y_T) \in \B(\zero,1) \times \{1,2,\dots,K\}$
 is a sequence of weakly separable labeled examples with margin $\gamma > 0$,
 then the expected number of mistakes made by Algorithm~\ref{algorithm:kernelized}
-with kernel $k(x,x') = \frac{1}{1 - \frac{1}{2}\ip{x}{x'}_{\R^d}}$
+with kernel $k(x,x')$ defined by \eqref{equation:rational-kernel}
 is at most $2^{\widetilde{O}(\min(K \log^2 \frac{1}{\gamma},
 \sqrt{\frac{1}{\gamma}} \log K))}$.
 \end{corollary}
@@ -126,7 +126,7 @@ mapping $\phi$ is polynomial approximation. Specifically, we construct $K$
 multivariate polynomials $p_1, p_2, \dots,p_K$ such that
 \begin{align}
 \label{equation:poly-pos}
-& \forall t \in \cbr{1,2,\dots,T}, p_{y_t}(x_t) \ge \frac{\gamma'}{2} \; ,
+& \forall t \in \cbr{1,2,\dots,T}, \qquad p_{y_t}(x_t) \ge \frac{\gamma'}{2} \; ,
 \\
 \label{equation:poly-neg}
 & \begin{gathered}
