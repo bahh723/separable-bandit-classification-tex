@@ -164,7 +164,7 @@ X \times \{1,2,\dots,K\}$ are labeled examples such that:
 \begin{enumerate}
 \item the mapped examples $(\phi(x_1), y_1)$, $\dots$, $(\phi(x_T), y_T)$
 are strongly linearly separable with margin $\gamma$,
-\item for all $t$ in $\cbr{1,\ldots,T}$, $k(x_t,x_t) \le R^2$,
+\item $k(x_1, x_1), k(x_2, x_2), \dots, k(x_T,x_T) \le R^2$,
 \end{enumerate}
 then the expected number of mistakes Algorithm~\ref{algorithm:kernelized} makes
 is at most $(K-1) \lfloor 4(R/\gamma)^2 \rfloor$.
