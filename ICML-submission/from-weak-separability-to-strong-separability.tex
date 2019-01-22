@@ -294,27 +294,44 @@ Theorem~\ref{theorem:polynomial-approximation-1} implies that there exist a
 multivariate polynomial $p_i:\R^d \to \R$
 
 \begin{align*}
-\deg(p_i) & = \lceil \log_2(2K-2) \rceil \cdot \left\lceil \sqrt{\frac{2}{\gamma}} \right\rceil \; ,
+\deg(p_i) & = \lceil \log_2(2K-2) \rceil \cdot \left\lceil \sqrt{{2}/{\gamma}} \right\rceil \; ,
 \end{align*}
 such that all examples $x$ in $R_i^+$ (resp. $R_i^-$) satisfy $p_i(x) \geq 1/2$
 (resp. $p_i(x) \leq -1/2$).
 Therefore, for all $t=1,2,\dots,T$, if $y_t = i$ then $p_i(x_t) \ge 1/2$,
  and if $y_t \neq i$ then $p_i(x_t) \le -1/2$, and
 \begin{align*}
-\norm{p_i} & \le \left(188 \lceil \log_2(2K-2) \rceil \cdot \left \lceil \sqrt{\frac{2}{\gamma}} \right \rceil \right)^{\frac{1}{2} \lceil \log_2(2K-2) \rceil
-\cdot \left \lceil \sqrt{\frac{2}{\gamma}} \right \rceil} \; . \\
+&\norm{p_i} 
+\\
+& \le 
+\left[
+  188 \lceil \log_2(2K-2) \rceil \cdot \left \lceil \sqrt{{2}/{\gamma}} \right \rceil 
+\right]^{
+  \frac{\lceil \log_2(2K-2) \rceil \cdot \left \lceil \sqrt{{2}/{\gamma}} \right \rceil }{2}
+} \; . \\
 \end{align*}
 By \autoref{lemma:norm-bound}, there exists $c_i \in \ell_2$ such that
 $\ip{c_i}{\phi(x)}_{\ell_2} = p_i(x)$, and
 \begin{align*}
-\norm{c_i}_{\ell_2}
-& \le \left(376 \lceil \log_2(2K-2) \rceil \cdot \left \lceil \sqrt{\frac{2}{\gamma}} \right \rceil \right)^{\frac{1}{2} \lceil \log_2(2K-2) \rceil
-\cdot \left \lceil \sqrt{\frac{2}{\gamma}} \right \rceil} \; .
+&\norm{c_i}_{\ell_2}
+\\
+& \le 
+\left[
+  376 \lceil \log_2(2K-2) \rceil \cdot \left \lceil \sqrt{{2}/{\gamma}} \right \rceil 
+\right]^{
+  \frac{\lceil \log_2(2K-2) \rceil \cdot \left \lceil \sqrt{{2}/{\gamma}} \right \rceil}{2}
+} \; .
 \end{align*}
 Define vectors $u_i \in \ell_2$ as
 \begin{align*}
-u_i & = \frac{c_i}{\sqrt{K} \left(376 \lceil \log_2(2K-2) \rceil \cdot \left \lceil \sqrt{\frac{2}{\gamma}} \right \rceil \right)^{\frac{1}{2} \lceil \log_2(2K-2) \rceil
-\cdot \left \lceil \sqrt{\frac{2}{\gamma}} \right \rceil}} \; . \\
+u_i & = 
+\frac{c_i/\sqrt{K}}{ 
+  \left[
+    376 \lceil \log_2(2K-2) \rceil \cdot \left \lceil \sqrt{{2}/{\gamma}} \right \rceil 
+  \right]^{
+    \frac{\lceil \log_2(2K-2) \rceil \cdot \left \lceil \sqrt{\frac{2}{\gamma}} \right \rceil}{2}
+  }
+} \; . \\
 \end{align*}
 
 Then, $\norm{u_1}^2 + \norm{u_2}^2 + \dots + \norm{u_K}^2 \le 1$.
