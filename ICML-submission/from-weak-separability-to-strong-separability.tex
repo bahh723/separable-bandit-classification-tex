@@ -3,7 +3,7 @@
 
 In this section, we consider case when the examples are weakly linearly
 separable. Throughout this section, we assume without loss of generality that
-all examples lie in the unit ball $\B(0,1) \subseteq \R^d$.\footnote{Instead of
+all examples lie in the unit ball $\B(\zero,1) \subseteq \R^d$.\footnote{Instead of
 working with feature vector $x_t$ we can work with normalized feature vectors
 $\widehat{x}_t = \frac{x_t}{\norm{x_t}}$. It can be easily checked that if
 $(x_1,y_1), (x_2,y_2), \dots, (x_T,y_T)$ are weakly linearly separable with
@@ -18,13 +18,13 @@ We construct a positive definite kernel function $k(\cdot, \cdot)$ whose
 corresponding feature map $\phi(\cdot)$ transforms any sequence of \emph{weakly}
 linearly separable examples to \emph{strongly} linearly separable sequence of
 examples. Specifically, $\phi$ has the property that if a set of labeled
-examples in $\B(0,1)$ is weakly linearly separable with a margin $\gamma$, then
+examples in $\B(\zero,1)$ is weakly linearly separable with a margin $\gamma$, then
 after applying $\phi$ the examples become strongly linearly separable with a
 margin $\gamma'$ and their norms are bounded by $2$. The parameter $\gamma'$ is
 a function of the old margin $\gamma$ and the number of classes $K$, and is
 specified in \autoref{theorem:margin-transformation} below.
 
-The kernel function $k:\B(0,1) \times \B(0,1) \to \R$ is defined as
+The kernel function $k:\B(\zero,1) \times \B(\zero,1) \to \R$ is defined as
 $$
 k(x,x') = \frac{1}{1 - \frac{1}{2}\ip{x}{x'}_{\R^d}} \; .
 $$
@@ -34,7 +34,7 @@ Consider the classical real separable Hilbert space $\ell_2 = \{ x \in \R^\infty
 ~:~ \sum_{i=1}^\infty x_i^2 < + \infty \}$ equipped with the standard inner
 product $\ip{x}{x'}_{\ell_2} = \sum_{i=1}^\infty x_i x'_i$. If we index the
 coordinates of $\ell_2$ by $d$-tuples $(\alpha_1, \alpha_2, \dots, \alpha_d)$ of
-non-negative integers, the feature map that corresponds to $k$ is $\phi: \B(0,1)
+non-negative integers, the feature map that corresponds to $k$ is $\phi: \B(\zero,1)
 \to \ell_2$,
 \begin{align}
 & \left(\phi(x_1, x_2, \dots, x_d)\right)_{(\alpha_1, \alpha_2, \dots, \alpha_d)} = x_1^{\alpha_1} x_2^{\alpha_2} \dots x_d^{\alpha_d} \nonumber \\
@@ -48,7 +48,7 @@ $$
 k(x,x') = \ip{\phi(x)}{\phi(x')}_{\ell_2}.
 $$
 The last equality together with the formula for $k$ implies that $k(x,x) <
-+\infty$ for any $x$ in $\B(0,1)$ and thus in particular implies that $\phi(x)$
++\infty$ for any $x$ in $\B(\zero,1)$ and thus in particular implies that $\phi(x)$
 indeed lies in $\ell_2$.
 
 The following theorem is our main technical result in this section. We defer its
@@ -56,20 +56,41 @@ proof to Section~\ref{section:margin-transformation}.
 
 \begin{theorem}[Margin transformation]
 \label{theorem:margin-transformation}
-Let $(x_1, y_1)$, $(x_2, y_2)$, $\dots$, $(x_T, y_T)$ in $\B(0,1) \times
+Let $(x_1, y_1)$, $(x_2, y_2)$, $\dots$, $(x_T, y_T)$ in $\B(\zero,1) \times
 \{1,2,\dots,K\}$ be a sequence of labeled examples that is weakly linearly
 separable with margin $\gamma > 0$. Let $\phi$ be as defined in
 equation~\eqref{equation:phi} and let
+%\begingroup
+%\allowdisplaybreaks
+%\begin{align*}
+%r & = 2 \left\lceil \frac{1}{4} \log_2(4K-3) \right\rceil + 1, \quad \quad s = \left \lceil \log_2(2/\gamma) \right \rceil, \\
+%\gamma_1 & = \frac{1}{2\sqrt{K}}  \\
+%& \ \cdot \left(376 \lceil \log_2(2K-2) \rceil \cdot \left \lceil \sqrt{\frac{2}{\gamma}} \right \rceil \right)^{-\frac{1}{2} \lceil \log_2(2K-2) \rceil \cdot \left \lceil \sqrt{\frac{2}{\gamma}} \right \rceil}, \\
+%\gamma_2 & = \frac{2^{s(s+1)r(K-1)} }{4\sqrt{K}(4K-5) 2^{K-1}} \\
+%& \ \cdot \left(2^{s+1} r(K-1) (4s+2)^2 \right)^{-(s+1/2)r(K-1)} \; .
+%\end{align*}
+%\endgroup
 \begingroup
 \allowdisplaybreaks
 \begin{align*}
-r & = 2 \left\lceil \frac{1}{4} \log_2(4K-3) \right\rceil + 1, \quad \quad s = \left \lceil \log_2(2/\gamma) \right \rceil, \\
-\gamma_1 & = \frac{1}{2\sqrt{K}}  \\
-& \ \cdot \left(376 \lceil \log_2(2K-2) \rceil \cdot \left \lceil \sqrt{\frac{2}{\gamma}} \right \rceil \right)^{-\frac{1}{2} \lceil \log_2(2K-2) \rceil \cdot \left \lceil \sqrt{\frac{2}{\gamma}} \right \rceil}, \\
-\gamma_2 & = \frac{2^{s(s+1)r(K-1)} }{4\sqrt{K}(4K-5) 2^{K-1}} \\
-& \ \cdot \left(2^{s+1} r(K-1) (4s+2)^2 \right)^{-(s+1/2)r(K-1)} \; .
+%r & = 2 \left\lceil \frac{1}{4} \log_2(4K-3) \right\rceil + 1, \quad \quad s = \left \lceil \log_2(2/\gamma) \right \rceil, \\
+\gamma_1 = & \frac{ 
+  \left[
+    376 \lceil \log_2(2K-2) \rceil \cdot \left \lceil \sqrt{\frac{2}{\gamma}} \right \rceil 
+  \right]^{
+    \frac{-\lceil \log_2(2K-2) \rceil \cdot \left \lceil \sqrt{{2}/{\gamma}} \right \rceil}{2}
+  }
+}{2\sqrt{K}}, 
+\\
+\gamma_2 = & \frac{
+   \left(2^{s+1} r(K-1) (4s+2)^2 \right)^{-(s+1/2)r(K-1)} 
+}{4\sqrt{K}(4K-5) 2^{K-1}}
+\\
+&  \cdot 2^{s(s+1)r(K-1)}
+\; ,
 \end{align*}
 \endgroup
+where $r = 2 \left\lceil \frac{1}{4} \log_2(4K-3) \right\rceil + 1$ and $s = \left \lceil \log_2(2/\gamma) \right \rceil$.
 Then, the sequence of labeled examples transformed by $\phi$,
 namely $(\phi(x_1), y_1), (\phi(x_2), y_2), \dots,
 (\phi(x_T), y_T)$, is strongly linearly separable with margin $\gamma' =
@@ -84,7 +105,7 @@ Algorithm~\ref{algorithm:kernelized} with kernel function $k(x,x') =
 \begin{corollary}[Mistake upper bound]
 \label{corollary:weakly-separable-examples-mistake-upper-bound}
 Let $K$ be a positive integer and let $\gamma$ be a positive real number. If
-$(x_1, y_1), (x_2, y_2), \dots, (x_T, y_T) \in \B(0,1) \times \{1,2,\dots,K\}$
+$(x_1, y_1), (x_2, y_2), \dots, (x_T, y_T) \in \B(\zero,1) \times \{1,2,\dots,K\}$
 is a sequence of weakly separable labeled examples with margin $\gamma > 0$,
 then the expected number of mistakes made by Algorithm~\ref{algorithm:kernelized}
 with kernel $k(x,x') = \frac{1}{1 - \frac{1}{2}\ip{x}{x'}_{\R^d}}$
@@ -131,11 +152,11 @@ construction of one particular polynomial $p_i$.
 Since examples $(x_1,y_1), (x_2, y_2), \dots, (x_T,y_T)$ are weakly linearly separable,
 all examples from class $i$ lie in
 $$
-R_i^+ = \!\!\!\!\! \!\!\!\!\! \bigcap_{j \in \cbr{1,2,\dots,K} \setminus \cbr{i}} \cbr{x \in \B(0,1) ~:~ \ip{w_i^* - w_j^*}{x} \ge \gamma},
+R_i^+ = \!\!\!\!\! \!\!\!\!\! \bigcap_{j \in \cbr{1,2,\dots,K} \setminus \cbr{i}} \cbr{x \in \B(\zero,1) ~:~ \ip{w_i^* - w_j^*}{x} \ge \gamma},
 $$
 and all examples from the remaining classes lie in
 $$
-R_i^- = \!\!\!\!\! \!\!\!\!\! \bigcup_{j \in \cbr{1,2,\dots,K} \setminus \cbr{i}} \cbr{x \in \B(0,1) ~:~ \ip{w_i^* - w_j^*}{x} \le -\gamma}.
+R_i^- = \!\!\!\!\! \!\!\!\!\! \bigcup_{j \in \cbr{1,2,\dots,K} \setminus \cbr{i}} \cbr{x \in \B(\zero,1) ~:~ \ip{w_i^* - w_j^*}{x} \le -\gamma}.
 $$
 Therefore, to satisfy conditions~\eqref{equation:poly-pos-i}
 and~\eqref{equation:poly-neg-i}, it suffices to construct $p_i$ such that
@@ -150,7 +171,7 @@ According to the well known Stone-Weierstrass theorem~\citep[see
 e.g.][Section~10.10]{Davidson-Donsig-2010}, on a compact set, multivariate
 polynomials uniformly approximate any continuous function. Roughly speaking, the
 conditions \eqref{eqn:r-plus} and \eqref{eqn:r-minus} mean that $p_i$
-approximates on $\B(0,1)$ a scalar multiple of the indicator function of the
+approximates on $\B(\zero,1)$ a scalar multiple of the indicator function of the
 intersection of $K-1$ halfspaces $\bigcap_{j \in \cbr{1,2,\dots,K} \setminus
 \cbr{i}} \cbr{x: \ip{w_i^* - w_j^*}{x} \geq 0}$ while within margin $\gamma$ along
 the decision boundary, the polynomial is allowed to attain arbitrary values.
@@ -189,8 +210,8 @@ Let $v_1, v_2, \dots, v_m \in \R^d$ be vectors such that $\norm{v_1},
 \norm{v_2}, \dots, \norm{v_m} \le 1$. Let $\gamma \in (0,1)$. There exists a
 multivariate polynomial $p:\R^d \to \R$ such that
 \begin{enumerate}
-\item $p(x) \ge 1/2$ \\ for all $\displaystyle x \in R^+ = \bigcap_{i=1}^m \left\{ x \in \B(0,1) ~:~  \ip{v_i}{x} \ge \gamma \right\}$,
-\item $p(x) \le -1/2$ \\ for all $\displaystyle x \in R^- = \bigcup_{i=1}^m \left\{ x \in \B(0,1) ~:~  \ip{v_i}{x} \le - \gamma \right\}$,
+\item $p(x) \ge 1/2$ \\ for all $\displaystyle x \in R^+ = \bigcap_{i=1}^m \left\{ x \in \B(\zero,1) ~:~  \ip{v_i}{x} \ge \gamma \right\}$,
+\item $p(x) \le -1/2$ \\ for all $\displaystyle x \in R^- = \bigcup_{i=1}^m \left\{ x \in \B(\zero,1) ~:~  \ip{v_i}{x} \le - \gamma \right\}$,
 \item $\displaystyle \deg(p) = \left\lceil \log_2(2m) \right\rceil \cdot \left\lceil \sqrt{\frac{1}{\gamma}} \right\rceil$,
 \item $\displaystyle \norm{p} \le \left( 188 \left\lceil \log_2(2m) \right\rceil \cdot \left\lceil \sqrt{\frac{1}{\gamma}} \right\rceil \right)^{\frac{1}{2} \left\lceil \log_2(2m) \right\rceil \cdot \left\lceil \sqrt{\frac{1}{\gamma}} \right\rceil}$.
 \end{enumerate}
@@ -207,10 +228,10 @@ $$
 Then, there exists a multivariate polynomial $p:\R^d \to \R$ such that
 \begin{enumerate}
 \item $\displaystyle p(x) \ge 1/2$ \\
-for all $\displaystyle x \in R^+ = \bigcap_{i=1}^m \left\{ x \in \B(0,1) ~:~ \ip{v_i}{x} \ge \gamma \right\}$,
+for all $\displaystyle x \in R^+ = \bigcap_{i=1}^m \left\{ x \in \B(\zero,1) ~:~ \ip{v_i}{x} \ge \gamma \right\}$,
 
 \item $\displaystyle p(x) \le - 1/2$ \\
-for all $\displaystyle x \in R^- = \bigcup_{i=1}^m \left\{ x \in \B(0,1) ~:~ \ip{v_i}{x} \le - \gamma \right\}$,
+for all $\displaystyle x \in R^- = \bigcup_{i=1}^m \left\{ x \in \B(\zero,1) ~:~ \ip{v_i}{x} \le - \gamma \right\}$,
 
 \item $\deg(p) \le (2s+1) rm$,
 \item $\norm{p} \le (4m-1) 2^m \cdot \left(2^s rm (4s+2)^2 \right)^{(s+1/2)rm}$.
