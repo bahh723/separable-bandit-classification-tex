@@ -3,14 +3,12 @@
 
 We study the problem of \textsc{Online Multiclass Linear Classification with
 Bandit Feedback}~\citep{Kakade-Shalev-Shwartz-Tewari-2008}. The problem can be
-viewed as a repeated game between the learner and the adversary. At each
-timestep $t$, the adversary chooses a labeled example $(x_t, y_t)$ where the
-feature vector $x_t \in \R^d$ is revealed to the learner and the correct label
-$y_t$ is kept secret by the adversary. Upon receiving the feature vector $x_t$,
-the learner is asked to make a prediction $\widehat{y}_t$. Immediately after
-making its prediction, the learner receives feedback. In contrast with the
-standard full-information setting (where the feedback given is the correct label
-$y_t$), here the feedback is only a binary indicator of whether the prediction
+viewed as a repeated game between a learner and an adversary. At each
+timestep $t$, the adversary chooses a labeled example $(x_t, y_t)$ and reveals $x_t\in \R^d$ to the learner.  
+Upon receiving $x_t$, the learner makes a prediction $\widehat{y}_t$ and receives feedback. 
+In contrast to the
+standard full-information setting, where the feedback given is the correct label
+$y_t$, here the feedback is only a binary indicator of whether the prediction
 was correct or not. The protocol of the problem is formally stated below.
 
 \begin{protocol}[h]
@@ -41,11 +39,11 @@ stated in
 Definition~\ref{definition:weak-linear-separability}.
 The standard notion of multiclass linear
 separability~\citep{Crammer-Singer-2003} corresponds to the weak linear
-separability. For binary classification, the weak and strong separability are
-identical. However, they differ for multiclass classification with $K \ge 3$
-classes. For multiclass classification with $K$ classes, weak linear
-separability means that the examples from each class lie in an intersection of
-$K-1$ halfspaces and the examples outside of the class lie in the complement of
+separability. %For binary classification, the weak and strong separability are
+%identical. However, they differ for multiclass classification with $K \ge 3$
+%classes. 
+For multiclass classification with $K$ classes, weak linear
+separability requires that all examples from the same class lie in an intersection of $K-1$ halfspaces and all other examples lie in the complement of
 the intersection of the halfspaces. Strong linear separability means that
 examples from each class are separated from the remaining examples by a
 \emph{single} hyperplane.
@@ -58,13 +56,9 @@ Perceptron} algorithm makes at most $\lfloor 2(R/\gamma)^2 \rfloor$ mistakes.
 It is also known that any (possibly randomized) algorithm must
 make $\frac{1}{2} \left\lfloor (R/\gamma)^2 \right \rfloor$ mistakes in the
 worst case.
-These results guarantee that the \textsc{Multiclass Perceptron} achieves an
-information-theoretically optimal mistake upper bound, meanwhile it has
-low time and memory complexities.%
-%The guarantees provided by \textsc{Multiclass Perceptron} is very satisfying,
-%since it achieves an information-theoretically optimal mistake upper bound,
-%while having low time and memory complexities.
-%%%%%
+The \textsc{Multiclass Perceptron} achieves an
+information-theoretically optimal mistake bound, while being
+computationally and memory efficient.
 ~\footnote{
 %%%%%
 %These are folklore results. 
