@@ -56,7 +56,7 @@ base hypothesis as a separate feature.
 %However, most of these works achieve a
 %regret of order $\widetilde{O}(\sqrt{T})$ to $O(T^{3/4})$.  
 In the weakly linearly separable setting, however, 
-all these algorithms guarantee a mistake 
+these algorithms can only guarantee a mistake 
 bound of ${O}(\sqrt{T})$ at best.
 %One exception is the \textsc{Newtron} algorithm, which---with
 %an appropriate setting of parameter $\alpha$---can achieve a $O(\ln T)$
@@ -97,27 +97,25 @@ bound of ${O}(\sqrt{T})$ at best.
 %parameter. In addition, it gives an adaptive algorithm with a $O(T^{3/4})$
 %mistake bound.
 
-There is a large body of literature on contextual bandit
-learning~\citep{Auer-2003, Langford-Zhang-2008}. In this problem, the learner is
-given a policy class $\Pi$, and at each timestep $t$, an example $x_t$ is shown,
-with an associated cost vector $c_t$ hidden. The learner then takes an action
-$\widehat{y}_t$, and observes the incurred cost $c_t(\widehat{y}_t)$. The goal
-of the learner is to minimize its regret $\sum_{t=1}^T c_t(\widehat{y}_t) -
-\min_{\pi \in \Pi} \sum_{t=1}^T c_t(\pi(x_t))$. The bandit multiclass learning
-problem can be seen as a special case, where the cost $c_t(i)$ is the
-classification error $\indicator{i \neq y_t}$, and the policy class $\Pi$ is the
-set of linear classifiers $\cbr{x \mapsto \argmax_y (Wx)_y: W \in \R^{k \times
-d}}$. A series of papers in the contextual bandits learning literature assume
-access to a policy optimization oracle that returns a policy in $\Pi$ that
-minimizes its empirical cost on any set of cost-sensitive examples, and
-construct algorithms that call the oracle a polynomial number of times%
-~\citep{Dudik-Hsu-Kale-Karampatziakis-Langford-Reyzin-Zhang-2011,
+The problem considered here is a special case of the
+contextual bandit problem~\citep{Auer-2003, Langford-Zhang-2008}. 
+In this general problem, there is a hidden cost vector $c_t$ associated with every prediction in round $t$.  Upon receiving $x_t$ and predicting $\widehat{y}_t \in \{1,\ldots,K\}$, the learner gets to observe the incurred cost $c_t(\widehat{y}_t)$.  
+The goal of the learner is to minimize its regret with respect to the best predictor in some predefined policy class $\Pi$, given by $\sum_{t=1}^T c_t(\widehat{y}_t) -
+\min_{\pi \in \Pi} \sum_{t=1}^T c_t(\pi(x_t))$.
+Bandit multiclass learning is a special case
+where the cost $c_t(i)$ is the classification error $\indicator{i \neq y_t}$ and 
+the policy class is the set of linear classifiers $\cbr{x \mapsto \argmax_y (Wx)_y: W \in \R^{k \times d}}$.
+There has been significant progress on the general contextual bandit problem
+assuming access to an optimization oracle that returns a policy in $\Pi$ with the smallest total cost on any given set of cost-sensitive examples~\citep{Dudik-Hsu-Kale-Karampatziakis-Langford-Reyzin-Zhang-2011,
 Agarwal-Hsu-Kale-Langford-Li-Schapire-2014, Rakhlin-Sridharan-2016,
 Syrgkanis-Krishnamurthy-Schapire-2016,
-Syrgkanis-Luo-Krishnamurthy-Schapire-2016}. However, these algorithms are not
-truly computationally efficient in our setting, as it is NP-hard in general to
-find a linear classifier that minimizes the empirical cost over a set of
-examples~\citep{Arora-Babai-Stern-Sweedyk-1997}.
+Syrgkanis-Luo-Krishnamurthy-Schapire-2016}.
+While solving a more general problem without making assumptions on the structure of the cost vector $c_t$ or the policy class, these results assume that $x_t$ vectors or $(x_t,c_t)$ pairs are generated i.i.d. and that such an oracle abstracting efficient search through $\Pi$ is available---neither of which we assume here.
+
+%However, these algorithms are not
+%truly computationally efficient in our setting, as it is NP-hard in general to
+%find a linear classifier that minimizes the empirical cost over a set of
+%examples~\citep{Arora-Babai-Stern-Sweedyk-1997}.
 
 Recently, \citet{Foster-Krishnamurthy-2018} developed a rich theory of
 contextual bandits with surrogate losses, focusing on regrets of the form

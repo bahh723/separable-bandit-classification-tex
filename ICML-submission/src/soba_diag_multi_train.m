@@ -1,8 +1,8 @@
-function model = k_banditron_multi_train(X,Y,model)
-% BANDITRON_MULTI_TRAIN Banditron algorithm
+function model = soba_diag_multi_train(X,Y,model)
+% SOBA_MULTI_TRAIN Banditron algorithm
 %
-%    MODEL = BANDITRON_MULTI_TRAIN(X,Y,MODEL) trains a multiclass
-%    classifier according to the Banditron algorithm.
+%    MODEL = SOBA_MULTI_TRAIN(X,Y,MODEL) trains a multiclass
+%    classifier using SOBA.
 %
 %    Additional parameters:
 %    - model.n_cla is the number of classes.
@@ -39,43 +39,44 @@ function model = k_banditron_multi_train(X,Y,model)
 %    Contact the author: francesco [at] orabona.com
 
 n = length(Y);   % number of training samples
-
-if isfield(model,'iter')==0
-    model.iter = 0;
-    %model.w = zeros(size(X,1),model.n_cla);
-    model.beta_list= cell(model.n_cla, 1); 
-    model.SV_list=cell(model.n_cla, 1); 
-    model.errTot = zeros(numel(Y),1);
-    model.numSV = zeros(numel(Y),1);
-    model.aer = zeros(numel(Y),1);
-    model.pred = zeros(model.n_cla,numel(Y));
-    model.dim = size(X,1);
-end
-
-for j=1:model.n_cla
-    model.beta_list{j} = [];
-    model.numSV_list{j} = [];
-    model.SV_list{j} = zeros(model.dim,0);
-end
+%rand('state',0);
 
 if isfield(model,'gamma')==0
     model.gamma = .01;
 end
 
+if isfield(model,'a')==0
+    %model.a = 1/model.gamma;
+    %model.a = sqrt(n);
+    model.a = 1;
+end
+
+if isfield(model,'iter')==0
+    model.iter = 0;
+    model.w = zeros(model.n_cla,size(X,1));
+    model.errTot=zeros(numel(Y,1));
+    model.numSV = zeros(numel(Y),1);
+    model.aer = zeros(numel(Y),1);
+    model.pred = zeros(model.n_cla,numel(Y));
+    
+    %model.invA=eye(size(X,1)*model.n_cla)/model.a;
+    model.A=ones(size(X,1)*model.n_cla,1)*model.a;
+    model.theta = zeros(model.n_cla,size(X,1));
+    model.sum_q=0;
+    model.gamma_rate = zeros(numel(Y),1);
+    model.mupd=0;
+    model.sum_m=0;
+end
+
 for i=1:n
     model.iter = model.iter+1;
     
-    Xi=X(:,i);
-    % val_f = model.w'*Xi;
-    val_f = zeros(1, model.n_cla); 
-    for j=1:model.n_cla
-        if numel(model.SV_list{j})>0
-           subK_f = feval(model.ker, model.SV_list{j}, X(:,i), model.kerparam); 
-           val_f(j) = model.beta_list{j} * subK_f; 
-        else
-           val_f(j) = 0;
-        end
-    end
+    %model.gamma=min(sqrt(model.n_cla*(1+model.sum_q)/model.iter),1);
+    %model.gamma=0.01;
+    %model.gamma=1/sqrt(model.iter);
+    model.gamma_rate(model.iter)=model.gamma;
+    
+    val_f = model.w*X(:,i);
     
     Yi = Y(i);
     
@@ -93,36 +94,47 @@ for i=1:n
     model.aer(model.iter) = model.errTot(model.iter)/model.iter;
     model.pred(:,model.iter) = val_f;
 
-    if size(model.SV_list{y_hat},2) >= model.maxSV
-         mn_idx = ceil(model.maxSV*rand); 
-    elseif numel(model.SV_list{y_hat})==0
-         mn_idx = 1; 
-    else
-         mn_idx = size(model.SV_list{y_hat},2)+1;
-    end
-    model.beta_list{y_hat}(mn_idx) = -1; 
-    model.SV_list{y_hat}(:,mn_idx) = X(:,i); 
-    
-    % model.w(:,y_hat) = model.w(:,y_hat)-Xi;
-    
     if y_tilde==Yi
-        %model.w(:,Yi) = model.w(:,Yi)+Xi/Prob(y_tilde);
-        if size(model.SV_list{Yi},2) >= model.maxSV
-            mn_idx = ceil(model.maxSV*rand); 
-        elseif numel(model.SV_list{Yi})==0
-            mn_idx = 1; 
-        else
-            mn_idx = size(model.SV_list{Yi},2)+1;
+      if y_tilde~=y_hat
+        tmp = zeros(model.n_cla,size(X,1));
+        tmp(y_hat,:) = -1/Prob(y_tilde)*X(:,i)';
+        tmp(Yi,:) = 1/Prob(y_tilde)*X(:,i)';
+        model.theta=model.theta+tmp;
+        res=sqrt(Prob(y_tilde))*tmp(:)'*(tmp(:)./model.A);
+
+        diff=val_f(y_hat)-mx_f; 
+        m=(diff^2/(1+res)+2*diff/(1+res))/Prob(y_tilde);
+        model.sum_q=model.sum_q+res/(1+res);
+
+        model.A=model.A+Prob(y_tilde)*tmp(:).^2;
+        model.w=reshape(model.theta(:)./model.A,model.n_cla,size(X,1));
+        model.sum_q=model.sum_q+res/(1+res);
+      else
+        val_f(y_tilde)=-inf;
+        [mx_f2,y_hat2] = max(val_f);
+        tmp = zeros(model.n_cla,size(X,1));
+        tmp(y_hat2,:) = -1/Prob(y_tilde)*X(:,i)';
+        tmp(Yi,:) = 1/Prob(y_tilde)*X(:,i)';
+        res=Prob(y_tilde)*(tmp(:)'*(tmp(:)./model.A));
+        diff=mx_f2-mx_f; 
+        m=(diff^2/(1+res)+2*diff/(1+res))/Prob(y_tilde);
+        if model.sum_m+m>=0
+        %if m>=0
+          model.theta=model.theta+tmp;
+          model.A=model.A+Prob(y_tilde)*tmp(:).^2;
+          model.w=reshape(model.theta(:)./model.A,model.n_cla,size(X,1));
+          model.sum_m=model.sum_m+m;
+          model.sum_q=model.sum_q+res/(1+res);
+          model.mupd=model.mupd+1;
         end
-        model.beta_list{Yi}(mn_idx) = 1/Prob(y_tilde); 
-        model.SV_list{Yi}(:,mn_idx) = X(:,i);
+      end
     end
     
     %model.numSV(model.iter) = numel(model.S);
-    
+
     if mod(i,model.step)==0
-      fprintf('#%.0f AER:%5.2f\n', ...
-            ceil(i/1000),model.aer(model.iter)*100);
+      fprintf('#%.0f AER:%5.2f Log term:%f MarginUpdates:%.0f\n', ...
+            ceil(i/1000),model.aer(model.iter)*100, model.sum_q, model.mupd);
             %fflush(stdout);
     end
 end
