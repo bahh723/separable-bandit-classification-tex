@@ -47,25 +47,25 @@ quasipolynomial in $K$ (for constant $\gamma$) can be obtained.
 %~\cite{Kakade-Shalev-Shwartz-Tewari-2008}, where in this paper we provide a
 %positive answer. $O(k^2 d \ln(\frac{d}{\gamma^2}))$
 
-Many works consider bandit multiclass classification in the general setting,
-where the examples are not necessarily separable by some linear
-classifier~\cite{Abernethy-Rakhlin-2009, Wang-Jin-Valizadegan-2010,
+The general problem of linear bandit multiclass learning has received considerable attention~\cite{Abernethy-Rakhlin-2009, Wang-Jin-Valizadegan-2010,
 Crammer-Gentile-2013, Hazan-Kale-2011, Beygelzimer-Orabona-Zhang-2017,
-Foster-Kale-Luo-Mohri-Sridharan-2018}. In addition, \citet{Chen-Lin-Lu-2014,
+Foster-Kale-Luo-Mohri-Sridharan-2018}. \citet{Chen-Lin-Lu-2014,
 Zhang-Jung-Tewari-2018} study online bandit multiclass boosting under bandit
 feedback, where one can view boosting as linear classification by treating each
-base hypothesis as a separate feature. However, most of these works achieve a
-regret of order $\widetilde{O}(\sqrt{T})$ to $O(T^{3/4})$. In the weakly
-linearly separable setting, these algorithms at best guarantees a mistake upper
-bound of $\widetilde{O}(\sqrt{T})$, which is undesirable for problems with a
-long time horizon. One exception is the \textsc{Newtron} algorithm, where with
-appropriate settings of parameter $\alpha$, it is able to achieve a $O(\ln T)$
-regret against the $\alpha$-logistic loss. However, as argued in
-~\citep[][Appendix D]{Beygelzimer-Orabona-Zhang-2017}, if the setting of
-$\alpha$ makes the regret bound $O(\sqrt{T})$, the $\alpha$-logistic loss of the
-best linear predictor would be $\Omega(T^{3/4})$. Therefore, \textsc{Newtron} at
-best guarantees a mistake upper bound of $O(\sqrt{T})$ in the weakly linearly
-separable setting.
+base hypothesis as a separate feature.  
+%However, most of these works achieve a
+%regret of order $\widetilde{O}(\sqrt{T})$ to $O(T^{3/4})$.  
+In the weakly linearly separable setting, however, 
+all these algorithms guarantee a mistake 
+bound of ${O}(\sqrt{T})$ at best.
+%One exception is the \textsc{Newtron} algorithm, which---with
+%an appropriate setting of parameter $\alpha$---can achieve a $O(\ln T)$
+%regret against the $\alpha$-logistic loss. However, as argued in
+%~\citep[][Appendix D]{Beygelzimer-Orabona-Zhang-2017}, if the setting of
+%$\alpha$ makes the regret bound $O(\sqrt{T})$, the $\alpha$-logistic loss of the
+%best linear predictor would be $\Omega(T^{3/4})$. Therefore, \textsc{Newtron} at
+%best guarantees a mistake upper bound of $O(\sqrt{T})$ in the weakly linearly
+%separable setting.
 
 %\citet{Abernethy-Rakhlin-2009} poses the open problem of whether one can design
 %an efficient algorithm to get a $O(\sqrt{T})$ regret against some reasonable
@@ -97,8 +97,8 @@ separable setting.
 %parameter. In addition, it gives an adaptive algorithm with a $O(T^{3/4})$
 %mistake bound.
 
-There is a large body of literature on the contextual bandits
-problem~\citep{Auer-2003, Langford-Zhang-2008}. In this problem, the learner is
+There is a large body of literature on contextual bandit
+learning~\citep{Auer-2003, Langford-Zhang-2008}. In this problem, the learner is
 given a policy class $\Pi$, and at each timestep $t$, an example $x_t$ is shown,
 with an associated cost vector $c_t$ hidden. The learner then takes an action
 $\widehat{y}_t$, and observes the incurred cost $c_t(\widehat{y}_t)$. The goal
@@ -107,7 +107,7 @@ of the learner is to minimize its regret $\sum_{t=1}^T c_t(\widehat{y}_t) -
 problem can be seen as a special case, where the cost $c_t(i)$ is the
 classification error $\indicator{i \neq y_t}$, and the policy class $\Pi$ is the
 set of linear classifiers $\cbr{x \mapsto \argmax_y (Wx)_y: W \in \R^{k \times
-d}}$. A series of works in the contextual bandits learning literature assume
+d}}$. A series of papers in the contextual bandits learning literature assume
 access to a policy optimization oracle that returns a policy in $\Pi$ that
 minimizes its empirical cost on any set of cost-sensitive examples, and
 construct algorithms that call the oracle a polynomial number of times%

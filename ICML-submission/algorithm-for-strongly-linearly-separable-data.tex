@@ -12,15 +12,12 @@ supplementary material.
 
 The idea behind
 Algorithm~\ref{algorithm:algorithm-for-strongly-linearly-separable-examples} is
-to use $K$ copies of the \textsc{Binary Perceptron} algorithm; see e.g.
-\citet[Section 3.3.1]{Shalev-Shwartz-2012}. Each copy corresponds to one of the
-classes. At each time step $t$, upon seeing example $x_t$, copy $i$ makes a
-binary prediction on whether $x_t$ belongs to class $i$ or not. If at least one
-copy makes a positive prediction, the algorithm chooses its prediction as one of
-the classes corresponding to a positive prediction. If all copies make negative
-predictions, the algorithm makes a prediction uniformly at random from
+to use $K$ copies of the \textsc{Binary Perceptron} algorithm, one copy per class; see e.g.
+\citet[Section 3.3.1]{Shalev-Shwartz-2012}.
+Upon seeing each example $x_t$, copy $i$ predicts 
+whether or not $x_t$ belongs to class $i$.
+Multiclass predictions are done by evaluating all $K$ binary predictors and outputting any class with a positive prediction.  If all binary predictions are negative, the algorithm chooses a prediction a prediction uniformly at random from
 $\cbr{1,\ldots,K}$.
-
 
 %\begin{algorithm}[h]
 %\caption{\textsc{Bandit Algorithm for Strongly Linearly Separable Examples}
@@ -129,6 +126,7 @@ linearly separable with margin $\gamma$ and satisfy $\norm{x_1}, \norm{x_2},
 \end{theorem}
 
 \paragraph{Remark.}
+\citet{Daniely-Helbertal-2013} provide a lower bound under the assumption of weak linear separability, which does not immediately imply a lower bound under the stronger notion.
 If $\gamma \le R$ then, irrespective of any other conditions on $K$, $R$, and
 $\gamma$, a trivial lower bound on the expected number of mistakes of any
 randomized algorithm is $(K-1)/2$. To see this, note that the adversary can
@@ -136,9 +134,9 @@ choose an example $(R e_1, y)$, where $e_1$ is some arbitrary unit vector in $V$
 and $y$ is a label chosen uniformly from $\cbr{1,2,\dots,K}$, and show this
 example $K$ times. The sequence of examples trivially satisfies the strong
 linear separability condition, and the $(K-1)/2$ expected mistake lower bound
-follows from ~\citep[][Claim 2]{Daniely-Helbertal-2013}. However, it is unclear
-if the trivial lower bound is the best possible if $K$ is large, i.e.,
-$\omega((R/\gamma)^2)$. We leave this as an open problem.
+follows from ~\citep[][Claim 2]{Daniely-Helbertal-2013}. %However, it is unclear
+%if the trivial lower bound is the best possible if $K$ is large, i.e.,
+%$\omega((R/\gamma)^2)$. We leave this as an open problem.
 
 Algorithm~\ref{algorithm:algorithm-for-strongly-linearly-separable-examples} can
 be extended to nonlinear classification using \emph{positive definite kernels}
