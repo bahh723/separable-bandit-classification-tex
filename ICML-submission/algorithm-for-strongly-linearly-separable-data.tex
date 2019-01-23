@@ -121,11 +121,11 @@ supplementary material.
 Let $\gamma$ be a positive real number, $R$ be a non-negative real number and
 let $K \le (R/\gamma)^2$ be a positive integer. Any (possibly randomized)
 algorithm makes at least $((K-1)/2)\left\lfloor (R/\gamma)^2/4 \right\rfloor$
-mistakes in expectation on some \textsc{Online Multiclass Classification with
-Bandit Feedback} problem with $K$ classes and labeled examples $(x_1, y_1),
+mistakes in expectation on some sequence of labeled examples $(x_1, y_1),
 (x_2, y_2), \dots, (x_T, y_T) \in V \times \{1,2,\dots,K\}$ for some inner
-product space $(V, \ip{\cdot}{\cdot})$ that are strongly linearly separable with
-margin $\gamma$ and satisfy $\norm{x_1}, \norm{x_2}, \dots, \norm{x_T} \le R$.
+product space $(V, \ip{\cdot}{\cdot})$ such that the examples are strongly
+linearly separable with margin $\gamma$ and satisfy $\norm{x_1}, \norm{x_2},
+\dots, \norm{x_T} \le R$.
 \end{theorem}
 
 \paragraph{Remark.}
@@ -143,13 +143,15 @@ $\omega((R/\gamma)^2)$. We leave this as an open problem.
 Algorithm~\ref{algorithm:algorithm-for-strongly-linearly-separable-examples} can
 be extended to nonlinear classification using \emph{positive definite kernels}
 (or \emph{kernels}, for short), which are functions of the form $k: X \times X
-\to V$ for some set $X$ and inner product space $(V, \ip{\cdot}{\cdot})$ such
-that the matrix $\left(k(x_i,x_j)\right)_{i,j=1}^m$ is a symmetric positive
-semidefinite for any positive integer $m$ and $x_1, x_2, \dots, x_m \in X$
-\citep[Definition 2.5]{Scholkopf-Smola-2002}. As opposed to explicitly
-maintaining the weight vector for each class, the algorithm maintains the set of
-example-scalar pairs corresponding to the updates of the non-kernelized
-algorithm. As a direct consequence of
+\to \R$ for some set $X$ such that the matrix
+$\left(k(x_i,x_j)\right)_{i,j=1}^m$ is a symmetric positive semidefinite for any
+positive integer $m$ and $x_1, x_2, \dots, x_m \in X$ \citep[Definition
+2.5]{Scholkopf-Smola-2002}.\footnote{Every kernel has an associated feature map
+$\phi:X \to V$ for some inner product space $(V,\ip{\cdot}{\cdot})$ such that
+$k(x,x') = \ip{\phi(x)}{\phi(x')}$.} As opposed to explicitly maintaining the
+weight vector for each class, the algorithm maintains the set of example-scalar
+pairs corresponding to the updates of the non-kernelized algorithm. As a direct
+consequence of
 Theorem~\ref{theorem:strongly-separable-examples-mistake-upper-bound} we get a
 mistake bound for the kernelized algorithm.
 
