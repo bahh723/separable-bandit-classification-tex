@@ -1,28 +1,22 @@
 \section{Proofs of Theorems~\ref{theorem:strongly-separable-examples-mistake-upper-bound} and \ref{theorem:strongly-separable-examples-mistake-lower-bound}}
 \label{section:proofs-for-stringly-separable-examples}
 
-%$\norm{x_1}, \norm{x_2}, \dots, \norm{x_T} \le R$
-%$A
-%= \sum_{t ~:~ S_t \neq \emptyset} z_t$
-%B = \sum_{t ~:~ S_t = \emptyset} z_t
-%\sum_{t ~:~ S_t = \emptyset}
 \begin{proof}[Proof of \autoref{theorem:strongly-separable-examples-mistake-upper-bound}]
-Let $M = \sum_{t=1}^T z_t$ be the number of
-mistakes Algorithm~\ref{algorithm:algorithm-for-strongly-linearly-separable-examples} makes.
-Let $A = \sum_{t=1}^T \one[S_t \neq \emptyset] z_t$ be the number of mistakes in the rounds
-when $S_t \neq \emptyset$, i.e. the number of rounds line~\ref{line:neg-update} is
-executed.
-In addition, let $B = \sum_{t=1}^T \one[S_t = \emptyset] z_t$ be the
-number of mistakes in the rounds when $S_t = \emptyset$.
-It can be easily seen that $M = A + B$.
+Let $M = \sum_{t=1}^T z_t$ be the number of mistakes
+Algorithm~\ref{algorithm:algorithm-for-strongly-linearly-separable-examples}
+makes. Let $A = \sum_{t=1}^T \indicator{S_t \neq \emptyset} z_t$ be the number of
+mistakes in the rounds when $S_t \neq \emptyset$, i.e. the number of rounds
+line~\ref{line:neg-update} is executed. In addition, let $B = \sum_{t=1}^T
+\indicator{S_t = \emptyset} z_t$ be the number of mistakes in the rounds when $S_t =
+\emptyset$. It can be easily seen that $M = A + B$.
 
-Let $C = \sum_{t=1}^T \one[S_t = \emptyset](1 - z_t)$ be the number of rounds
-line~\ref{line:pos-update} gets executed. Let
-$U = \sum_{t=1}^T (\one[S_t \neq \emptyset] z_t + \one[S_t = \emptyset](1 - z_t))$
-be the number of rounds line~\ref{line:pos-update} or~\ref{line:neg-update}
-gets executed. In other words, $U$ is the number of times the $K$-tuple of
-vectors $(w_1^{(t)}, w_2^{(t)}, \dots, w_K^{(t)})$ gets updated. It can be
-easily seen that $U = A + C$.
+Let $C = \sum_{t=1}^T \indicator{S_t = \emptyset}(1 - z_t)$ be the number of rounds
+line~\ref{line:pos-update} gets executed. Let $U = \sum_{t=1}^T (\indicator{S_t \neq
+\emptyset} z_t + \indicator{S_t = \emptyset}(1 - z_t))$ be the number of rounds
+line~\ref{line:pos-update} or~\ref{line:neg-update} gets executed. In other
+words, $U$ is the number of times the $K$-tuple of vectors $(w_1^{(t)},
+w_2^{(t)}, \dots, w_K^{(t)})$ gets updated. It can be easily seen that $U = A +
+C$.
 
 The key observation is that $\Exp[B] = (K-1) \Exp[C]$.
 To see this, note that if $S_t = \emptyset$, there is $1/K$ probability that the algorithm
@@ -90,7 +84,7 @@ Similarly, if there is an update in round $t$, we have
 \end{align*}
 \endgroup
 where the last inequality follows from a case analysis on $z_t$ and
-Definition~\ref{definition:weak-linear-separability}: if $z_t = 0$, then
+Definition~\ref{definition:linear-separability}: if $z_t = 0$, then
 $\widehat y_t = y_t$, by Equation~\eqref{equation:strong-linear-separability-2},
 we have that $\ip{w_{\widehat y_t}^*}{x_t} \geq \frac \gamma 2$; if $z_t = 1$,
 then $\widehat y_t \neq y_t$, by
@@ -139,18 +133,16 @@ $$
 (x_{(j-1)(K-1) + h}, y_{(j-1)(K-1) + h}) = (v_j, \ell_j)
 $$
 
-
-With probability one, the norm of each example is exactly $R$.
-We show that with probability
-one, the examples are strongly separable with margin $\gamma$. To see
-that, consider $w_1^*, w_2^*, \dots, w_K^* \in V$ defined by
+The norm of each example is exactly $R$. The examples are strongly separable
+with margin $\gamma$. To see that, consider $w_1^*, w_2^*, \dots, w_K^* \in V$
+defined by
 $$
 w_i^* = \sqrt{2} \frac{\gamma}{R} \left( \sum_{j ~:~ \ell_j = i} e_j \right) - \frac{\sqrt{2}}2 \frac{\gamma}{R} e_{M+1}
 $$
 for $i=1,2,\dots,K$.
 
-for $i \in \{1,2,\dots,K\}$ and $j \in
-\{1,2,\dots,M\}$, we consider the inner product of $w_i^*$ and $v_j$.
+For $i \in \{1,2,\dots,K\}$ and $j \in
+\{1,2,\dots,M\}$, consider the inner product of $w_i^*$ and $v_j$.
 If $i = \ell_j$, $\ip{w_i^*}{v_j} = \gamma - \frac \gamma 2 = \frac \gamma 2$;
 otherwise $i \neq \ell_j$, in which case
 $\ip{w_i^*}{v_j} = 0 - \frac \gamma 2 = - \frac \gamma 2$.
@@ -171,40 +163,22 @@ It remains to lower bound the expected number of mistakes of $\calA$. For
 any $j \in \{1,2,\dots,M\}$, consider the expected number of mistakes the
 algorithm makes in rounds $(K-1)(j-1) + 1, (K-1)(j-1) + 2, \dots, (K-1)j$.
 
-Define a filtration $\cbr{\calB_j}_{j=0}^M$,
-where $\calB_j = \sigma((x_1, y_1, \hat{y}_1), \ldots, (x_{(K-1)j}, y_{(K-1)j}, \hat{y}_{(K-1)j}))$
-for every $j$ in $\{1,2,\dots,M\}$.
-By Claim 2 of~\citet{Daniely-Helbertal-2013}, as $\ell_j$
-is chosen uniformly from $\cbr{1,\dots,K}$ and independent of $\calB_{j-1}$ and $\calA$'s
-randomness,
+Define a filtration of $\sigma$-algebras $\cbr{\calB_j}_{j=0}^M$, where $\calB_j
+= \sigma((x_1, y_1, \hat{y}_1), \ldots, (x_{(K-1)j}, y_{(K-1)j},
+\hat{y}_{(K-1)j}))$ for every $j$ in $\{1,2,\dots,M\}$. By Claim 2
+of~\citet{Daniely-Helbertal-2013}, as $\ell_j$ is chosen uniformly from
+$\cbr{1,\dots,K}$ and independent of $\calB_{j-1}$ and $\calA$'s randomness,
 $$
-\Exp \sbr{ \sum_{t=(K-1)(j-1) + 1}^{(K-1)j} z_t ~\Bigg|~ \calB_{j-1} } \geq \frac{K-1}2 \; .
+\Exp \sbr{ \sum_{t=(K-1)(j-1) + 1}^{(K-1)j} z_t ~\Bigg|~ \calB_{j-1} } \ge \frac{K-1}{2} \; .
 $$
 This implies that
 $$
-\Exp \sbr{ \sum_{t=(K-1)(j-1) + 1}^{(K-1)j} z_t } \ge \frac{K-1}2 \; .
+\Exp \sbr{ \sum_{t=(K-1)(j-1) + 1}^{(K-1)j} z_t } \ge \frac{K-1}{2} \; .
 $$
 Summing over all $j$ in $\{1,2,\dots,M\}$,
 $$
 \Exp \sbr{ \sum_{t=1}^{(K-1)M} z_t} \geq \frac{K-1}2 \cdot M = \frac{K-1}2 \left\lfloor \frac 1 4 (R/\gamma)^2 \right\rfloor \; .
 $$
-
-%In these rounds,
-%the algorithm is guessing the label $\ell_j$. Since $\ell_j$ is chosen uniformly
-%at random from the set $\{1,2,\dots,K\}$ and feedback is only binary, the
-%expected number of mistakes the algorithm makes in these rounds is at least
-%$\frac{K-1}{2}$. Altogether, the algorithm makes at least $\frac{K-1}{2} M$
-%mistakes in expectation.
-
-%\chicheng{I think this part need to be formalized, by directly using
-%~\cite{Daniely-Helbertal-2013}, Claim 2.}
-%Can we assume without loss of generality
-%that a deterministic prediction algorithm will have a smaller expected cost?
-%If so, define $F(k)$ be the number of mistake that will be made by the algorithm,
-%if the adversary commits to a label uniformly at random from $\cbr{1,2,\ldots,k}$,
-%and the guessing of the label lasts for $k$ rounds.
-%we can construct a recurrence of $F$: $F(k) = F(k-1) + \frac{k-1}{k}$, and $F(1) = 0$.
-%Therefore, $F(K) = \Omega(K)$.
 
 Finally, since strong separability and norm condition hold with probability one,
 there exists a particular (i.e. deterministic) sequence of examples for which

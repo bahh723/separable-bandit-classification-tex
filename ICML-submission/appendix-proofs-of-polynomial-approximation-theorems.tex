@@ -327,18 +327,19 @@ Then,
 \begin{align*}
 \norm{g_i}^2
 & = \norm{ \sum_{j=0}^s c_j (f_i)^j }^2 \\
-& \le (s + 1) \sum_{j=0}^s \norm{c_j (f_i)^j}^2 \qquad \text{(by~part 3 of \autoref{lemma:properties-of-norm-of-polynomials})} \\
+& \le (s + 1) \sum_{j=0}^s \norm{c_j (f_i)^j}^2 \quad \text{(by~part 3 of \autoref{lemma:properties-of-norm-of-polynomials})} \\
 & = (s + 1) \sum_{j=0}^s (c_j)^2 \norm{(f_i)^j}^2 \\
-& \le (s + 1) \sum_{j=0}^s (c_j)^2 j^j \norm{f_i}^{2j} \qquad \text{(by~part 2 of \autoref{lemma:properties-of-norm-of-polynomials})} \\
+& \le (s + 1) \sum_{j=0}^s (c_j)^2 j^j \norm{f_i}^{2j} \quad \text{(by~part 2 of \autoref{lemma:properties-of-norm-of-polynomials})} \\
 & \le (s + 1) \sum_{j=0}^s (c_j)^2 j^j 2^{2j} \\
 & \le (s + 1) s^s 2^{2s} \sum_{j=0}^s (c_j)^2 \\
 & = (s + 1) s^s 2^{2s} \norm{T_s}^2 \\
-& = (s + 1) s^s 2^{2s} (1 + \sqrt{2})^{2s} \qquad \text{(by~part 7 of \autoref{proposition:properties-of-chebyshev-polynomials})} \\
+& = (s + 1) s^s 2^{2s} (1 + \sqrt{2})^{2s} \quad \text{(by~part 7 of \autoref{proposition:properties-of-chebyshev-polynomials})} \\
 & = (s + 1) \left(4(1+\sqrt{2})^2 s \right)^s \\
-& \le \left(8(1+\sqrt{2})^2 s \right)^s \quad \text{(since $s+1 \le 2^s$ for any integer $s \ge 0$)} \\
+& \le \left(8(1+\sqrt{2})^2 s \right)^s \\
 & \le \left(47 s \right)^s \; .
 \end{align*}
 \endgroup
+where we used that $s+1 \le 2^s$ for any non-negative integer $s$.
 Finally,
 \begin{align*}
 \norm{p}

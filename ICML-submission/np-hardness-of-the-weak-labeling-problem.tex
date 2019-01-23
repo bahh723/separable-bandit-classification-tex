@@ -1,4 +1,5 @@
 \section{NP-hardness of the weak labeling problem}
+\label{section:np-hardness-of-weak-labeling-problem}
 
 Any algorithm for the bandit setting collects information in the form of so
 called \emph{strongly labeled} and \emph{weakly labeled} examples.
@@ -17,9 +18,9 @@ Clearly, the problem is at least as hard as the decision version of the problem
 where the goal is to determine if such vectors and labeling exist. We show that
 this problem is NP-complete.
 
-We use for $1,2,\dots,K$ for strong labels and $\overline{1}, \overline{2},
-\dots, \overline{K}$ for weak labels. We adopt the convention that
-$\overline{\overline{i}} = i$ for any positive integer $i$. Formally, the weak
+We use symbols $1,2,\dots,K$ for strong labels and symbols $\overline{1},
+\overline{2}, \dots, \overline{K}$ for weak labels. We adopt the convention that
+$\overline{\overline{i}} = i$ for any symbol $i$. Formally, the weak
 labeling problem can be described as below:
 \begin{figure}[H]
 \begin{framed}
@@ -39,7 +40,7 @@ labeling problem can be described as below:
 \end{figure}
 
 The hardness proof is based on a reduction from the set splitting problem, which
-is proven to be NP-complete by Lovasz \cite{Garey-Johnson-1979}, to our weak
+is proven to be NP-complete by Lov\'asz \cite{Garey-Johnson-1979}, to our weak
 labeling problem. The reduction is adapted from \cite{Blum-Rivest-1993}.
 \begin{figure}[H]
 \begin{framed}
@@ -119,7 +120,8 @@ therefore
 \ip{w_1}{x}
 & = a_{i'}x_{i'} + \sum_{i\in \{1,2,\dots,N\} \setminus \{i'\}} a_ix_i - \frac{1}{2} \\
 & \le -N + (N-1)-\frac{1}{2} \\
-& < 0 = \ip{w_3}{x} \; .
+& < 0  \\
+& = \ip{w_3}{x} \; .
 \end{align*}
 Because $c_j \not\subset S_2$ also holds, we also have
 $\ip{w_2}{x}<\ip{w_3}{x}$. This direction is therefore proved. \\
@@ -127,7 +129,8 @@ $\ip{w_2}{x}<\ip{w_3}{x}$. This direction is therefore proved. \\
 $(\Longleftarrow)$ Given the solution $w_1, w_2, w_3$ of the weak labeling problem, we define
 \begin{align*}
 S_1 &= \left\{i \in \{1,2,\dots,n\} ~:~ \ip{w_1-w_3}{(\e_i, 1)} > 0 \right\}, \\
-S_2 &= \left\{i \in \{1,2,\dots,n\} ~:~ \ip{w_2-w_3}{(\e_i, 1)} > 0 \text{\ and\ } i\notin S_1 \right\}.
+S_2 &= \left\{i \in \{1,2,\dots,n\} ~:~ \ip{w_2-w_3}{(\e_i, 1)} > 0 \right. \\
+& \qquad \qquad \qquad \left. \text{\ and\ } i \notin S_1 \right\}.
 \end{align*}
 It is not hard to see $S_1 \cap S_2 = \emptyset$ and $S_1\cup S_2 =
 \{1,2,\dots,N\}$. The former is because $S_2$ only includes elements that are
