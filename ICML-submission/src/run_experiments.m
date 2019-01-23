@@ -1,7 +1,7 @@
 clear all; 
 close all;
 rng(99990);
-N = 5000; 
+N = 50000; 
 K = 3;    % now only support K=3 
 gamma = 0.05;
 W = [1,0; cos(pi*30/180), sin(pi*30/180); cos(-pi*30/180), sin(-pi*30/180)];
@@ -25,7 +25,8 @@ for i=1:N
        else
            angle = (330*rand()+15)*pi/180;
        end
-       len = 1;  % change to random functions when 
+       len = 1;  % this is for strongly separable
+                 % change to random functions when 
                  % generating weakly separable 
        X(i,:) = [len*cos(angle), len*sin(angle)];
        [values, idxs] = sort(W*X(i,:)', 'descend');
@@ -39,7 +40,7 @@ for i=1:N
     end
 end
 
-X_ext = normr(X_ext);
+X_ext = X_ext/sqrt(2);
 
 %%%%% scatter weak samples %%%%%
 plot_idx = 1:100:N;
@@ -63,7 +64,6 @@ model_linova = ova_perceptron_train(X_ext', Y, model_linova);
 errTot = model_linova.errTot;
 figure(300); plot(plot_idx, errTot(plot_idx), '.-'); hold on;
 legend_list = [legend_list, 'Our Algorithm (linear)'];
-figure; hold on;
 
 % 2. Banditron
 for g = [0.1, 0.05, 0.005, 0.0005]
