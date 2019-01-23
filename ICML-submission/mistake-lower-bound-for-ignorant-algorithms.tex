@@ -168,16 +168,19 @@ Then we have
 & \ge \mathbf{E}\left[\sum_{t=1}^{\min\{T,N\}} q_0 A_t\right] + \mathbf{E}\left[\sum_{t=1}^{\min\{T,N\}} B_{t+1}\right],
 \label{equation:mistake_lower_bound_temp}
 \end{align}
-where in the first inequality we use $A_t+B_t\le 1$; in the equality, we use
+where in the first inequality we use the fact that $A_t$ and $B_t$ cannot be $1$ simultaneously; in the equality, we use
 $B_{t+1}=B_t\indicator{\widehat y_t\neq y_t}$ by $B_t$'s definition; in the last
-inequality we use the fact that when $t\le N$ and $A_t=1$, it must be $y_t=1$.
+inequality we use the fact that when $t\le N$ and $A_t=1$, it must be $y_t=1$ and $\Pr[\widehat y_t=y_t]=p_t(1|x_t)<1-q_0$.
 Now, denote $T_1 = \argmin_{\tau} \{ p_\tau(1|x_\tau) \ge 1-q_0 \}$ (if such
 $\tau$ does not exist or is larger than $\min\{T,N\}$, we simply let
 $T_1=\min\{T,N\}+1$). Then $A_t=1$ for all $t\le T_1-1$.
 
-Note that $B_{T_1}=1$, and for $t \ge T_1$ we have
-$\Exp[B_{t+1}=0|B_t=1]=\Pr[\widehat y_t=y_t~|~B_t=1] = \Pr[\widehat y_t=2|B_t=1] \le
-q_0$ because the algorithm is ignorant. Thus the second term in
+Note that $B_{T_1}=1$, and for $t \geq T_1$ the adversary will switch to ``$\textsc{phase}=2$'' and has $y_t=2$. Therefore, 
+$\Exp[B_{t+1}=0|B_{t}=1]=\Pr[\widehat y_t=y_t~|~B_t=1] = \Pr[\widehat y_t=2|B_t=1].$ 
+Note that when $B_t=1$, by definition there exists a $\tau\le t$ with $p_\tau(1|x_\tau)\ge 1-q_0$, 
+and the algorithm all makes mistakes at $\tau, \tau+1, \ldots, t$. Since the algorithm is ignorant, and when $\textsc{phase}=2$, 
+the features all remain the same, we have $p_t(1|x_t)=p_{t-1}(1|x_{t-1})=\cdots=p_\tau(1|x_\tau)\ge 1-q_0$. 
+Thus we can further upper bound $\Exp[B_{t+1}=0|B_{t}=1]$ by $\Pr[\widehat y_t=2|B_t=1]\leq q_0$. Thus the second term in
 \eqref{equation:mistake_lower_bound_temp} can be calculated as
 
 \begin{align*}
