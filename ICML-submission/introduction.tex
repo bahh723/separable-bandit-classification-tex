@@ -4,8 +4,8 @@
 We study the problem of \textsc{Online Multiclass Linear Classification with
 Bandit Feedback}~\citep{Kakade-Shalev-Shwartz-Tewari-2008}. The problem can be
 viewed as a repeated game between a learner and an adversary. At each
-timestep $t$, the adversary chooses a labeled example $(x_t, y_t)$ and reveals $x_t\in \R^d$ to the learner.  
-Upon receiving $x_t$, the learner makes a prediction $\widehat{y}_t$ and receives feedback. 
+timestep $t$, the adversary chooses a labeled example $(x_t, y_t)$ and reveals $x_t\in \R^d$ to the learner.
+Upon receiving $x_t$, the learner makes a prediction $\widehat{y}_t$ and receives feedback.
 In contrast to the
 standard full-information setting, where the feedback given is the correct label
 $y_t$, here the feedback is only a binary indicator of whether the prediction
@@ -41,7 +41,7 @@ The standard notion of multiclass linear
 separability~\citep{Crammer-Singer-2003} corresponds to the weak linear
 separability. %For binary classification, the weak and strong separability are
 %identical. However, they differ for multiclass classification with $K \ge 3$
-%classes. 
+%classes.
 For multiclass classification with $K$ classes, weak linear
 separability requires that all examples from the same class lie in an intersection of $K-1$ halfspaces and all other examples lie in the complement of
 the intersection of the halfspaces. Strong linear separability means that
@@ -61,8 +61,8 @@ information-theoretically optimal mistake bound, while being
 computationally and memory efficient.
 ~\footnote{
 %%%%%
-%These are folklore results. 
-For completeness, we present these 
+%These are folklore results.
+For completeness, we present these
 folklore
 %%%%%
 results along
@@ -74,7 +74,7 @@ when the examples are strongly linearly separable, to the best of our knowledge,
 it is not known how to design an efficient algorithm with a finite mistake bound
 before our work.~\footnote{Although~\cite{Chen-Chen-Zhang-Chen-Zhang-2009}
 claimed that their Conservative OVA algorithm with PA-I update has a finite
-mistake bound under the strong linear separability condition, their proof of
+mistake bound under the strong linear separability condition, their
 Theorem 2 is incorrect: first, their Theorem 2
 implies a mistake upper bound of $\frac{R}{\gamma}$ with
 sufficiently large $C$, which contradicts our lower
@@ -92,19 +92,19 @@ multiplicative factor the mistake bound, as compared to the full-information
 setting, is the price we pay for the bandit feedback, or more precisely, the
 lack of full-information feedback.
 
-For the case when the examples are weakly linearly separable, it was open for a long 
-time whether there exist \textit{efficient} algorithms with finite mistake 
-bound~\cite{Kakade-Shalev-Shwartz-Tewari-2008, Beygelzimer-Orabona-Zhang-2017}. 
+For the case when the examples are weakly linearly separable, it was open for a long
+time whether there exist \textit{efficient} algorithms with finite mistake
+bound~\cite{Kakade-Shalev-Shwartz-Tewari-2008, Beygelzimer-Orabona-Zhang-2017}.
 Furthermore, in~\cite{Kakade-Shalev-Shwartz-Tewari-2008}, they ask the question:
-is there \textit{any} algorithm with a finite mistake bound that has no explicit dependence 
+is there \textit{any} algorithm with a finite mistake bound that has no explicit dependence
 on the dimensionality of the feature vectors? We answer both questions affirmatively by
-providing an efficient algorithm with finite dimensionless mistake bound 
-(Algorithm~\ref{algorithm:kernelized}) (Note: the second question was previously 
-answered by~\cite{Daniely-Helbertal-2013} with an inefficient algorithm). 
+providing an efficient algorithm with finite dimensionless mistake bound
+(Algorithm~\ref{algorithm:kernelized}).~\footnote{The second question was previously
+answered by~\cite{Daniely-Helbertal-2013} with an inefficient algorithm.}
 
 The strategy used in Algorithm~\ref{algorithm:kernelized} is to construct a
 non-linear feature mapping $\phi$ and associated positive definite kernel
-$k(x,x')$ that makes the examples \emph{strongly} linearly separable in a higher-dimensional space. 
+$k(x,x')$ that makes the examples \emph{strongly} linearly separable in a higher-dimensional space.
 We then use the kernelized version of
 Algorithm~\ref{algorithm:algorithm-for-strongly-linearly-separable-examples} for
 the strongly separable case (Algorithm~\ref{algorithm:kernelized}). The kernel

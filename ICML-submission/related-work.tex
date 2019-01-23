@@ -18,13 +18,13 @@ all algorithms developed in this context are computationally inefficient.
 The linear classification version of this problem is initially studied
 by~\citet{Kakade-Shalev-Shwartz-Tewari-2008}. They proposed two computationally
 inefficient algorithms that work in the weakly linearly separable setting, one
-with a mistake bound of 
+with a mistake bound of
 $O(K^2 d \ln(d/\gamma))$,
 the other with a
 mistake bound of $\widetilde{O}((K^2/\gamma^2) \ln T)$. The latter result
 was later improved by \citet{Daniely-Helbertal-2013}, which gives a
 computationally inefficient algorithm with a mistake upper bound of
-$\widetilde{O}(K/\gamma^2)$. 
+$\widetilde{O}(K/\gamma^2)$.
 In addition, the authors propose the
 \textsc{Banditron} algorithm, a computationally efficient algorithm that has a
 $O(T^{2/3})$ regret against the multiclass hinge loss in the general setting,
@@ -39,8 +39,8 @@ question left by~\citet{Kakade-Shalev-Shwartz-Tewari-2008} is whether one can
 design computationally efficient algorithms that achieve mistake bounds that
 match or improve over those of inefficient algorithms. In this paper, we take a
 step towards answering this question, showing that efficient algorithms with
-mistake bounds quasipolynomial in $\frac 1 \gamma$ or quasipolynomial in $K$ can
-be obtained.
+mistake bounds quasipolynomial in $1/\gamma$ (for constant $K$)
+or quasipolynomial in $K$ (for constant $\gamma$) can be obtained.
 
 %In addition, it also
 % shows that under different relationships between $k$, $d$ and $\gamma$,
@@ -119,22 +119,22 @@ of the learner is to minimize its regret $\sum_{t=1}^T c_t(\widehat{y}_t) -
 %%%%%
 The bandit multiclass
 learning problem can be seen as a special case,
-% of the contextual bandits problem, 
+% of the contextual bandits problem,
 where the
 cost $c_t(i)$ is the classification error $\indicator{i \neq y_t}$, and the
 policy class $\Pi$ is the set of linear classifiers $\cbr{x \mapsto \argmax_y
 (Wx)_y: W \in \R^{k \times d}}$. A series of works in the contextual bandits
-learning literature 
+learning literature
 %focus on oracle-efficiency~\citep{Dudik-Hsu-Kale-Karampatziakis-Langford-Reyzin-Zhang-2011,
 %Agarwal-Hsu-Kale-Langford-Li-Schapire-2014, Rakhlin-Sridharan-2016,
 %Syrgkanis-Krishnamurthy-Schapire-2016,
-%Syrgkanis-Luo-Krishnamurthy-Schapire-2016}. Specifically, they 
+%Syrgkanis-Luo-Krishnamurthy-Schapire-2016}. Specifically, they
 assume access to
 a policy optimization oracle that returns a policy in $\Pi$ that minimizes
-its empirical cost on any set of cost-sensitive examples, and 
+its empirical cost on any set of cost-sensitive examples, and
 %the
-construct algorithms that call 
-%algorithm only calls 
+construct algorithms that call
+%algorithm only calls
 the oracle a polynomial number of times%
 ~\citep{Dudik-Hsu-Kale-Karampatziakis-Langford-Reyzin-Zhang-2011,
 Agarwal-Hsu-Kale-Langford-Li-Schapire-2014, Rakhlin-Sridharan-2016,
@@ -163,16 +163,16 @@ information-theoretic regret upper bounds
 %under
  for
 %%%%%
-various settings of $\calF$. On the other hand, it gives an efficient algorithm 
+various settings of $\calF$. On the other hand, it gives an efficient algorithm
 %%%%%
-with an 
+with an
 %%%%%
 $O(\sqrt{T})$ regret against the benchmark of
 $\calF = \cbr{x \mapsto W x: W \in \R^{k \times d}, \one^T W = 0}$. A direct
 application of this result to \textsc{Online Bandit Multiclass Linear
-Classification} 
+Classification}
 %%%%%
-%yields 
+%yields
 gives
 %%%%%
 an algorithm with $O(\sqrt{T})$ mistake bound in the
