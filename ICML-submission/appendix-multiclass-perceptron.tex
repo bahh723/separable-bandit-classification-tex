@@ -7,7 +7,7 @@ below. The algorithm assumes that the feature vectors come from an inner product
 space $(V, \ip{\cdot}{\cdot})$.
 
 Two results are folklore. The first result is
-\autoref{theorem:mutliclass-perceptron-mistake-upper-bound} which states that if
+\autoref{theorem:multiclass-perceptron-mistake-upper-bound} which states that if
 examples are linearly separable with margin $\gamma$ and examples have norm
 at most $R$ then the algorithm makes at most $\lfloor 2 (R/\gamma)^2 \rfloor$
 mistakes. The second result is
@@ -51,7 +51,7 @@ Initialize $w_1^{(1)} = w_2^{(1)} = \dots = w_K^{(1)} = 0$ \\
 \end{algorithm}
 
 \begin{theorem}[Mistake upper bound~\cite{Crammer-Singer-2003}]
-\label{theorem:mutliclass-perceptron-mistake-upper-bound}
+\label{theorem:multiclass-perceptron-mistake-upper-bound}
 Let $(V, \ip{\cdot}{\cdot})$ be an inner product space, let $K$ be a positive
 integer, let $\gamma$ be a positive real number and let $R$ be a non-negative real
 number. If $(x_1, y_1), (x_2, y_2), \dots, (x_T, y_T)$ is a sequence of labeled
@@ -134,7 +134,7 @@ Let $T = \lfloor (R/\gamma)^2 \rfloor$, $V = \R^T$, and for all $t$ in
 $\cbr{1,\ldots,T}$, define instance $x_t = R e_t$ where $e_t$ is $t$-th element
 of the standard orthonormal basis of $\R^T$.
 Let labels $y_1, \ldots, y_T$ be chosen i.i.d uniformly at random from
-$\cbr{1,2,\ldots,K}$ and independently of any randomness used by the algirithm
+$\cbr{1,2,\ldots,K}$ and independently of any randomness used by the algorithm
 $\calA$.
 
 
