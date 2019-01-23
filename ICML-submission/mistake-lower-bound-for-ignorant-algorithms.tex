@@ -14,73 +14,78 @@ algorithm.
 
 Under the assumption that the examples lie in in the unit ball of $\R^d$ and are
 weakly linearly separable with margin $\gamma$, we show that any ignorant
-algorithm must make $\Theta\left(\min\{\sqrt{T},
-(1/\gamma)^{\Theta(d)}\}\right)$ mistakes in the worst case. In other words, an
-algorithm that achieves a better mistake bound cannot ignore examples on which
-it makes a mistake and it must make a meaningful update on such examples.
+algorithm must make at least $\Omega \left( \left(\frac{1}{160 \gamma}\right)^{(d-2)/4} \right)$
+mistakes in the worst case. In other words, an algorithm that achieves a better
+mistake bound cannot ignore examples on which it makes a mistake and it must
+make a meaningful update on such examples.
 
-The ignorant algorithm is formally defined as follows.
-\begin{definition}
-\label{definition:ignorant-algorithm}
+To formally define ignorant algorithms, we define the conditional distribution
+from which an algorithm draws its predictions. Formally, given an algorithm
+$\calA$ and an adversarial strategy, we define
+\begin{multline*}
+p_t(y|x) = \\
+\Pr[y_t = y ~|~ (x_1, y_1), (x_2, y_2) \dots, (x_{t-1}, y_{t-1}), x_t = x] \; .
+\end{multline*}
+In other words, in any round $t$, conditioned on the past $t-1$ rounds, the
+algorithm $\calA$ chooses $y_t$ from probability distribution $p_t(\cdot|x_t)$.
+Formally, $p_t$ is a function $p:\{1,2,\dots,K\} \times \R^d \to [0,1]$
+such that $\sum_{y=1}^K p_t(y|x) = 1$ for any $x \in \R^d$.
+
+\begin{definition}[Ignorant algorithm]
 An algorithm $\calA$ for \textsc{Online Multiclass Linear Classification with
-Bandit Feedback} is called \emph{ignorant} if for all $t \in \{1,2,\dots,T\}$,
-$\widehat y_t$ is drawn from some distribution that is jointly determined by
-\begin{enumerate}
-\item $x_t$,
-\item $H_t \triangleq \left( (x_{\tau_1}, y_{\tau_1}), (x_{\tau_2}, y_{\tau_2}), \ldots, (x_{\tau_{n_t}}, y_{\tau_{n_t}}) \right)$,
-where $1 \le \tau_1 < \dots < \tau_{n_t} < t$, and $\{\tau_1, \ldots, \tau_{n_t}\}$
-are the rounds in which the algorithm predicts correctly (that is,
-$\{\tau_1, \dots, \tau_{n_t}\} = \{1 \le \tau < t ~:~ \widehat y_\tau=y_\tau\}$).
-\end{enumerate}
-We use $p_t(\cdot|x_t)\in \{p\in \R_+^K ~:~ p^\top\mathbf{1}=1\}$ to denote
-the distribution $\widehat y_t$ is drawn from. Note that we let the current
-feature vector $x_t$ be an argument to $p_t$ to incorporate its dependency on
-$x_t$. Therefore, for an ignorant algorithm, the function $p_t(\cdot|\cdot)$ is
-only determined by $H_t$.
+Bandit Feedback} is called \emph{ignorant} if for every $t=1,2,\dots,T$,
+$p_t$ is determined solely by the sequence
+$(x_{a_1}, y_{a_1}), (x_{a_2}, y_{a_2}), \dots, (x_{a_n}, y_{a_n})$
+in the rounds $1 \le a_1 < a_2 < \dots < a_n < t$ in which
+the algorithm makes a correct prediction.
 \end{definition}
 
-An ignorant algorithm does not learn from mistakes in the following sense.
-Suppose that an ignorant algorithm predicts incorrectly at time $t$. Then at
-time $t+1$, if it is given the same feature vector $x_{t+1}=x_t$, it will
-predict the label with the same distribution
-$p_{t+1}(\cdot|x_{t+1})=p_{t+1}(\cdot|x_t)=p_t(\cdot|x_t)$.
+An equivalent definition of an ignorant algorithm is that the memory state of
+the algorithm does not change after it makes a mistake. Equivalently,
+the memory state of an ignorant algorithm is completely determined
+by the sequence of labeled examples on which it made correct prediction.
 
-% Below we describe
-%the difficulty of learning from mistakes using a class of natural approaches
-%under the weak separability assumption. Consider an approach similar to OBAMA:
-%in each round $t$, we create a \textit{convex} loss function $\widehat \ell_t:
-%\R^{K\times d} \to \R$ that gives a loss value $\widehat
-%\ell_t(W)$ to all linear models $W \in \R^{K\times d}$ ($W=[w_1 \dots
-%w_K]^\top$ for $w_1, w_2, \dots, w_K$ defined in
-%Definition~\ref{definition:linear-separability}). The requirement for
-%$\widehat{\ell}_t$ to be convex is due to computational efficiency. To let
-%$\widehat{\ell}_t$ reflect the loss, if $\widehat y_t \neq y_t$, we want to
-%assign larger loss values $\widehat{\ell_t}(W)$ to the inconsistent models
-%$\mathcal{W}=\{W: \ip{w_{\widehat y_t}}{x_t} \ge \ip{w_i}{x_t}, \forall
-%i\in[K]\}$, while for other $W$'s, we want $\widehat{\ell_t}(W)$ to be smaller.
-%The following fact can be verified when $K\ge 3$, which suggests there is no
-%way to define the loss $\widehat \ell_t$ that satisfies the above properties
-%constraints: there exists $W_1, W_2, W_3$, where $W_2$ is in the line segment
-%between $W_1$ and $W_3$, such that $W_2\in \mathcal{W}$, while $W_1, W_3 \notin
-%\mathcal{W}$. On one hand, by convexity, we should have
-%$\widehat{\ell}_t(W_2)\le \max\{\widehat{\ell}_t(W_1),
-%\widehat{\ell}_t(W_3)\}$; on the other hand, to penalize $\mathcal{W}$, we
-%should have $\widehat{\ell}_t(W_2) > \widehat{\ell}_t(W_1)$ and
-%$\widehat{\ell}_t(W_2) > \widehat{\ell}_t(W_3)$. Clearly, these two requirements
-%contradict each other.
+To explain the definition, consider an ignorant algorithm $\calA$. Suppose that
+on a sequence of examples $(x_1, y_1), (x_2, y_2), \dots, (x_{t-1}, y_{t-1})$
+generated by some adversary the algorthm $\calA$ makes correct predictions in
+rounds $a_1, a_2, \dots, a_n$ where $1 \le a_1 < a_2 < \dots < a_n < t$ and
+errors on rounds $\{1,2,\dots,t-1\} \setminus \{a_1, a_2, \dots, a_n\}$. Suppose
+that on another sequence of examples $(x_1', y_1'), (x_2', y_2'), \dots,
+(x_{s-1}', y_{s-1}')$ generated by another adversary the algorithm $\calA$ makes
+correct predictions in rounds $b_1, b_2, \dots, b_n$ where $1 \le b_1 < b_2 <
+\dots < b_n < s$ and errors on rounds $\{1,2,\dots,s-1\} \setminus \{b_1, b_2,
+\dots, b_n\}$. Futhermore, suppose
+\begin{align*}
+(x_{a_1}, y_{a_1}) &= (x'_{b_1}, y'_{b_1}) \; , \\
+(x_{a_2}, y_{a_2}) &= (x'_{b_2}, y'_{b_2}) \; , \\
+\vdots \\
+(x_{a_n}, y_{a_n}) &= (x'_{b_2}, y'_{b_n}) \; .
+\end{align*}
+Then, the definition
+\begin{multline*}
+\Pr[y_t = y ~|~ (x_1, y_1), (x_2, y_2) \dots, (x_{t-1}, y_{t-1}), x_t = x] = \\
+\Pr[y_t' = y ~|~ (x_1', y_1'), (x_2', y_2') \dots, (x_{t-1}', y_{t-1}'), x_t' = x] \; .
+\end{multline*}
+Note that the sequences $(x_1, y_1)$, $(x_2, y_2)$, $\dots$, $(x_{t-1},
+y_{t-1})$ and $(x_1', y_1')$, $(x_2', y_2')$, $\dots$, $(x_{s-1}', y_{s-1}')$
+might have different lengths and and $\calA$ might error in different sets of
+rounds. As a special case, if an ignorant algorithm makes a mistake in round $t$
+then $p_{t+1}=p_t$.
 
-The following theorem states the mistake lower bound for ignorant algorithms.
+Our main result is the following lower bound on the expected number of mistakes
+for ignorant algorithms.
 
 \begin{theorem}[Mistake lower bound for ignorant algorithms]
 \label{theorem:ignorant-lower-bound}
-Suppose $\calA$ is an ignorant algorithm for \textsc{Online Multiclass Linear
-Classification with Bandit Feedback}. There exists an adversary that can
-sequentially choose labeled examples $(x_1, y_1), (x_2, y_2), \dots, (x_T, y_T)
-\in \R^d\times \{1,2\}$ so that the examples are $\gamma$-strongly linearly
-separable, $\norm{x_1}, \norm{x_2}, \dots, \norm{x_T} \le 1$, and the expected
+Let $\gamma \in (0,1)$ and let $d$ be a positive integer. Suppose $\calA$ is an
+ignorant algorithm for \textsc{Online Multiclass Linear Classification with
+Bandit Feedback}. There exists $T$ and an adversary that sequentially chooses
+labeled examples $(x_1, y_1), (x_2, y_2), \dots, (x_T, y_T) \in \R^d\times
+\{1,2\}$ such that the examples are strongly linearly separable with magin
+$\gamma$ and $\norm{x_1}, \norm{x_2}, \dots, \norm{x_T} \le 1$, and the expected
 number of mistakes made by $\calA$ is at least
 $$
-\frac{1}{10}\min\left\{\sqrt{T}, \left(\frac{1}{160\gamma}\right)^{\frac{d-2}{4}} \right\} \; .
+\frac{1}{10} \left(\frac{1}{160\gamma}\right)^{\frac{d-2}{4}} \; .
 $$
 \end{theorem}
 
@@ -122,36 +127,32 @@ Thus,
 \end{align*}
 \end{proof}
 
-\begin{proof}[Proof for Theorem~\ref{theorem:ignorant-lower-bound} (Part I: Mistake lower bound)]
-We consider the strategy for the adversary described in Algorithm~\ref{algorithm:adversary-strategy}.
-\begin{algorithm}[h]
+\begin{proof}
+We consider the strategy for the adversary described in
+Algorithm~\ref{algorithm:adversary-strategy}.
+
+\begin{algorithm}
 \caption{\textsc{Adversary's strategy}}
 \label{algorithm:adversary-strategy}
-\begin{algorithmic}[1]
-{
-\STATE{\textbf{Define} $q_0=\max\left\{\frac{1}{\sqrt{T}}, \frac{1}{\sqrt{N}}\right\}$, where $N$ is defined in Lemma~\ref{lemma:embed_d_gamma}. Also, let $v_1, \ldots, v_N$ be those defined in Lemma~\ref{lemma:embed_d_gamma}.}
-\STATE{\textbf{Initialize} $\textsc{phase}= 1$. }
-\FOR{$t=1,\dots,\min\{T,N\}$}
-    \IF{$\textsc{phase}=1$}
-       \IF{$p_t(1|v_t)\ge 1-q_0$}
-          \STATE{$(x_t, y_t)\leftarrow (v_t, 1)$}
-       \ELSE
-          \STATE{$(x_t, y_t)\leftarrow (v_t, 2)$}
-          \STATE $\textsc{phase}\leftarrow 2$
-       \ENDIF
-    \ELSIF{$\textsc{phase}=2$}
-       \STATE $(x_t, y_t)\leftarrow (x_{t-1}, y_{t-1})$.
-    \ENDIF
-\ENDFOR
-\FOR{$t=\min\{T,N\}+1, \ldots, T$}
-    \STATE $(x_t, y_t)\leftarrow (x_{t-1}, y_{t-1})$.
-\ENDFOR
-
-
+\textbf{Define} $T=N$ and $v_1, v_2, \dots, v_N$ as in Lemma~\ref{lemma:embed_d_gamma}.\\
+\textbf{Define} $q_0=\frac{1}{\sqrt{T}}$. \\
+\textbf{Initialize} $\textsc{phase}= 1$. \\
+\For{$t=1,2,\dots,T$}{
+    \If{$\textsc{phase}=1$}{
+       \If{$p_t(1|v_t)\ge 1-q_0$}{
+          $(x_t, y_t)\leftarrow (v_t, 1)$
+        }
+       \Else{
+          $(x_t, y_t)\leftarrow (v_t, 2)$ \\
+          $\textsc{phase}\leftarrow 2$
+       }
+    }
+    \Else{
+         $(x_t, y_t)\leftarrow (x_{t-1}, y_{t-1})$
+    }
 }
-\end{algorithmic}
 \end{algorithm}
-For this strategy, we prove the mistake lower bound of any ignorant algorithm.
+
 Define the indicators
 \begin{align*}
 A_t &= \indicator{\forall \tau\le t, p_\tau(1|x_\tau)<1-q_0} \\
@@ -161,60 +162,67 @@ B_t &= \indicator{\exists \tau\le t, p_\tau(1|x_\tau)\ge 1-q_0
 Then we have
 \begin{align}
 & \mathbf{E}\left[\sum_{t=1}^{T} \indicator{\widehat y_t\neq y_t}\right] \nonumber \\
-& \ge \mathbf{E}\left[\sum_{t=1}^{\min\{T,N\}} \indicator{\widehat y_t\neq y_t}\right] \nonumber \\
-& \ge \mathbf{E}\left[\sum_{t=1}^{\min\{T,N\}} \indicator{\widehat y_t\neq y_t}A_t\right] \nonumber \\
-& \qquad + \mathbf{E}\left[\sum_{t=1}^{\min\{T,N\}} \indicator{\widehat y_t\neq y_t}B_t\right] \nonumber \\
-& = \mathbf{E}\left[\sum_{t=1}^{\min\{T,N\}} \mathbf{E}_t\left[\indicator{\widehat y_t\neq y_t}A_t\right]\right] + \mathbf{E}\left[\sum_{t=1}^{\min\{T,N\}} B_{t+1}\right] \nonumber \\
-& \ge \mathbf{E}\left[\sum_{t=1}^{\min\{T,N\}} q_0 A_t\right] + \mathbf{E}\left[\sum_{t=1}^{\min\{T,N\}} B_{t+1}\right],
+& \ge \mathbf{E}\left[\sum_{t=1}^T \indicator{\widehat y_t\neq y_t}A_t\right] \nonumber \\
+& \qquad + \mathbf{E}\left[\sum_{t=1}^T \indicator{\widehat y_t\neq y_t}B_t\right] \nonumber \\
+& = \mathbf{E}\left[\sum_{t=1}^T \mathbf{E}_t\left[\indicator{\widehat y_t\neq y_t}A_t\right]\right] + \mathbf{E}\left[\sum_{t=1}^T B_{t+1}\right] \nonumber \\
+& \ge \mathbf{E}\left[\sum_{t=1}^T q_0 A_t\right] + \mathbf{E}\left[\sum_{t=1}^T B_{t+1}\right],
 \label{equation:mistake_lower_bound_temp}
 \end{align}
-where in the first inequality we use the fact that $A_t$ and $B_t$ cannot be $1$ simultaneously; in the equality, we use
-$B_{t+1}=B_t\indicator{\widehat y_t\neq y_t}$ by $B_t$'s definition; in the last
-inequality we use the fact that when $t\le N$ and $A_t=1$, it must be $y_t=1$ and $\Pr[\widehat y_t=y_t]=p_t(1|x_t)<1-q_0$.
-Now, denote $T_1 = \argmin_{\tau} \{ p_\tau(1|x_\tau) \ge 1-q_0 \}$ (if such
-$\tau$ does not exist or is larger than $\min\{T,N\}$, we simply let
-$T_1=\min\{T,N\}+1$). Then $A_t=1$ for all $t\le T_1-1$.
+where in the first inequality we use the fact that $A_t$ and $B_t$ cannot be $1$
+simultaneously; in the equality, we use $B_{t+1}=B_t\indicator{\widehat y_t\neq
+y_t}$ by $B_t$'s definition; in the last inequality we use the fact that when
+$t\le N$ and $A_t=1$, it must be $y_t=1$ and $\Pr[\widehat
+y_t=y_t]=p_t(1|x_t)<1-q_0$. Now, denote $T_1 = \argmin_{\tau} \{
+p_\tau(1|x_\tau) \ge 1-q_0 \}$ (if such $\tau$ does not exist or is larger than
+$T$, we simply let $T_1=T+1$). Then $A_t=1$ for all $t\le
+T_1-1$.
 
-Note that $B_{T_1}=1$, and for $t \geq T_1$ the adversary will switch to ``$\textsc{phase}=2$'' and has $y_t=2$. Therefore, 
-$\Exp[B_{t+1}=0|B_{t}=1]=\Pr[\widehat y_t=y_t~|~B_t=1] = \Pr[\widehat y_t=2|B_t=1].$ 
-Note that when $B_t=1$, by definition there exists a $\tau\le t$ with $p_\tau(1|x_\tau)\ge 1-q_0$, 
-and the algorithm all makes mistakes at $\tau, \tau+1, \ldots, t$. Since the algorithm is ignorant, and when $\textsc{phase}=2$, 
-the features all remain the same, we have $p_t(1|x_t)=p_{t-1}(1|x_{t-1})=\cdots=p_\tau(1|x_\tau)\ge 1-q_0$. 
-Thus we can further upper bound $\Exp[B_{t+1}=0|B_{t}=1]$ by $\Pr[\widehat y_t=2|B_t=1]\leq q_0$. Thus the second term in
-\eqref{equation:mistake_lower_bound_temp} can be calculated as
+Note that $B_{T_1}=1$, and for $t \geq T_1$ the adversary will switch to
+``$\textsc{phase}=2$'' and has $y_t=2$. Therefore,
+$\Exp[B_{t+1}=0|B_{t}=1]=\Pr[\widehat y_t=y_t~|~B_t=1] = \Pr[\widehat
+y_t=2|B_t=1].$ Note that when $B_t=1$, by definition there exists a $\tau\le t$
+with $p_\tau(1|x_\tau)\ge 1-q_0$, and the algorithm all makes mistakes at $\tau,
+\tau+1, \ldots, t$. Since the algorithm is ignorant, and when
+$\textsc{phase}=2$, the features all remain the same, we have
+$p_t(1|x_t)=p_{t-1}(1|x_{t-1})=\cdots=p_\tau(1|x_\tau)\ge 1-q_0$. Thus we can
+further upper bound $\Exp[B_{t+1}=0|B_{t}=1]$ by $\Pr[\widehat y_t=2|B_t=1]\leq
+q_0$. Thus the second term in \eqref{equation:mistake_lower_bound_temp} can be
+calculated as
 
 \begin{align*}
-& \mathbf{E}\left[\sum_{t=1}^{\min\{T,N\}}B_{t+1}\right] \\
-& \ge \mathbf{E}\left[\sum_{t=T_1}^{\min\{ T,N \}} (1-q_0)^{t-T_1+1} \right] \\
-& = \frac{1-q_0}{q_0}\mathbf{E}\left[1-(1-q_0)^{\min\{T,N\}-T_1+1}\right] \; .
+\mathbf{E}\left[\sum_{t=1}^T B_{t+1}\right]
+& \ge \mathbf{E}\left[\sum_{t=T_1}^T (1-q_0)^{t-T_1+1} \right] \\
+& = \frac{1-q_0}{q_0}\mathbf{E}\left[1-(1-q_0)^{T - T_1 + 1}\right] \; .
 \end{align*}
 Combining \eqref{equation:mistake_lower_bound_temp} and the above inequalities, we get
 \begin{multline}
 \label{equation:mistake_lower_bound_temp2}
 \mathbf{E} \left[\sum_{t=1}^T \indicator{\widehat y_t\neq y_t}\right] \ge
-\\ \mathbf{E}\left[q_0(T_1-1)+\frac{1-q_0}{q_0}\left(1-(1-q_0)^{\min\{T,N\}-T_1+1}\right)\right].
+\\ \mathbf{E}\left[q_0(T_1-1)+\frac{1-q_0}{q_0}\left(1-(1-q_0)^{T-T_1+1}\right)\right].
 \end{multline}
-In the case $T_1\ge \frac{1}{2}\min\{T,N\}+1$, the right-hand side of
+In the case $T_1\ge \frac{1}{2}T + 1$, the right-hand side of
 \eqref{equation:mistake_lower_bound_temp2} is lower bounded by
-$\frac{1}{2}q_0\min\{T,N\}=\frac{1}{2}\min\{\sqrt{T}, \sqrt{N}\}$; in the case
-$T_1< \frac{1}{2}\min\{T,N\}+1$, it is lower bounded by
+$\frac{1}{2}q_0 T = \frac{1}{2} \sqrt{T}$. In the case
+$T_1< \frac{1}{2}T+1$, it is lower bounded by
 \begin{align*}
-& \frac{1-q_0}{q_0}\left(1-(1-q_0)^{\frac{1}{2}\min\{T,N\}}\right) \\
+& \frac{1-q_0}{q_0}\left(1-(1-q_0)^{\frac{1}{2}T}\right) \\
 & = \frac{1-q_0}{q_0}\left(1-(1-q_0)^{\frac{1}{2q_0^2}}\right) \\
 & \ge \frac{1-\frac{1}{\sqrt{2}}}{q_0}\left(1-\frac{1}{\sqrt{e}}\right) \\
-& \ge \frac{1}{10}\min\{\sqrt{T}, \sqrt{N}\} \; .
+& \ge \frac{1}{10} \sqrt{T} \; .
 \end{align*}
-Combining both cases concludes the proof.
-\end{proof}
 
-\begin{proof}[Proof for Theorem~\ref{theorem:ignorant-lower-bound} (Part II: linear separability)]
-Observe that in Algorithm~\ref{algorithm:adversary-strategy}, in the beginning
-the adversary always set the label to $1$; once it sets $y_t=2$ at some $t$, it
-lets $(x_s, y_s)=(x_t, y_t)=(v_t, 2)$ for all $s\ge t$. Consider $w_2=u_t$ and
-$w_1=-u_t$, for $u_t$ as defined in Lemma~\ref{lemma:embed_d_gamma}. Then by
-Lemma~\ref{lemma:embed_d_gamma}, we have $\ip{w_2}{x_s} = \ip{u_t}{v_t} \ge
-\gamma, \forall s \ge t$ and $\ip{w_2}{x_s} = \ip{u_t}{v_s} \le - \gamma,
-\forall s< t$; also $\ip{w_1}{x_s} \le -\gamma, \forall s \ge t$ and
-$\ip{w_1}{x_s} \ge  \gamma, \forall s<t$. Thus, the example set is always
-$\gamma$-strongly separable.
+Observe that in phase 1, the labels are equal to $1$ and in phase 2 the labels
+are equal to $2$. Let $t$ be the round in which the switch happens. (If it never
+happens, define $t=T+1$.) Note that $(x_t, y_t)=(x_{t+1}, y_{t+1})= \dots =
+(x_T, y_T) = (v_t, 2)$. Consider the vectors $u_1, u_2, \dots, u_N$ as defined
+in Lemma~\ref{lemma:embed_d_gamma} We claim that $w_1=-u_t/2$ and $w_2=u_t/2$
+satisfy the conditions of strong linear separabaility.
+
+Clearly $\norm{w_1}^2 + \norm{w_2}^2 \le (\norm{w_1} + \norm{w_2})^2 \le
+(\frac{1}{2} + \frac{1}{2})^2 \le 1$. By Lemma~\ref{lemma:embed_d_gamma}, we
+have $\ip{w_2/2}{x_s} = \ip{u_t/2}{v_t} \ge \gamma/2, \forall s \ge t$ and
+$\ip{w_2/2}{x_s} = \ip{u_t/2}{v_s} \le - \gamma/2$ for all $s<t$. Similarly,
+$\ip{w_1/2}{x_s} \le -\gamma/2$ for all $s \ge t$ and $\ip{w_1/2}{x_s} \ge
+\gamma/2$ for all $s < t$. Thus, the examples are strongly separable with margin
+$\gamma$.
 \end{proof}
