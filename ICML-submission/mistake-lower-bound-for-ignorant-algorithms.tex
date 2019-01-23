@@ -140,7 +140,7 @@ Algorithm~\ref{algorithm:adversary-strategy}.
 \textbf{Initialize} $\textsc{phase}= 1$. \\
 \For{$t=1,2,\dots,T$}{
     \If{$\textsc{phase}=1$}{
-       \If{$p_t(1|v_t)\ge 1-q_0$}{
+       \If{$p_t(1|v_t) < 1-q_0$}{
           $(x_t, y_t)\leftarrow (v_t, 1)$
         }
        \Else{
@@ -154,57 +154,49 @@ Algorithm~\ref{algorithm:adversary-strategy}.
 }
 \end{algorithm}
 
-Define the indicators
-\begin{align*}
-A_t &= \indicator{\forall \tau\le t, p_\tau(1|x_\tau)<1-q_0} \\
-B_t &= \indicator{\exists \tau\le t, p_\tau(1|x_\tau)\ge 1-q_0
- \text{\ and\ } \forall s\in[\tau,t), \widehat y_s \neq y_s}.
-\end{align*}
-Then we have
+Let $\tau$ be the time step $t$ in which the adversary sets $\textsc{phase}\leftarrow 2$.
+If the adversary never sets $\textsc{phase}\leftarrow 2$, we define $\tau = T + 1$.
+Then,
 \begin{align}
-& \mathbf{E}\left[\sum_{t=1}^{T} \indicator{\widehat y_t\neq y_t}\right] \nonumber \\
-& \ge \mathbf{E}\left[\sum_{t=1}^T \indicator{\widehat y_t\neq y_t}A_t\right] \nonumber \\
-& \qquad + \mathbf{E}\left[\sum_{t=1}^T \indicator{\widehat y_t\neq y_t}B_t\right] \nonumber \\
-& = \mathbf{E}\left[\sum_{t=1}^T \mathbf{E}_t\left[\indicator{\widehat y_t\neq y_t}A_t\right]\right] + \mathbf{E}\left[\sum_{t=1}^T B_{t+1}\right] \nonumber \\
-& \ge \mathbf{E}\left[\sum_{t=1}^T q_0 A_t\right] + \mathbf{E}\left[\sum_{t=1}^T B_{t+1}\right],
-\label{equation:mistake_lower_bound_temp}
+& \Exp \left[\sum_{t=1}^T \indicator{\widehat y_t\neq y_t}\right] \nonumber \\
+& \ge \Exp\left[\sum_{t=1}^{\tau - 1} \indicator{\widehat y_t\neq y_t}\right]
++ \Exp\left[\sum_{t=\tau}^T \indicator{\widehat y_t\neq y_t}\right] \; .
 \end{align}
-where in the first inequality we use the fact that $A_t$ and $B_t$ cannot be $1$
-simultaneously; in the equality, we use $B_{t+1}=B_t\indicator{\widehat y_t\neq
-y_t}$ by $B_t$'s definition; in the last inequality we use the fact that when
-$t\le N$ and $A_t=1$, it must be $y_t=1$ and $\Pr[\widehat
-y_t=y_t]=p_t(1|x_t)<1-q_0$. Now, denote $T_1 = \argmin_{\tau} \{
-p_\tau(1|x_\tau) \ge 1-q_0 \}$ (if such $\tau$ does not exist or is larger than
-$T$, we simply let $T_1=T+1$). Then $A_t=1$ for all $t\le
-T_1-1$.
+We upper bound each of last two terms separately.
 
-Note that $B_{T_1}=1$, and for $t \ge T_1$ the adversary will switch to
-``$\textsc{phase}=2$'' and has $y_t=2$. Therefore,
-$\Exp[B_{t+1}=0|B_{t}=1]=\Pr[\widehat y_t=y_t~|~B_t=1] = \Pr[\widehat
-y_t=2|B_t=1].$ Note that when $B_t=1$, by definition there exists a $\tau\le t$
-with $p_\tau(1|x_\tau)\ge 1-q_0$, and the algorithm all makes mistakes at $\tau,
-\tau+1, \ldots, t$. Since the algorithm is ignorant, and when
-$\textsc{phase}=2$, the features all remain the same, we have
-$p_t(1|x_t)=p_{t-1}(1|x_{t-1})=\cdots=p_\tau(1|x_\tau)\ge 1-q_0$. Thus we can
-further upper bound $\Exp[B_{t+1}=0|B_{t}=1]$ by $\Pr[\widehat y_t=2|B_t=1]\leq
-q_0$. Thus the second term in \eqref{equation:mistake_lower_bound_temp} can be
-calculated as
+In rounds $1,2,\dots,\tau-1$, the algorithm predicts the incorrect class $2$
+with probability at least $q_0$. Thus,
+$$
+\Exp\left[\sum_{t=1}^{\tau - 1} \indicator{\widehat y_t\neq y_t}\right] = q_0 \Exp[\tau] \; .
+$$
+In rounds $\tau, \tau+1, \dots, T$, all the examples are the same and are equal
+to $(v_\tau, 2)$. Let $s$ be the first time step $t$ such that $t \ge \tau$
+and the algorithm makes a correct prediction. If the algorithm makes mistakes
+in all rounds $\tau, \tau+1, \dots, T$, we define $s = T+1$.
+By definition the algorithm makes mistakes in rounds $\tau, \tau+1, \dots, s-1$
+Then,
+$$
+\Exp\left[\sum_{t=\tau}^T \indicator{\widehat y_t\neq y_t}\right] \ge \Exp[s-\tau].
+$$
+Since the algorithm is ignorant, conditioned on $\tau$, the random variable $s-\tau$
+has a truncated geometric distribution with parameter $p_\tau(2|v_\tau) \le q_0$.
+Therefore,
+$$
+\Exp[s-\tau ~|~ \tau]
+\ge
+\Exp \left[\frac{1-q_0}{q_0}\left(1-(1-q_0)^{T-\tau+1}\right) ~\middle|~ \tau \right] \; .
+$$
 
+Combining the two, we have that
 \begin{align*}
-\mathbf{E}\left[\sum_{t=1}^T B_{t+1}\right]
-& \ge \mathbf{E}\left[\sum_{t=T_1}^T (1-q_0)^{t-T_1+1} \right] \\
-& = \frac{1-q_0}{q_0}\mathbf{E}\left[1-(1-q_0)^{T - T_1 + 1}\right] \; .
+& \Exp \left[\sum_{t=1}^T \indicator{\widehat y_t\neq y_t}\right] \nonumber \\
+& \ge q_0 \Exp[\tau] + \Exp \left[\frac{1-q_0}{q_0}\left(1-(1-q_0)^{T-T_1+1}\right)\right] \\
+& =  \Exp \left[ \Exp \left[ q_0 \tau + \frac{1-q_0}{q_0}\left(1-(1-q_0)^{T-\tau+1}\right) ~\middle|~ \tau \right] \right] \; .
 \end{align*}
-Combining \eqref{equation:mistake_lower_bound_temp} and the above inequalities, we get
-\begin{multline}
-\label{equation:mistake_lower_bound_temp2}
-\mathbf{E} \left[\sum_{t=1}^T \indicator{\widehat y_t\neq y_t}\right] \ge
-\\ \mathbf{E}\left[q_0(T_1-1)+\frac{1-q_0}{q_0}\left(1-(1-q_0)^{T-T_1+1}\right)\right].
-\end{multline}
-In the case $T_1\ge \frac{1}{2}T + 1$, the right-hand side of
-\eqref{equation:mistake_lower_bound_temp2} is lower bounded by
-$\frac{1}{2}q_0 T = \frac{1}{2} \sqrt{T}$. In the case
-$T_1< \frac{1}{2}T+1$, it is lower bounded by
+We lower bound the last expression by considering two cases for $\tau$.
+If $\tau \ge \frac{1}{2}T + 1$, then the last expression is lower bounded by
+$\frac{1}{2}q_0 T = \frac{1}{2} \sqrt{T}$. If
+$\tau < \frac{1}{2}T+1$, it is lower bounded by
 \begin{align*}
 & \frac{1-q_0}{q_0}\left(1-(1-q_0)^{\frac{1}{2}T}\right) \\
 & = \frac{1-q_0}{q_0}\left(1-(1-q_0)^{\frac{1}{2q_0^2}}\right) \\
@@ -213,17 +205,16 @@ $T_1< \frac{1}{2}T+1$, it is lower bounded by
 \end{align*}
 
 Observe that in phase 1, the labels are equal to $1$ and in phase 2 the labels
-are equal to $2$. Let $t$ be the round in which the switch happens. (If it never
-happens, define $t=T+1$.) Note that $(x_t, y_t)=(x_{t+1}, y_{t+1})= \dots =
+are equal to $2$. Note that $(x_\tau, y_\tau)=(x_{\tau+1}, y_{\tau+1})= \dots =
 (x_T, y_T) = (v_t, 2)$. Consider the vectors $u_1, u_2, \dots, u_N$ as defined
-in Lemma~\ref{lemma:embed_d_gamma} We claim that $w_1=-u_t/2$ and $w_2=u_t/2$
+in Lemma~\ref{lemma:embed_d_gamma} We claim that $w_1=-u_\tau/2$ and $w_2=u_\tau/2$
 satisfy the conditions of strong linear separabaility.
 
 Clearly $\norm{w_1}^2 + \norm{w_2}^2 \le (\norm{w_1} + \norm{w_2})^2 \le
 (\frac{1}{2} + \frac{1}{2})^2 \le 1$. By Lemma~\ref{lemma:embed_d_gamma}, we
-have $\ip{w_2/2}{x_s} = \ip{u_t/2}{v_t} \ge \gamma/2, \forall s \ge t$ and
-$\ip{w_2/2}{x_s} = \ip{u_t/2}{v_s} \le - \gamma/2$ for all $s<t$. Similarly,
-$\ip{w_1/2}{x_s} \le -\gamma/2$ for all $s \ge t$ and $\ip{w_1/2}{x_s} \ge
-\gamma/2$ for all $s < t$. Thus, the examples are strongly separable with margin
+have $\ip{w_2/2}{x_t} = \ip{u_\tau/2}{v_\tau} \ge \gamma/2, \forall t \ge \tau$ and
+$\ip{w_2/2}{x_t} = \ip{u_\tau/2}{v_t} \le - \gamma/2$ for all $t < \tau$. Similarly,
+$\ip{w_1/2}{x_t} \le -\gamma/2$ for all $t \ge \tau$ and $\ip{w_1/2}{x_t} \ge
+\gamma/2$ for all $t < \tau$. Thus, the examples are strongly separable with margin
 $\gamma$.
 \end{proof}
