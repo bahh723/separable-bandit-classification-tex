@@ -120,7 +120,8 @@ $$
 
 
 \begin{proof}[Proof of \autoref{theorem:strongly-separable-examples-mistake-lower-bound}]
-We use probabilistic method. Let $M = \left\lfloor \frac{1}{4} (R/\gamma)^2
+%We use probabilistic method. 
+Let $M = \left\lfloor \frac{1}{4} (R/\gamma)^2
 \right\rfloor$. Let $V = \R^{M+1}$ equipped with the standard inner product.
 Let $e_1, e_2, \dots, e_{M+1}$ be the standard orthonormal basis of $V$. We
 define vectors $v_1, v_2, \dots, v_M \in V$ where $v_j = \frac{R}{\sqrt{2}}(e_j
@@ -180,8 +181,7 @@ $$
 \Exp \sbr{ \sum_{t=1}^{(K-1)M} z_t} \geq \frac{K-1}2 \cdot M = \frac{K-1}2 \left\lfloor \frac 1 4 (R/\gamma)^2 \right\rfloor \; .
 $$
 
-Finally, since strong separability and norm condition hold with probability one,
-there exists a particular (i.e. deterministic) sequence of examples for which
+Thus there exists a particular sequence of examples for which
 the algorithm makes at least $\frac{K-1}2 \left\lfloor \frac 1 4 (R/\gamma)^2
 \right\rfloor$ mistakes in expectation over its internal randomization.
 \end{proof}
