@@ -12,12 +12,13 @@ supplementary material.
 
 The idea behind
 Algorithm~\ref{algorithm:algorithm-for-strongly-linearly-separable-examples} is
-to use $K$ copies of the \textsc{Binary Perceptron} algorithm, one copy per class; see e.g.
-\citet[Section 3.3.1]{Shalev-Shwartz-2012}.
-Upon seeing each example $x_t$, copy $i$ predicts 
-whether or not $x_t$ belongs to class $i$.
-Multiclass predictions are done by evaluating all $K$ binary predictors and outputting any class with a positive prediction.  If all binary predictions are negative, the algorithm chooses a prediction a prediction uniformly at random from
-$\cbr{1,\ldots,K}$.
+to use $K$ copies of the \textsc{Binary Perceptron} algorithm, one copy per
+class; see e.g. \citet[Section 3.3.1]{Shalev-Shwartz-2012}. Upon seeing each
+example $x_t$, copy $i$ predicts whether or not $x_t$ belongs to class $i$.
+Multiclass predictions are done by evaluating all $K$ binary predictors and
+outputting any class with a positive prediction.  If all binary predictions are
+negative, the algorithm chooses a prediction a prediction uniformly at random
+from $\cbr{1,\ldots,K}$.
 
 %\begin{algorithm}[h]
 %\caption{\textsc{Bandit Algorithm for Strongly Linearly Separable Examples}
@@ -111,8 +112,9 @@ $O((R/\gamma)^2)$. This lower bound is stated as
 \autoref{theorem:strongly-separable-examples-mistake-lower-bound} below. The
 proof of the theorem can be found in
 Appendix~\ref{section:proofs-for-stringly-separable-examples} in the
-supplementary material.
-\citet{Daniely-Helbertal-2013} provide a lower bound under the assumption of weak linear separability, which does not immediately imply a lower bound under the stronger notion.
+supplementary material. \citet{Daniely-Helbertal-2013} provide a lower bound
+under the assumption of weak linear separability, which does not immediately
+imply a lower bound under the stronger notion.
 
 \begin{theorem}[Mistake lower bound]
 \label{theorem:strongly-separable-examples-mistake-lower-bound}
@@ -144,8 +146,8 @@ be extended to nonlinear classification using \emph{positive definite kernels}
 \to \R$ for some set $X$ such that the matrix
 $\left(k(x_i,x_j)\right)_{i,j=1}^m$ is a symmetric positive semidefinite for any
 positive integer $m$ and $x_1, x_2, \dots, x_m \in X$ \citep[Definition
-2.5]{Scholkopf-Smola-2002}.\footnote{Every kernel has an associated feature map
-$\phi:X \to V$ for some inner product space $(V,\ip{\cdot}{\cdot})$ such that
+2.5]{Scholkopf-Smola-2002}.\footnote{For every kernel there exists an associated feature map
+$\phi:X \to V$ into some inner product space $(V,\ip{\cdot}{\cdot})$ such that
 $k(x,x') = \ip{\phi(x)}{\phi(x')}$.} As opposed to explicitly maintaining the
 weight vector for each class, the algorithm maintains the set of example-scalar
 pairs corresponding to the updates of the non-kernelized algorithm. As a direct
