@@ -45,7 +45,7 @@ if isfield(model,'iter')==0
     %model.w = zeros(size(X,1),model.n_cla);
     model.beta_list= cell(model.n_cla, 1); 
     model.SV_list=cell(model.n_cla, 1); 
-    model.errTot = 0;
+    model.errTot = zeros(numel(Y),1);
     model.numSV = zeros(numel(Y),1);
     model.aer = zeros(numel(Y),1);
     model.pred = zeros(model.n_cla,numel(Y));
@@ -85,8 +85,12 @@ for i=1:n
     random_vect = (rand<cumsum(Prob));
     [dummy,y_tilde] = max(random_vect);
     
-    model.errTot = model.errTot+(y_tilde~=Yi);
-    model.aer(model.iter) = model.errTot/model.iter;
+    if model.iter>1
+        model.errTot(model.iter) = model.errTot(model.iter-1)+(y_tilde~=Yi);
+    else
+        model.errTot(model.iter) + (y_tilde~=Yi);
+    end
+    model.aer(model.iter) = model.errTot(model.iter)/model.iter;
     model.pred(:,model.iter) = val_f;
 
     if size(model.SV_list{y_hat},2) >= model.maxSV

@@ -41,7 +41,7 @@ if isfield(model,'iter')==0
     model.iter=0;
     model.w=zeros(model.n_cla,size(X,1));
     model.w2=zeros(model.n_cla,size(X,1));
-    model.errTot=0;
+    model.errTot=zeros(numel(Y,1));
     model.numSV=zeros(numel(Y),1);
     model.aer=zeros(numel(Y),1);
     model.pred=zeros(model.n_cla,numel(Y));
@@ -57,8 +57,12 @@ for i=1:n
     tmp=val_f; tmp(Yi)=-inf;
     [mx_val,idx_mx_val]=max(tmp);
 
-    model.errTot=model.errTot+(val_f(Yi)<=mx_val);
-    model.aer(model.iter)=model.errTot/model.iter;
+    if model.iter>1
+        model.errTot(model.iter) = model.errTot(model.iter-1)+(val_f(Yi)<=mx_val);
+    else
+        model.errTot(model.iter) + (val_f(Yi)<=mx_val);
+    end
+    model.aer(model.iter) = model.errTot(model.iter)/model.iter;
     model.pred(:,model.iter)=val_f;
     
     if val_f(Yi)<=mx_val

@@ -14,7 +14,7 @@ function model = soba_diag_multi_train(X,Y,model)
 %     - Kakade, S. M., Shalev-Shwartz, S., & Tewari, A. (2008).
 %       Efficient bandit algorithms for online multiclass prediction.
 %       Proceedings of the 25th International Conference on Machine
-%       Learning (pp. 440–447).
+%       Learning (pp. 440??47).
 %
 %    This file is part of the DOGMA library for MATLAB.
 %    Copyright (C) 2009-2012, Francesco Orabona
@@ -54,7 +54,7 @@ end
 if isfield(model,'iter')==0
     model.iter = 0;
     model.w = zeros(model.n_cla,size(X,1));
-    model.errTot = 0;
+    model.errTot=zeros(numel(Y,1));
     model.numSV = zeros(numel(Y),1);
     model.aer = zeros(numel(Y),1);
     model.pred = zeros(model.n_cla,numel(Y));
@@ -86,8 +86,12 @@ for i=1:n
     random_vect = (rand<cumsum(Prob));
     [dummy,y_tilde] = max(random_vect);
     
-    model.errTot = model.errTot+(y_tilde~=Yi);
-    model.aer(model.iter) = model.errTot/model.iter;
+    if model.iter>1
+        model.errTot(model.iter) = model.errTot(model.iter-1)+(y_tilde~=Yi);
+    else
+        model.errTot(model.iter) + (y_tilde~=Yi);
+    end
+    model.aer(model.iter) = model.errTot(model.iter)/model.iter;
     model.pred(:,model.iter) = val_f;
 
     if y_tilde==Yi
