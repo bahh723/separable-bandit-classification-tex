@@ -129,7 +129,7 @@ Thus,
 \end{align*}
 \end{proof}
 
-\begin{proof}
+\begin{proof}[Proof of \autoref{theorem:ignorant-lower-bound}]
 We consider the strategy for the adversary described in
 Algorithm~\ref{algorithm:adversary-strategy}.
 
@@ -174,8 +174,8 @@ In rounds $\tau, \tau+1, \dots, T$, all the examples are the same and are equal
 to $(v_\tau, 2)$. Let $s$ be the first time step $t$ such that $t \ge \tau$
 and the algorithm makes a correct prediction. If the algorithm makes mistakes
 in all rounds $\tau, \tau+1, \dots, T$, we define $s = T+1$.
-By definition the algorithm makes mistakes in rounds $\tau, \tau+1, \dots, s-1$
-Then,
+By definition the algorithm makes mistakes in rounds $\tau, \tau+1, \dots, s-1$.
+Therefore,
 $$
 \Exp\left[\sum_{t=\tau}^T \indicator{\widehat y_t\neq y_t}\right] \ge \Exp[s-\tau].
 $$
@@ -191,7 +191,7 @@ $$
 Combining the two, we have that
 \begin{align*}
 & \Exp \left[\sum_{t=1}^T \indicator{\widehat y_t\neq y_t}\right] \nonumber \\
-& \ge q_0 \Exp[\tau] + \Exp \left[\frac{1-q_0}{q_0}\left(1-(1-q_0)^{T-T_1+1}\right)\right] \\
+& \ge q_0 \Exp[\tau] + \Exp \left[\frac{1-q_0}{q_0}\left(1-(1-q_0)^{T-\tau+1}\right)\right] \\
 & =  \Exp \left[ \Exp \left[ q_0 \tau + \frac{1-q_0}{q_0}\left(1-(1-q_0)^{T-\tau+1}\right) ~\middle|~ \tau \right] \right] \; .
 \end{align*}
 We lower bound the last expression by considering two cases for $\tau$.
