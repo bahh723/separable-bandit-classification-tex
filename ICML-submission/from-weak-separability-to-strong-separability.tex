@@ -14,7 +14,8 @@ Algorithm~\ref{algorithm:algorithm-for-strongly-linearly-separable-examples}
 alone does not guarantee a finite mistake bound in this setting, as weak linear
 separability does not imply strong linear separability.
 
-We construct a positive definite kernel function $k(\cdot, \cdot)$ whose
+We use a positive definite kernel function $k(\cdot, \cdot)$, namely
+\emph{rational kernel}~\citep{Shalev-Shwartz-Shamir-Sridharan-2011}, whose
 corresponding feature map $\phi(\cdot)$ transforms any sequence of \emph{weakly}
 linearly separable examples to \emph{strongly} linearly separable sequence of
 examples. Specifically, $\phi$ has the property that if a set of labeled
@@ -24,7 +25,7 @@ margin $\gamma'$ and their squared norms are bounded by $2$. The parameter $\gam
 a function of the old margin $\gamma$ and the number of classes $K$, and is
 specified in \autoref{theorem:margin-transformation} below.
 
-The kernel function $k:\B(\zero,1) \times \B(\zero,1) \to \R$ is defined as
+The rational kernel $k:\B(\zero,1) \times \B(\zero,1) \to \R$ is defined as
 \begin{equation}
 \label{equation:rational-kernel}
 k(x,x') = \frac{1}{1 - \frac{1}{2}\ip{x}{x'}_{\R^d}} \; .

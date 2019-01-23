@@ -115,6 +115,8 @@ most $2^{\widetilde{O}(\min(K \log^2 (1/\gamma), \sqrt{1/\gamma}
 In Appendix~\ref{section:nearest-neighbor-algorithm}, we propose and analyze a
 very different algorithm for weakly separable data. The algorithm is based on
 the obvious idea that two points that are close enough must have the same label.
+\chicheng{I wonder if the mistake bound of this algorithm is too large to be included
+as ``our contributions'' - perhaps we should only mention it as a folklore/baseline?}
 
 Finally, we study two questions related to the computational and
 information-theoretic hardness of the problem. Any algorithm for the bandit
@@ -123,7 +125,7 @@ and \emph{weakly labeled} examples. Strongly labeled examples are those for
 which we know the class label. Weakly labeled example is an example for which we
 know that class label can be anything except for a particular one class. In
 Appendix~\ref{section:np-hardness-of-weak-labeling-problem}, we show that the
-offline problem of finding a linear multiclass separator consistent with a set
+offline problem of finding a multiclass linear classifier consistent with a set
 of strongly and weakly labeled examples is NP-hard. In
 Appendix~\ref{section:mistake-lower-bound-for-ignorant-algorithms}, we prove a
 lower bound on the number of mistakes of any algorithm that uses only
