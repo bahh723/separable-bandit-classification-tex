@@ -56,7 +56,7 @@ base hypothesis as a separate feature.
 %However, most of these works achieve a
 %regret of order $\widetilde{O}(\sqrt{T})$ to $O(T^{3/4})$.  
 In the weakly linearly separable setting, however, 
-these algorithms can guarantee a mistake 
+these algorithms can only guarantee a mistake 
 bound of ${O}(\sqrt{T})$ at best.
 %One exception is the \textsc{Newtron} algorithm, which---with
 %an appropriate setting of parameter $\alpha$---can achieve a $O(\ln T)$
@@ -99,18 +99,18 @@ bound of ${O}(\sqrt{T})$ at best.
 
 The problem considered here is a special case of the
 contextual bandit problem~\citep{Auer-2003, Langford-Zhang-2008}. 
-In this general problem, there is a hidden cost vector $c_t$ associated with every prediction in $\{1,\ldots,K\}$ in round $t$.  Upon receiving $x_t$ and predicting $\widehat{y}_t \in \{1,\ldots,K\}$, the learner gets to observe the incurred cost $c_t(\widehat{y}_t)$.   
-The goal of the learning is to minimize its regret with respect to the best predictor in some predefined policy class $\Pi$, given by $\sum_{t=1}^T c_t(\widehat{y}_t) -
+In this general problem, there is a hidden cost vector $c_t$ associated with every prediction in round $t$.  Upon receiving $x_t$ and predicting $\widehat{y}_t \in \{1,\ldots,K\}$, the learner gets to observe the incurred cost $c_t(\widehat{y}_t)$.  
+The goal of the learner is to minimize its regret with respect to the best predictor in some predefined policy class $\Pi$, given by $\sum_{t=1}^T c_t(\widehat{y}_t) -
 \min_{\pi \in \Pi} \sum_{t=1}^T c_t(\pi(x_t))$.
 Bandit multiclass learning is a special case
 where the cost $c_t(i)$ is the classification error $\indicator{i \neq y_t}$ and 
 the policy class is the set of linear classifiers $\cbr{x \mapsto \argmax_y (Wx)_y: W \in \R^{k \times d}}$.
-There has been significant progress on the general contextual bandit problem, 
+There has been significant progress on the general contextual bandit problem
 assuming access to an optimization oracle that returns a policy in $\Pi$ with the smallest total cost on any given set of cost-sensitive examples~\citep{Dudik-Hsu-Kale-Karampatziakis-Langford-Reyzin-Zhang-2011,
 Agarwal-Hsu-Kale-Langford-Li-Schapire-2014, Rakhlin-Sridharan-2016,
 Syrgkanis-Krishnamurthy-Schapire-2016,
 Syrgkanis-Luo-Krishnamurthy-Schapire-2016}.
-While solving a more general problem that does not make assumptions on the structure of the cost vector $c_t$ or the policy class, these results assume that $x_t$s or $(x_t,c_t)$s are generated i.i.d., in addition to assuming oracle access to search through $\Pi$, neither of which we assume here.
+While solving a more general problem without making assumptions on the structure of the cost vector $c_t$ or the policy class, these results assume that $x_t$ vectors or $(x_t,c_t)$ pairs are generated i.i.d. and that such an oracle abstracting efficient search through $\Pi$ is available---neither of which we assume here.
 
 %However, these algorithms are not
 %truly computationally efficient in our setting, as it is NP-hard in general to
