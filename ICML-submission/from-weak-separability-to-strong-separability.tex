@@ -30,7 +30,7 @@ The rational kernel $k:\B(\zero,1) \times \B(\zero,1) \to \R$ is defined as
 \label{equation:rational-kernel}
 k(x,x') = \frac{1}{1 - \frac{1}{2}\ip{x}{x'}_{\R^d}} \; .
 \end{equation}
-Note that kernel function $k(x,x')$ can be evaluated in $O(d)$ time.
+Note that $k(x,x')$ can be evaluated in $O(d)$ time.
 
 Consider the classical real separable Hilbert space $\ell_2 = \{ x \in \R^\infty
 ~:~ \sum_{i=1}^\infty x_i^2 < + \infty \}$ equipped with the standard inner
@@ -183,8 +183,8 @@ We give two explicit constructions for such polynomial in
 Theorems~\ref{theorem:polynomial-approximation-1}~and~\ref{theorem:polynomial-approximation-2}.
 Our constructions are based on \citet{Klivans-Servedio-2008} which in turn uses
 the constructions from~\citet{Beigel-Reingold-Spielman-1995}. More importantly,
-the theorems quantify certain parameters of the polynomial, which will allow us
-to give an upper bound on the transformed margin $\gamma'$.
+the theorems quantify certain parameters of the polynomial, which allows us
+to upper bound the transformed margin $\gamma'$.
 
 Before we state the theorems, recall that a polynomial of $d$ variables is a
 function $p:\R^d \to \R$ of the form
@@ -244,11 +244,11 @@ for all $\displaystyle x \in R^- = \bigcup_{i=1}^m \left\{ x \in \B(\zero,1) ~:~
 \end{enumerate}
 \end{theorem}
 
-The proofs of the theorems can be found in
-Appendix~\ref{section:proof-of-polynomial-approximation} in the supplementary
-material. The geometric interpretation of the two regions described in parts 1
+The proofs of the theorems are in
+Appendix~\ref{section:proof-of-polynomial-approximation}.
+The geometric interpretation of the two regions described in parts 1
 and 2 of the theorems is explained in Figure~\ref{figure:pizza-slice}. Similar
-but weaker results were proved by~\citet{Klivans-Servedio-2008}. In particular,
+but weaker results were proved by~\citet{Klivans-Servedio-2008}. Specifically,
 our bounds in parts 1, 2, 3, 4 of
 Theorems~\ref{theorem:polynomial-approximation-1}~and~\ref{theorem:polynomial-approximation-2}
 are independent of the dimension $d$.
