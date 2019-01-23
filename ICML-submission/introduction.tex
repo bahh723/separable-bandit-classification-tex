@@ -57,12 +57,11 @@ it is not known how to design an efficient algorithm with a finite mistake bound
 before our work.~\footnote{Although~\cite{Chen-Chen-Zhang-Chen-Zhang-2009}
 claimed that their Conservative OVA algorithm with PA-I update has a finite
 mistake bound under the strong linear separability condition, their
-Theorem 2 is incorrect: first, their Lemma 1 (with $C = +\infty$) along with Theorem 1
+Theorem~2 is incorrect: first, their Lemma~1 (with $C = +\infty$) along with their Theorem~1
 implies a mistake upper bound of
-$(\frac{R}{\gamma})^2$, which contradicts our lower
-bound in Theorem~\ref{theorem:strongly-separable-examples-mistake-lower-bound};
-second, their Lemma 1 cannot be directly applied to the bandit setting, as the
-algorithm only makes updates on a subset of the $w_i$'s.} We design a simple and
+$(\frac{R}{\gamma})^2$, which contradicts the lower
+bound in our Theorem~\ref{theorem:strongly-separable-examples-mistake-lower-bound};
+second, their Lemma~1 cannot be directly applied to the bandit setting.} We design a simple and
 efficient algorithm
 (Algorithm~\ref{algorithm:algorithm-for-strongly-linearly-separable-examples})
 that makes at most $O(K (R/\gamma)^2)$ mistakes in expectation. Its memory
