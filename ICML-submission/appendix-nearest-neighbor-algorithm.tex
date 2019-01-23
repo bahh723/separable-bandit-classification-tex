@@ -32,8 +32,8 @@ Algorithm~\ref{algorithm:nearest-neighbor}. The algorithm is based on obvious
 the idea that under weak linear assumption two examples that are close to each
 other must have the same label. Lemma below formalizes this intuition.
 
-\begin{lemma}[Separation lemma]
-\label{lemma:separation-lemma}
+\begin{lemma}[Non-separation lemma]
+\label{lemma:non-separation-lemma}
 Let $(V,\ip{\cdot}{\cdot})$ be a vector space, $K$ be a positive integer and let
 $\gamma$ be a positive real number. Suppose $(x_1,y_1), (x_2,y_2), \dots, (x_T,
 y_T) \in V \times \{1,2,\dots,K\}$ are labeled examples that are weakly linearly
@@ -43,8 +43,8 @@ $\norm{x_i - x_j}_2 \le \gamma$ then $y_i = y_j$.
 
 \begin{proof}
 Suppose for the sake on contradiction that $y_i \neq y_j$. By
-Definition~\ref{definition:linear-separability}, there exists a set of $k$
-vectors $(w_1, \ldots, w_k)$, such that
+Definition~\ref{definition:linear-separability}, there exists
+vectors $w_1, \ldots, w_K$ such that
 conditions~\eqref{equation:weak-linear-separability-1}
 and~\eqref{equation:weak-linear-separability-2} are satisfied.
 
@@ -60,7 +60,7 @@ $$
 
 On the other hand,
 $$
-\ip{w_{y_i} - w_{y_j}}{x_i - x_j} \le \norm{w_{y_i} - w_{y_j}} \cdot \norm{x_i - x_j} < \sqrt{2} \gamma
+\ip{w_{y_i} - w_{y_j}}{x_i - x_j} \le \norm{w_{y_i} - w_{y_j}} \cdot \norm{x_i - x_j} \le \sqrt{2} \gamma
 $$
 where the first inequality is from Cauchy-Schwartz inequality, the second
 inequality is from that $\norm{w_{y_i} - w_{y_j}} \le \sqrt{2(\norm{w_{y_i}}^2 +
@@ -70,30 +70,30 @@ Therefore, we reach a contradiction.
 
 We also need to define several notions. A subset $S \subseteq \R^d$ is called a
 $\gamma$-packing if for any $x,x' \in S$ such that $x \neq x'$ we have $\norm{x -
-x'} > \gamma$. The following lemma is standard. Also recall that $B(x,R) = \{ x'
+x'} > \gamma$. The following lemma is standard. Also recall that $\B(x,R) = \{ x'
 \in \R^d ~:~ \norm{x' - x} \le R \}$ denotes the closed ball of radius $R$
 centered a point $x$.
 
 \begin{lemma}[Size of $\gamma$-packing]
 \label{lemma:size-of-packing}
 Let $\gamma$ and $R$ be positive real numbers.
-If $S \subseteq B(\zero,R) \subseteq \R^d$ is a $\gamma$-packing then
+If $S \subseteq \B(\zero,R) \subseteq \R^d$ is a $\gamma$-packing then
 $$
 |S| \le \left( \frac{2R}{\gamma} + 1 \right)^d \; .
 $$
 \end{lemma}
 
 \begin{proof}
-If $S$ is a $\gamma$-packing then $\{ B(x,\gamma/2) ~:~ x \in S \}$
-is a collection of disjoint balls of radius $\gamma$ that fit into $B(\zero,R + \gamma/2)$.
+If $S$ is a $\gamma$-packing then $\{ \B(x,\gamma/2) ~:~ x \in S \}$
+is a collection of disjoint balls of radius $\gamma$ that fit into $\B(\zero,R + \gamma/2)$.
 Thus,
 $$
-|S| \cdot \Vol(B(\zero, \gamma/2)) \le \Vol(B(\zero,R + \gamma/2))
+|S| \cdot \Vol(\B(\zero, \gamma/2)) \le \Vol(\B(\zero,R + \gamma/2))
 $$
 Hence,
 \begin{align*}
 |S|
-& \le \frac{\Vol(B(\zero,R + \gamma/2))}{\Vol(B(\zero, \gamma/2))} \\
+& \le \frac{\Vol(\B(\zero,R + \gamma/2))}{\Vol(\B(\zero, \gamma/2))} \\
 & = \left( \frac{R + \gamma/2}{\gamma/2} \right)^d \\
 & = \left( \frac{2R}{\gamma} + 1 \right)^d \; .
 \end{align*}
@@ -116,9 +116,9 @@ $$
 Let $M$ be the number of mistakes made by the algorithm. Let $b_t$ be the
 indicator that line~\ref{line:nearest-neighbor-explore} is executed at timestep
 $t$, i.e. we fall into the ``else'' case. Note that if $b_t = 0$, then by
-Lemma~\ref{lemma:separation-lemma}, the prediction $\widehat{y}_t$ must equal
+Lemma~\ref{lemma:non-separation-lemma}, the prediction $\widehat{y}_t$ must equal
 $y_t$, i.e. $z_t = 0$. Therefore, $M = \sum_{t=1}^T z_t = \sum_{t=1}^T b_t z_t$.
-Let $U = \sum_{t=1}^T b_t (1-z_t)$. Clearly, $|S| = U$. Since $S \subseteq B(\zero, R)$
+Let $U = \sum_{t=1}^T b_t (1-z_t)$. Clearly, $|S| = U$. Since $S \subseteq \B(\zero, R)$
 is a $\gamma$-packing, $U = |S| \le (\frac{2R}{\gamma} + 1)^d$.
 
 Note that when $b_t = 1$, $\widehat{y}_t$ is chosen uniformly at random, we have
