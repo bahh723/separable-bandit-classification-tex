@@ -120,11 +120,10 @@ information-theoretic hardness of the problem. Any algorithm for the bandit
 setting collects information in the form of so called \emph{strongly labeled}
 and \emph{weakly labeled} examples. Strongly labeled examples are those for
 which we know the class label. Weakly labeled example is an example for which we
-know that class label can be anything except for a particular one class.
-In Appendix~\ref{section:np-hardness-of-weak-labeling-problem}, we show that the offline
-problem of finding a linear multiclass separator consistent with a set of
-strongly and weakly labeled examples is NP-hard. In
-Appendix~\ref{section:mistake-lower-bound-for-ignorant-algorithms}, we show that
-any algorithm that uses only strongly-labeled examples and ignores weakly
-labeled examples makes at least $\Omega\left( \left(1/(160 \gamma)\right)^{(d-2)/4} \right)$
-mistakes.
+know that class label can be anything except for a particular one class. In
+Appendix~\ref{section:np-hardness-of-weak-labeling-problem}, we show that the
+offline problem of finding a linear multiclass separator consistent with a set
+of strongly and weakly labeled examples is NP-hard. In
+Appendix~\ref{section:mistake-lower-bound-for-ignorant-algorithms}, we prove a
+lower bound on the number of mistakes of any algorithm that uses only
+strongly-labeled examples and ignores weakly labeled examples.

@@ -22,17 +22,17 @@ it makes a mistake and it must make a meaningful update on such examples.
 The ignorant algorithm is formally defined as follows.
 \begin{definition}
 \label{definition:ignorant-algorithm}
-A bandit classification algorithm $\calA$ is ignorant if for all $t \in
-\{1,2,\dots,T\}$, $\widehat y_t\in \{1,2\}$ is drawn from some distribution that
-is jointly determined by
+An algorithm $\calA$ for \textsc{Online Multiclass Linear Classification with
+Bandit Feedback} is called \emph{ignorant} if for all $t \in \{1,2,\dots,T\}$,
+$\widehat y_t$ is drawn from some distribution that is jointly determined by
 \begin{enumerate}
 \item $x_t$
 \item $H_t \triangleq \left( (x_{\tau_1}, y_{\tau_1}), (x_{\tau_2}, y_{\tau_2}), \ldots, (x_{\tau_{n_t}}, y_{\tau_{n_t}}) \right)$,
 where $1 \le \tau_1 < \dots < \tau_{n_t} < t$, and $\{\tau_1, \ldots, \tau_{n_t}\}$
 are the rounds in which the algorithm predicts correctly (that is,
-$\{\tau_1, \ldots, \tau_{n_t}\} = \{1 \le \tau < t ~:~ \widehat y_\tau=y_\tau\}$).
+$\{\tau_1, \dots, \tau_{n_t}\} = \{1 \le \tau < t ~:~ \widehat y_\tau=y_\tau\}$).
 \end{enumerate}
-We use $p_t(\cdot|x_t)\in \{p\in \R_+^2 ~:~ p^\top\mathbf{1}=1\}$ to denote
+We use $p_t(\cdot|x_t)\in \{p\in \R_+^K ~:~ p^\top\mathbf{1}=1\}$ to denote
 the distribution $\widehat y_t$ is drawn from. Note that we let the current
 feature vector $x_t$ be an argument to $p_t$ to incorporate its dependency on
 $x_t$. Therefore, for an ignorant algorithm, the function $p_t(\cdot|\cdot)$ is
@@ -40,42 +40,45 @@ only determined by $H_t$.
 \end{definition}
 
 An ignorant algorithm does not learn from mistakes in the following sense.
-Suppose that an ignorant algorithm predicts incorrectly at time $t$ ($\widehat
-y_t \neq y_t$). Then at time $t+1$, if it is given the same feature vector
-$x_{t+1}=x_t$, it will predict the label with the same distribution
-$p_{t+1}(\cdot|x_{t+1})=p_{t+1}(\cdot|x_t)=p_t(\cdot|x_t)$. Below we describe
-the difficulty of learning from mistakes using a class of natural approaches
-under the weak separability assumption. Consider an approach similar to OBAMA:
-in each round $t$, we create a \textit{convex} loss function $\widehat \ell_t:
-\R^{K\times d} \to \R$ that gives a loss value $\widehat
-\ell_t(W)$ to all linear models $W \in \R^{K\times d}$ ($W=[w_1 \dots
-w_K]^\top$ for $w_1, w_2, \dots, w_K$ defined in
-Definition~\ref{definition:linear-separability}). The requirement for
-$\widehat{\ell}_t$ to be convex is due to computational efficiency. To let
-$\widehat{\ell}_t$ reflect the loss, if $\widehat y_t \neq y_t$, we want to
-assign larger loss values $\widehat{\ell_t}(W)$ to the inconsistent models
-$\mathcal{W}=\{W: \ip{w_{\widehat y_t}}{x_t} \ge \ip{w_i}{x_t}, \forall
-i\in[K]\}$, while for other $W$'s, we want $\widehat{\ell_t}(W)$ to be smaller.
-The following fact can be verified when $K\ge 3$, which suggests there is no
-way to define the loss $\widehat \ell_t$ that satisfies the above properties
-constraints: there exists $W_1, W_2, W_3$, where $W_2$ is in the line segment
-between $W_1$ and $W_3$, such that $W_2\in \mathcal{W}$, while $W_1, W_3 \notin
-\mathcal{W}$. On one hand, by convexity, we should have
-$\widehat{\ell}_t(W_2)\le \max\{\widehat{\ell}_t(W_1),
-\widehat{\ell}_t(W_3)\}$; on the other hand, to penalize $\mathcal{W}$, we
-should have $\widehat{\ell}_t(W_2) > \widehat{\ell}_t(W_1)$ and
-$\widehat{\ell}_t(W_2) > \widehat{\ell}_t(W_3)$. Clearly, these two requirements
-contradict each other.
+Suppose that an ignorant algorithm predicts incorrectly at time $t$. Then at
+time $t+1$, if it is given the same feature vector $x_{t+1}=x_t$, it will
+predict the label with the same distribution
+$p_{t+1}(\cdot|x_{t+1})=p_{t+1}(\cdot|x_t)=p_t(\cdot|x_t)$.
+
+% Below we describe
+%the difficulty of learning from mistakes using a class of natural approaches
+%under the weak separability assumption. Consider an approach similar to OBAMA:
+%in each round $t$, we create a \textit{convex} loss function $\widehat \ell_t:
+%\R^{K\times d} \to \R$ that gives a loss value $\widehat
+%\ell_t(W)$ to all linear models $W \in \R^{K\times d}$ ($W=[w_1 \dots
+%w_K]^\top$ for $w_1, w_2, \dots, w_K$ defined in
+%Definition~\ref{definition:linear-separability}). The requirement for
+%$\widehat{\ell}_t$ to be convex is due to computational efficiency. To let
+%$\widehat{\ell}_t$ reflect the loss, if $\widehat y_t \neq y_t$, we want to
+%assign larger loss values $\widehat{\ell_t}(W)$ to the inconsistent models
+%$\mathcal{W}=\{W: \ip{w_{\widehat y_t}}{x_t} \ge \ip{w_i}{x_t}, \forall
+%i\in[K]\}$, while for other $W$'s, we want $\widehat{\ell_t}(W)$ to be smaller.
+%The following fact can be verified when $K\ge 3$, which suggests there is no
+%way to define the loss $\widehat \ell_t$ that satisfies the above properties
+%constraints: there exists $W_1, W_2, W_3$, where $W_2$ is in the line segment
+%between $W_1$ and $W_3$, such that $W_2\in \mathcal{W}$, while $W_1, W_3 \notin
+%\mathcal{W}$. On one hand, by convexity, we should have
+%$\widehat{\ell}_t(W_2)\le \max\{\widehat{\ell}_t(W_1),
+%\widehat{\ell}_t(W_3)\}$; on the other hand, to penalize $\mathcal{W}$, we
+%should have $\widehat{\ell}_t(W_2) > \widehat{\ell}_t(W_1)$ and
+%$\widehat{\ell}_t(W_2) > \widehat{\ell}_t(W_3)$. Clearly, these two requirements
+%contradict each other.
 
 The following theorem states the mistake lower bound for ignorant algorithms.
 
 \begin{theorem}[Mistake Lower Bound for Ignorant Algorithms]
-\label{theorem:ignorant_lower_bound}
-Suppose $\calA$ is an ignorant bandit classification algorithm. There
-exists an adversary that can sequentially choose $(x_1, y_1), (x_2, y_2), \dots,
-(x_T, y_T) \in \R^d\times \{1,2\}$ so that the examples $\gamma$-strongly
-linearly separable, $\norm{x_1}, \norm{x_2}, \dots, \norm{x_T} \le R$, and the
-expected number of mistakes made by $\calA$ is at least
+\label{theorem:ignorant-lower-bound}
+Suppose $\calA$ is an ignorant algorithm for \textsc{Online Multiclass Linear
+Classification with Bandit Feedback}. There exists an adversary that can
+sequentially choose labeled examples $(x_1, y_1), (x_2, y_2), \dots, (x_T, y_T)
+\in \R^d\times \{1,2\}$ so that the examples are $\gamma$-strongly linearly
+separable, $\norm{x_1}, \norm{x_2}, \dots, \norm{x_T} \le R$, and the expected
+number of mistakes made by $\calA$ is at least
 $$
 \frac{1}{10}\min\left\{\sqrt{T}, \left(\frac{1}{160\gamma}\right)^{\frac{d-2}{4}} \right\} \; .
 $$
@@ -85,7 +88,7 @@ Before proving the theorem, we need the following lemma.
 
 \begin{lemma}
 \label{lemma:embed_d_gamma}
-Let $\gamma \in (0,\frac 1 {160})$, let $d$ be a positive integer and let $N = (\Omega(\frac{1}{\gamma}))^{(d-2)/2}$.
+Let $\gamma \in (0,\frac{1}{160})$, let $d$ be a positive integer and let $N = (\frac{1}{2\sqrt{40\gamma}})^{d-2}$.
 There exist vectors $u_1, u_2, \dots, u_N, v_1, v_2, \dots, v_N \in \R^d$ such that for all $i, j \in \{1,2,\dots,N\}$,
 \begin{align*}
 \norm{u_i} & \le 1 \; , \\
@@ -96,11 +99,11 @@ There exist vectors $u_1, u_2, \dots, u_N, v_1, v_2, \dots, v_N \in \R^d$ such t
 \end{lemma}
 
 \begin{proof}
-By Lemma 6 of~\cite{Long-1995}, there exists a set of $N =
-(\frac{1}{2\sqrt{40\gamma}})^{d-2}$ $(d-1)$-dimensional vectors $z_1, \ldots,
-z_N$ on the unit sphere $\mathbb{S}^{d-2}$, such that $\theta(z_i, z_j) \ge
-\sqrt{40 \gamma}$. As $\cos\theta \le 1-\theta^2/5$ for every $\theta \in
-[0,\pi]$, this implies that
+By Lemma 6 of~\citet{Long-1995}, there exists a set of $N$ dimensional vectors
+$z_1, z_2, \dots, z_N \in \R^{d-1}$ such that $\norm{z_1} = \norm{z_2} = \dots =
+\norm{z_N} = 1$ and the angle between the vectors is $\measuredangle(z_i, z_j) \ge
+\sqrt{40 \gamma}$. Since $\cos\theta \le 1-\theta^2/5$ for any $\theta \in
+[-\pi,\pi]$, this implies that
 \begin{align*}
 \ip{z_i}{z_j} &= 1 && \text{if $i = j$,} \\
 \ip{z_i}{z_j} &\le 1 - 8\gamma && \text{if $i \neq j$.}
@@ -119,7 +122,7 @@ Thus,
 \end{align*}
 \end{proof}
 
-\begin{proof}[Proof for Theorem~\ref{theorem:ignorant_lower_bound} (Part I: Mistake lower bound)]
+\begin{proof}[Proof for Theorem~\ref{theorem:ignorant-lower-bound} (Part I: Mistake lower bound)]
 We consider the strategy for the adversary described in Algorithm~\ref{algorithm:adversary-strategy}.
 \begin{algorithm}[h]
 \caption{\textsc{Adversary's strategy}}
@@ -201,7 +204,7 @@ $T_1< \frac{1}{2}\min\{T,N\}+1$, it is lower bounded by
 Combining both cases concludes the proof.
 \end{proof}
 
-\begin{proof}[Proof for Theorem~\ref{theorem:ignorant_lower_bound} (Part II: linear separability)]
+\begin{proof}[Proof for Theorem~\ref{theorem:ignorant-lower-bound} (Part II: linear separability)]
 Observe that in Algorithm~\ref{algorithm:adversary-strategy}, in the beginning
 the adversary always set the label to $1$; once it sets $y_t=2$ at some $t$, it
 lets $(x_s, y_s)=(x_t, y_t)=(v_t, 2)$ for all $s\ge t$. Consider $w_2=u_t$ and
