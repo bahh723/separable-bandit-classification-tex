@@ -47,7 +47,7 @@ quasipolynomial in $K$ (for constant $\gamma$) can be obtained.
 %~\cite{Kakade-Shalev-Shwartz-Tewari-2008}, where in this paper we provide a
 %positive answer. $O(k^2 d \ln(\frac{d}{\gamma^2}))$
 
-The general problem of linear bandit multiclass learning has received considerable attention~\cite{Abernethy-Rakhlin-2009, Wang-Jin-Valizadegan-2010,
+The general problem of linear bandit multiclass learning has received considerable attention~\citep{Abernethy-Rakhlin-2009, Wang-Jin-Valizadegan-2010,
 Crammer-Gentile-2013, Hazan-Kale-2011, Beygelzimer-Orabona-Zhang-2017,
 Foster-Kale-Luo-Mohri-Sridharan-2018}. \citet{Chen-Lin-Lu-2014,
 Zhang-Jung-Tewari-2018} study online bandit multiclass boosting under bandit
@@ -104,7 +104,7 @@ The goal of the learner is to minimize its regret with respect to the best predi
 \min_{\pi \in \Pi} \sum_{t=1}^T c_t(\pi(x_t))$.
 Bandit multiclass learning is a special case
 where the cost $c_t(i)$ is the classification error $\indicator{i \neq y_t}$ and
-the policy class is the set of linear classifiers $\cbr{x \mapsto \argmax_y (Wx)_y: W \in \R^{k \times d}}$.
+the policy class is the set of linear classifiers $\cbr{x \mapsto \argmax_y (Wx)_y: W \in \R^{K \times d}}$.
 There has been significant progress on the general contextual bandit problem
 assuming access to an optimization oracle that returns a policy in $\Pi$ with the smallest total cost on any given set of cost-sensitive examples~\citep{Dudik-Hsu-Kale-Karampatziakis-Langford-Reyzin-Zhang-2011,
 Agarwal-Hsu-Kale-Langford-Li-Schapire-2014, Rakhlin-Sridharan-2016,
@@ -129,7 +129,7 @@ $f = (f_1, \ldots, f_K)$ such that $\sum_{i=1}^K f_i(\cdot) \equiv 0$, and $\phi
 s \gamma, 0)$ or $\min(1, \max(1 - \frac s \gamma, 0))$. On one hand, it gives
 information-theoretic regret upper bounds for various settings of $\calF$. On
 the other hand, it gives an efficient algorithm with an $O(\sqrt{T})$ regret
-against the benchmark of $\calF = \cbr{x \mapsto W x: W \in \R^{k \times d},
+against the benchmark of $\calF = \cbr{x \mapsto W x: W \in \R^{K \times d},
 \one^T W = 0}$. A direct application of this result to \textsc{Online Bandit
 Multiclass Linear Classification} gives an algorithm with $O(\sqrt{T})$ mistake
 bound in the strongly linearly separable case.

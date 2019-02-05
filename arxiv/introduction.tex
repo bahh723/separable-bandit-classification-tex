@@ -76,7 +76,7 @@ lack of full-information feedback.
 
 For the case when the examples are weakly linearly separable, it was open for a
 long time whether there exist \textit{efficient} algorithms with finite mistake
-bound~\cite{Kakade-Shalev-Shwartz-Tewari-2008, Beygelzimer-Orabona-Zhang-2017}.
+bound~\citep{Kakade-Shalev-Shwartz-Tewari-2008, Beygelzimer-Orabona-Zhang-2017}.
 Furthermore, \citet{Kakade-Shalev-Shwartz-Tewari-2008} ask the question:
 Is there \textit{any} algorithm with a finite mistake bound that has no explicit
 dependence on the dimensionality of the feature vectors? We answer both
@@ -92,8 +92,8 @@ Algorithm~\ref{algorithm:algorithm-for-strongly-linearly-separable-examples} for
 the strongly separable case. The kernel $k(x,x')$ corresponding to the feature
 mapping $\phi$ has a simple explicit formula and can be computed in $O(d)$ time,
 making Algorithm~\ref{algorithm:kernelized} computationally efficient. For
-details on kernel methods see e.g.~\citet{Scholkopf-Smola-2002} or
-\citet{Shawe-Taylor-Cristianini-2004}.
+details on kernel methods see e.g.~\citep{Scholkopf-Smola-2002} or
+\citep{Shawe-Taylor-Cristianini-2004}.
 
 The number of mistakes of the kernelized algorithm depends on the margin in the
 corresponding feature space. We analyze how the mapping $\phi$ transforms the
