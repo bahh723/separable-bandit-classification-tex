@@ -48,7 +48,7 @@ labeling problem. The reduction is adapted from \cite{Blum-Rivest-1993}.
     \textbf{Set Splitting}
 \end{center}
 \textbf{Given:} A finite set $S$ and a collection $C$ of subsets $c_i$ of $S$. \\
-\textbf{Question:} Do there exist disjoint sets $S_1$ and $S_2$ such that $S_1 \cup S_2 = S$ and $\forall i, c_i\not\subseteq S_1$ and $c_i\not\subseteq S_2$?
+\textbf{Question:} Do there exist disjoint sets $S_1$ and $S_2$ such that $S_1 \cup S_2 = S$ and $\forall i, c_i\not\subseteq S_1$ or $c_i\not\subseteq S_2$?
 \end{framed}
 \end{figure}
 
@@ -140,7 +140,7 @@ Type 2 samples. Because Type 2 samples all have label $\overline{3}$, for any $i
 1)}>0$ or $\ip{w_2-w_3}{(\e_i, 1)}>0$. This implies $i\in S_1$ or $i\in S_2$.
 
 Now we show $\forall j$, $c_j \not\subset S_1$ and $c_j \not\subset S_2$ by
-contradiction. Assume there exists some $j$ such that $c_j \subset S_1$. By our
+contraction. Assume there exists some $j$ such that $c_j \subset S_1$. By our
 definition of $S_1$, we have $\ip{w_1-w_3}{(\e_i, 1)} > 0$ for all $i\in c_j$.
 Therefore,
 \begin{align*}

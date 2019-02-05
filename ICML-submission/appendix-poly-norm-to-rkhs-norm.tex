@@ -10,16 +10,16 @@ c_{\alpha_1, \alpha_2, \dots, \alpha_d}
 = \frac{c'_{\alpha_1, \alpha_2, \dots, \alpha_d} 2^{(\alpha_1 + \alpha_2 + \dots + \alpha_d)/2}}{\sqrt{\binom{\alpha_1 + \alpha_2 + \dots + \alpha_d}{\alpha_1, \alpha_2, \dots, \alpha_d}}}
 $$
 for all tuples $(\alpha_1, \alpha_2, \dots, \alpha_d)$ such that $\alpha_1 + \alpha_2 + \dots + \alpha_d \le \deg(p)$.
-Otherwise, we define $c_{\alpha_1, \alpha_2, \dots, \alpha_d} = 0$. By the definition
-of $\phi$, $\ip{c}{\phi(x)}_{\ell_2} = p(x)$.
+Otherwise, we define $c_{\alpha_1, \alpha_2, \dots, \alpha_d} = 0$. Clearly,
+$\ip{c}{\phi(x)}_{\ell_2} = p(x)$.
 
-Whether $\alpha_1 + \ldots + \alpha_d \leq \deg(p)$, we always have:
+Since
 \begin{align*}
 |c_{\alpha_1, \alpha_2, \dots, \alpha_d}|
 & \le 2^{(\alpha_1 + \alpha_2 + \dots + \alpha_d)/2} |c'_{\alpha_1, \alpha_2, \dots, \alpha_d}| \\
-& \le 2^{\deg(p)/2} |c'_{\alpha_1, \alpha_2, \dots, \alpha_d}| \; .
+& \le 2^{\deg(p)/2} |c'_{\alpha_1, \alpha_2, \dots, \alpha_d}| \; ,
 \end{align*}
-Therefore,
+we have
 \begin{align*}
 \norm{c}_{\ell_2}
 & \le 2^{\deg(p)/2} \sqrt{\sum_{\alpha_1, \alpha_2, \dots, \alpha_d} (c'_{\alpha_1, \alpha_2, \dots, \alpha_d})^2} \\

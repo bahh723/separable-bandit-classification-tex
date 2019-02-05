@@ -4,7 +4,7 @@
 In this section, we prove a mistake lower bound for a family of algorithms
 called \textit{ignorant algorithms}. Ignorant algorithms ignore the examples on
 which they make mistakes. This assumption seems strong, but as we will explain
-below, it is actually natural, and several recently proposed bandit linear
+below, it is actually natural, and several recently proposed bandit
 classification algorithms that achieve $\sqrt{T}$ regret bounds belong to this
 family, e.g., SOBA~\citep{Beygelzimer-Orabona-Zhang-2017},
 OBAMA~\citep{Foster-Kale-Luo-Mohri-Sridharan-2018}. Also,
@@ -168,7 +168,7 @@ We upper bound each of last two terms separately.
 In rounds $1,2,\dots,\tau-1$, the algorithm predicts the incorrect class $2$
 with probability at least $q_0$. Thus,
 $$
-\Exp\left[\sum_{t=1}^{\tau - 1} \indicator{\widehat y_t\neq y_t}\right] = q_0 \Exp[(\tau - 1)] \; .
+\Exp\left[\sum_{t=1}^{\tau - 1} \indicator{\widehat y_t\neq y_t}\right] = q_0 \Exp[\tau] \; .
 $$
 In rounds $\tau, \tau+1, \dots, T$, all the examples are the same and are equal
 to $(v_\tau, 2)$. Let $s$ be the first time step $t$ such that $t \ge \tau$
@@ -191,8 +191,8 @@ $$
 Combining the two, we have that
 \begin{align*}
 & \Exp \left[\sum_{t=1}^T \indicator{\widehat y_t\neq y_t}\right] \nonumber \\
-& \ge q_0 \Exp[\tau - 1] + \Exp \left[\frac{1-q_0}{q_0}\left(1-(1-q_0)^{T-\tau+1}\right)\right] \\
-& =  \Exp \left[ \Exp \left[ q_0 (\tau - 1) + \frac{1-q_0}{q_0}\left(1-(1-q_0)^{T-\tau+1}\right) ~\middle|~ \tau \right] \right] \; .
+& \ge q_0 \Exp[\tau] + \Exp \left[\frac{1-q_0}{q_0}\left(1-(1-q_0)^{T-\tau+1}\right)\right] \\
+& =  \Exp \left[ \Exp \left[ q_0 \tau + \frac{1-q_0}{q_0}\left(1-(1-q_0)^{T-\tau+1}\right) ~\middle|~ \tau \right] \right] \; .
 \end{align*}
 We lower bound the last expression by considering two cases for $\tau$.
 If $\tau \ge \frac{1}{2}T + 1$, then the last expression is lower bounded by
@@ -209,13 +209,13 @@ Observe that in phase 1, the labels are equal to $1$ and in phase 2 the labels
 are equal to $2$. Note that $(x_\tau, y_\tau)=(x_{\tau+1}, y_{\tau+1})= \dots =
 (x_T, y_T) = (v_\tau, 2)$. Consider the vectors $u_1, u_2, \dots, u_N$ as
 defined in Lemma~\ref{lemma:embed_d_gamma} We claim that $w_1=-u_\tau/2$ and
-$w_2=u_\tau/2$ satisfy the conditions of strong linear separability.
+$w_2=u_\tau/2$ satisfy the conditions of strong linear separabaility.
 
 Clearly $\norm{w_1}^2 + \norm{w_2}^2 \le (\norm{w_1} + \norm{w_2})^2 \le
 (\frac{1}{2} + \frac{1}{2})^2 \le 1$. By Lemma~\ref{lemma:embed_d_gamma}, we
 have $\ip{w_2/2}{x_t} = \ip{u_\tau/2}{v_\tau} \ge \gamma/2, \forall t \ge \tau$ and
 $\ip{w_2/2}{x_t} = \ip{u_\tau/2}{v_t} \le - \gamma/2$ for all $t < \tau$. Similarly,
 $\ip{w_1/2}{x_t} \le -\gamma/2$ for all $t \ge \tau$ and $\ip{w_1/2}{x_t} \ge
-\gamma/2$ for all $t < \tau$. Thus, the examples are strongly linearly
-separable with margin $\gamma$.
+\gamma/2$ for all $t < \tau$. Thus, the examples are strongly separable with margin
+$\gamma$.
 \end{proof}
