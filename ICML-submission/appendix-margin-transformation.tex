@@ -70,7 +70,7 @@ $j \in \{1,2,\dots,K\} \setminus \{i\}$. Note that the vectors have norm at most
 $1$. We consider two cases regarding the relationship between $\gamma_1$ and
 $\gamma_2$.
 
-\paragraph{Case 1: $\gamma_1 \geq \gamma_2$.} In this setting, Theorem~\ref{theorem:polynomial-approximation-1}
+\paragraph{Case 1: $\gamma_1 \geq \gamma_2$.} In this case, Theorem~\ref{theorem:polynomial-approximation-1}
 implies that there exist a multivariate polynomial $p_i:\R^d \to \R$,
 \begin{align*}
 \deg(p_i) & = \lceil \log_2(2K-2) \rceil \cdot \left\lceil \sqrt{\frac{2}{\gamma}} \right\rceil \; ,
@@ -99,46 +99,47 @@ u_i = \frac{1}{\sqrt{K}} \\
 \end{multline*}
 
 Then, $\norm{u_1}^2 + \norm{u_2}^2 + \dots + \norm{u_K}^2 \le 1$.
-Furthermore, for all $t=1,2,\dots,T$, $\ip{u_{y_t}}{x_t} \ge \gamma_1$
+Furthermore, for all $t=1,2,\dots,T$, $\ip{u_{y_t}}{\phi(x_t)} \ge \gamma_1$
 and for all $j \in \{1,2,\dots,K\} \setminus \{y_t\}$,
-$\ip{u_j}{x_t} \le - \gamma_1$. In other words,
+$\ip{u_j}{\phi(x_t)} \le - \gamma_1$. In other words,
 $(\phi(x_1), y_1), (\phi(x_2), y_2), \dots, (\phi(x_T), y_T)$ are
 strongly linearly separable with margin $\gamma_1 = \max\{\gamma_1, \gamma_2\}$.
 
-\paragraph{Case 2: $\gamma_1 < \gamma_2$.} In this setting, Theorem~\ref{theorem:polynomial-approximation-2}
+\paragraph{Case 2: $\gamma_1 < \gamma_2$.} In this case, Theorem~\ref{theorem:polynomial-approximation-2}
 implies that there exist a multivariate polynomial $q_i:\R^d \to \R$,
 \begin{align*}
 \deg(q_i) & = (2s+1) r(K-1) \; ,
 \end{align*}
 such that all examples $x$ in $R_i^+$ (resp. $R_i^-$) satisfy $q_i(x) \geq 1/2$
-(resp. $q_i(x) \leq -1/2$). Recall that here,
+(resp. $q_i(x) \leq -1/2$), and
+\begin{align*}
+  \norm{q_i} & \le (4K-5) 2^{K-1} \\
+  & \qquad \cdot \left(2^{s} r(K-1) (4s+2)\right)^{(s+1/2)r(K-1)} \; .
+\end{align*}
+Recall that here,
 \[
 r = 2 \left\lceil \frac{1}{4} \log_2(4K - 3) \right\rceil + 1 \quad \text{and} \quad s = \left \lceil \log_2(1/\gamma) \right \rceil \; .
 \]
 
-
 Therefore, for all $t=1,2,\dots,T$, if $y_t = i$ then $q_i(x_t) \ge 1/2$,
- and if $y_t \neq i$ then $q_i(x_t) \le -1/2$, and
-\begin{align*}
-  \norm{q_i} & \le (4K-5) 2^{K-1} \\
-  & \qquad \cdot \left(2^{s} r(K-1) (4s+2)^2 \right)^{(s+1/2)r(K-1)} \; .
-\end{align*}
+ and if $y_t \neq i$ then $q_i(x_t) \le -1/2$.
+
 By \autoref{lemma:norm-bound}, there exists $c'_i \in \ell_2$ such that
 $\ip{c'_i}{\phi(x)} = p_i(x)$, and
 \begin{align*}
   \norm{c'_i}_{\ell_2} & \le (4K-5) 2^{K-1} \\
-  & \qquad \cdot \left(2^{s+1} r(K-1) (4s+2)^2 \right)^{(s+1/2)r(K-1)} \; .
+  & \qquad \cdot \left(2^{s+1} r(K-1) (4s+2) \right)^{(s+1/2)r(K-1)} \; .
 \end{align*}
 Define vectors $u_i' \in \ell_2$ as
 \begin{align*}
-u_i' & = \frac{c_i'  \cdot \left(2^{s+1} r(K-1) (4s+2)^2 \right)^{-(s+1/2)r(K-1)}}{\sqrt{K} (4K-5) 2^{K-1}} \; .
+u_i' & = \frac{c_i'  \cdot \left(2^{s+1} r(K-1) (4s+2) \right)^{-(s+1/2)r(K-1)}}{\sqrt{K} (4K-5) 2^{K-1}} \; .
 \end{align*}
 Then,
 $\norm{u_1'}^2 + \norm{u_2'}^2 + \dots + \norm{u_K'}^2 \le 1$.
 Furthermore, for all $t=1,2,\dots,T$,
-$\ip{u'_{y_t}}{x_t} \ge \gamma_2$
+$\ip{u'_{y_t}}{\phi(x_t)} \ge \gamma_2$
 and for all $j \in \{1,2,\dots,K\} \setminus \{y_t\}$,
-$\ip{u'_j}{x_t} \le - \gamma_2$. In other words,
+$\ip{u'_j}{\phi(x_t)} \le - \gamma_2$. In other words,
 $(\phi(x_1), y_1), (\phi(x_2), y_2), \dots, (\phi(x_T), y_T)$ are
 strongly linearly separable with margin $\gamma_2 = \max\{\gamma_1, \gamma_2\}$.
 %The proof for the case of $\gamma_1 < \gamma_2$

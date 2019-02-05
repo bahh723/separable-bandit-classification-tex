@@ -18,10 +18,15 @@ We use a positive definite kernel function $k(\cdot, \cdot)$, namely
 \emph{rational kernel}~\citep{Shalev-Shwartz-Shamir-Sridharan-2011}, whose
 corresponding feature map $\phi(\cdot)$ transforms any sequence of \emph{weakly}
 linearly separable examples to \emph{strongly} linearly separable sequence of
-examples. Specifically, $\phi$ has the property that if a set of labeled
+examples.
+Specifically, $\phi$ has the property that if a set of labeled
 examples in $\B(\zero,1)$ is weakly linearly separable with a margin $\gamma$, then
 after applying $\phi$ the examples become strongly linearly separable with a
-margin $\gamma'$ and their squared norms are bounded by $2$. The parameter $\gamma'$ is
+margin $\gamma'$ and their squared norms are bounded by $2$.
+\footnote{Other kernels, such as the polynomial kernel
+$k(x,x') = (1+\ip{x}{x'})^d$, or the multinomial kernel~\citep{Goel-Klivans-2017} $k(x,x') = \sum_{i=0}^d(\ip{x}{x'})^i$,
+will have similar properties for large enough $d$.}
+The parameter $\gamma'$ is
 a function of the old margin $\gamma$ and the number of classes $K$, and is
 specified in \autoref{theorem:margin-transformation} below.
 
@@ -85,13 +90,15 @@ equation~\eqref{equation:phi} and let
 }{2\sqrt{K}},
 \\
 \gamma_2 = & \frac{
-   \left(2^{s+1} r(K-1) (4s+2)^2 \right)^{-(s+1/2)r(K-1)}
+   \left(2^{s+1} r(K-1) (4s+2) \right)^{-(s+1/2)r(K-1)}
 }{4\sqrt{K}(4K-5) 2^{K-1}}
-\\
-&  \cdot 2^{s(s+1)r(K-1)}
 \; ,
 \end{align*}
 \endgroup
+
+%\\
+%&  \cdot 2^{s(s+1)r(K-1)}
+
 where $r = 2 \left\lceil \frac{1}{4} \log_2(4K-3) \right\rceil + 1$ and $s = \left \lceil \log_2(2/\gamma) \right \rceil$.
 Then, the sequence of labeled examples transformed by $\phi$,
 namely $(\phi(x_1), y_1), (\phi(x_2), y_2), \dots,
@@ -111,8 +118,8 @@ $(x_1, y_1), (x_2, y_2), \dots, (x_T, y_T) \in \B(\zero,1) \times \{1,2,\dots,K\
 is a sequence of weakly separable labeled examples with margin $\gamma > 0$,
 then the expected number of mistakes made by Algorithm~\ref{algorithm:kernelized}
 with kernel $k(x,x')$ defined by \eqref{equation:rational-kernel}
-is at most $2^{\widetilde{O}(\min(K \log^2 \frac{1}{\gamma},
-\sqrt{\frac{1}{\gamma}} \log K))}$.
+is at most $\min (2^{\widetilde{O}(K \log^2
+(1/\gamma))}, 2^{\widetilde{O}(\sqrt{1/\gamma} \log K)})$.
 \end{corollary}
 
 This corollary follows directly from
@@ -138,7 +145,7 @@ p_i(x_t) \le - \frac{\gamma'}{2} \; .
 We then show (\autoref{lemma:norm-bound}) that each polynomial $p_i$ can be
 expressed as $\ip{c_i}{\phi(x)}_{\ell_2}$ for some $c_i \in \ell_2$. This
 immediately implies that that the examples $(\phi(x_1),y_1), \ldots,
-(\phi(x_T),y_T)$ are strongly linearly separable with margin $\gamma'$.
+(\phi(x_T),y_T)$ are strongly linearly separable with a positive margin.
 
 The conditions \eqref{equation:poly-pos} and~\eqref{equation:poly-neg} are
 equivalent to that
@@ -240,7 +247,7 @@ for all $\displaystyle x \in R^+ = \bigcap_{i=1}^m \left\{ x \in \B(\zero,1) ~:~
 for all $\displaystyle x \in R^- = \bigcup_{i=1}^m \left\{ x \in \B(\zero,1) ~:~ \ip{v_i}{x} \le - \gamma \right\}$,
 
 \item $\deg(p) \le (2s+1) rm$,
-\item $\norm{p} \le (4m-1) 2^m \cdot \left(2^s rm (4s+2)^2 \right)^{(s+1/2)rm}$.
+\item $\norm{p} \le (4m-1) 2^m \cdot \left(2^s rm (4s+2) \right)^{(s+1/2)rm}$.
 \end{enumerate}
 \end{theorem}
 
@@ -281,7 +288,8 @@ and $\norm{c}_{\ell_2} \le 2^{\deg(p)/2} \norm{p}$.
 Using the lemma and the polynomial approximation theorems, we can prove that the
 mapping $\phi$ maps any set of weakly linearly separable examples to a strongly
 linearly separable set of examples. Due to space constraints, we defer the full
-proof to Appendix~\ref{section:proof-of-theorem-margin-transformation}.
+proof of Theorem~\ref{theorem:margin-transformation} to
+Appendix~\ref{section:proof-of-theorem-margin-transformation}.
 
 %\begin{proof}[Proof sketch of Theorem~\ref{theorem:margin-transformation}]
 %Since the examples $(x_1, y_1)$,  $\dots$, $(x_T, y_T)$ are weakly

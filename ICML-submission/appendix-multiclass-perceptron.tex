@@ -25,7 +25,7 @@ must make at least $\lfloor (R/\gamma)^2 \rfloor$ mistakes in the worst case.
 \For{$t=1,2,\dots,T$}{
 Adversary chooses example $(x_t, y_t) \in V \times \{1,2,\dots,K\}$, where $x_t$ is revealed to the learner.\\
 Predict class label $\widehat y_t \in \{1,2,\dots,K\}$.\\
-Observe feedback $y_t$
+Observe feedback $y_t$.
 }
 \end{protocol}
 
@@ -78,10 +78,11 @@ If a mistake happens in round $t$ then
 & \le \left(\sum_{i=1}^K \norm{w_i^{(t)}}^2 \right) + 2 R^2 \; .
 \end{align*}
 So each time a mistake happens, $\sum_{i=1}^K \norm{w_i^{(t)}}^2$ increases by at most $2R^2$. Thus,
-$$
+\begin{equation}
 \sum_{i=1}^K \norm{w_i^{(T+1)}}^2 \le 2R^2 M \; .
-$$
-Let $w_1^*, w_2^*, \dots, w_K^* \in V$ be vectors satisfying the
+\label{equation:perceptron-norm-ub}
+\end{equation}
+Let $w_1^*, w_2^*, \dots, w_K^* \in V$ be vectors satisfying
 \eqref{equation:weak-linear-separability-1} and
 \eqref{equation:weak-linear-separability-2}. We lower bound $\sum_{i=1}^K \ip{w_i^*}{w_i^{(t)}}$. This quantity changes
 only when a mistakes happens. If mistake happens in round $t$, we have
@@ -96,9 +97,10 @@ only when a mistakes happens. If mistake happens in round $t$, we have
 \end{align*}
 \endgroup
 Thus, after $M$ mistakes,
-$$
+\[
+\label{equation:perceptron-ip-lb}
 \sum_{i=1}^K \ip{w_i^*}{w_i^{(T+1)}} \ge \gamma M \; .
-$$
+\]
 We upper bound the left hand side by using Cauchy-Schwartz inequality twice and
 the condition \eqref{equation:weak-linear-separability-1} on $w_1^*, w_2^*, \dots,
 w_K^*$. We have
@@ -108,7 +110,8 @@ w_K^*$. We have
 & \le \sqrt{\sum_{i=1}^K \norm{w_i^*}^2} \sqrt{\sum_{i=1}^K \norm{w_i^{(T+1)}}^2} \\
 & \le \sqrt{\sum_{i=1}^K \norm{w_i^{(T+1)}}^2} \; .
 \end{align*}
-Combining all inequalities, we get
+Combining the above inequality with Equations~\eqref{equation:perceptron-norm-ub}
+and~\eqref{equation:perceptron-ip-lb}, we get
 $$
 (\gamma M)^2 \le \sum_{i=1}^K \norm{w_i^{(T+1)}}^2 \le 2R^2 M \; .
 $$
@@ -179,8 +182,8 @@ otherwise $i \neq y_t$, in which case $\ip{w_i}{x_t} = 0$.
 Hence, condition \eqref{equation:weak-linear-separability-2} holds.
 
 We now give a lower bound on the number of mistakes $\calA$ makes.
-As $y_t$ is chosen uniformly from $\{1,2,\dots,K\}$ and independent of
-$\calA$'s randomization
+As $y_t$ is chosen uniformly from $\{1,2,\dots,K\}$, independently from
+$\calA$'s randomization and the first $t-1$ examples,
 $$
 \Exp[ \indicator{\widehat y_t \neq y_t} ] \ge 1 - \frac{1}{K} \ge \frac{1}{2} \; .
 $$

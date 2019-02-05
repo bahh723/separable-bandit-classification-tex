@@ -4,6 +4,7 @@
 \begin{algorithm}[H]
 \SetAlgoLined
 \LinesNumbered
+\setcounter{AlgoLine}{0}
 \caption{\textsc{Nearest-Neighbor Algorithm}
 \label{algorithm:nearest-neighbor}
 }
@@ -16,7 +17,7 @@
        \qquad \qquad $(\widetilde{x}, \widetilde{y}) = \argmin_{(x,y) \in S} \norm{x_t - x}$ \\
 \nl	  Predict $\widehat{y}_t = \widetilde{y}$
   }
-  \Else{
+\nl \Else{
 \nl	  Predict $\widehat y_t \sim \text{Uniform}(\{1,2,\dots,K\})$
       \label{line:nearest-neighbor-explore} \\
 \nl	  Receive feedback $z_t = \indicator{\widehat{y}_t \neq y_t}$ \\
@@ -28,9 +29,9 @@
 \end{algorithm}
 
 In this section we analyze \textsc{Nearest-Neighbor Algorithm} shown as
-Algorithm~\ref{algorithm:nearest-neighbor}. The algorithm is based on obvious
-the idea that under weak linear assumption two examples that are close to each
-other must have the same label. Lemma below formalizes this intuition.
+Algorithm~\ref{algorithm:nearest-neighbor}. The algorithm is based on the obvious
+idea that, under the weak linear separability assumption, two examples that are close to each
+other must have the same label. The lemma below formalizes this intuition.
 
 \begin{lemma}[Non-separation lemma]
 \label{lemma:non-separation-lemma}
@@ -72,7 +73,8 @@ We also need to define several notions. A subset $S \subseteq \R^d$ is called a
 $\gamma$-packing if for any $x,x' \in S$ such that $x \neq x'$ we have $\norm{x -
 x'} > \gamma$. The following lemma is standard. Also recall that $\B(x,R) = \{ x'
 \in \R^d ~:~ \norm{x' - x} \le R \}$ denotes the closed ball of radius $R$
-centered a point $x$.
+centered a point $x$. For set $S \subseteq \R^d$, denote by $\Vol(S)$ the volume of
+$S$.
 
 \begin{lemma}[Size of $\gamma$-packing]
 \label{lemma:size-of-packing}

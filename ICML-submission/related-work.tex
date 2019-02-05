@@ -52,11 +52,11 @@ Crammer-Gentile-2013, Hazan-Kale-2011, Beygelzimer-Orabona-Zhang-2017,
 Foster-Kale-Luo-Mohri-Sridharan-2018}. \citet{Chen-Lin-Lu-2014,
 Zhang-Jung-Tewari-2018} study online bandit multiclass boosting under bandit
 feedback, where one can view boosting as linear classification by treating each
-base hypothesis as a separate feature.  
+base hypothesis as a separate feature.
 %However, most of these works achieve a
-%regret of order $\widetilde{O}(\sqrt{T})$ to $O(T^{3/4})$.  
-In the weakly linearly separable setting, however, 
-these algorithms can only guarantee a mistake 
+%regret of order $\widetilde{O}(\sqrt{T})$ to $O(T^{3/4})$.
+In the weakly linearly separable setting, however,
+these algorithms can only guarantee a mistake
 bound of ${O}(\sqrt{T})$ at best.
 %One exception is the \textsc{Newtron} algorithm, which---with
 %an appropriate setting of parameter $\alpha$---can achieve a $O(\ln T)$
@@ -98,20 +98,24 @@ bound of ${O}(\sqrt{T})$ at best.
 %mistake bound.
 
 The problem considered here is a special case of the
-contextual bandit problem~\citep{Auer-2003, Langford-Zhang-2008}. 
-In this general problem, there is a hidden cost vector $c_t$ associated with every prediction in round $t$.  Upon receiving $x_t$ and predicting $\widehat{y}_t \in \{1,\ldots,K\}$, the learner gets to observe the incurred cost $c_t(\widehat{y}_t)$.  
+contextual bandit problem~\citep{Auer-2003, Langford-Zhang-2008}.
+In this general problem, there is a hidden cost vector $c_t$ associated with every prediction in round $t$.  Upon receiving $x_t$ and predicting $\widehat{y}_t \in \{1,\ldots,K\}$, the learner gets to observe the incurred cost $c_t(\widehat{y}_t)$.
 The goal of the learner is to minimize its regret with respect to the best predictor in some predefined policy class $\Pi$, given by $\sum_{t=1}^T c_t(\widehat{y}_t) -
 \min_{\pi \in \Pi} \sum_{t=1}^T c_t(\pi(x_t))$.
 Bandit multiclass learning is a special case
-where the cost $c_t(i)$ is the classification error $\indicator{i \neq y_t}$ and 
+where the cost $c_t(i)$ is the classification error $\indicator{i \neq y_t}$ and
 the policy class is the set of linear classifiers $\cbr{x \mapsto \argmax_y (Wx)_y: W \in \R^{k \times d}}$.
 There has been significant progress on the general contextual bandit problem
 assuming access to an optimization oracle that returns a policy in $\Pi$ with the smallest total cost on any given set of cost-sensitive examples~\citep{Dudik-Hsu-Kale-Karampatziakis-Langford-Reyzin-Zhang-2011,
 Agarwal-Hsu-Kale-Langford-Li-Schapire-2014, Rakhlin-Sridharan-2016,
 Syrgkanis-Krishnamurthy-Schapire-2016,
 Syrgkanis-Luo-Krishnamurthy-Schapire-2016}.
-While solving a more general problem without making assumptions on the structure of the cost vector $c_t$ or the policy class, these results assume that $x_t$ vectors or $(x_t,c_t)$ pairs are generated i.i.d. and that such an oracle abstracting efficient search through $\Pi$ is available---neither of which we assume here.
+However, such an oracle abstracting efficient search through $\Pi$ is generally not available
+in our setting due to computational hardness results~\citep{Arora-Babai-Stern-Sweedyk-1997}.
 
+%While solving a more general problem without making assumptions on the structure of the cost vector $c_t$ or the policy class, these results assume that $x_t$ vectors or $(x_t,c_t)$ pairs are generated i.i.d. and that such an oracle abstracting efficient search through $\Pi$ is available---neither of which we assume here.
+
+%While solving a more general problem without making assumptions on the structure of the cost vector $c_t$ or the policy class,
 %However, these algorithms are not
 %truly computationally efficient in our setting, as it is NP-hard in general to
 %find a linear classifier that minimizes the empirical cost over a set of
@@ -121,7 +125,7 @@ Recently, \citet{Foster-Krishnamurthy-2018} developed a rich theory of
 contextual bandits with surrogate losses, focusing on regrets of the form
 $\sum_{t=1}^T c_t(\widehat{y}_t) - \min_{f \in \calF} \sum_{t=1}^T \frac{1}{K}
 \sum_{i=1}^K c_t(i) \phi( f_i(x_t) )$, where $\calF$ contains score functions
-$f$ such that $\sum_{i=1}^K f_i(\cdot) \equiv 0$, and $\phi(s) = \max(1 - \frac
+$f = (f_1, \ldots, f_K)$ such that $\sum_{i=1}^K f_i(\cdot) \equiv 0$, and $\phi(s) = \max(1 - \frac
 s \gamma, 0)$ or $\min(1, \max(1 - \frac s \gamma, 0))$. On one hand, it gives
 information-theoretic regret upper bounds for various settings of $\calF$. On
 the other hand, it gives an efficient algorithm with an $O(\sqrt{T})$ regret

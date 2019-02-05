@@ -19,7 +19,7 @@ correct or not. The protocol of the problem is formally stated below.
 \For{$t=1,2,\dots,T$}{
 Adversary chooses example $(x_t, y_t) \in V \times \{1,2,\dots,K\}$ where $x_t$ is revealed to the learner.\\
 Predict class label $\widehat y_t \in \{1,2,\dots,K\}$.\\
-Observe feedback $z_t = \indicator{\widehat y_t \neq y_t} \in \{0,1\}$
+Observe feedback $z_t = \indicator{\widehat y_t \neq y_t} \in \{0,1\}$.
 }
 \end{protocol}
 
@@ -46,7 +46,7 @@ Perceptron} algorithm makes at most $\lfloor 2(R/\gamma)^2 \rfloor$ mistakes. It
 is also known that any (possibly randomized) algorithm must make $\frac{1}{2}
 \left\lfloor (R/\gamma)^2 \right \rfloor$ mistakes in the worst case. The
 \textsc{Multiclass Perceptron} achieves an information-theoretically optimal
-mistake bound, while being computationally and memory efficient.~\footnote{For
+mistake bound, while being time and memory efficient.~\footnote{For
 completeness, we present these folklore results along with their proofs in
 Appendix~\ref{section:multiclass-perceptron-proofs} in the supplementary
 material.}
@@ -61,7 +61,8 @@ Theorem~2 is incorrect: first, their Lemma~1 (with $C = +\infty$) along with the
 implies a mistake upper bound of
 $(\frac{R}{\gamma})^2$, which contradicts the lower
 bound in our Theorem~\ref{theorem:strongly-separable-examples-mistake-lower-bound};
-second, their Lemma~1 cannot be directly applied to the bandit setting.} We design a simple and
+second, their Lemma~1 cannot be directly applied to the bandit feedback setting.}
+We design a simple and
 efficient algorithm
 (Algorithm~\ref{algorithm:algorithm-for-strongly-linearly-separable-examples})
 that makes at most $O(K (R/\gamma)^2)$ mistakes in expectation. Its memory
@@ -108,8 +109,8 @@ original dimension of the feature vectors $d$, the number of classes $K$, and
 the number of rounds $T$. We prove that if the examples lie in the unit ball of
 $\R^d$ and are weakly linearly separable with margin $\gamma$,
 Algorithm~\ref{algorithm:kernelized} makes at
-most $2^{\widetilde{O}(\min(K \log^2 (1/\gamma), \sqrt{1/\gamma}
-\log K))}$ mistakes.
+most $\min (2^{\widetilde{O}(K \log^2
+(1/\gamma))}, 2^{\widetilde{O}(\sqrt{1/\gamma} \log K)})$ mistakes.
 
 In Appendix~\ref{section:nearest-neighbor-algorithm}, we propose and analyze a
 very different algorithm for weakly linearly separable data. The algorithm is

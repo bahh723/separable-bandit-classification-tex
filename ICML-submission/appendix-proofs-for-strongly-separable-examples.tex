@@ -63,7 +63,8 @@ Therefore,
 & \le \left( \sum_{i=1}^K \norm{w_i^{(t)}}^2 \right) + R^2 \; .
 \end{align*}
 \endgroup
-The inequality that $(-1)^{z_t} 2 \ip{w_{\widehat y_t}^{(t)}}{x_t} \leq 0$ is from a case analysis: if line~\ref{line:pos-update} is executed, then $z_t = 0$ and $\ip{w_i^{(t)}}{x_t} \ge 0$; otherwise line~\ref{line:neg-update} is executed, in which case $z_t = 1$ and $\ip{w_i^{(t)}}{x_t} \le 0$.
+The inequality that $(-1)^{z_t} 2 \ip{w_{\widehat y_t}^{(t)}}{x_t} \leq 0$ is from a case analysis: if line~\ref{line:pos-update} is executed, then $z_t = 0$ and $\ip{w_{\widehat y_t}^{(t)}}{x_t} < 0$;
+ otherwise line~\ref{line:neg-update} is executed, in which case $z_t = 1$ and $\ip{w_{\widehat y_t}^{(t)}}{x_t} \ge 0$.
 
 
 Hence, after $U$ updates,
@@ -120,7 +121,7 @@ $$
 
 
 \begin{proof}[Proof of \autoref{theorem:strongly-separable-examples-mistake-lower-bound}]
-%We use probabilistic method. 
+%We use probabilistic method.
 Let $M = \left\lfloor \frac{1}{4} (R/\gamma)^2
 \right\rfloor$. Let $V = \R^{M+1}$ equipped with the standard inner product.
 Let $e_1, e_2, \dots, e_{M+1}$ be the standard orthonormal basis of $V$. We
@@ -134,7 +135,7 @@ $$
 (x_{(j-1)(K-1) + h}, y_{(j-1)(K-1) + h}) = (v_j, \ell_j)
 $$
 
-The norm of each example is exactly $R$. The examples are strongly separable
+The norm of each example is exactly $R$. The examples are strongly linearly separable
 with margin $\gamma$. To see that, consider $w_1^*, w_2^*, \dots, w_K^* \in V$
 defined by
 $$
