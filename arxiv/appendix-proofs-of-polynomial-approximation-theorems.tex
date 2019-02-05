@@ -127,10 +127,10 @@ and
 \end{align*}
 where in both cases the outer sum is over multi-indices $A$ such that $\norm{A}_1 \le \deg(p)$.
 \autoref{lemma:simple-inequality} implies that for any multi-index $A$,
-\begin{multline*}
-\left( \sum_{\substack{(A_1, A_2, \dots, A_n) \\ A_1 + A_2 + \dots + A_n = A}} \prod_{j=1}^n c^{(j)}_{A_j} \right)^2 \\
+\[
+\left( \sum_{\substack{(A_1, A_2, \dots, A_n) \\ A_1 + A_2 + \dots + A_n = A}} \prod_{j=1}^n c^{(j)}_{A_j} \right)^2
 \le M_A \sum_{\substack{(A_1, A_2, \dots, A_n) \\ A_1 + A_2 + \dots + A_n = A}} \left( \prod_{j=1}^n c^{(j)}_{A_j} \right)^2 \; .
-\end{multline*}
+\]
 where $M_A$ is the number of $n$-tuples $(A_1, A_2, \dots, A_n)$ such that $A_1 +
 A_2 + \dots + A_n = A$.
 
@@ -151,11 +151,11 @@ $$
 
 Part 2 follows from the part 1 by setting $p_1 = p_2 = \dots p_n = q$.
 
-To prove the part 3, we use generalized triangle inequality and
+To prove part 3, we use generalized triangle inequality and
 \autoref{lemma:simple-inequality}. We have
-\begin{multline*}
-\norm{\sum_{j=1}^n p_j}^2 = \left( \norm{\sum_{j=1}^n p_j} \right)^2 \\ \le \left(\sum_{j=1}^n \norm{p_j} \right)^2 \le n \sum_{j=1}^n \norm{p_j}^2 \; .
-\end{multline*}
+\[
+\norm{\sum_{j=1}^n p_j}^2 = \left( \norm{\sum_{j=1}^n p_j} \right)^2 \le \left(\sum_{j=1}^n \norm{p_j} \right)^2 \le n \sum_{j=1}^n \norm{p_j}^2 \; .
+\]
 \end{proof}
 
 \subsection{Proof of \autoref{theorem:polynomial-approximation-1}}
@@ -166,9 +166,9 @@ Chebyshev polynomials of the fist kind form an infinite sequence of polynomials
 $T_0(z), T_1(z), T_2(z), \dots$ of single real variable $z$. They are defined
 by the recurrence
 \begin{align*}
-T_0(z) & = 1 \; , \\
-T_1(z) & = z \; , \\
-T_{n+1}(z) & = 2zT_n(z) - T_{n-1}(z) & \text{for $n \ge 1$.}
+T_0(z) & = 1  \; , \\
+T_1(z) & = z  \; ,\\
+T_{n+1}(z) & = 2zT_n(z) - T_{n-1}(z), \quad \text{for $n \ge 1$.}
 \end{align*}
 Chebyshev polynomials have a lot of interesting properties.
 We will need properties listed in
@@ -305,10 +305,8 @@ On the other hand for any $j \in \{1,2,\dots,m\}$, we have $\ip{v_j}{x} \in
 \autoref{proposition:properties-of-chebyshev-polynomials} (parts 5 and 6), $T_s(1 - \ip{v_j}{x})
 \ge -1$. Therefore,
 \begin{align*}
-p(x) & = m + \frac{1}{2} - \left( T_s(1 - \ip{v_i}{x}) \right)^r \\
-& \qquad - \sum_{\substack{j ~:~  1 \le j \le m \\ j \neq i}} \left( T_s(1 - \ip{v_j}{x}) \right)^r \\
-& \le m + \frac{1}{2} - 2m + (m - 1) \\
-& \le - \frac{1}{2} \; .
+p(x) & = m + \frac{1}{2} - \left( T_s(1 - \ip{v_i}{x}) \right)^r - \sum_{\substack{j ~:~  1 \le j \le m \\ j \neq i}} \left( T_s(1 - \ip{v_j}{x}) \right)^r \\
+& \le m + \frac{1}{2} - 2m + (m - 1) \le - \frac{1}{2} \; .
 \end{align*}
 
 The third property follows from the observation that the degree of $p$
@@ -383,11 +381,9 @@ r = 2 \left\lceil \frac{1}{4} \log_2(4m + 1) \right\rceil + 1 \quad \text{and} \
 $$
 Then, there exists a multivariate polynomial $p:\R^d \to \R$ such that
 \begin{enumerate}
-\item $\displaystyle p(x) \ge \frac{1}{4} \cdot 2^{s(s+1)rm}$ \\
-for all $\displaystyle x \in \bigcap_{i=1}^m \left\{ x \in \R^d ~:~ \norm{x} \le 1, \ \ip{v_i}{x} \ge \gamma \right\}$,
+\item $\displaystyle p(x) \ge \frac{1}{4} \cdot 2^{s(s+1)rm}$ for all $\displaystyle x \in \bigcap_{i=1}^m \left\{ x \in \R^d ~:~ \norm{x} \le 1, \ \ip{v_i}{x} \ge \gamma \right\}$,
 
-\item $\displaystyle p(x) \le - \frac{1}{4} \cdot 2^{s(s+1)rm}$ \\
-for all $\displaystyle x \in \bigcup_{i=1}^m \left\{ x \in \R^d ~:~ \norm{x} \le 1, \ \ip{v_i}{x} \le - \gamma \right\}$,
+\item $\displaystyle p(x) \le - \frac{1}{4} \cdot 2^{s(s+1)rm}$ for all $\displaystyle x \in \bigcup_{i=1}^m \left\{ x \in \R^d ~:~ \norm{x} \le 1, \ \ip{v_i}{x} \le - \gamma \right\}$,
 
 \item $\deg(p) \le (2s+1) rm$,
 \item $\norm{p} \le (2m-1/2) 2^m \cdot \left(2^{2s} rm (4s+2)^2 \right)^{(s+1/2)rm}$.
@@ -396,19 +392,19 @@ for all $\displaystyle x \in \bigcup_{i=1}^m \left\{ x \in \R^d ~:~ \norm{x} \le
 
 We define several univariate polynomials
 \begin{align*}
-P_n(z) & = (z - 1) \prod_{i=1}^n (z - 2^i)^2 && \text{for $n \ge 0$,} \\
-A_{n,k}(z) & = (P_n(z))^k - (P_n(-z))^k && \text{for $n,k \ge 0$,} \\
-B_{n,k}(z) & = - (P_n(z))^k - (P_n(-z))^k && \text{for $n,k \ge 0$.}
+P_n(z) & = (z - 1) \prod_{i=1}^n (z - 2^i)^2, \quad \text{for $n \ge 0$,} \\
+A_{n,k}(z) & = (P_n(z))^k - (P_n(-z))^k,  \quad \text{for $n,k \ge 0$,} \\
+B_{n,k}(z) & = - (P_n(z))^k - (P_n(-z))^k,  \quad \text{for $n,k \ge 0$.}
 \end{align*}
 We define the polynomial $p:\R^d \to \R$ as
-\begin{multline*}
-p(x) = \left[ \sum_{i=1}^m A_{s,r}\left( \frac{\ip{v_i}{x}}{\gamma} \right) \prod_{\substack{j ~:~ 1 \le j \le m \\ j \neq i}} B_{s,r} \left( \frac{\ip{v_j}{x}}{\gamma} \right) \right] \\
+\[
+p(x) = \left[ \sum_{i=1}^m A_{s,r}\left( \frac{\ip{v_i}{x}}{\gamma} \right) \prod_{\substack{j ~:~ 1 \le j \le m \\ j \neq i}} B_{s,r} \left( \frac{\ip{v_j}{x}}{\gamma} \right) \right]
 - \left(m - \frac{1}{2} \right) \prod_{j=1}^m B_{s,r} \left( \frac{\ip{v_j}{x}}{\gamma} \right) \; .
-\end{multline*}
+\]
 
 For convenience we define univariate rational function
 \begin{align*}
-S_{n,k}(z) & = \frac{A_{n,k}(z)}{B_{n,k}(z)} && \text{for $n,k \ge 0$,}
+S_{n,k}(z) & = \frac{A_{n,k}(z)}{B_{n,k}(z)}, \quad \text{for $n,k \ge 0$,}
 \end{align*}
 and a multivariate rational function
 $$
@@ -530,8 +526,8 @@ where the last inequality follows from part 3 of \autoref{lemma:properties-of-p-
 \label{lemma:properties-of-q}
 The rational function $Q(x)$ satisfies
 \begin{enumerate}
-\item $Q(x) \ge \frac{1}{2}$ \\ for all $\displaystyle x \in \bigcap_{i=1}^m \left\{ x \in \R^d ~:~ \norm{x} \le 1, \ \ip{v_i}{x} \ge \gamma \right\}$,
-\item $Q(x) \le -\frac{1}{2}$ \\ for all $\displaystyle x \in \bigcup_{i=1}^m \left\{ x \in \R^d ~:~ \norm{x} \le 1, \ \ip{v_i}{x} \le - \gamma \right\}$.
+\item $Q(x) \ge \frac{1}{2}$ for all $\displaystyle x \in \bigcap_{i=1}^m \left\{ x \in \R^d ~:~ \norm{x} \le 1, \ \ip{v_i}{x} \ge \gamma \right\}$,
+\item $Q(x) \le -\frac{1}{2}$ for all $\displaystyle x \in \bigcup_{i=1}^m \left\{ x \in \R^d ~:~ \norm{x} \le 1, \ \ip{v_i}{x} \le - \gamma \right\}$.
 \end{enumerate}
 \end{lemma}
 
@@ -562,8 +558,7 @@ $S_{s,r}\left(\frac{\ip{v_j}{x}}{\gamma}\right) \in [-1-\frac{1}{2m},-1]$. Thus,
 \begin{align*}
 Q(x)
 & = \left( \sum_{i=1}^m S_{s,r}\left( \frac{\ip{v_i}{x}}{\gamma} \right) \right) - \left(m - \frac{1}{2} \right) \\
-& = S_{s,r}\left( \frac{\ip{v_j}{x}}{\gamma} \right) + \left( \sum_{\substack{i ~:~ 1 \le i \le m \\ i \neq j}} S_{s,r}\left( \frac{\ip{v_i}{x}}{\gamma} \right) \right)  \\
-& \qquad - \left(m - \frac{1}{2} \right) \\
+& = S_{s,r}\left( \frac{\ip{v_j}{x}}{\gamma} \right) + \left( \sum_{\substack{i ~:~ 1 \le i \le m \\ i \neq j}} S_{s,r}\left( \frac{\ip{v_i}{x}}{\gamma} \right) \right) - \left(m - \frac{1}{2} \right) \\
 & \le -1 + (m-1) \left( 1 + \frac{1}{2m} \right) - \left(m - \frac{1}{2} \right) \\
 & \le -1/2 \; .
 \qedhere
@@ -607,10 +602,9 @@ a_v(x) & = A_{s,r} \left( \frac{\ip{v}{x}}{\gamma} \right) \; , \\
 b_v(x) & = B_{s,r} \left( \frac{\ip{v}{x}}{\gamma} \right) \; .
 \end{align*}
 Note that
-\begin{multline*}
-p(x) = \left[ \sum_{i=1}^m a_{v_i}(x) \prod_{\substack{j ~:~ 1 \le j \le m \\ j \neq i}} b_{v_j}(x) \right]  \\
-- \left(m - \frac{1}{2} \right) \prod_{j=1}^n b_{v_j}(x) \; .
-\end{multline*}
+\[
+p(x) = \left[ \sum_{i=1}^m a_{v_i}(x) \prod_{\substack{j ~:~ 1 \le j \le m \\ j \neq i}} b_{v_j}(x) \right] - \left(m - \frac{1}{2} \right) \prod_{j=1}^n b_{v_j}(x) \; .
+\]
 We bound the norms of these polynomials. We have
 $$
 \norm{f_{i,v}}^2 = \norm{v}^2/\gamma^2 + 2^{2i} \le 2 \cdot 2^{2s} \; .
@@ -634,7 +628,7 @@ Using parts 3 and 2 of \autoref{lemma:properties-of-norm-of-polynomials} we uppe
 \end{align*}
 The same upper bound holds for $\norm{b_v}^2$. Finally,
 \begin{align*}
-& \norm{p} \\
+\norm{p} 
 & \le \left[ \sum_{i=1}^m \norm{a_{v_i} \prod_{\substack{j ~:~ 1 \le j \le m \\ j \neq i}} b_{v_j}} \right] + \left(m - \frac{1}{2} \right) \norm{\prod_{j=1}^m b_{v_j}} \\
 & \le \left[ \sum_{i=1}^m m^{(s+1/2)rm} \norm{a_{v_i}} \prod_{\substack{j ~:~ 1 \le j \le m \\ j \neq i}} \norm{b_{v_j}} \right] \\
 & \qquad + \left(m - \frac{1}{2} \right) m^{(s+1/2)rm} \prod_{j=1}^m \norm{b_{v_j}} \\

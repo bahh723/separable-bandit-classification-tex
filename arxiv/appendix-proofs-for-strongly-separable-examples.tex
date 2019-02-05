@@ -55,7 +55,7 @@ Therefore,
 \begingroup
 \allowdisplaybreaks
 \begin{align*}
-& \sum_{i=1}^K \norm{w_i^{(t+1)}}^2 \\
+\sum_{i=1}^K \norm{w_i^{(t+1)}}^2
 & = \left( \sum_{i \in \{1,2,\dots,K\} \setminus \{\widehat y_t\}} \norm{w_i^{(t)}}^2 \right) + \norm{w_{\widehat y_t}^{(t+1)}}^2 \\
 & = \left( \sum_{i \in \{1,2,\dots,K\} \setminus \{\widehat y_t\}} \norm{w_i^{(t)}}^2 \right) + \norm{w_{\widehat y_t}^{(t)} + (-1)^{z_t} x_t}^2 \\
 & = \left( \sum_{i=1}^K \norm{w_i^{(t)}}^2 \right) + \norm{x_t}^2 + \underbrace{(-1)^{z_t} 2 \ip{w_{\widehat y_t}^{(t)}}{x_t}}_{\le 0} \\
@@ -76,10 +76,9 @@ Similarly, if there is an update in round $t$, we have
 \begingroup
 \allowdisplaybreaks
 \begin{align*}
-& \sum_{i=1}^K \ip{w_i^*}{w_i^{(t)}} \\
+\sum_{i=1}^K \ip{w_i^*}{w_i^{(t)}}
 & = \left( \sum_{i \in \{1,2,\dots,K\} \setminus \{\widehat y_t\}} \ip{w_i^*}{w_i^{(t)}} \right) + \ip{w_{\widehat y_t}^*}{w_{\widehat y_t}^{(t+1)}} \\
-& = \left( \sum_{i \in \{1,2,\dots,K\} \setminus \{\widehat y_t\}} \ip{w_i^*}{w_i^{(t)}} \right) \\
-& \qquad + \ip{w_{\widehat y_t}^*}{w_{\widehat y_t}^{(t)} + (-1)^{z_t} x_t} \\
+& = \left( \sum_{i \in \{1,2,\dots,K\} \setminus \{\widehat y_t\}} \ip{w_i^*}{w_i^{(t)}} \right) + \ip{w_{\widehat y_t}^*}{w_{\widehat y_t}^{(t)} + (-1)^{z_t} x_t} \\
 & = \left( \sum_{i=1}^K \ip{w_i^*}{w_i^{(t)}} \right) + (-1)^{z_t} \ip{w_{\widehat y_t}^*}{x_t} \\
 & \ge \left( \sum_{i=1}^K \ip{w_i^*}{w_i^{(t)}} \right) + \frac \gamma 2,
 \end{align*}
@@ -153,13 +152,13 @@ conditions
 \eqref{equation:strong-linear-separability-2} and
 \eqref{equation:strong-linear-separability-3}. Condition \eqref{equation:strong-linear-separability-1}
 is satisfied since
-\begin{multline*}
+\[
 \sum_{i=1}^K \norm{w_i^*}^2
-= 2 \frac{\gamma^2}{R^2} \sum_{j=1}^M \norm{e_j}^2 +  \frac{\gamma^2}{2 R^2} K \norm{e_{M+1}}^2 \\
+= 2 \frac{\gamma^2}{R^2} \sum_{j=1}^M \norm{e_j}^2 +  \frac{\gamma^2}{2 R^2} K \norm{e_{M+1}}^2
 = 2 \frac{\gamma^2}{R^2} M + \frac{\gamma^2}{2 R^2} K
 \le \frac{1}{2} + \frac{1}{2}
 = 1 \; .
-\end{multline*}
+\]
 
 It remains to lower bound the expected number of mistakes of $\calA$. For
 any $j \in \{1,2,\dots,M\}$, consider the expected number of mistakes the

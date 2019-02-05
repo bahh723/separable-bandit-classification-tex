@@ -44,8 +44,7 @@ coordinates of $\ell_2$ by $d$-tuples $(\alpha_1, \alpha_2, \dots, \alpha_d)$ of
 non-negative integers, the feature map that corresponds to $k$ is $\phi: \B(\zero,1)
 \to \ell_2$,
 \begin{align}
-& \left(\phi(x_1, x_2, \dots, x_d)\right)_{(\alpha_1, \alpha_2, \dots, \alpha_d)} = x_1^{\alpha_1} x_2^{\alpha_2} \dots x_d^{\alpha_d} \nonumber \\
-& \qquad \cdot \sqrt{2^{-(\alpha_1 + \alpha_2 + \dots + \alpha_d)} \binom{\alpha_1 + \alpha_2 + \dots + \alpha_d}{\alpha_1, \alpha_2, \dots, \alpha_d}}
+& \left(\phi(x_1, x_2, \dots, x_d)\right)_{(\alpha_1, \alpha_2, \dots, \alpha_d)} = x_1^{\alpha_1} x_2^{\alpha_2} \dots x_d^{\alpha_d} \cdot \sqrt{2^{-(\alpha_1 + \alpha_2 + \dots + \alpha_d)} \binom{\alpha_1 + \alpha_2 + \dots + \alpha_d}{\alpha_1, \alpha_2, \dots, \alpha_d}}
 \label{equation:phi}
 \end{align}
 where $\binom{\alpha_1 + \alpha_2 + \dots + \alpha_d}{\alpha_1, \alpha_2, \dots,
@@ -88,7 +87,6 @@ equation~\eqref{equation:phi} and let
     \frac{-\lceil \log_2(2K-2) \rceil \cdot \left \lceil \sqrt{{2}/{\gamma}} \right \rceil}{2}
   }
 }{2\sqrt{K}},
-\\
 \gamma_2 = & \frac{
    \left(2^{s+1} r(K-1) (4s+2) \right)^{-(s+1/2)r(K-1)}
 }{4\sqrt{K}(4K-5) 2^{K-1}}
@@ -138,7 +136,7 @@ multivariate polynomials $p_1, p_2, \dots,p_K$ such that
 \\
 \label{equation:poly-neg}
 & \begin{gathered}
-\forall t \in \cbr{1,2,\dots,T} \ \forall i \in \cbr{1,2,\ldots,K} \setminus \cbr{y_t} \\
+\forall t \in \cbr{1,2,\dots,T} \ \forall i \in \cbr{1,2,\ldots,K} \setminus \cbr{y_t}, \qquad
 p_i(x_t) \le - \frac{\gamma'}{2} \; .
 \end{gathered}
 \end{align}
@@ -197,8 +195,7 @@ Before we state the theorems, recall that a polynomial of $d$ variables is a
 function $p:\R^d \to \R$ of the form
 \begin{align*}
 p(x)
-& = p(x_1, x_2, \dots, x_d) \\
-& = \sum_{\alpha_1, \alpha_2, \dots, \alpha_d} c_{\alpha_1, \alpha_2, \dots, \alpha_d} x_1^{\alpha_1} x_2^{\alpha_2} \dots x_d^{\alpha_d}
+ = p(x_1, x_2, \dots, x_d) = \sum_{\alpha_1, \alpha_2, \dots, \alpha_d} c_{\alpha_1, \alpha_2, \dots, \alpha_d} x_1^{\alpha_1} x_2^{\alpha_2} \dots x_d^{\alpha_d}
 \end{align*}
 where the sum ranges over a finite set of $d$-tuples $(\alpha_1, \alpha_2,
 \dots, \alpha_d)$ of non-negative integers and $c_{\alpha_1, \alpha_2, \dots,
@@ -219,8 +216,8 @@ Let $v_1, v_2, \dots, v_m \in \R^d$ be vectors such that $\norm{v_1},
 \norm{v_2}, \dots, \norm{v_m} \le 1$. Let $\gamma \in (0,1)$. There exists a
 multivariate polynomial $p:\R^d \to \R$ such that
 \begin{enumerate}
-\item $p(x) \ge 1/2$ \\ for all $\displaystyle x \in R^+ = \bigcap_{i=1}^m \left\{ x \in \B(\zero,1) ~:~  \ip{v_i}{x} \ge \gamma \right\}$,
-\item $p(x) \le -1/2$ \\ for all $\displaystyle x \in R^- = \bigcup_{i=1}^m \left\{ x \in \B(\zero,1) ~:~  \ip{v_i}{x} \le - \gamma \right\}$,
+\item $p(x) \ge 1/2$ for all $\displaystyle x \in R^+ = \bigcap_{i=1}^m \left\{ x \in \B(\zero,1) ~:~  \ip{v_i}{x} \ge \gamma \right\}$,
+\item $p(x) \le -1/2$ for all $\displaystyle x \in R^- = \bigcup_{i=1}^m \left\{ x \in \B(\zero,1) ~:~  \ip{v_i}{x} \le - \gamma \right\}$,
 \item $\displaystyle \deg(p) = \left\lceil \log_2(2m) \right\rceil \cdot \left\lceil \sqrt{{1}/{\gamma}} \right\rceil$,
 \item $\displaystyle \norm{p} \le \left[ 188 \left\lceil \log_2(2m) \right\rceil \cdot \left\lceil \sqrt{{1}/{\gamma}} \right\rceil \right]^{
   \frac{
@@ -240,10 +237,10 @@ r = 2 \left\lceil \frac{1}{4} \log_2(4m + 1) \right\rceil + 1 \quad \text{and} \
 $$
 Then, there exists a multivariate polynomial $p:\R^d \to \R$ such that
 \begin{enumerate}
-\item $\displaystyle p(x) \ge 1/2$ \\
+\item $\displaystyle p(x) \ge 1/2$
 for all $\displaystyle x \in R^+ = \bigcap_{i=1}^m \left\{ x \in \B(\zero,1) ~:~ \ip{v_i}{x} \ge \gamma \right\}$,
 
-\item $\displaystyle p(x) \le - 1/2$ \\
+\item $\displaystyle p(x) \le - 1/2$
 for all $\displaystyle x \in R^- = \bigcup_{i=1}^m \left\{ x \in \B(\zero,1) ~:~ \ip{v_i}{x} \le - \gamma \right\}$,
 
 \item $\deg(p) \le (2s+1) rm$,
