@@ -1,0 +1,201 @@
+\section{Multiclass Perceptron}
+\label{section:multiclass-perceptron-proofs}
+
+\textsc{Multiclass Perceptron} is an algorithm for \textsc{Online Multiclass
+Classification}. Both the protocol for the problem and the algorithm are stated
+below. The algorithm assumes that the feature vectors come from an inner product
+space $(V, \ip{\cdot}{\cdot})$.
+
+Two results are folklore. The first result is
+\autoref{theorem:multiclass-perceptron-mistake-upper-bound} which states that if
+examples are linearly separable with margin $\gamma$ and examples have norm
+at most $R$ then the algorithm makes at most $\lfloor 2 (R/\gamma)^2 \rfloor$
+mistakes. The second result is
+\autoref{theorem:online-multiclass-classification-mistake-lower-bound} which
+states that under the same assumptions as in
+\autoref{theorem:online-multiclass-classification-mistake-lower-bound}
+\emph{any} deterministic algorithm for \textsc{Online Multiclass Classification}
+must make at least $\lfloor (R/\gamma)^2 \rfloor$ mistakes in the worst case.
+
+\begin{protocol}[h]
+\caption{\textsc{Online Multiclass Classification}
+\label{algorithm:mutliclass-classification}}
+\textbf{Require:} Number of classes $K$, number of rounds $T$. \\
+\textbf{Require:} Inner product space $(V,\ip{\cdot}{\cdot})$. \\
+\For{$t=1,2,\dots,T$}{
+Adversary chooses example $(x_t, y_t) \in V \times \{1,2,\dots,K\}$, where $x_t$ is revealed to the learner.\\
+Predict class label $\widehat y_t \in \{1,2,\dots,K\}$.\\
+Observe feedback $y_t$.
+}
+\end{protocol}
+
+\begin{algorithm}[h]
+\caption{\textsc{Multiclass Perceptron}
+\label{algorithm:mutliclass-perceptron}}
+\textbf{Require:} Number of classes $K$, number of rounds $T$. \\
+\textbf{Require:} Inner product space $(V,\ip{\cdot}{\cdot})$. \\
+Initialize $w_1^{(1)} = w_2^{(1)} = \dots = w_K^{(1)} = 0$ \\
+\For{$t=1,2,\dots,T$}{
+  Observe feature vector $x_t \in V$ \\
+  Predict $\widehat y_t = \argmax_{i \in \{1,2,\dots,K\}} \ip{w_t^{(i)}}{x_t}$ \\
+  Observe $y_t \in \{1,2,\dots,K\}$ \\
+  \If{$\widehat y_t \neq y_t$}{
+    Set $w_i^{(t+1)} = w_i^{(t)}$ \\ \qquad for all $i \in \{1,2,\dots,K\} \setminus \{y_t, \widehat y_t\}$ \\
+    Update $w_{y_t}^{(t+1)} = w_{y_t}^{(t)} + x_t$ \\
+    Update $w_{\widehat y_t}^{(t+1)} = w_{\widehat y_t}^{(t)} - x_t$ \\
+  }
+  \Else{
+    Set $w_i^{(t+1)} = w_i^{(t)}$ for all $i \in \{1,2,\dots,K\}$ \\
+  }
+}
+\end{algorithm}
+
+\begin{theorem}[Mistake upper bound~\cite{Crammer-Singer-2003}]
+\label{theorem:multiclass-perceptron-mistake-upper-bound}
+Let $(V, \ip{\cdot}{\cdot})$ be an inner product space, let $K$ be a positive
+integer, let $\gamma$ be a positive real number and let $R$ be a non-negative real
+number. If $(x_1, y_1), (x_2, y_2), \dots, (x_T, y_T)$ is a sequence of labeled
+examples in $V \times \{1,2,\dots,K\}$ that are weakly linearly separable with margin
+$\gamma$ and $\norm{x_1}, \norm{x_2}, \dots, \norm{x_T} \le R$
+then \textsc{Multiclass Perceptron} algorithm makes at most $\lfloor
+2(R/\gamma)^2 \rfloor$ mistakes.
+\end{theorem}
+
+\begin{proof}
+Let $M = \sum_{t=1}^T \indicator{\widehat y_t \neq y_t}$ be the number of
+mistakes the algorithm makes. Since the $K$-tuple $(w_1^{(t)}, w_2^{(t)}, \dots,
+w_K^{(t)})$ changes only if a mistake is made, we can upper bound $\sum_{i=1}^K
+\norm{w_i^{(t)}}^2$ in terms of number of mistakes.
+If a mistake happens in round $t$ then
+\begin{align*}
+& \sum_{i=1}^K \norm{w_i^{(t+1)}}^2 \\
+& = \left(\sum_{i \in \{1,2,\dots,K\} \setminus \{y_t, \widehat y_t\} } \norm{w_i^{(t)}}^2 \right) \\
+& \qquad + \norm{w_{y_t}^{(t)} + x_t}^2 + \norm{w_{\widehat y_t}^{(t)} - x_t}^2 \\
+& = \left(\sum_{i \in \{1,2,\dots,K\} \setminus \{y_t, \widehat y_t\} } \norm{w_i^{(t)}}^2 \right) + \norm{w_{y_t}^{(t)}}^2 + \norm{w_{\widehat y_t}^{(t)}}^2 \\
+& \qquad + 2 \norm{x_t}^2 + 2 \ip{w_{y_t}^{(t)} - w_{\widehat y_t}^{(t)}}{x_t} \\
+& = \left(\sum_{i=1}^K \norm{w_i^{(t)}}^2 \right) + 2 \norm{x_t}^2 + 2 \ip{w_{y_t}^{(t)} - w_{\widehat y_t}^{(t)}}{x_t} \\
+& \le \left(\sum_{i=1}^K \norm{w_i^{(t)}}^2 \right) + 2 \norm{x_t}^2 \\
+& \le \left(\sum_{i=1}^K \norm{w_i^{(t)}}^2 \right) + 2 R^2 \; .
+\end{align*}
+So each time a mistake happens, $\sum_{i=1}^K \norm{w_i^{(t)}}^2$ increases by at most $2R^2$. Thus,
+\begin{equation}
+\sum_{i=1}^K \norm{w_i^{(T+1)}}^2 \le 2R^2 M \; .
+\label{equation:perceptron-norm-ub}
+\end{equation}
+Let $w_1^*, w_2^*, \dots, w_K^* \in V$ be vectors satisfying
+\eqref{equation:weak-linear-separability-1} and
+\eqref{equation:weak-linear-separability-2}. We lower bound $\sum_{i=1}^K \ip{w_i^*}{w_i^{(t)}}$. This quantity changes
+only when a mistakes happens. If mistake happens in round $t$, we have
+\begingroup
+\allowdisplaybreaks
+\begin{align*}
+& \sum_{i=1}^K \ip{w_i^*}{w_i^{(t+1)}} \\
+& = \left( \sum_{i \in \{1,2,\dots,K\} \setminus \{y_t, \widehat y_t\}} \ip{w_i^*}{w_i^{(t)}} \right) \\
+& \qquad + \ip{w_{y_t}^*}{w_{y_t}^{(t)} + x_t} + \ip{w_{\widehat y_t}^*}{w_{\widehat y_t}^{(t)} - x_t} \\
+& = \left( \sum_{i=1}^K \ip{w_i^*}{w_i^{(t)}} \right) + \ip{w_{y_t}^* - w_{\widehat y_t}^*}{x_t} \\
+& \ge  \left( \sum_{i=1}^K \ip{w_i^*}{w_i^{(t)}} \right) + \gamma \; .
+\end{align*}
+\endgroup
+Thus, after $M$ mistakes,
+\[
+\label{equation:perceptron-ip-lb}
+\sum_{i=1}^K \ip{w_i^*}{w_i^{(T+1)}} \ge \gamma M \; .
+\]
+We upper bound the left hand side by using Cauchy-Schwartz inequality twice and
+the condition \eqref{equation:weak-linear-separability-1} on $w_1^*, w_2^*, \dots,
+w_K^*$. We have
+\begin{align*}
+\sum_{i=1}^K \ip{w_i^*}{w_i^{(T+1)}}
+& \le \sum_{i=1}^K \norm{w_i^*} \cdot \norm{w_i^{(T+1)}} \\
+& \le \sqrt{\sum_{i=1}^K \norm{w_i^*}^2} \sqrt{\sum_{i=1}^K \norm{w_i^{(T+1)}}^2} \\
+& \le \sqrt{\sum_{i=1}^K \norm{w_i^{(T+1)}}^2} \; .
+\end{align*}
+Combining the above inequality with Equations~\eqref{equation:perceptron-norm-ub}
+and~\eqref{equation:perceptron-ip-lb}, we get
+$$
+(\gamma M)^2 \le \sum_{i=1}^K \norm{w_i^{(T+1)}}^2 \le 2R^2 M \; .
+$$
+We conclude that $M \le 2(R/\gamma)^2$. Since $M$ is an integer, $M \le \lfloor 2(R/\gamma)^2 \rfloor$.
+\end{proof}
+
+
+\begin{theorem}[Mistake lower bound]
+\label{theorem:online-multiclass-classification-mistake-lower-bound}
+Let $K$ be a positive integer, let $\gamma$ be a positive real number and let
+$R$ be a non-negative real number. For any (possibly randomized) algorithm
+$\calA$ for the \textsc{Online Multiclass Classification} problem there exists
+an inner product space $(V, \ip{\cdot}{\cdot})$, a non-negative integer $T$ and
+a sequence of labeled examples $(x_1, y_1), (x_2, y_2), \dots, (x_T, y_T)$
+examples in $V \times \{1,2,\dots,K\}$ that are weakly linearly separable with
+margin $\gamma$, the norms satisfy $\norm{x_1}, \norm{x_2}, \dots, \norm{x_T}
+\le R$ and the algorithm makes at least $\frac 1 2 \lfloor (R/\gamma)^2 \rfloor$
+mistakes.
+\end{theorem}
+
+\begin{proof}
+Let $T = \lfloor (R/\gamma)^2 \rfloor$, $V = \R^T$, and for all $t$ in
+$\cbr{1,\ldots,T}$, define instance $x_t = R e_t$ where $e_t$ is $t$-th element
+of the standard orthonormal basis of $\R^T$.
+Let labels $y_1, \ldots, y_T$ be chosen i.i.d uniformly at random from
+$\cbr{1,2,\ldots,K}$ and independently of any randomness used by the algorithm
+$\calA$.
+
+
+%let $x_1, x_2, \dots, x_T$ be the
+%orthogonal vectors such that $\norm{x_t} = R$ for all $t=1,2,\dots,T$. For
+%example, we can take
+
+%Since the algorithm is deterministic, we can construct the sequence of labels
+%$y_1, y_2, \dots, y_T$ adaptively based on the predictions $\widehat y_1,
+%\widehat y_2, \dots, \widehat y_T$ of the algorithm. We define $y_t$ to be any
+%element of $\{1,2,\dots,K\}$ not equal to $\widehat y_t$. This way the algorithm
+%makes a mistake in every round $t=1,2,\dots,T$.
+
+We first show that the set of examples $(x_1,y_1)$, $\ldots$,
+$(x_T, y_T)$ we have constructed is weakly linearly separable
+with margin $\gamma$. To prove that, we demonstrate vectors $w_1, w_2, \dots, w_K$
+satisfying conditions \eqref{equation:weak-linear-separability-1} and
+\eqref{equation:weak-linear-separability-2}. We define
+$$
+w_i = \frac{\gamma}{R} \sum_{\substack{t : 1 \le t \le T \\ y_t = i}} e_t \qquad \text{for $i=1,2,\dots,K$.}
+$$
+Let $a_i = |\{ t ~:~ 1 \le t \le T, \ y_t = i \}|$ be the number of occurrences of label $i$.
+It is easy to see that
+$$
+\norm{w_i}^2 = \frac{\gamma^2}{R^2} \sum_{\substack{t : 1 \le t \le T \\ y_t = i}} \norm{e_t}^2 = \frac{a_i \gamma^2}{R^2} \qquad \text{for $i=1,2,\dots,K$.}
+$$
+Since $\sum_{i=1}^K a_i = T$,
+$\sum_{i=1}^K \norm{w_i}^2 = T \cdot \frac{\gamma^2}{R^2} \leq 1$, i.e.
+the condition
+\eqref{equation:weak-linear-separability-1} holds. To verify condition
+\eqref{equation:weak-linear-separability-2} consider any labeled example $(x_t,
+y_t)$. Then, for any $i$ in $\cbr{1,\ldots,K}$, by the definition of $w_i$, we have
+\begin{align*}
+\ip{w_i}{x_t}
+& = \frac{\gamma}{R} \sum_{\substack{s : 1 \le s \le T \\ y_s = i}} \ip{e_s}{R e_t} \\
+& = \gamma \cdot \sum_{\substack{s : 1 \le s \le T \\ y_s = i}} \indicator{s = t} \\
+& = \gamma \cdot \indicator{y_t = i}
+\; .
+\end{align*}
+Therefore, if $i = y_t$, $\ip{w_i}{x_t} = \gamma$;
+otherwise $i \neq y_t$, in which case $\ip{w_i}{x_t} = 0$.
+Hence, condition \eqref{equation:weak-linear-separability-2} holds.
+
+We now give a lower bound on the number of mistakes $\calA$ makes.
+As $y_t$ is chosen uniformly from $\{1,2,\dots,K\}$, independently from
+$\calA$'s randomization and the first $t-1$ examples,
+$$
+\Exp[ \indicator{\widehat y_t \neq y_t} ] \ge 1 - \frac{1}{K} \ge \frac{1}{2} \; .
+$$
+Summing over all $t$ in $\cbr{1,\ldots,T}$, we conclude that
+$$
+\Exp \sbr{ \sum_{t=1}^T \indicator{\widehat y_t \neq y_t} } \geq \frac T 2 = \frac 1 2 \lfloor (R/\gamma)^2 \rfloor,
+$$
+which completes the proof.
+\end{proof}
+
+%& = \frac{R}{\sqrt{T}} \\
+%& \ge \frac{R}{R/\gamma} \\
+%& = \gamma \; .
+%and similarly, for any $i \in \{1,2,\dots,K\} \setminus \{y_t\}$ we have
+%$\ip{w_i}{x_t} = 0$.

@@ -1,0 +1,90 @@
+% LaTeX packages
+\usepackage{algorithm}
+\usepackage[algo2e, vlined, ruled, noend]{algorithm2e}
+\usepackage{algorithmic}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsthm}
+\usepackage[english]{babel}
+\usepackage[singlelinecheck=false]{caption}
+\usepackage[colorlinks=true,citecolor=blue,linkcolor=blue]{hyperref}
+\usepackage{natbib}
+\usepackage{thmtools}
+\usepackage{tikz}
+\usepackage{color}
+\usepackage{comment}
+\usepackage{commath}
+\usepackage{dsfont}
+\usepackage{framed}
+\usepackage{caption, subcaption}
+\usepackage{authblk}
+\usepackage{fullpage}
+\usepackage{times}
+%\usepackage{icml2019}  % anonymous submission
+%\usepackage[accepted]{icml2019}  % camera ready version
+\usepackage[outdir=./]{epstopdf}
+% TikZ packages
+\usetikzlibrary{arrows}
+\usetikzlibrary{angles}
+\usetikzlibrary{backgrounds}
+\usetikzlibrary{calc}
+\usetikzlibrary{cd}  % commutative diagrams
+\usetikzlibrary{decorations.markings}
+\usetikzlibrary{intersections}
+\usetikzlibrary{patterns}
+\usetikzlibrary{shapes}
+\usetikzlibrary{through}
+
+% Math environments
+\newtheorem{definition}{Definition}
+\newtheorem{proposition}[definition]{Proposition}
+\newtheorem{lemma}[definition]{Lemma}
+\newtheorem{theorem}[definition]{Theorem}
+\newtheorem{corollary}[definition]{Corollary}
+
+% Math symbols and commands
+\newcommand{\calB}{\mathcal{B}}
+\newcommand{\calA}{\mathcal{A}}
+\newcommand{\calF}{\mathcal{F}}
+\newcommand{\calH}{\mathcal{H}}
+\newcommand{\one}{\mathds{1}}
+\newcommand{\R}{\mathbb{R}}  % set of real numbers
+\newcommand{\N}{\mathbb{N}}  % set of real numbers
+\newcommand{\indicator}[1]{\one\left[#1 \right]} % indicator
+\newcommand{\ip}[2]{\left\langle #1, #2 \right\rangle} % inner product
+%\newcommand{\norm}[1]{\left\| #1 \right\|}  % norm of a vector or a matrix
+%\DeclareMathOperator*{\deg}{deg}
+\newcommand{\e}{\mathbf{e}}
+\newcommand{\zero}{\mathbf{0}}
+
+\DeclareMathOperator{\B}{B}
+\DeclareMathOperator*{\argmax}{argmax}
+\DeclareMathOperator*{\argmin}{argmin}
+\DeclareMathOperator*{\Exp}{\mathbf{E}}  % expected value
+\DeclareMathOperator{\diff}{d \!} % differential
+\DeclareMathOperator*{\polylog}{polylog}
+\DeclareMathOperator*{\Vol}{Vol}
+
+\definecolor{darkgreen}{rgb}{0,0.5,0}
+\definecolor{darkred}{rgb}{0.7,0,0}
+\definecolor{teal}{rgb}{0.3,0.8,0.8}
+\definecolor{orange}{rgb}{1.0,0.5,0.0}
+\definecolor{purple}{rgb}{0.8,0.0,0.8}
+\definecolor{blue}{rgb}{0.0,0.0,1.0}
+\newcommand{\kibitz}[2]{{\textcolor{#1}{\textsf{\footnotesize #2}}}}
+\newcommand{\alina}[1]{\kibitz{darkred}{[AB: #1]}}
+\newcommand{\david}[1]{\kibitz{darkgreen}{[DP: #1]}}
+\newcommand{\balazs}[1]{\kibitz{purple}{[BS: #1]}}
+\newcommand{\deva}[1]{\kibitz{teal}{[DT: #1]}}
+\newcommand{\chenyu}[1]{\kibitz{orange}{[CW: #1]}}
+\newcommand{\chicheng}[1]{\kibitz{blue}{[CZ: #1]}}
+
+\newcounter{protocol}
+\makeatletter
+\newenvironment{protocol}[1][htb]{%
+  \let\c@algorithm\c@protocol
+  \renewcommand{\ALG@name}{Protocol}% Update algorithm name
+  \begin{algorithm}[#1]%
+  }{\end{algorithm}
+}
+\makeatother

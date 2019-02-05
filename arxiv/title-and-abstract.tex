@@ -1,0 +1,60 @@
+% The \icmltitle you define below is probably too long as a header.
+% Therefore, a short form for the running title is supplied here:
+%\icmltitlerunning{Bandit Multiclass Linear Classification: Efficient Algorithms for the Separable Case}
+
+%\twocolumn[
+%\icmltitle{Bandit Multiclass Linear Classification: \\ Efficient Algorithms for the Separable Case}
+
+\title{Bandit Multiclass Linear Classification: \\ Efficient Algorithms for the Separable Case}
+
+%\begin{icmlauthorlist}
+\author[1]{Alina Beygelzimer}
+\author[1]{D\'avid P\'al}
+\author[1]{Bal\'azs Sz\"or\'enyi}
+\author[2]{Devanathan Thiruvenkatachari}
+\author[3]{Chen-Yu Wei}
+\author[4]{Chicheng Zhang}
+
+%\end{icmlauthorlist}
+
+\affil[1]{Yahoo Research, New York, NY, USA}
+\affil[2]{New York University, New York, MA, USA}
+\affil[3]{University of Southern California, Los Angeles, CA, USA}
+\affil[4]{Microsoft Research, New York, NY, USA}
+
+\maketitle
+%\icmlcorrespondingauthor{D\'avid P\'al}{davidko.pal@gmail.com}
+
+%\icmlkeywords{multi-armed bandits, contextual bandits, online classification, linear separability}
+
+%\vskip 0.3in
+%]
+
+%\printAffiliationsAndNotice{}
+
+\begin{abstract}
+We study the problem of efficient online multiclass linear classification with
+bandit feedback, where all examples belong to one of $K$ classes and lie in the
+$d$-dimensional Euclidean space. Previous works have left open the challenge of
+designing efficient algorithms with finite mistake bounds when the data is
+linearly separable by a margin $\gamma$. In this work, we take a first step
+towards this problem. We consider two notions of linear separability,
+\emph{strong} and \emph{weak}.
+
+\begin{enumerate}
+\item Under the strong linear separability condition, we design an efficient
+algorithm that achieves a near-optimal mistake bound of
+$O\left( K/\gamma^2 \right)$.
+
+\item Under the more challenging weak linear separability condition, we design
+an efficient algorithm with a mistake bound of $\min (2^{\widetilde{O}(K \log^2
+(1/\gamma))}, 2^{\widetilde{O}(\sqrt{1/\gamma} \log K)})$ \footnote{We use the notation
+$\widetilde{O}(f(\cdot)) = O(f(\cdot) \polylog(f(\cdot)))$.}.
+Our algorithm
+is based on kernel Perceptron, which is inspired by the work
+of \citet{Klivans-Servedio-2008} on improperly learning intersection of halfspaces.
+%is based on a infinite-dimensional feature mapping that transforms weakly linear
+%separable examples to strongly linear separable examples, which in turn is
+%of \citet{Shalev-Shwartz-Shamir-Sridharan-2011},
+\end{enumerate}
+\end{abstract}

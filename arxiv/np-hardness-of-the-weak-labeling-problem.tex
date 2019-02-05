@@ -1,0 +1,166 @@
+\section{NP-hardness of the weak labeling problem}
+\label{section:np-hardness-of-weak-labeling-problem}
+
+Any algorithm for the bandit setting collects information in the form of so
+called \emph{strongly labeled} and \emph{weakly labeled} examples.
+Strongly-labeled examples are those for which we know the class label. Weakly
+labeled example is an example for which we know that class label can be anything
+except for a particular one class.
+
+A natural strategy for each round is to find vectors $w_1, w_2, \dots, w_K$ that
+linearly separate the examples seen in the previous rounds and use the vectors
+to predict the label in the next round. More precisely, we want to find both the
+vectors $w_1, w_2, \dots, w_K$ and label for each example consistent with its
+weak and/or strong labels such that $w_1, w_2, \dots, w_K$ linearly separate the
+labeled examples. We show this problem is NP-hard even for $K=3$.
+
+Clearly, the problem is at least as hard as the decision version of the problem
+where the goal is to determine if such vectors and labeling exist. We show that
+this problem is NP-complete.
+
+We use symbols $1,2,\dots,K$ for strong labels and symbols $\overline{1},
+\overline{2}, \dots, \overline{K}$ for weak labels. We adopt the convention that
+$\overline{\overline{i}} = i$ for any symbol $i$. Formally, the weak
+labeling problem can be described as below:
+\begin{figure}[H]
+\begin{framed}
+\begin{center}
+    \textbf{Weak Labeling}
+\end{center}
+\textbf{Given:} Feature-label pairs $(x_1, y_1)$, $(x_2, y_2)$, \dots, $(x_T, y_T)$ in $\{0,1\}^d \times \{1,2,\dots, K, \overline{1}, \overline{2}, \dots, \overline{K}\}$. \\
+\textbf{Question:} Do there exist $ w_1, w_2, \dots, w_K \in \R^d$ such that for all $t=1,2,\dots,T$,
+\begin{align*}
+& y_t \in \{1,2,\dots,K\} \Longrightarrow  \\
+& \quad \forall i \in \{1,2,\dots,K\} \setminus \{y_t\} \quad \ip{w_{y_t}}{x_t}  > \ip{w_i}{x_t} \; , \\
+& \text{and} \\
+& y_t \in \{\overline{1}, \overline{2},\dots, \overline{K}\} \Longrightarrow \\
+& \quad \exists i \in \{1,2,\dots,K\} \quad \ip{w_i}{x_t} > \ip{w_{\overline{y_t}}}{x_t} \; ?
+\end{align*}
+\end{framed}
+\end{figure}
+
+The hardness proof is based on a reduction from the set splitting problem, which
+is proven to be NP-complete by Lov\'asz \cite{Garey-Johnson-1979}, to our weak
+labeling problem. The reduction is adapted from \cite{Blum-Rivest-1993}.
+\begin{figure}[H]
+\begin{framed}
+\begin{center}
+    \textbf{Set Splitting}
+\end{center}
+\textbf{Given:} A finite set $S$ and a collection $C$ of subsets $c_i$ of $S$. \\
+\textbf{Question:} Do there exist disjoint sets $S_1$ and $S_2$ such that $S_1 \cup S_2 = S$ and $\forall i, c_i\not\subseteq S_1$ and $c_i\not\subseteq S_2$?
+\end{framed}
+\end{figure}
+
+Below we show the reduction. Suppose we are given an instance of the set
+splitting problem
+\begin{align*}
+S & = \{1, 2, \dots, N\} \; , \\
+C & = \{c_1, c_2, \dots, c_M\} \; .
+\end{align*}
+
+We create the weak labeling instance as follows. Let $d=N+1$ and $K=3$.
+Define $\zero$ as the zero vector $(0,\dots,0)\in \R^N$ and $\e_i$ as the
+$i$-th standard vector $(0,\dots, 1, \dots, 0)\in \R^N$). Then we include all
+the following feature-label pairs:
+\begin{itemize}
+\item Type 1: $(x,y)=((\zero,1), 3)$,
+\item Type 2: $(x,y)=((\e_i,1), \overline{3})$ for all $i \in \{1,2,\dots,N\}$,
+\item Type 3: $(x,y)=\left(\left(\sum_{i\in c_j} \e_i, 1\right), 3\right)$ for all $j \in \{1,2,\dots,M\}$.
+\end{itemize}
+
+For example, if we have $S=\{1,2,3\}$, $C=\{c_1, c_2\}$, $c_1 = \{1,2\}$,
+$c_2=\{2,3\}$, then we create the weak labeling sample set as:
+\begin{multline*}
+\{
+((0,0,0,1),3), ((1,0,0,1),\overline{3}), ((0,1,0,1),\overline{3}), \\
+((0,0,1,1),\overline{3}), ((1,1,0,1),3), ((0,1,1,1),3)
+\} \; .
+\end{multline*}
+The following lemma shows that answering this weak labeling problem is
+equivalent to answering the original set splitting problem.
+
+\begin{lemma}
+Any instance of the set splitting problem is a YES instance if and only if the
+corresponding instance of the weak labeling problem (as described above) is a
+YES instance.
+\end{lemma}
+
+\begin{proof}
+$(\Longrightarrow)$ Let $S_1, S_2$ be the solution of the set splitting problem. Define
+$$
+w_1 = \left(a_1, a_2, \cdots, a_N, -\frac{1}{2}\right),
+$$
+where for all $i \in \{1,2,\dots,N\}$, $a_i=1$ if $i\in S_1$ and $a_i=-N$ if
+$i\notin S_1$. Similarly, define
+$$
+w_2 = \left(b_1, b_2, \cdots, b_N, -\frac{1}{2}\right),
+$$
+where for all $i \in \{1,2,\dots,N\}$, $b_i=1$ if $i \in S_2$ and $b_i=-N$ if
+$i\notin S_2$. Finally, define
+$$
+w_3 = (0,0,\cdots, 0),
+$$
+the zero vector. To see this is a solution for the weak labeling problem, we
+verify separately for Type 1-3 samples defined above. For Type 1 sample, we have
+$$
+\ip{w_3}{x} = 0 > -\frac{1}{2} = \ip{w_1}{x}=\ip{w_2}{x}.
+$$
+For a Type 2 sample that corresponds to index $i$, we have either $i\in S_1$ or
+$i\in S_2$ because $S_1\cup S_2 = \{1,2,\dots,N\}$ is guaranteed. Thus, either
+$a_i=1$ or $b_i=1$. If $a_i=1$ is the case, then
+$$
+\ip{w_1}{x} = a_i - \frac{1}{2} = \frac{1}{2} > 0 = \ip{w_3}{x};
+$$
+similarly if $b_i=1$, we have $\ip{w_2}{x}>\ip{w_3}{x}$. \\ For a Type 3 sample
+that corresponds to index $j$, Since $c_j \not\subset S_1$, there exists some
+$i'\in c_j$ and $i'\notin S_1$. Thus we have $x_{i'}=1$, $a_{i'}=-N$, and
+therefore
+\begin{align*}
+\ip{w_1}{x}
+& = a_{i'}x_{i'} + \sum_{i\in \{1,2,\dots,N\} \setminus \{i'\}} a_ix_i - \frac{1}{2} \\
+& \le -N + (N-1)-\frac{1}{2} \\
+& < 0  \\
+& = \ip{w_3}{x} \; .
+\end{align*}
+Because $c_j \not\subset S_2$ also holds, we also have
+$\ip{w_2}{x}<\ip{w_3}{x}$. This direction is therefore proved. \\
+\ \\
+$(\Longleftarrow)$ Given the solution $w_1, w_2, w_3$ of the weak labeling problem, we define
+\begin{align*}
+S_1 &= \left\{i \in \{1,2,\dots,n\} ~:~ \ip{w_1-w_3}{(\e_i, 1)} > 0 \right\}, \\
+S_2 &= \left\{i \in \{1,2,\dots,n\} ~:~ \ip{w_2-w_3}{(\e_i, 1)} > 0 \right. \\
+& \qquad \qquad \qquad \left. \text{\ and\ } i \notin S_1 \right\}.
+\end{align*}
+It is not hard to see $S_1 \cap S_2 = \emptyset$ and $S_1\cup S_2 =
+\{1,2,\dots,N\}$. The former is because $S_2$ only includes elements that are
+not in $S_1$. For the latter, note that $(\e_i, 1)$ is the feature vector for
+Type 2 samples. Because Type 2 samples all have label $\overline{3}$, for any $i
+\in \{1,2,\dots,N\}$, one of the following must hold: $\ip{w_1-w_3}{(\e_i,
+1)}>0$ or $\ip{w_2-w_3}{(\e_i, 1)}>0$. This implies $i\in S_1$ or $i\in S_2$.
+
+Now we show $\forall j$, $c_j \not\subset S_1$ and $c_j \not\subset S_2$ by
+contradiction. Assume there exists some $j$ such that $c_j \subset S_1$. By our
+definition of $S_1$, we have $\ip{w_1-w_3}{(\e_i, 1)} > 0$ for all $i\in c_j$.
+Therefore,
+\begin{align*}
+\sum_{i\in c_j} \ip{w_1-w_3}{\left(\e_i, 1\right)}
+& = \ip{w_1-w_3}{\left(\sum_{i\in c_j} \e_i, |c_j|\right)}  \\
+& > 0.
+\end{align*}
+Because Type 1 sample has label $3$, we also have
+$$
+\ip{w_1-w_3}{\left(\zero, 1\right)} < 0.
+$$
+Combining the above two inequalities, we get
+\begin{align*}
+& \ip{w_1-w_3}{\left(\sum_{i\in c_j}\e_i, 1\right)} \\
+& = \ip{w_1-w_3}{\left(\sum_{i\in c_j}\e_i, |c_j|\right)}  \\
+& \qquad - (|c_j|-1)\ip{w_1-w_3}{\left(\zero, 1\right)} \\
+& > 0 \; .
+\end{align*}
+Note that $\left(\sum_{i\in c_j}\e_i, 1\right)$ is a feature vector for Type 3
+samples. Thus the above inequality contradicts that Type 3 samples have label 3.
+Therefore, $c_j \not\subset S_1$. If we assume there exists some $c_j \subset
+S_2$, same arguments apply and also lead to contradiction.
+\end{proof}
