@@ -167,29 +167,35 @@ We upper bound each of last two terms separately.
 
 In rounds $1,2,\dots,\tau-1$, the algorithm predicts the incorrect class $2$
 with probability at least $q_0$. Thus,
-$$
+\begin{equation}
 \Exp\left[\sum_{t=1}^{\tau - 1} \indicator{\widehat y_t\neq y_t}\right] = q_0 \Exp[(\tau - 1)] \; .
-$$
+\label{eqn:err-phase1}
+\end{equation}
 In rounds $\tau, \tau+1, \dots, T$, all the examples are the same and are equal
 to $(v_\tau, 2)$. Let $s$ be the first time step $t$ such that $t \ge \tau$
 and the algorithm makes a correct prediction. If the algorithm makes mistakes
 in all rounds $\tau, \tau+1, \dots, T$, we define $s = T+1$.
 By definition the algorithm makes mistakes in rounds $\tau, \tau+1, \dots, s-1$.
 Therefore,
-$$
+\begin{equation}
 \Exp\left[\sum_{t=\tau}^T \indicator{\widehat y_t\neq y_t}\right] \ge \Exp[s-\tau].
-$$
+\label{eqn:err-phase2}
+\end{equation}
 %Since the algorithm is ignorant, conditioned on $\tau$, $s-\tau+1$ has the same distribution as
 %$\min(X, T-\tau+2)$, where $X$ is drawn from a geometric distribution with parameter
 %$p_\tau(2|v_\tau)$.
-Since the algorithm is ignorant, conditiond on $\tau$, $s-\tau$ follows a truncated 
-geometric distribution with parameter $q\triangleq p_\tau(2|v_\tau)$
-(i.e., $s-\tau$ is $0$ with probability $q$, $1$ with probability $(1-q)q$, $2$ with probability $(1-q)^2q, \ldots$). Its expectation can be calculated as follows: 
+Since the algorithm is ignorant, conditioned on $\tau$ and $q \triangleq p_\tau(2|v_\tau)$, $s-\tau$ follows a truncated geometric distribution with parameter $q$
+(i.e., $s-\tau$ is $0$ with probability $q$, $1$ with probability $(1-q)q$, $2$ with probability $(1-q)^2q, \ldots$). Its conditional expectation can be calculated as follows:
 \begin{align*}
-\Exp[s-\tau~|~\tau] 
-&= \sum_{i=1}^{T+1-\tau} i\times  \Pr[s-\tau=i]= \sum_{i=1}^{T+1-\tau}\sum_{j=1}^i \Pr[s-\tau=i] = \sum_{j=1}^{T+1-\tau}\sum_{i=j}^{T+1-\tau} \Pr[s-\tau=i] \\
-&= \sum_{j=1}^{T+1-\tau}\Pr[s-\tau\geq j] = \sum_{j=1}^{T+1-\tau}(1-q)^j \geq  \sum_{j=1}^{T+1-\tau}(1-q_0)^j = \frac{1-q_0}{q_0}\left( 1-(1-q_0)^{T-\tau+1} \right). 
+\Exp[s-\tau~|~\tau, q]
+&= \sum_{i=1}^{T+1-\tau} i \times \Pr[s-\tau = i |~\tau, q ] \\
+&= \sum_{j=1}^{T+1-\tau}\Pr[s-\tau\geq j | ~\tau, q] = \sum_{j=1}^{T+1-\tau}(1-q)^j \geq  \sum_{j=1}^{T+1-\tau}(1-q_0)^j = \frac{1-q_0}{q_0}\left( 1-(1-q_0)^{T-\tau+1} \right).
 \end{align*}
+
+Therefore, by the tower property of conditional expectation,
+\[ \Exp[s-\tau~|~\tau] = \Exp\left[ \Exp\left[s-\tau~\middle|~\tau, q\right]~ \middle| ~\tau\right] \geq \frac{1-q_0}{q_0}\left( 1-(1-q_0)^{T-\tau+1}\right). \]
+
+%= \sum_{i=1}^{T+1-\tau}\sum_{j=1}^i \Pr[s-\tau=i] = \sum_{j=1}^{T+1-\tau}\sum_{i=j}^{T+1-\tau} \Pr[s-\tau=i] \\
 %By Lemma~\ref{lem:truncated-geom} below,
 %\[
 %  \Exp\left[s-\tau+1 \mid \tau, p_\tau(2|v_\tau) \right] = F(p_\tau(2|v_\tau), T-\tau+2) \geq F(q_0, T-\tau+2).
@@ -212,12 +218,15 @@ geometric distribution with parameter $q\triangleq p_\tau(2|v_\tau)$
 
 
 
-Combining the two, we have that
+Combining this fact with Equations~\eqref{eqn:err-phase1} and~\eqref{eqn:err-phase2}, we have that
 \begin{align*}
  \Exp \left[\sum_{t=1}^T \indicator{\widehat y_t\neq y_t}\right]
 & \ge q_0 \Exp[\tau - 1] + \Exp \left[\frac{1-q_0}{q_0}\left(1-(1-q_0)^{T-\tau+1}\right)\right] \\
-& =  \Exp \left[ \Exp \left[ q_0 (\tau - 1) + \frac{1-q_0}{q_0}\left(1-(1-q_0)^{T-\tau+1}\right) ~\middle|~ \tau \right] \right] \; .
+& =  \Exp \left[  q_0 (\tau - 1) + \frac{1-q_0}{q_0}\left(1-(1-q_0)^{T-\tau+1}\right)  \right] \; .
 \end{align*}
+
+%\Exp \left[~\middle|~ \tau \right]
+
 We lower bound the last expression by considering two cases for $\tau$.
 If $\tau \ge \frac{1}{2}T + 1$, then the last expression is lower bounded by
 $\frac{1}{2}q_0 T = \frac{1}{2} \sqrt{T}$. If
