@@ -179,18 +179,35 @@ Therefore,
 $$
 \Exp\left[\sum_{t=\tau}^T \indicator{\widehat y_t\neq y_t}\right] \ge \Exp[s-\tau].
 $$
-Since the algorithm is ignorant, conditioned on $\tau$, the random variable $s-\tau$
-has a truncated geometric distribution with parameter $p_\tau(2|v_\tau) \le q_0$.
+Since the algorithm is ignorant, conditioned on $\tau$, $s-\tau+1$ has the same distribution as
+$\min(X, T-\tau+2)$, where $X$ is drawn from a geometric distribution with parameter
+$p_\tau(2|v_\tau)$.
+
+By Lemma~\ref{lem:truncated-geom} below,
+\[
+  \Exp\left[s-\tau+1 \mid \tau, p_\tau(2|v_\tau) \right] = F(p_\tau(2|v_\tau), T-\tau+2) \geq F(q_0, T-\tau+2).
+\]
 Therefore,
 $$
 \Exp[s-\tau ~|~ \tau]
 \ge
-\Exp \left[\frac{1-q_0}{q_0}\left(1-(1-q_0)^{T-\tau+1}\right) ~\middle|~ \tau \right] \; .
+F(q_0, T-\tau+2) - 1
+=
+\frac{1-q_0}{q_0}\left(1-(1-q_0)^{T-\tau+1}\right) \; .
 $$
+
+
+
+%the random variable $s-\tau+1$
+%has a truncated geometric distribution with parameter $p_\tau(2|v_\tau) \le q_0$.
+%Specifically, conditioned on $\tau$,
+
+
+
 
 Combining the two, we have that
 \begin{align*}
- \Exp \left[\sum_{t=1}^T \indicator{\widehat y_t\neq y_t}\right] 
+ \Exp \left[\sum_{t=1}^T \indicator{\widehat y_t\neq y_t}\right]
 & \ge q_0 \Exp[\tau - 1] + \Exp \left[\frac{1-q_0}{q_0}\left(1-(1-q_0)^{T-\tau+1}\right)\right] \\
 & =  \Exp \left[ \Exp \left[ q_0 (\tau - 1) + \frac{1-q_0}{q_0}\left(1-(1-q_0)^{T-\tau+1}\right) ~\middle|~ \tau \right] \right] \; .
 \end{align*}
@@ -208,7 +225,7 @@ $\tau < \frac{1}{2}T+1$, it is lower bounded by
 Observe that in phase 1, the labels are equal to $1$ and in phase 2 the labels
 are equal to $2$. Note that $(x_\tau, y_\tau)=(x_{\tau+1}, y_{\tau+1})= \dots =
 (x_T, y_T) = (v_\tau, 2)$. Consider the vectors $u_1, u_2, \dots, u_N$ as
-defined in Lemma~\ref{lemma:embed_d_gamma} We claim that $w_1=-u_\tau/2$ and
+defined in Lemma~\ref{lemma:embed_d_gamma}. We claim that $w_1=-u_\tau/2$ and
 $w_2=u_\tau/2$ satisfy the conditions of strong linear separability.
 
 Clearly $\norm{w_1}^2 + \norm{w_2}^2 \le (\norm{w_1} + \norm{w_2})^2 \le
@@ -218,4 +235,32 @@ $\ip{w_2/2}{x_t} = \ip{u_\tau/2}{v_t} \le - \gamma/2$ for all $t < \tau$. Simila
 $\ip{w_1/2}{x_t} \le -\gamma/2$ for all $t \ge \tau$ and $\ip{w_1/2}{x_t} \ge
 \gamma/2$ for all $t < \tau$. Thus, the examples are strongly linearly
 separable with margin $\gamma$.
+\end{proof}
+
+\begin{lemma}
+For $p \in (0,1)$ and $N \geq 1$, denote by $F(p, N) = \frac{1}{p}(1 - (1-p)^N)$.
+\begin{enumerate}
+  \item $F(p, N)$ is monotonically decreasing in $p$.
+  \item If $X \sim \Geom(p)$, then $\Exp[\min(X, N)] = F(p, N)$.
+\end{enumerate}
+\label{lem:truncated-geom}
+\end{lemma}
+\begin{proof}
+We show the two items respectively.
+\begin{enumerate}
+\item By calculus,
+\[ \frac{\partial F(p,n)}{\partial p} = \frac{(1-p)^{N-1} (1 + (N-1)p) - 1}{p^2}. \]
+Now, note that for any $p \in (0,1)$,
+\[ (1 + (N-1)p) \leq \frac{1}{(1 - p)^{N-1}} \]
+We therefore get $\frac{\partial F(p,n)}{\partial p} < 0$ for all $p$, showing the first item.
+
+\item We have the following decomposition on $\Exp[X]$:
+\[ \Exp[X] = \Exp[X \one[X \leq N]] + \Prob(X \geq N+1) \Exp[X|X \geq N+1] \]
+By the memoryless property of geometric distribution, $\Exp[X|X \geq N+1] = N + \Exp[X] = N + \frac 1 p$.
+Therefore,
+\[ \Exp[X] = \Exp[X \one[X \leq N]] + \Prob(X \geq N+1) \cdot N + \Prob(X \geq N+1) \cdot \frac 1 p. \]
+At the same time, observe that $\Exp[X \one[X \leq N]] + \Prob(X \geq N+1) \cdot N = \Exp[\min(X, N)]$.
+Therefore,
+\[ \Exp[\min(X, N)] = \frac 1 p \cdot (1 - \Prob(X \geq N+1)) = \frac{1}{p}(1 - (1-p)^N) = F(p, N). \qedhere \]
+\end{enumerate}
 \end{proof}
