@@ -1,0 +1,88 @@
+Reviewer #2
+Questions
+1. Please enter a detailed review describing the strengths and weaknesses of the submission.
+Summary
+
+This paper concerns the Online Multiclass Linear Classification with Bandit Feedback (OMLC) setting which proceeds in rounds. In a given round the forecaster is given a feature vector, upon which the forecaster is to make a prediction. After making the prediction the forecaster receives feedback in the form of whether or not the prediction was correct. This is in contrast with the full information setting, where the correct label is given. The paper uses either one of two assumptions to prove mistake bounds: either weak separability or strong separability. Both weak and strong separability have appeared in literature before. For the strong separability case the authors make use of the binary perceptron algorithm to make predictions for each class. In the full information case the mistake bound of the multiclass perceptron is analysed by bounding the number of updates the algorithm uses. For the bandit feedback case the authors derive a new algorithm which uses the same ideas as in the full information case, but now with uniform random predictions in the case where all binary perceptrons predict “other class” and arbitrary predictions for cases where multiple binary perceptrons predict “their class”. In addition, the authors prove a mistake bound for the strongly separability case with a kernalized algorithm. To prove mistake bounds for the weakly separability case the authors show that with the rational kernel it is possible to convert the weakly separability case to a strongly separability case with new constants, which they derive, and then apply the analysis of the new algorithm to the converted weakly separability case. Finally, the paper contains experiments on simulated data for the strongly separable case and weakly separable case in which the new algorithm with and without kernel is compared to the several instances of the Banditron algorithm. The experiments show that the new algorithm behaves as expected.
+
+
+Qualitative assessment
+
+The paper is well written. The ideas behind algorithms one and two are clearly explained. The connection between the strongly separability and weakly separability cases in Theorem 5 is well addressed and I found it to be an elegant way to analyse the regret bound for weakly separability cases. Figures 1 and 2 aid in explaining the ideas that are being used.
+
+The paper answers two question that were open since 2008. The first question was whether there exists an efficient algorithm with a finite mistake bound, for which the answer is relatively straightforward after combining Theorem 4 and Theorem 5. I am interested in seeing whether other special cases of the contextual bandit setting allow for similar analysis. The second question that was answered was whether or not there exists any algorithm that has a finite mistake bound that does not depend on the dimensionality of the feature vectors. Both answers possibly aid in future research.
+
+The experiments are a good addition to the paper. It was nice to see the behavior of algorithms 1 and 2 in both the strongly and weakly separability cases. I found the decision boundaries in appendix F a nice addition to the experiments to see what all algorithms are doing. However, for Banditron’s decision boundaries it is not clear which version of Banditron is shown.
+I am uncertain about the need for the algorithm 4 in Appendix G. The mistake bound is larger than for algorithms 1 and 2 and I do not think it is necessary for the remainder of the paper. So my question here is: what was the purpose of Appendix G?
+
+
+Minor comments
+In in Theorem 5 should be \in I believe
+2. Please provide an overall score for the submission.
+Accept: Good paper
+3. Please enter a 2-3 sentence summary of your review explaining your overall score.
+The paper answers two questions that were open for some time. The ideas in the paper are elegant and clearly explained. The experiments were a good addition to the paper.
+5. Please rate your confidence in the score assigned.
+High: Reviewer has understood the main arguments in the paper, and has made high level checks of the proofs.
+Reviewer #3
+Questions
+1. Please enter a detailed review describing the strengths and weaknesses of the submission.
+This paper studies multiclass linear classification under bandit feedback in two cases - strong and weak separability. The authors propose a perceptron like algorithm for the strongly separable case, and provide a kernel to convert the weakly separable case into the strongly separable. The mistake performance of both algorithms is analyzed. It is shown that the performance in the strongly separable case is tight.
+
+The paper is well-written and the contribution is novel.
+
+A commentary about the tightness of the mistake bound in the weakly separable case, i.e. a lower bound would be helpful.
+2. Please provide an overall score for the submission.
+Accept: Good paper
+3. Please enter a 2-3 sentence summary of your review explaining your overall score.
+The authors propose algorithms for linear classification in the bandit feedback setting. The results are novel and the writing is clear.
+5. Please rate your confidence in the score assigned.
+Medium: Reviewer has understood the main points in the paper, but skipped the proofs and technical details.
+Reviewer #4
+Questions
+1. Please enter a detailed review describing the strengths and weaknesses of the submission.
+In this paper, the authors study multiclass linear classification with bandit feedback, i.e., only a feedback of whether the prediction was correct or not is given in each time step. It is left as an open question whether efficient algorithms with finite mistake bounds exist for online multiclass linear classification with bandit feedback. The authors consider two specific problems with weak and strong separability, for both of which the authors propose efficient algorithms with finite mistake bounds. For the case with strong separability, the authors show that the derived mistake bound is optimal up to a constant factor.
+
+(1) The problem should be better motivated. It would be nice to give specific applications where the feedback is given by whether the prediction was correct or not.
+
+(2) In Figure 4 and Figure 5, it seems that the cumulative number of mistakes is independent of time. It would be nice to give some explanations for this phenomenon.
+
+(3) In section 3, some $\mathbb{R}^{k\times d}$ should be $\mathbb{R}^{K\times d}$.
+
+(4) In section 5.1, ``that that'' should be ``that''
+2. Please provide an overall score for the submission.
+Accept: Good paper
+3. Please enter a 2-3 sentence summary of your review explaining your overall score.
+The paper proposes interesting algorithms for bandit multiclass linear classification. It gives an affirmative answer to the open question whether one can derive efficient algorithm with finite mistake bounds for linearly separable data.
+5. Please rate your confidence in the score assigned.
+Medium: Reviewer has understood the main points in the paper, but skipped the proofs and technical details.
+Reviewer #5
+Questions
+1. Please enter a detailed review describing the strengths and weaknesses of the submission.
+The paper makes several novel contributions in terms of new algorithms and mistake bounds for bandit multiclass linear classification, where the sequence of examples is (obliviously) adversarially chosen and only the 0-1 loss is revealed to the learner each time. As such, the paper is well-written and its results seem to be a significant improvement over the state of the art, answering previous open questions.
+
+Detailed Comments:
+
+i. Non-Separable datasets: While it is good to achieve finite mistake bounds for separable datasets, it would have been worth analyzing the algorithms' performance for non-separable datasets, as in practice the requirement of separability is likely unrealistic. I believe that it is due to this very reason that no experimental evaluations are carried out on more "real-world" classification datasets. How would the mistake bounds (or more generally regret with respect to the best linear classifier) scale in terms of d, K and T in non-separable cases? Is there any intuition at all?
+
+ii. It is not entirely clear what is meant by "efficient algorithm" (Line 58, 60, 104, 108 etc.) --- it would have been worth commenting on the average run-time complexities of the two proposed algorithms, and also the memory overhead of Algorithm 2 as it needs to maintain J_i^{(t)} for all t \in [T], j \in [K]. Can |J_i^{(t)}| be O(t) in the worst case?
+
+iii. Comparing with previous work: There appear to be some gaps in the paper stating the advantage of its proposed algorithms over earlier work, e.g., that of Kakade et al. or Daniely & Helbert et al. It appears that both of these works also achieve finite dimension-independent regret bounds for weak linearly separable datasets; in fact, the mistake bounds of the proposed algorithms of this paper are quasipolynomial in 1/gamma or K (i.e. O(1/gamma^K or K^(1/gamma)), Cor 6), in comparison to just the \tilde O(K/gamma^2) bounds of Daniely & Helbert et al. Does the improvement lie only in runtime? If so, then it would be worth explaining why Daniely and Helbert's algorithm (and possibly others) is not efficient.
+
+iv. Experiments: The experiments could have been performed on a larger scale and over more datasets: In particular the effect of dimension (d), and number of classes (K) does not come out clearly for K=3 and d=3. It would have been worth to compare the mistake bounds of the existing works for larger K. Additionally, some error bars or variance or standard error information in the plots would have been very helpful in understanding relative performance.
+
+v. Lower Bounds: Is there a tighter (than Thm. 11) mistake bound known for weakly separable datasets? It would have been worth understanding the 'best' dependency of K and \gamma on the mistake bound.
+
+Minor Comments:
+
+- Better to use \citet instead of \cite while referring to a paper as an object, e.g., in Footnote 3, "Although \citet{Chen et al., 2009} claimed ..."
+
+- l 253: "... namely A rational kernel ..."
+
+- l 256: "... separable examples to A strongly linearly separable sequence ..."
+2. Please provide an overall score for the submission.
+Accept: Good paper
+3. Please enter a 2-3 sentence summary of your review explaining your overall score.
+A paper with significant and useful algorithms and new theory.
+5. Please rate your confidence in the score assigned.
+High: Reviewer has understood the main arguments in the paper, and has made high level checks of the proofs.

@@ -1,0 +1,23 @@
+We thank all reviewers for their insightful comments. We will make a pass,
+and incorporate all the detailed comments in the final version of the paper.
+
+We believe that extending the algorithms to handle the general
+contextual bandit learning setting (where each example is associated
+with a cost vector) requires nontrivial modifications to the algorithm;
+a first step towards this question would be to establish
+regret guarantees for when the examples shown is still multiclass, but
+linearly nonseparable - we leave this for future work.
+
+Regarding Appendix G, we agree that it is not related to the main story
+ of the paper. Nevertheless, we think that this is a baseline that has not
+ appeared in the literature and we include it for completeness.
+
+We will add some discussions on achievable mistake bounds in the weakly
+linearly separable case,
+and its interaction with computational efficiency requirements.
+It is known that in (Daniely and Herbertal, 2013)
+that when 1/gamma^2 < d, any algorithm must make \Omega(K / \gamma^2) mistakes,
+and when 1/gamma^2 > K^3 d, any algorithm must make \Omega( d K^2 ) mistakes.
+In addition, (Daniely and Herbertal, 2013) gives a computationally inefficient
+ algorithm that has a mistake upper bound of \tilde{O}( \min( K/\gamma^2, d K^2) );
+ the algorithm involves a key step of computing (margin-based) Littlestone dimensions of subsets of multiclass linear classifiers, which is not known how to do efficiently.
