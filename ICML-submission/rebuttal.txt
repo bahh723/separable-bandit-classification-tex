@@ -1,26 +1,71 @@
-We thank all reviewers for their insightful comments. We will make a pass, and incorporate all the detailed comments in the final version of the paper.
+We thank all reviewers for their insightful comments. 
+We will make a pass, and incorporate all the detailed 
+comments in the final version of the paper.
 
 -----
 Reviewer #2
-We believe that extending the algorithms to handle the general contextual bandit learning setting (where each example is associated with a cost vector) requires nontrivial modifications to the algorithm; a first step towards this question would be to establish regret guarantees for when the examples shown is still multiclass, but linearly nonseparable - we leave this for future work.
+We believe that extending the algorithms to handle 
+the general contextual bandit learning setting (where 
+each example is associated with a cost vector) requires 
+nontrivial modifications to the algorithm; a first step 
+towards this question would be to establish regret 
+guarantees for when the examples shown is still multiclass, 
+but linearly nonseparable - we leave this for future work.
 
-Regarding Appendix G, we agree that it is not related to the main story of the paper. Nevertheless, we think that this is a baseline that has not appeared in the literature and we include it for completeness.
+Regarding Appendix G, we agree that it is not related 
+to the main story of the paper. Nevertheless, we think 
+that this is a baseline that has not appeared in the 
+literature and we include it for completeness.
 
-In Appendix F, the Banditron's boundary is plot with the version with the largest exploration rate (the 0.02 one in Figure 4 and 5). This version explores the most, and gives the most accurate decision boundary. We would add more explanation on this in the final version. 
+In Appendix F, the Banditron's boundary is plot with the 
+version with the largest exploration rate (the 0.02 one 
+in Figure 4 and 5). This version explores the most, and 
+gives the most accurate decision boundary. We would add 
+more explanation on this in the final version. 
 
 -----
 Reviewer #3 and #5
-We will add some discussions on achievable mistake bounds in the weakly linearly separable case, and its interaction with computational efficiency requirements. It is known that in (Daniely and Herbertal, 2013) that when 1/gamma^2 < d, any algorithm must make \Omega(K / \gamma^2) mistakes, and when 1/gamma^2 > K^3 d, any algorithm must make \Omega( d K^2 ) mistakes. In addition, (Daniely and Herbertal, 2013) gives a computationally inefficient algorithm that has a mistake upper bound of \tilde{O}( \min( K/\gamma^2, d K^2) ); the algorithm involves a key step of computing (margin-based) Littlestone dimensions of subsets of multiclass linear classifiers, which is not known how to do efficiently.
+We will add some discussions on achievable mistake bounds 
+in the weakly linearly separable case, and its interaction 
+with computational efficiency requirements. It is known 
+that in (Daniely and Herbertal, 2013) that when 1/gamma^2 < d, 
+any algorithm must make \Omega(K / \gamma^2) mistakes, and 
+when 1/gamma^2 > K^3 d, any algorithm must make \Omega( d K^2 ) 
+mistakes. In addition, (Daniely and Herbertal, 2013) gives a 
+computationally inefficient algorithm that has a mistake 
+upper bound of \tilde{O}( \min( K/\gamma^2, d K^2) ); the 
+algorithm involves a key step of computing (margin-based) 
+Littlestone dimensions of subsets of multiclass linear 
+classifiers, which is not known how to do efficiently.
 
 -----
 Reviewer #5
-i. We leave the non-separable case as an important future direction. Using our current analysis framework, we believe that there will still involve the quasi-polynomial factors on K and \gamma; and the bound will only depend on L, the number of mistakes made by the best linear classifier, instead of T. To derive this, one can first re-derive our Theorem 2 for the non-separable case, and then again use the kernel trick. 
+i. We leave the non-separable case as an important future 
+direction. Using our current analysis framework, we believe 
+that there will still involve the quasi-polynomial factors 
+on K and \gamma; and the bound will only depend on L, the 
+number of mistakes made by the best linear classifier, instead 
+of T. To derive this, one can first re-derive our Theorem 2 
+for the non-separable case, and then again use the kernel trick. 
 
-ii. "Efficient" means that run-time is polynomial in K, d, \gamma, T. This follows the typical definition in online learning literature, but we will more formally define it in the final version. Since J_i^{(t)} only includes the samples on which the i-th binary perceptron makes mistakes, in the separable case, their number will be finite based on perceptron's guarantee. Therefore, it can be much better than O(t) in the separable case. 
+ii. "Efficient" means that run-time is polynomial in K, d, 
+\gamma, T. This follows the typical definition in online 
+learning literature, but we will more formally define it in 
+the final version. Since J_i^{(t)} only includes the samples 
+on which the i-th binary perceptron makes mistakes, in the 
+separable case, their number will be finite based on perceptron's 
+guarantee. Therefore, it can be much better than O(t) in the 
+separable case. 
 
-iii. Our work indeed only improves Kakade et al. and Daniely & Helbert et al.'s algorithms in efficiency, but not in mistake bound. Why Daniely and Herbertal's algorithm is inefficient is answered above. 
+iii. Our work indeed only improves Kakade et al. and 
+Daniely & Helbert et al.'s algorithms in efficiency, but not 
+in mistake bound. Why Daniely and Herbertal's algorithm is 
+inefficient is answered above. 
 
-iv. Larger-scale experiment on real data is also a future work. Currently our experiment section is more for verifying that the algorithm indeed works as expected. We will improve our figure based on your suggestion. 
+iv. Larger-scale experiment on real data is also a future work. 
+Currently our experiment section is more for verifying that the 
+algorithm indeed works as expected. We will improve our figure 
+based on your suggestion. 
 
 v. See above for the answer. 
 
