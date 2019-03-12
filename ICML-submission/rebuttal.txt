@@ -24,6 +24,11 @@ gives the most accurate decision boundary. We would add
 more explanation on this in the final version. 
 
 -----
+Reviewer #4
+Thanks for the clarification suggestions. We will incorporate 
+them into our final version. 
+
+-----
 Reviewer #3 and #5
 We will add some discussions on achievable mistake bounds 
 in the weakly linearly separable case, and its interaction 
@@ -62,10 +67,9 @@ Daniely & Helbert et al.'s algorithms in efficiency, but not
 in mistake bound. Why Daniely and Herbertal's algorithm is 
 inefficient is answered above. 
 
-iv. Larger-scale experiment on real data is also a future work. 
-Currently our experiment section is more for verifying that the 
-algorithm indeed works as expected. We will improve our figure 
-based on your suggestion. 
+iv. Indeed, currently our experiment section is more for 
+verifying that the algorithm is working as expected. As a future
+work, we will test our algorithm on larger-scale and real problems.
 
 v. See above for the answer. 
 
