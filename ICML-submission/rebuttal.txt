@@ -26,7 +26,7 @@ more explanation on this in the final version.
 -----
 Reviewer #4
 Thanks for the clarification suggestions. We will incorporate 
-them into our final version. 
+them into the final version.  
 
 -----
 Reviewer #3 and #5
@@ -72,6 +72,3 @@ verifying that the algorithm is working as expected. As a future
 work, we will test our algorithm on larger-scale and real problems.
 
 v. See above for the answer. 
-
-
-
