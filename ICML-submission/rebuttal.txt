@@ -16,11 +16,11 @@ version.
 -----
 Reviewer #4
 
-(1) The problem was motivated in the Banditron paper (Kakade et al. 2008). One
+(1) The problem was motivated in the Banditron paper (Kakade et al., 2008). One
 application area is web content optimization and web advertising.
 
-(2) The phenomenon of finite number of mistakes is explained by Theorem 2 and
-Corollary 6.
+(2) The phenomenon of finite number of mistakes made by our algorithms with
+different settings of kernel functions is explained by Theorem 2 and Corollary 6.
 
 -----
 Reviewer #3
@@ -28,7 +28,7 @@ Reviewer #3
 The lower bound for strongly separable case (Theorem 3) implies the same lower
 bound for the weakly separable case. This lower bound is actually tight, since
 there exists an (inefficient) algorithm that makes at most O(K / \gamma^2)
-mistakes due to Daniely and Herbertal, 2013 (see their Theorem 2).  We are not
+mistakes due to Daniely & Helbertal, 2013 (see their Theorem 2).  We are not
 aware of any mistake lower bound for computationally efficient algorithms under
 the weakly separable assumption. We will add a discussion in the paper.
 
@@ -51,7 +51,7 @@ algorithms in computational efficiency, but not in mistake bound.
  - Kakade et al.'s algorithm is computationally inefficient because it requires
 enumerating over a grid of O(1/\gamma)^kd linear classifiers.
  - Daniely & Helbertal's algorithm is computationally inefficient because it involves a key step
-of computing (margin-based) Littlestone dimensions of subsets of multiclass
+of computing (margin-based) Littlestone's dimensions of subsets of multiclass
 linear classifiers, which is not known how to do efficiently.
 
 iv. We will add error bars to the plots. The focus of this submission is
