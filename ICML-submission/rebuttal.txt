@@ -8,9 +8,9 @@ Regarding Appendix G, we agree that it is not related to the main story of the
 paper. However, it is an important example of an "ignorant" algorithm and the
 lower bound that we prove in Appendix I applies to it.
 
-In Appendix F, the Banditron's boundary is plotted with the version with
+In Appendix F, Banditron's decision boundary is plotted with the version with
 exploration rate of 0.02. This version explores the most, and gives the most
-accurate decision boundary. We would add more explanation on this in the final
+accurate decision boundary. We will add more explanation on this in the final
 version.
 
 -----
@@ -29,32 +29,33 @@ The lower bound for strongly separable case (Theorem 3) implies the same lower
 bound for the weakly separable case. This lower bound is actually tight, since
 there exists an (inefficient) algorithm that makes at most O(K / \gamma^2)
 mistakes due to Daniely and Herbertal, 2013 (see their Theorem 2).  We are not
-aware of any mistake lower bound for computationaly efficient algorithms under
+aware of any mistake lower bound for computationally efficient algorithms under
 the weakly separable assumption. We will add a discussion in the paper.
 
 -----
 Reviewer #5
 
-i. There has been substanstial amount of work on the non-separable case
+i. There has been substantial amount of work on the non-separable case
 as discussed in Section 2 (lines 128--137). Our paper focuses
 on the remaining open case when the data is linearly separable; there
-was non known computationaly efficient algorithm with finite mistake bound.
+was no known computationally efficient algorithm with finite mistake bound before
+our work.
 
-ii. "Efficient" means that run-time is polynomial in K, d, 1/\gamma, T. We will
+ii. "Efficient" means that the run-time is polynomial in K, d, 1/\gamma, T. We will
 define this explicitly in the paper.  Since J_i^{(t)} only includes the samples
-on which the i-th binary perceptron makes mistakes, in the separable case,
-their number will be finite based on perceptron's guarantee. The expected size of
-J_i^{(t)} is upper bounded by it min(t, (1/gamma')^2).
+on which the i-th binary perceptron makes mistakes, its size is upper bounded by t.
+This implies that the algorithm runs in polynomial time.
 
-iii. Our work indeed only improves Kakade et al. and Daniely & Helbert et al.'s
-algorithms in efficiency, but not in mistake bound.
-
-Daniely and Herbertal's algorithm is inefficient because it involves a key step
+iii. Our work indeed only improves Kakade et al. and Daniely & Helbertal's
+algorithms in computational efficiency, but not in mistake bound.
+ - Kakade et al.'s algorithm is computationally inefficient because it requires
+enumerating over a grid of O(1/\gamma)^kd linear classifiers.
+ - Daniely & Helbertal's algorithm is computationally inefficient because it involves a key step
 of computing (margin-based) Littlestone dimensions of subsets of multiclass
 linear classifiers, which is not known how to do efficiently.
 
 iv. We will add error bars to the plots. The focus of this submission is
-largely theoretical and the goal of the experiments is to verift that the
+largely theoretical and the goal of the experiments is to verify that the
 algorithms work as expected.
 
 v. See the answer for Reviewer #3.
