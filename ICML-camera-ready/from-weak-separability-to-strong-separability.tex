@@ -40,7 +40,7 @@ Note that $k(x,x')$ can be evaluated in $O(d)$ time.
 Consider the classical real separable Hilbert space $\ell_2 = \{ x \in \R^\infty
 ~:~ \sum_{i=1}^\infty x_i^2 < + \infty \}$ equipped with the standard inner
 product $\ip{x}{x'}_{\ell_2} = \sum_{i=1}^\infty x_i x'_i$. If we index the
-coordinates of $\ell_2$ by $d$-tuples $(\alpha_1, \dots, \alpha_d)$ of
+coordinates of $\ell_2$ by $d$-tuples $(\alpha_1, \alpha_2, \dots, \alpha_d)$ of
 non-negative integers, the feature map that corresponds to $k$ is $\phi: \B(\zero,1)
 \to \ell_2$,
 \begin{align}
@@ -50,8 +50,8 @@ non-negative integers, the feature map that corresponds to $k$ is $\phi: \B(\zer
 \end{split}
 \label{equation:phi}
 \end{align}
-where $\binom{\alpha_1 + \dots + \alpha_d}{\alpha_1, \dots,
-\alpha_d} = \frac{(\alpha_1 + \dots + \alpha_d)!}{\alpha_1! \dots \alpha_d!}$ is the multinomial coefficient. It can be easily checked that
+where $\binom{\alpha_1 + \alpha_2 + \dots + \alpha_d}{\alpha_1, \alpha_2, \dots,
+\alpha_d} = \frac{(\alpha_1 + \alpha_2 + \dots + \alpha_d)!}{\alpha_1! \alpha_2! \dots \alpha_d!}$ is the multinomial coefficient. It can be easily checked that
 $$
 k(x,x') = \ip{\phi(x)}{\phi(x')}_{\ell_2}.
 $$
