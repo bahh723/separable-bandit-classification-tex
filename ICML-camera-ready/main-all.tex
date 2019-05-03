@@ -1,0 +1,34 @@
+\documentclass{article}
+
+\input{commands}
+
+\begin{document}
+
+\input{title-and-abstract}
+\input{introduction}
+\input{related-work}
+\input{notions-of-linear-separability}
+\input{algorithm-for-strongly-linearly-separable-data}
+\input{from-weak-separability-to-strong-separability}
+\input{empirical-comparison}
+
+\bibliography{biblio}
+\bibliographystyle{plainnat}
+%\bibliographystyle{icml2019}
+
+% For actual submission remove everything below.
+% Use appendices only in supplementray material.
+\appendix
+\clearpage
+
+\input{appendix-multiclass-perceptron}
+\input{appendix-proofs-for-strongly-separable-examples}
+\input{appendix-poly-norm-to-rkhs-norm}
+\input{appendix-proofs-of-polynomial-approximation-theorems}
+\input{appendix-margin-transformation}
+\input{appendix-experiment}
+\input{appendix-nearest-neighbor-algorithm}
+\input{np-hardness-of-the-weak-labeling-problem}
+\input{mistake-lower-bound-for-ignorant-algorithms}
+
+\end{document}

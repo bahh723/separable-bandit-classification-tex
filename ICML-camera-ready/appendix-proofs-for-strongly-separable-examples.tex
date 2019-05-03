@@ -1,0 +1,187 @@
+\section{Proofs of Theorems~\ref{theorem:strongly-separable-examples-mistake-upper-bound} and \ref{theorem:strongly-separable-examples-mistake-lower-bound}}
+\label{section:proofs-for-stringly-separable-examples}
+
+\begin{proof}[Proof of \autoref{theorem:strongly-separable-examples-mistake-upper-bound}]
+Let $M = \sum_{t=1}^T z_t$ be the number of mistakes
+Algorithm~\ref{algorithm:algorithm-for-strongly-linearly-separable-examples}
+makes. Let $A = \sum_{t=1}^T \indicator{S_t \neq \emptyset} z_t$ be the number of
+mistakes in the rounds when $S_t \neq \emptyset$, i.e. the number of rounds
+line~\ref{line:neg-update} is executed. In addition, let $B = \sum_{t=1}^T
+\indicator{S_t = \emptyset} z_t$ be the number of mistakes in the rounds when $S_t =
+\emptyset$. It can be easily seen that $M = A + B$.
+
+Let $C = \sum_{t=1}^T \indicator{S_t = \emptyset}(1 - z_t)$ be the number of rounds
+line~\ref{line:pos-update} gets executed. Let $U = \sum_{t=1}^T (\indicator{S_t \neq
+\emptyset} z_t + \indicator{S_t = \emptyset}(1 - z_t))$ be the number of rounds
+line~\ref{line:pos-update} or~\ref{line:neg-update} gets executed. In other
+words, $U$ is the number of times the $K$-tuple of vectors $(w_1^{(t)},
+w_2^{(t)}, \dots, w_K^{(t)})$ gets updated. It can be easily seen that $U = A +
+C$.
+
+The key observation is that $\Exp[B] = (K-1) \Exp[C]$.
+To see this, note that if $S_t = \emptyset$, there is $1/K$ probability that the algorithm
+guesses the correct label ($z_t = 0$) and with probability $(K-1)/K$ algorithm's guess is
+incorrect ($z_t = 1$). Therefore,
+\[ \Exp[ z_t |S_t = \emptyset] = \frac{K-1}{K}, \]
+\[ \Exp[B] = \frac{K-1}{K} \Exp \sbr{ \sum_{t=1}^T \indicator{S_t = \emptyset} }, \]
+\[ \Exp[C] = \frac{1}{K} \Exp \sbr{ \sum_{t=1}^T \indicator{S_t = \emptyset} }. \]
+
+Putting all the information together, we get that
+\begin{align}
+\Exp[M]
+& = \Exp[A] + \Exp[B] \nonumber \\
+& = \Exp[A] + (K-1) \Exp[C] \nonumber \\
+& \le (K-1) \Exp[A + C] \nonumber\\
+& = (K-1) \Exp[U]  \; .
+\label{eqn:mistake-update}
+\end{align}
+
+To finish the proof, we need to upper bound the number of updates $U$. We claim
+that $U \le \lfloor 4(R/\gamma)^2 \rfloor$ with probability 1.
+The proof of this upper bound is
+similar to the proof of the mistake bound for \textsc{Multiclass Perceptron}
+algorithm. Let $w_1^*, w_2^*, \dots, w_K^* \in V$ be vectors that satisfy
+\eqref{equation:strong-linear-separability-1},
+\eqref{equation:strong-linear-separability-2} and
+\eqref{equation:strong-linear-separability-3}.
+The $K$-tuple $(w_1^{(t)}, w_2^{(t)}, \dots, w_K^{(t)})$
+changes only if there is an update in round $t$.
+We investigate how $\sum_{i=1}^K \norm{w_i^{(t)}}^2$ and
+$\sum_{i=1}^K \ip{w_i^*}{w_i^{(t)}}$ change. If there is an update in round $t$,
+by lines~\ref{line:pos-update} and~\ref{line:neg-update}, we always have
+$ w_{\widehat y_t}^{(t+1)} = w_{\widehat y_t}^{(t)} + (-1)^{z_t} x_t $,
+and for all $i \neq \widehat y_t$, $w_{i}^{(t+1)} = w_{i}^{(t)}$.
+Therefore,
+\begingroup
+\allowdisplaybreaks
+\begin{align*}
+\sum_{i=1}^K \norm{w_i^{(t+1)}}^2
+& = \left( \sum_{i \in \{1,2,\dots,K\} \setminus \{\widehat y_t\}} \norm{w_i^{(t)}}^2 \right) + \norm{w_{\widehat y_t}^{(t+1)}}^2 \\
+& = \left( \sum_{i \in \{1,2,\dots,K\} \setminus \{\widehat y_t\}} \norm{w_i^{(t)}}^2 \right) + \norm{w_{\widehat y_t}^{(t)} + (-1)^{z_t} x_t}^2 \\
+& = \left( \sum_{i=1}^K \norm{w_i^{(t)}}^2 \right) + \norm{x_t}^2 + \underbrace{(-1)^{z_t} 2 \ip{w_{\widehat y_t}^{(t)}}{x_t}}_{\le 0} \\
+& \le \left( \sum_{i=1}^K \norm{w_i^{(t)}}^2 \right) + \norm{x_t}^2 \\
+& \le \left( \sum_{i=1}^K \norm{w_i^{(t)}}^2 \right) + R^2 \; .
+\end{align*}
+\endgroup
+The inequality that $(-1)^{z_t} 2 \ip{w_{\widehat y_t}^{(t)}}{x_t} \leq 0$ is from a case analysis: if line~\ref{line:pos-update} is executed, then $z_t = 0$ and $\ip{w_{\widehat y_t}^{(t)}}{x_t} < 0$;
+ otherwise line~\ref{line:neg-update} is executed, in which case $z_t = 1$ and $\ip{w_{\widehat y_t}^{(t)}}{x_t} \ge 0$.
+
+
+Hence, after $U$ updates,
+\begin{equation}
+\sum_{i=1}^K \norm{w_i^{(T+1)}}^2 \le R^2 U \; .
+\label{eqn:norm-ub}
+\end{equation}
+Similarly, if there is an update in round $t$, we have
+\begingroup
+\allowdisplaybreaks
+\begin{align*}
+\sum_{i=1}^K \ip{w_i^*}{w_i^{(t)}}
+& = \left( \sum_{i \in \{1,2,\dots,K\} \setminus \{\widehat y_t\}} \ip{w_i^*}{w_i^{(t)}} \right) + \ip{w_{\widehat y_t}^*}{w_{\widehat y_t}^{(t+1)}} \\
+& = \left( \sum_{i \in \{1,2,\dots,K\} \setminus \{\widehat y_t\}} \ip{w_i^*}{w_i^{(t)}} \right) + \ip{w_{\widehat y_t}^*}{w_{\widehat y_t}^{(t)} + (-1)^{z_t} x_t} \\
+& = \left( \sum_{i=1}^K \ip{w_i^*}{w_i^{(t)}} \right) + (-1)^{z_t} \ip{w_{\widehat y_t}^*}{x_t} \\
+& \ge \left( \sum_{i=1}^K \ip{w_i^*}{w_i^{(t)}} \right) + \frac \gamma 2,
+\end{align*}
+\endgroup
+where the last inequality follows from a case analysis on $z_t$ and
+Definition~\ref{definition:linear-separability}: if $z_t = 0$, then
+$\widehat y_t = y_t$, by Equation~\eqref{equation:strong-linear-separability-2},
+we have that $\ip{w_{\widehat y_t}^*}{x_t} \geq \frac \gamma 2$; if $z_t = 1$,
+then $\widehat y_t \neq y_t$, by
+Equation~\eqref{equation:strong-linear-separability-3}, we have that
+$\ip{w_{\widehat y_t}^*}{x_t} \le -\frac \gamma 2$.
+
+Thus, after $U$ updates,
+\begin{equation}
+\sum_{i=1}^K \ip{w_i^*}{w_i^{(T+1)}} \ge \frac {\gamma U} 2 \; .
+\label{eqn:norm-lb}
+\end{equation}
+Applying Cauchy-Schwartz's inequality twice, and using assumption
+\eqref{equation:strong-linear-separability-1}, we get that
+\begin{align*}
+\sum_{i=1}^K \ip{w_i^*}{w_i^{(T+1)}}
+& \le \sum_{i=1}^K \norm{w_i^*} \cdot \norm{w_i^{(T+1)}} \\
+& \le \sqrt{\sum_{i=1}^K \norm{w_i^*}^2} \sqrt{\sum_{i=1}^K \norm{w_i^{(T+1)}}^2} \\
+& \le \sqrt{\sum_{i=1}^K \norm{w_i^{(T+1)}}^2} \; .
+\end{align*}
+Combining the above inequality with Equations~\eqref{eqn:norm-ub} and~\eqref{eqn:norm-lb}, we get
+$$
+\left(\frac{\gamma U}{2} \right)^2 \le \sum_{i=1}^K \norm{w_i^{(T+1)}}^2 \le R^2 U \; .
+$$
+We conclude that $U \le 4(R/\gamma)^2$. Since $U$ is an integer, $U \le \lfloor 4(R/\gamma)^2 \rfloor$.
+
+Applying Equation~\eqref{eqn:mistake-update}, we get
+$$
+\Exp[M] \leq (K-1) \Exp[U] \leq (K-1) \lfloor 4(R/\gamma)^2 \rfloor \; . \qedhere
+$$
+\end{proof}
+
+
+
+
+\begin{proof}[Proof of \autoref{theorem:strongly-separable-examples-mistake-lower-bound}]
+%We use probabilistic method.
+Let $M = \left\lfloor \frac{1}{4} (R/\gamma)^2
+\right\rfloor$. Let $V = \R^{M+1}$ equipped with the standard inner product.
+Let $e_1, e_2, \dots, e_{M+1}$ be the standard orthonormal basis of $V$. We
+define vectors $v_1, v_2, \dots, v_M \in V$ where $v_j = \frac{R}{\sqrt{2}}(e_j
++ e_{M+1})$ for $j=1,2,\dots,M$. Let $\ell_1, \ell_2, \dots, \ell_M$ be chosen
+i.i.d. uniformly at random from $\{1,2,\dots,K\}$ and independently of any
+randomness used the by algorithm $\calA$. Let $T = M (K - 1)$. We define examples $(x_1,
+y_1), (x_2, y_2), \dots, (x_T, y_T)$ as follows. For any $j=1,2,\dots,M$ and any
+$h=1,2,\dots,K-1$,
+$$
+(x_{(j-1)(K-1) + h}, y_{(j-1)(K-1) + h}) = (v_j, \ell_j)
+$$
+
+The norm of each example is exactly $R$. The examples are strongly linearly separable
+with margin $\gamma$. To see that, consider $w_1^*, w_2^*, \dots, w_K^* \in V$
+defined by
+$$
+w_i^* = \sqrt{2} \frac{\gamma}{R} \left( \sum_{j ~:~ \ell_j = i} e_j \right) - \frac{\sqrt{2}}2 \frac{\gamma}{R} e_{M+1}
+$$
+for $i=1,2,\dots,K$.
+
+For $i \in \{1,2,\dots,K\}$ and $j \in
+\{1,2,\dots,M\}$, consider the inner product of $w_i^*$ and $v_j$.
+If $i = \ell_j$, $\ip{w_i^*}{v_j} = \gamma - \frac \gamma 2 = \frac \gamma 2$;
+otherwise $i \neq \ell_j$, in which case
+$\ip{w_i^*}{v_j} = 0 - \frac \gamma 2 = - \frac \gamma 2$.
+This means that $w_1^*, w_2^*, \dots, w_K^*$ satisfy
+conditions
+\eqref{equation:strong-linear-separability-2} and
+\eqref{equation:strong-linear-separability-3}. Condition \eqref{equation:strong-linear-separability-1}
+is satisfied since
+\[
+\sum_{i=1}^K \norm{w_i^*}^2
+= 2 \frac{\gamma^2}{R^2} \sum_{j=1}^M \norm{e_j}^2 +  \frac{\gamma^2}{2 R^2} K \norm{e_{M+1}}^2
+= 2 \frac{\gamma^2}{R^2} M + \frac{\gamma^2}{2 R^2} K
+\le \frac{1}{2} + \frac{1}{2}
+= 1 \; .
+\]
+
+It remains to lower bound the expected number of mistakes of $\calA$. For
+any $j \in \{1,2,\dots,M\}$, consider the expected number of mistakes the
+algorithm makes in rounds $(K-1)(j-1) + 1, (K-1)(j-1) + 2, \dots, (K-1)j$.
+
+Define a filtration of $\sigma$-algebras $\cbr{\calB_j}_{j=0}^M$, where $\calB_j
+= \sigma((x_1, y_1, \hat{y}_1), \ldots, (x_{(K-1)j}, y_{(K-1)j},
+\hat{y}_{(K-1)j}))$ for every $j$ in $\{1,2,\dots,M\}$. By Claim 2
+of~\citet{Daniely-Helbertal-2013}, as $\ell_j$ is chosen uniformly from
+$\cbr{1,\dots,K}$ and independent of $\calB_{j-1}$ and $\calA$'s randomness,
+$$
+\Exp \sbr{ \sum_{t=(K-1)(j-1) + 1}^{(K-1)j} z_t ~\Bigg|~ \calB_{j-1} } \ge \frac{K-1}{2} \; .
+$$
+This implies that
+$$
+\Exp \sbr{ \sum_{t=(K-1)(j-1) + 1}^{(K-1)j} z_t } \ge \frac{K-1}{2} \; .
+$$
+Summing over all $j$ in $\{1,2,\dots,M\}$,
+$$
+\Exp \sbr{ \sum_{t=1}^{(K-1)M} z_t} \geq \frac{K-1}2 \cdot M = \frac{K-1}2 \left\lfloor \frac 1 4 (R/\gamma)^2 \right\rfloor \; .
+$$
+
+Thus there exists a particular sequence of examples for which
+the algorithm makes at least $\frac{K-1}2 \left\lfloor \frac 1 4 (R/\gamma)^2
+\right\rfloor$ mistakes in expectation over its internal randomization.
+\end{proof}

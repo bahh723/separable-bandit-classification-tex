@@ -1,0 +1,142 @@
+\section{Nearest neighbor algorithm}
+\label{section:nearest-neighbor-algorithm}
+
+\begin{algorithm}[H]
+\SetAlgoLined
+\LinesNumbered
+\setcounter{AlgoLine}{0}
+\caption{\textsc{Nearest-Neighbor Algorithm}
+\label{algorithm:nearest-neighbor}
+}
+\textbf{Require:} Number of classes $K$, number of rounds $T$. \\
+\textbf{Require:} Inner product space $(V,\ip{\cdot}{\cdot})$. \\
+\nl Initialize $S \gets \emptyset$ \\
+\nl \For{$t=1,2,\ldots,T$:}{
+\nl  \If{$\min_{(x,y) \in S} \norm{x_t - x} \le \gamma$}{
+\nl    Find nearest neighbor \\
+       \qquad \qquad $(\widetilde{x}, \widetilde{y}) = \argmin_{(x,y) \in S} \norm{x_t - x}$ \\
+\nl	  Predict $\widehat{y}_t = \widetilde{y}$
+  }
+\nl \Else{
+\nl	  Predict $\widehat y_t \sim \text{Uniform}(\{1,2,\dots,K\})$
+      \label{line:nearest-neighbor-explore} \\
+\nl	  Receive feedback $z_t = \indicator{\widehat{y}_t \neq y_t}$ \\
+\nl	  \If{$z_t = 0$}{
+\nl      $S \gets S \cup \cbr{(x_t, \widehat{y}_t)}$
+    }
+  }
+}
+\end{algorithm}
+
+In this section we analyze \textsc{Nearest-Neighbor Algorithm} shown as
+Algorithm~\ref{algorithm:nearest-neighbor}. The algorithm is based on the obvious
+idea that, under the weak linear separability assumption, two examples that are close to each
+other must have the same label. The lemma below formalizes this intuition.
+
+\begin{lemma}[Non-separation lemma]
+\label{lemma:non-separation-lemma}
+Let $(V,\ip{\cdot}{\cdot})$ be a vector space, $K$ be a positive integer and let
+$\gamma$ be a positive real number. Suppose $(x_1,y_1), (x_2,y_2), \dots, (x_T,
+y_T) \in V \times \{1,2,\dots,K\}$ are labeled examples that are weakly linearly
+separable with margin $\gamma$. For $i$, $j$ in $\cbr{1,2,\dots,T}$, if
+$\norm{x_i - x_j}_2 \le \gamma$ then $y_i = y_j$.
+\end{lemma}
+
+\begin{proof}
+Suppose for the sake on contradiction that $y_i \neq y_j$. By
+Definition~\ref{definition:linear-separability}, there exists
+vectors $w_1, \ldots, w_K$ such that
+conditions~\eqref{equation:weak-linear-separability-1}
+and~\eqref{equation:weak-linear-separability-2} are satisfied.
+
+Specifically,
+\begin{align*}
+\ip{w_{y_i} - w_{y_j}}{x_i} & \ge \gamma \; , \\
+\ip{w_{y_j} - w_{y_i}}{x_j} & \ge \gamma \; .
+\end{align*}
+This implies that
+$$
+\ip{w_{y_i} - w_{y_j}}{x_i - x_j} \ge 2\gamma \; .
+$$
+
+On the other hand,
+$$
+\ip{w_{y_i} - w_{y_j}}{x_i - x_j} \le \norm{w_{y_i} - w_{y_j}} \cdot \norm{x_i - x_j} \le \sqrt{2} \gamma
+$$
+where the first inequality is from Cauchy-Schwartz inequality, the second
+inequality is from that $\norm{w_{y_i} - w_{y_j}} \le \sqrt{2(\norm{w_{y_i}}^2 +
+\norm{w_{y_j}}^2)} \leq \sqrt{2}$ and our assumption on $x_i$ and $x_j$.
+Therefore, we reach a contradiction.
+\end{proof}
+
+We also need to define several notions. A subset $S \subseteq \R^d$ is called a
+$\gamma$-packing if for any $x,x' \in S$ such that $x \neq x'$ we have $\norm{x -
+x'} > \gamma$. The following lemma is standard. Also recall that $\B(x,R) = \{ x'
+\in \R^d ~:~ \norm{x' - x} \le R \}$ denotes the closed ball of radius $R$
+centered a point $x$. For set $S \subseteq \R^d$, denote by $\Vol(S)$ the volume of
+$S$.
+
+\begin{lemma}[Size of $\gamma$-packing]
+\label{lemma:size-of-packing}
+Let $\gamma$ and $R$ be positive real numbers.
+If $S \subseteq \B(\zero,R) \subseteq \R^d$ is a $\gamma$-packing then
+$$
+|S| \le \left( \frac{2R}{\gamma} + 1 \right)^d \; .
+$$
+\end{lemma}
+
+\begin{proof}
+If $S$ is a $\gamma$-packing then $\{ \B(x,\gamma/2) ~:~ x \in S \}$
+is a collection of disjoint balls of radius $\gamma$ that fit into $\B(\zero,R + \gamma/2)$.
+Thus,
+$$
+|S| \cdot \Vol(\B(\zero, \gamma/2)) \le \Vol(\B(\zero,R + \gamma/2))
+$$
+Hence,
+\begin{align*}
+|S|
+ \le \frac{\Vol(\B(\zero,R + \gamma/2))}{\Vol(\B(\zero, \gamma/2))} 
+ = \left( \frac{R + \gamma/2}{\gamma/2} \right)^d
+ = \left( \frac{2R}{\gamma} + 1 \right)^d \; .
+\end{align*}
+\end{proof}
+
+\begin{theorem}[Mistake upper bound for \textsc{Nearest-Neighbor Algorithm}]
+\label{theorem:mistake-bound-for-nearest-neighbor-algorithm}
+Let $K$ and $d$ be positive integers and let $\gamma,R$ be a positive real
+numbers. Suppose $(x_1,y_1), \ldots, (x_T, y_T) \in
+\R^d \times \{1,2,\dots,K\}$ are labeled examples that are weakly linearly
+separable with margin $\gamma$ and satisfy $\norm{x_1}, \norm{x_2}, \dots,
+\norm{x_T} \le R$. Then, the expected number of mistakes made by
+Algorithm~\ref{algorithm:nearest-neighbor} is at most
+$$
+(K-1) \left( \frac{2R}{\gamma} + 1\right)^d \; .
+$$
+\end{theorem}
+
+\begin{proof}
+Let $M$ be the number of mistakes made by the algorithm. Let $b_t$ be the
+indicator that line~\ref{line:nearest-neighbor-explore} is executed at time step
+$t$, i.e. we fall into the ``else'' case. Note that if $b_t = 0$, then by
+Lemma~\ref{lemma:non-separation-lemma}, the prediction $\widehat{y}_t$ must equal
+$y_t$, i.e. $z_t = 0$. Therefore, $M = \sum_{t=1}^T z_t = \sum_{t=1}^T b_t z_t$.
+Let $U = \sum_{t=1}^T b_t (1-z_t)$. Clearly, $|S| = U$. Since $S \subseteq \B(\zero, R)$
+is a $\gamma$-packing, $U = |S| \le (\frac{2R}{\gamma} + 1)^d$.
+
+Note that when $b_t = 1$, $\widehat{y}_t$ is chosen uniformly at random, we have
+$$
+\Exp[ z_t ~|~ b_t = 1] = \frac{K-1}{K} \; .
+$$
+Therefore,
+$$
+\Exp[M] = \Exp \left[ \sum_{t=1}^T b_t z_t \right] = \frac{K-1}{K} \Exp \left[ \sum_{t=1}^T b_t \right] \; .
+$$
+On the other hand,
+$$
+\Exp[U] = \Exp \left[ \sum_{t=1}^T b_t (1-z_t) \right] = \frac 1 K \Exp \left[\sum_{t=1}^T b_t \right] \; .
+$$
+Therefore,
+$$
+\Exp[M] = (K-1) \Exp[U] \leq (K-1) \left(\frac{2R}{\gamma} + 1 \right)^d \; .
+$$
+\end{proof}
