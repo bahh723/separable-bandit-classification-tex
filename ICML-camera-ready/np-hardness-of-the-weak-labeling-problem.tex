@@ -18,8 +18,9 @@ Clearly, the problem is at least as hard as the decision version of the problem
 where the goal is to determine if such vectors and labeling exist. We show that
 this problem is NP-complete.
 
-We use symbols $1,2,\dots,K$ for strong labels and symbols $\overline{1},
-\overline{2}, \dots, \overline{K}$ for weak labels. Formally, the weak
+We use symbols $[K]=\{1,2,\dots,K\}$ for strong labels and $[\overline{K}] 
+=\{\overline{1},
+\overline{2}, \dots, \overline{K}\}$ for weak labels. Formally, the weak
 labeling problem can be described as below:
 \begin{figure}[H]
 \begin{framed}
@@ -29,9 +30,9 @@ labeling problem can be described as below:
 \textbf{Given:} Feature-label pairs $(x_1, y_1)$, $(x_2, y_2)$, \dots, $(x_T, y_T)$ in $\{0,1\}^d \times \{1,2,\dots, K, \overline{1}, \overline{2}, \dots, \overline{K}\}$. \\
 \textbf{Question:} Do there exist $ w_1, w_2, \dots, w_K \in \R^d$ such that for all $t=1,2,\dots,T$,
 \begin{align*}
-& y_t \in \{1,2,\dots,K\} \Longrightarrow \forall i \in \{1,2,\dots,K\} \setminus \{y_t\} \quad \ip{w_{y_t}}{x_t}  > \ip{w_i}{x_t} \; , \\
+& y_t \in [K] \Longrightarrow \forall i \in [K] \setminus \{y_t\} \quad \ip{w_{y_t}}{x_t}  > \ip{w_i}{x_t} \; , \\
 & \text{and} \\
-& y_t \in \{\overline{1}, \overline{2},\dots, \overline{K}\} \Longrightarrow \exists i \in \{1,2,\dots,K\} \quad \ip{w_i}{x_t} > \ip{w_{\overline{y_t}}}{x_t} \; ?
+& y_t \in [\overline{K}] \Longrightarrow \exists i \in [K] \quad \ip{w_i}{x_t} > \ip{w_{\overline{y_t}}}{x_t} \; ?
 \end{align*}
 \end{framed}
 \end{figure}

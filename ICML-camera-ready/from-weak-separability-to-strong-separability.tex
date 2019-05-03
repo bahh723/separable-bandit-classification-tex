@@ -15,9 +15,9 @@ alone does not guarantee a finite mistake bound in this setting, as weak linear
 separability does not imply strong linear separability.
 
 We use a positive definite kernel function $k(\cdot, \cdot)$, namely
-\emph{rational kernel}~\citep{Shalev-Shwartz-Shamir-Sridharan-2011}, whose
+a \emph{rational kernel}~\citep{Shalev-Shwartz-Shamir-Sridharan-2011} whose
 corresponding feature map $\phi(\cdot)$ transforms any sequence of \emph{weakly}
-linearly separable examples to \emph{strongly} linearly separable sequence of
+linearly separable examples to a \emph{strongly} linearly separable sequence of
 examples.
 Specifically, $\phi$ has the property that if a set of labeled
 examples in $\B(\zero,1)$ is weakly linearly separable with a margin $\gamma$, then
@@ -44,7 +44,10 @@ coordinates of $\ell_2$ by $d$-tuples $(\alpha_1, \alpha_2, \dots, \alpha_d)$ of
 non-negative integers, the feature map that corresponds to $k$ is $\phi: \B(\zero,1)
 \to \ell_2$,
 \begin{align}
-& \left(\phi(x_1, x_2, \dots, x_d)\right)_{(\alpha_1, \alpha_2, \dots, \alpha_d)} = x_1^{\alpha_1} x_2^{\alpha_2} \dots x_d^{\alpha_d} \cdot \sqrt{2^{-(\alpha_1 + \alpha_2 + \dots + \alpha_d)} \binom{\alpha_1 + \alpha_2 + \dots + \alpha_d}{\alpha_1, \alpha_2, \dots, \alpha_d}}
+\begin{split}
+&\left(\phi(x_1, x_2, \dots, x_d)\right)_{(\alpha_1, \alpha_2, \dots, \alpha_d)} = \\
+& x_1^{\alpha_1} x_2^{\alpha_2} \dots x_d^{\alpha_d} \cdot \sqrt{2^{-(\alpha_1 + \alpha_2 + \dots + \alpha_d)} \binom{\alpha_1 + \alpha_2 + \dots + \alpha_d}{\alpha_1, \alpha_2, \dots, \alpha_d}}
+\end{split}
 \label{equation:phi}
 \end{align}
 where $\binom{\alpha_1 + \alpha_2 + \dots + \alpha_d}{\alpha_1, \alpha_2, \dots,
@@ -62,7 +65,7 @@ proof to Section~\ref{section:margin-transformation}.
 
 \begin{theorem}[Margin transformation]
 \label{theorem:margin-transformation}
-Let $(x_1, y_1)$, $(x_2, y_2)$, $\dots$, $(x_T, y_T)$ in $\B(\zero,1) \times
+Let $(x_1, y_1)$, $(x_2, y_2)$, $\dots$, $(x_T, y_T)$ $\in \B(\zero,1) \times
 \{1,2,\dots,K\}$ be a sequence of labeled examples that is weakly linearly
 separable with margin $\gamma > 0$. Let $\phi$ be as defined in
 equation~\eqref{equation:phi} and let
@@ -86,7 +89,7 @@ equation~\eqref{equation:phi} and let
   \right]^{
     \frac{-\lceil \log_2(2K-2) \rceil \cdot \left \lceil \sqrt{{2}/{\gamma}} \right \rceil}{2}
   }
-}{2\sqrt{K}},
+}{2\sqrt{K}},\\
 \gamma_2 = & \frac{
    \left(2^{s+1} r(K-1) (4s+2) \right)^{-(s+1/2)r(K-1)}
 }{4\sqrt{K}(4K-5) 2^{K-1}}
@@ -142,7 +145,7 @@ p_i(x_t) \le - \frac{\gamma'}{2} \; .
 \end{align}
 We then show (\autoref{lemma:norm-bound}) that each polynomial $p_i$ can be
 expressed as $\ip{c_i}{\phi(x)}_{\ell_2}$ for some $c_i \in \ell_2$. This
-immediately implies that that the examples $(\phi(x_1),y_1), \ldots,
+immediately implies that the examples $(\phi(x_1),y_1), \ldots,
 (\phi(x_T),y_T)$ are strongly linearly separable with a positive margin.
 
 The conditions \eqref{equation:poly-pos} and~\eqref{equation:poly-neg} are

@@ -1,6 +1,6 @@
 \section{Notions of linear separability}
 \label{section:notions-of-linear-separability}
-
+Let $[n]=\{1,2,\ldots,n\}$.
 We define two notions of linear separability for multiclass classification. The
 first notion is the standard notion of linear separability used in the proof of
 the mistake bound for the \textsc{Multiclass Perceptron} algorithm \citep[see e.g.][]{Crammer-Singer-2003}. The second
@@ -14,36 +14,29 @@ notion is stronger, i.e. more restrictive. %However, it is more suitable for the
 Let $(V,\ip{\cdot}{\cdot})$ be an inner product space, $K$ be a positive
 integer, and $\gamma$ be a positive real number.
 We say that labeled examples $(x_1, y_1),
-(x_2, y_2), \dots, (x_T, y_T) \in V \times \{1,2,\dots,K\}$ are
-%said to be
-\begin{enumerate}
-\item
+(x_2, y_2), \dots, (x_T, y_T) \in V \times [K]$ are
+\\ \vskip .01in
 \emph{weakly linearly separable with a margin $\gamma$} if there exist vectors
 $w_1, w_2, \dots, w_K \in V$ such that
 \begin{align}
 \label{equation:weak-linear-separability-1}
-& \sum_{i=1}^K \norm{w_i}^2 \le 1 \; , \\
+\sum_{i=1}^K \norm{w_i}^2 & \le 1, \\
 \label{equation:weak-linear-separability-2}
-& \begin{gathered}
-\forall t \in \{1,2,\dots,T\} \quad \forall i \in \{1,2,\dots, K\} \setminus \{y_t\} \qquad
-\ip{x_t}{w_{y_t}} \ge \ip{x_t}{w_i} + \gamma \; ,
-\end{gathered}
+\ip{x_t}{w_{y_t}} & \ge \ip{x_t}{w_i} + \gamma \quad
+\forall t \in [T]\ \forall i \in [K] \setminus \{y_t\}, 
 \end{align}
-\item
-\emph{strongly linearly separable with a margin $\gamma$} if there exist vectors
+
+and \emph{strongly linearly separable with a margin $\gamma$} if there exist vectors
 $w_1, w_2, \dots, w_K \in V$ such that
 \begin{align}
 \label{equation:strong-linear-separability-1}
-& \sum_{i=1}^K \norm{w_i}^2 \le 1 \; , \\
+\sum_{i=1}^K \norm{w_i}^2 & \le 1, \\
 \label{equation:strong-linear-separability-2}
-& \forall t \in \{1,2,\dots,T\} \qquad \ip{x_t}{w_{y_t}} \ge \gamma/2 \; , \\
+\ip{x_t}{w_{y_t}} & \ge \gamma/2 \quad  \forall t \in [T], \\
 \label{equation:strong-linear-separability-3}
-& \begin{gathered}
-\forall t \in \{1,2,\dots,T\} \quad \forall i \in \{1,2,\dots, K\} \setminus \{y_t\}, \qquad
-\ip{x_t}{w_i} \le - \gamma/2 \; .
-\end{gathered}
+\ip{x_t}{w_i} & \le - \gamma/2 \quad
+\forall t \in [T]\ \forall i \in [K] \setminus \{y_t\}.
 \end{align}
-\end{enumerate}
 \end{definition}
 
 %The notion of weak linear separability is a standard assumption used in the

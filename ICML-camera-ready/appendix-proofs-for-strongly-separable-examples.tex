@@ -152,13 +152,13 @@ conditions
 \eqref{equation:strong-linear-separability-2} and
 \eqref{equation:strong-linear-separability-3}. Condition \eqref{equation:strong-linear-separability-1}
 is satisfied since
-\[
+\begin{align*}
 \sum_{i=1}^K \norm{w_i^*}^2
-= 2 \frac{\gamma^2}{R^2} \sum_{j=1}^M \norm{e_j}^2 +  \frac{\gamma^2}{2 R^2} K \norm{e_{M+1}}^2
-= 2 \frac{\gamma^2}{R^2} M + \frac{\gamma^2}{2 R^2} K
+& = 2 \frac{\gamma^2}{R^2} \sum_{j=1}^M \norm{e_j}^2 +  \frac{\gamma^2}{2 R^2} K \norm{e_{M+1}}^2 \\
+& = 2 \frac{\gamma^2}{R^2} M + \frac{\gamma^2}{2 R^2} K
 \le \frac{1}{2} + \frac{1}{2}
 = 1 \; .
-\]
+\end{align*}
 
 It remains to lower bound the expected number of mistakes of $\calA$. For
 any $j \in \{1,2,\dots,M\}$, consider the expected number of mistakes the

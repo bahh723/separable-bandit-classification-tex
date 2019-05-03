@@ -63,10 +63,10 @@ correct predictions in rounds $b_1, b_2, \dots, b_n$ where $1 \le b_1 < b_2 <
 (x_{a_n}, y_{a_n}) &= (x'_{b_2}, y'_{b_n}) \; .
 \end{align*}
 Then, as $\calA$ is ignorant,
-\[
-\Pr[y_t = y ~|~ (x_1, y_1), (x_2, y_2) \dots, (x_{t-1}, y_{t-1}), x_t = x] =
-\Pr[y_t' = y ~|~ (x_1', y_1'), (x_2', y_2') \dots, (x_{t-1}', y_{t-1}'), x_t' = x] \; .
-\]
+\begin{align*}
+\Pr[y_t = y ~|~ (x_1, y_1), (x_2, y_2) \dots, (x_{t-1}, y_{t-1}), x_t = x] = \\
+\Pr[y_t' = y ~|~ (x_1', y_1'), (x_2', y_2') \dots, (x_{t-1}', y_{t-1}'), x_t' = x].
+\end{align*}
 Note that the sequences $(x_1, y_1)$, $(x_2, y_2)$, $\dots$, $(x_{t-1},
 y_{t-1})$ and $(x_1', y_1')$, $(x_2', y_2')$, $\dots$, $(x_{s-1}', y_{s-1}')$
 might have different lengths and and $\calA$ might error in different sets of
@@ -189,7 +189,9 @@ Since the algorithm is ignorant, conditioned on $\tau$ and $q \triangleq p_\tau(
 \begin{align*}
 \Exp[s-\tau~|~\tau, q]
 &= \sum_{i=1}^{T+1-\tau} i \times \Pr[s-\tau = i |~\tau, q ] \\
-&= \sum_{j=1}^{T+1-\tau}\Pr[s-\tau\geq j | ~\tau, q] = \sum_{j=1}^{T+1-\tau}(1-q)^j \geq  \sum_{j=1}^{T+1-\tau}(1-q_0)^j = \frac{1-q_0}{q_0}\left( 1-(1-q_0)^{T-\tau+1} \right).
+&= \sum_{j=1}^{T+1-\tau}\Pr[s-\tau\geq j | ~\tau, q] \\
+& = \sum_{j=1}^{T+1-\tau}(1-q)^j \geq  \sum_{j=1}^{T+1-\tau}(1-q_0)^j \\
+& = \frac{1-q_0}{q_0}\left( 1-(1-q_0)^{T-\tau+1} \right).
 \end{align*}
 
 Therefore, by the tower property of conditional expectation,
