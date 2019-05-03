@@ -40,7 +40,7 @@ Note that $k(x,x')$ can be evaluated in $O(d)$ time.
 Consider the classical real separable Hilbert space $\ell_2 = \{ x \in \R^\infty
 ~:~ \sum_{i=1}^\infty x_i^2 < + \infty \}$ equipped with the standard inner
 product $\ip{x}{x'}_{\ell_2} = \sum_{i=1}^\infty x_i x'_i$. If we index the
-coordinates of $\ell_2$ by $d$-tuples $(\alpha_1, \alpha_2, \dots, \alpha_d)$ of
+coordinates of $\ell_2$ by $d$-tuples $(\alpha_1, \dots, \alpha_d)$ of
 non-negative integers, the feature map that corresponds to $k$ is $\phi: \B(\zero,1)
 \to \ell_2$,
 \begin{align}
@@ -50,9 +50,8 @@ non-negative integers, the feature map that corresponds to $k$ is $\phi: \B(\zer
 \end{split}
 \label{equation:phi}
 \end{align}
-where $\binom{\alpha_1 + \alpha_2 + \dots + \alpha_d}{\alpha_1, \alpha_2, \dots,
-\alpha_d} = \frac{(\alpha_1 + \alpha_2 + \dots + \alpha_d)!}{\alpha_1! \alpha_2!
-\dots \alpha_d!}$ is the multinomial coefficient. It can be easily checked that
+where $\binom{\alpha_1 + \dots + \alpha_d}{\alpha_1, \dots,
+\alpha_d} = \frac{(\alpha_1 + \dots + \alpha_d)!}{\alpha_1! \dots \alpha_d!}$ is the multinomial coefficient. It can be easily checked that
 $$
 k(x,x') = \ip{\phi(x)}{\phi(x')}_{\ell_2}.
 $$
@@ -139,7 +138,7 @@ multivariate polynomials $p_1, p_2, \dots,p_K$ such that
 \\
 \label{equation:poly-neg}
 & \begin{gathered}
-\forall t \in \cbr{1,2,\dots,T} \ \forall i \in \cbr{1,2,\ldots,K} \setminus \cbr{y_t}, \qquad
+\forall t \in \cbr{1,2,\dots,T} \ \forall i \in \cbr{1,2,\ldots,K} \setminus \cbr{y_t}, \\
 p_i(x_t) \le - \frac{\gamma'}{2} \; .
 \end{gathered}
 \end{align}
@@ -198,7 +197,8 @@ Before we state the theorems, recall that a polynomial of $d$ variables is a
 function $p:\R^d \to \R$ of the form
 \begin{align*}
 p(x)
- = p(x_1, x_2, \dots, x_d) = \sum_{\alpha_1, \alpha_2, \dots, \alpha_d} c_{\alpha_1, \alpha_2, \dots, \alpha_d} x_1^{\alpha_1} x_2^{\alpha_2} \dots x_d^{\alpha_d}
+&= p(x_1, x_2, \dots, x_d) \\
+&= \sum_{\alpha_1, \alpha_2, \dots, \alpha_d} c_{\alpha_1, \alpha_2, \dots, \alpha_d} x_1^{\alpha_1} x_2^{\alpha_2} \dots x_d^{\alpha_d}
 \end{align*}
 where the sum ranges over a finite set of $d$-tuples $(\alpha_1, \alpha_2,
 \dots, \alpha_d)$ of non-negative integers and $c_{\alpha_1, \alpha_2, \dots,
