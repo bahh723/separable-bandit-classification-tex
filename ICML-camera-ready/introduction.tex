@@ -46,13 +46,16 @@ Perceptron} algorithm makes at most $\lfloor 2(R/\gamma)^2 \rfloor$ mistakes. It
 is also known that any (possibly randomized) algorithm must make $\frac{1}{2}
 \left\lfloor (R/\gamma)^2 \right \rfloor$ mistakes in the worst case. The
 \textsc{Multiclass Perceptron} achieves an information-theoretically optimal
-mistake bound, while being time and memory efficient.~\footnote{For
+mistake bound, while being time and memory efficient.\footnote{We call an algorithm
+ computationally efficient, if its running time is polynomial in $K$, $d$, $1/\gamma$
+ and $T$.}
+\footnote{For
 completeness, we present these folklore results along with their proofs in
 Appendix~\ref{section:multiclass-perceptron-proofs} in the supplementary
 material.}
 
-The bandit feedback setting, however, is much more challenging. For the 
-strongly linearly separable case, we are not aware of any 
+The bandit feedback setting, however, is much more challenging. For the
+strongly linearly separable case, we are not aware of any
 prior efficient algorithm with a finite mistake bound.
 ~\footnote{Although~\citet{Chen-Chen-Zhang-Chen-Zhang-2009}
 claimed that their Conservative OVA algorithm with PA-I update has a finite

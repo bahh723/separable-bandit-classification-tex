@@ -1,4 +1,4 @@
-\section{Proof of Theorems~\ref{theorem:polynomial-approximation-1}~and~\ref{theorem:polynomial-approximation-2}}
+\section{Proofs of Theorems~\ref{theorem:polynomial-approximation-1}~and~\ref{theorem:polynomial-approximation-2}}
 \label{section:proof-of-polynomial-approximation}
 
 In this section, we follow the construction of~\citet{Klivans-Servedio-2008}
@@ -81,6 +81,8 @@ which since $n \ge k$ by assumption.
 (q(x))^n$. Then, $\norm{p}^2 \le n^{ns} \norm{q}^{2n}$.
 
 \item Let be $p_1, p_2, \dots, p_n$ be multivariate polynomials. Then,
+$\norm{\sum_{j=1}^n p_j} \le \sum_{j=1}^n \norm{p_j}$.
+Consequently,
 $\norm{\sum_{j=1}^n p_j}^2 \le n \sum_{j=1}^n \norm{p_j}^2$.
 \end{enumerate}
 \end{lemma}
@@ -151,8 +153,10 @@ $$
 
 Part 2 follows from the part 1 by setting $p_1 = p_2 = \dots p_n = q$.
 
-To prove part 3, we use generalized triangle inequality and
-\autoref{lemma:simple-inequality}. We have
+The first inequality of part 3 follows from triangle inequality in Euclidean spaces, by viewing the polynomials
+$p = \sum_{A} c_A x^A$ as multidimensional vectors $(c_A)$, and $\| p \| = \| (c_A) \|$.
+
+For the second inequality, by~\autoref{lemma:simple-inequality}, we have
 \[
 \norm{\sum_{j=1}^n p_j}^2 = \left( \norm{\sum_{j=1}^n p_j} \right)^2 \le \left(\sum_{j=1}^n \norm{p_j} \right)^2 \le n \sum_{j=1}^n \norm{p_j}^2 \; .
 \]
@@ -366,29 +370,29 @@ Substituting for $r$ and $s$ finishes the proof.
 \subsection{Proof of \autoref{theorem:polynomial-approximation-2}}
 \label{section:proof-of-polynomial-approximation-2}
 
-We prove the following lemma in this section.
-\autoref{theorem:polynomial-approximation-2} immediately
-follows from this lemma by considering $p' = p \cdot 2^{-s(s+1)rm+1}$
-and algebra.
+%We prove the following lemma in this section.
+%\autoref{theorem:polynomial-approximation-2} immediately
+%follows from this lemma by considering $p' = p \cdot 2^{-s(s+1)rm+1}$
+%and algebra.
 
-\begin{lemma}
-\label{lemma:polynomial-approximation-2}
-Let $v_1, v_2, \dots, v_m \in \R^d$ be vectors such that $\norm{v_1},
-\norm{v_2}, \dots, \norm{v_m} \le 1$. Let $\gamma \in (0,1)$.
-Define
-$$
-r = 2 \left\lceil \frac{1}{4} \log_2(4m + 1) \right\rceil + 1 \quad \text{and} \quad s = \left \lceil \log_2(1/\gamma) \right \rceil \; .
-$$
-Then, there exists a multivariate polynomial $p:\R^d \to \R$ such that
-\begin{enumerate}
-\item $\displaystyle p(x) \ge \frac{1}{4} \cdot 2^{s(s+1)rm}$ for all $\displaystyle x \in \bigcap_{i=1}^m \left\{ x \in \R^d ~:~ \norm{x} \le 1, \ \ip{v_i}{x} \ge \gamma \right\}$,
+%\begin{lemma}
+%\label{lemma:polynomial-approximation-2}
+%Let $v_1, v_2, \dots, v_m \in \R^d$ be vectors such that $\norm{v_1},
+%\norm{v_2}, \dots, \norm{v_m} \le 1$. Let $\gamma \in (0,1)$.
+%Define
+%$$
+%r = 2 \left\lceil \frac{1}{4} \log_2(4m + 1) \right\rceil + 1 \quad \text{and} \quad s = \left \lceil \log_2(1/\gamma) \right \rceil \; .
+%$$
+%Then, there exists a multivariate polynomial $p:\R^d \to \R$ such that
+%\begin{enumerate}
+%\item $\displaystyle p(x) \ge \frac{1}{4} \cdot 2^{s(s+1)rm}$ for all $\displaystyle x \in \bigcap_{i=1}^m \left\{ x \in \R^d ~:~ \norm{x} \le 1, \ \ip{v_i}{x} \ge \gamma \right\}$,
 
-\item $\displaystyle p(x) \le - \frac{1}{4} \cdot 2^{s(s+1)rm}$ for all $\displaystyle x \in \bigcup_{i=1}^m \left\{ x \in \R^d ~:~ \norm{x} \le 1, \ \ip{v_i}{x} \le - \gamma \right\}$,
+%\item $\displaystyle p(x) \le - \frac{1}{4} \cdot 2^{s(s+1)rm}$ for all $\displaystyle x \in \bigcup_{i=1}^m \left\{ x \in \R^d ~:~ \norm{x} \le 1, \ \ip{v_i}{x} \le - \gamma \right\}$,
 
-\item $\deg(p) \le (2s+1) rm$,
-\item $\norm{p} \le (2m-1/2) 2^m \cdot \left(2^{2s} rm (4s+2)^2 \right)^{(s+1/2)rm}$.
-\end{enumerate}
-\end{lemma}
+%\item $\deg(p) \le (2s+1) rm$,
+%\item $\norm{p} \le (2m-1/2) 2^m \cdot \left(2^{2s} rm (4s+2)^2 \right)^{(s+1/2)rm}$.
+%\end{enumerate}
+%\end{lemma}
 
 We define several univariate polynomials
 \begin{align*}
@@ -396,11 +400,13 @@ P_n(z) & = (z - 1) \prod_{i=1}^n (z - 2^i)^2, \quad \text{for $n \ge 0$,} \\
 A_{n,k}(z) & = (P_n(z))^k - (P_n(-z))^k,  \quad \text{for $n,k \ge 0$,} \\
 B_{n,k}(z) & = - (P_n(z))^k - (P_n(-z))^k,  \quad \text{for $n,k \ge 0$.}
 \end{align*}
-We define the polynomial $p:\R^d \to \R$ as
+We define the polynomial $p':\R^d \to \R$ as
 \[
-p(x) = \left[ \sum_{i=1}^m A_{s,r}\left( \frac{\ip{v_i}{x}}{\gamma} \right) \prod_{\substack{j ~:~ 1 \le j \le m \\ j \neq i}} B_{s,r} \left( \frac{\ip{v_j}{x}}{\gamma} \right) \right]
+p'(x) = \left[ \sum_{i=1}^m A_{s,r}\left( \frac{\ip{v_i}{x}}{\gamma} \right) \prod_{\substack{j ~:~ 1 \le j \le m \\ j \neq i}} B_{s,r} \left( \frac{\ip{v_j}{x}}{\gamma} \right) \right]
 - \left(m - \frac{1}{2} \right) \prod_{j=1}^m B_{s,r} \left( \frac{\ip{v_j}{x}}{\gamma} \right) \; .
 \]
+Finally, we define the polynomial $p := 2^{-s(s+1)rm+1} \cdot p'$. We are going to show
+that this polynomial $p$ satisfies the required properties.
 
 For convenience we define univariate rational function
 \begin{align*}
@@ -412,7 +418,7 @@ Q(x) = \left( \sum_{i=1}^m S_{s,r}\left( \frac{\ip{v_i}{x}}{\gamma} \right) \rig
 $$
 It is easy to verify that
 $$
-p(x) = Q(x) \prod_{j=1}^m B_{s,r} \left( \frac{\ip{v_j}{x}}{\gamma} \right) \; .
+p'(x) = Q(x) \prod_{j=1}^m B_{s,r} \left( \frac{\ip{v_j}{x}}{\gamma} \right) \; .
 $$
 
 \begin{lemma}[Properties of $P_n$]
@@ -565,7 +571,7 @@ Q(x)
 \end{align*}
 \end{proof}
 
-To prove parts 1 and 2 of \autoref{lemma:polynomial-approximation-2} first
+To prove parts 1 and 2 of \autoref{theorem:polynomial-approximation-2} first
 note that part 4 of \autoref{lemma:properties-of-s-n-r} implies that for any $x$
 such that $\norm{x} \le 1$, $B_{s,r}\left( \frac{\ip{v_i}{x}}{\gamma} \right)$
 is positive. Thus $p(x)$ and $Q(x)$ have the same sign on the unit ball.
@@ -579,20 +585,19 @@ are the same, it remains to show that $|p(x)| \ge \frac{1}{4} \cdot 2^{s(s+1)rm}
 Indeed,
 \begin{align*}
 |p(x)|
-& = |Q(x)| \prod_{j=1}^m B_{s,r} \left( \frac{\ip{v_j}{x}}{\gamma} \right) \\
-& \ge |Q(x)| \left( 2^{s(s+1)r} \left( 1 - \frac{1}{4m+1} \right) \right)^m \\
-& \ge \frac{1}{2} |Q(x)| \cdot 2^{s(s+1)rm} \\
-& \ge \frac{1}{4} \cdot 2^{s(s+1)rm} \quad \text{(\autoref{lemma:properties-of-q})} \; .
+& = 2^{-s(s+1)rm+1} \cdot |Q(x)| \prod_{j=1}^m B_{s,r} \left( \frac{\ip{v_j}{x}}{\gamma} \right) \\
+& \ge 2^{-s(s+1)rm+1} \cdot |Q(x)| \left( 2^{s(s+1)r} \left( 1 - \frac{1}{4m+1} \right) \right)^m \\
+& \ge |Q(x)| \ge \frac{1}{2} \quad \text{(\autoref{lemma:properties-of-q})} \; .
 \end{align*}
 where we used that $\left(1-\frac{1}{4m+1}\right)^m \ge e^{-\frac 1 4} \ge 1/2$.
 
 %m^{s^2m/2}
 
-To prove part 3 of \autoref{lemma:polynomial-approximation-2} note that
+To prove part 3 of \autoref{theorem:polynomial-approximation-2} note that
 $\deg(P_s) = 2s+1$. Thus, $\deg(A_{s,r})$ and $\deg(B_{s,r})$ are at most
 $(2s+1)r$. Therefore, $\deg(p) \le (2s+1) rm$.
 
-It remains to prove part 4 of \autoref{lemma:polynomial-approximation-2}.
+It remains to prove part 4 of \autoref{theorem:polynomial-approximation-2}.
 For any $i \in \{0,1,2,\dots,s\}$ and any $v \in \R^d$ such that $\norm{v} \le 1$
 define multivariate polynomials
 \begin{align*}
@@ -603,7 +608,7 @@ b_v(x) & = B_{s,r} \left( \frac{\ip{v}{x}}{\gamma} \right) \; .
 \end{align*}
 Note that
 \[
-p(x) = \left[ \sum_{i=1}^m a_{v_i}(x) \prod_{\substack{j ~:~ 1 \le j \le m \\ j \neq i}} b_{v_j}(x) \right] - \left(m - \frac{1}{2} \right) \prod_{j=1}^n b_{v_j}(x) \; .
+p'(x) = \left[ \sum_{i=1}^m a_{v_i}(x) \prod_{\substack{j ~:~ 1 \le j \le m \\ j \neq i}} b_{v_j}(x) \right] - \left(m - \frac{1}{2} \right) \prod_{j=1}^n b_{v_j}(x) \; .
 \]
 We bound the norms of these polynomials. We have
 $$
@@ -626,12 +631,14 @@ Using parts 3 and 2 of \autoref{lemma:properties-of-norm-of-polynomials} we uppe
 & \le 4 r^{r(2s+1)} \left((2s+1)^{2s+1} (2 \cdot 2^s)^{2s + 1} \right)^{r} \\
 & = 4 \left(2^{2s} r (4s+2) \right)^{(2s+1)r} \; .
 \end{align*}
-The same upper bound holds for $\norm{b_v}^2$. Finally,
+The same upper bound holds for $\norm{b_v}^2$. Therefore,
 \begin{align*}
-\norm{p} 
+\norm{p'}
 & \le \left[ \sum_{i=1}^m \norm{a_{v_i} \prod_{\substack{j ~:~ 1 \le j \le m \\ j \neq i}} b_{v_j}} \right] + \left(m - \frac{1}{2} \right) \norm{\prod_{j=1}^m b_{v_j}} \\
 & \le \left[ \sum_{i=1}^m m^{(s+1/2)rm} \norm{a_{v_i}} \prod_{\substack{j ~:~ 1 \le j \le m \\ j \neq i}} \norm{b_{v_j}} \right] \\
 & \qquad + \left(m - \frac{1}{2} \right) m^{(s+1/2)rm} \prod_{j=1}^m \norm{b_{v_j}} \\
 & \le (2m-1/2) m^{(s+1/2)rm} \left(4 \left(2^{2s} r (4s+2) \right)^{(2s+1)r} \right)^{m/2} \\
 & = (2m-1/2) 2^m \cdot \left(2^{2s} rm (4s+2) \right)^{(s+1/2)rm} \; .
 \end{align*}
+Finally,
+$\norm{p} = 2^{-s(s+1)rm+1} \norm{p'} \leq (4m-1) 2^m \cdot \left(2^s rm (4s+2) \right)^{(s+1/2)rm}$. The theorem follows.
