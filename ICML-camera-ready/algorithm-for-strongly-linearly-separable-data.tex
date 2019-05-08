@@ -16,8 +16,8 @@ class; see e.g. \citep[Section 3.3.1]{Shalev-Shwartz-2012}. Upon seeing each
 example $x_t$, copy $i$ predicts whether or not $x_t$ belongs to class $i$.
 Multiclass predictions are done by evaluating all $K$ binary predictors and
 outputting any class with a positive prediction.  If all binary predictions are
-negative, the algorithm chooses a prediction a prediction uniformly at random
-from $\cbr{1,\ldots,K}$.
+negative, the algorithm chooses a prediction uniformly at random
+from $\cbr{1,2,\dots,K}$.
 
 %\begin{algorithm}[h]
 %\caption{\textsc{Bandit Algorithm for Strongly Linearly Separable Examples}
@@ -98,7 +98,7 @@ Let $(V, \ip{\cdot}{\cdot})$ be an inner product space, $K$ be a positive
 integer, $\gamma$ be a positive real number, $R$ be a non-negative real number.
 If the examples $(x_1, y_1), \dots, (x_T, y_T) \in V \times \{1,2,\dots,K\}$ are
 strongly linearly separable with margin $\gamma$ and $\norm{x_1}, \norm{x_2},
-\dots, \norm{x_T} \le R$ then the expected number of mistakes
+\dots, \norm{x_T} \le R$ then the expected number of mistakes that
 Algorithm~\ref{algorithm:algorithm-for-strongly-linearly-separable-examples}
 makes is at most $(K-1) \lfloor 4(R/\gamma)^2 \rfloor$.
 \end{theorem}
@@ -145,12 +145,12 @@ be extended to nonlinear classification using \emph{positive definite kernels}
 \to \R$ for some set $X$ such that the matrix
 $\left(k(x_i,x_j)\right)_{i,j=1}^m$ is a symmetric positive semidefinite for any
 positive integer $m$ and $x_1, x_2, \dots, x_m \in X$ \citep[Definition
-2.5]{Scholkopf-Smola-2002}.\footnote{For every kernel there exists an associated feature map
-$\phi:X \to V$ into some inner product space $(V,\ip{\cdot}{\cdot})$ such that
-$k(x,x') = \ip{\phi(x)}{\phi(x')}$.} As opposed to explicitly maintaining the
-weight vector for each class, the algorithm maintains the set of example-scalar
-pairs corresponding to the updates of the non-kernelized algorithm. As a direct
-consequence of
+2.5]{Scholkopf-Smola-2002}.\footnote{For every kernel there exists an associated
+feature map $\phi:X \to V$ into some inner product space $(V,\ip{\cdot}{\cdot})$
+such that $k(x,x') = \ip{\phi(x)}{\phi(x')}$.} As opposed to explicitly
+maintaining the weight vector for each class, the algorithm maintains the set of
+example-scalar pairs corresponding to the updates of the non-kernelized
+algorithm. As a direct consequence of
 Theorem~\ref{theorem:strongly-separable-examples-mistake-upper-bound} we get a
 mistake bound for the kernelized algorithm.
 
@@ -167,7 +167,7 @@ X \times \{1,2,\dots,K\}$ are labeled examples such that:
 are strongly linearly separable with margin $\gamma$,
 \item $k(x_1, x_1), k(x_2, x_2), \dots, k(x_T,x_T) \le R^2$,
 \end{enumerate}
-then the expected number of mistakes Algorithm~\ref{algorithm:kernelized} makes
+then the expected number of mistakes that Algorithm~\ref{algorithm:kernelized} makes
 is at most $(K-1) \lfloor 4(R/\gamma)^2 \rfloor$.
 \end{theorem}
 

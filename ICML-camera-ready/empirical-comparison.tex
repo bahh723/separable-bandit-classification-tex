@@ -9,7 +9,7 @@ and~\ref{figure:weakly-separable-dataset} show visualizations of the two
 datasets, along with detailed descriptions of the distributions.
 
 \begin{figure}[h]
-  \centering
+\centering
 \begin{subfigure}[b]{0.23\textwidth}
 \captionsetup{justification=centering}
 \begin{center}
@@ -44,13 +44,11 @@ We implemented
 Algorithm~\ref{algorithm:algorithm-for-strongly-linearly-separable-examples},
 Algorithm~\ref{algorithm:kernelized} with rational
 kernel~\eqref{equation:rational-kernel} and used implementation of
-\textsc{Banditron} algorithm by \citet{Orabona09}.%\footnote{The source code
-%is included in the supplementary material.}
-We evaluated these algorithms on the two datasets. \textsc{Banditron} has an
-exploration rate parameter, for which we tried values $0.02, 0.01, 0.005, 0.002,
-0.001, 0.0005$. Since all three algorithms are randomized, we run each algorithm
-$20$ times. The average cumulative number of mistakes up to round $t$ as a
-function of $t$ are shown in
+\textsc{Banditron} algorithm by \citet{Orabona09}. We evaluated these algorithms
+on the two datasets. \textsc{Banditron} has an exploration rate parameter, for
+which we tried values $0.02, 0.01, 0.005, 0.002, 0.001, 0.0005$. Since all three
+algorithms are randomized, we run each algorithm $20$ times. The average
+cumulative number of mistakes up to round $t$ as a function of $t$ are shown in
 Figures~\ref{figure:number-of-mistakes-strongly-separable-dataset}
 and~\ref{figure:number-of-mistakes-weakly-separable-dataset}.
 

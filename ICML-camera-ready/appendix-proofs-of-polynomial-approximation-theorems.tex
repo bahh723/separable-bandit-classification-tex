@@ -62,11 +62,12 @@ Multiplying by the (positive) denominators, we get an equivalent inequality
 $$
 (n - j + 1)(k - j) \le (n - j)(k - j + 1) \; .
 $$
-Cancelling common terms leads to an equivalent inequality
+We multiply out the terms and get
 $$
-k - j \le n - j \; ,
+nk - kj + k - nj + j^2 - j \le nk - nj + n - kj + j^2 - j \; .
 $$
-which since $n \ge k$ by assumption.
+We cancel common terms and get an equivalent inequality $k \ge n$, which
+holds by the assumption.
 \end{proof}
 
 \begin{lemma}[Properties of the norm of polynomials]
@@ -178,7 +179,7 @@ Chebyshev polynomials have a lot of interesting properties.
 We will need properties listed in
 \autoref{proposition:properties-of-chebyshev-polynomials} below.
 Interested reader can learn more about Chebyshev polynomials
-from the book by \cite{Mason-Handscomb-2002}.
+from the book by \citet{Mason-Handscomb-2002}.
 
 \begin{proposition}[Properties of Chebyshev polynomials]
 \label{proposition:properties-of-chebyshev-polynomials}
@@ -249,7 +250,7 @@ means that we need to show that
 $$
 \sinh(n \theta) \ge n \sinh(\theta) \qquad \text{for all $\theta \ge 0$.}
 $$
-Tho prove this inequality we use the summation formula
+To prove this inequality we use the summation formula
 $$
 \sinh(\alpha + \beta) = \sinh(\alpha) \cosh(\beta) + \sinh(\beta) \cosh(\beta) \; .
 $$
@@ -370,42 +371,18 @@ Substituting for $r$ and $s$ finishes the proof.
 \subsection{Proof of \autoref{theorem:polynomial-approximation-2}}
 \label{section:proof-of-polynomial-approximation-2}
 
-%We prove the following lemma in this section.
-%\autoref{theorem:polynomial-approximation-2} immediately
-%follows from this lemma by considering $p' = p \cdot 2^{-s(s+1)rm+1}$
-%and algebra.
-
-%\begin{lemma}
-%\label{lemma:polynomial-approximation-2}
-%Let $v_1, v_2, \dots, v_m \in \R^d$ be vectors such that $\norm{v_1},
-%\norm{v_2}, \dots, \norm{v_m} \le 1$. Let $\gamma \in (0,1)$.
-%Define
-%$$
-%r = 2 \left\lceil \frac{1}{4} \log_2(4m + 1) \right\rceil + 1 \quad \text{and} \quad s = \left \lceil \log_2(1/\gamma) \right \rceil \; .
-%$$
-%Then, there exists a multivariate polynomial $p:\R^d \to \R$ such that
-%\begin{enumerate}
-%\item $\displaystyle p(x) \ge \frac{1}{4} \cdot 2^{s(s+1)rm}$ for all $\displaystyle x \in \bigcap_{i=1}^m \left\{ x \in \R^d ~:~ \norm{x} \le 1, \ \ip{v_i}{x} \ge \gamma \right\}$,
-
-%\item $\displaystyle p(x) \le - \frac{1}{4} \cdot 2^{s(s+1)rm}$ for all $\displaystyle x \in \bigcup_{i=1}^m \left\{ x \in \R^d ~:~ \norm{x} \le 1, \ \ip{v_i}{x} \le - \gamma \right\}$,
-
-%\item $\deg(p) \le (2s+1) rm$,
-%\item $\norm{p} \le (2m-1/2) 2^m \cdot \left(2^{2s} rm (4s+2)^2 \right)^{(s+1/2)rm}$.
-%\end{enumerate}
-%\end{lemma}
-
 We define several univariate polynomials
 \begin{align*}
 P_n(z) & = (z - 1) \prod_{i=1}^n (z - 2^i)^2, \quad \text{for $n \ge 0$,} \\
 A_{n,k}(z) & = (P_n(z))^k - (P_n(-z))^k,  \quad \text{for $n,k \ge 0$,} \\
 B_{n,k}(z) & = - (P_n(z))^k - (P_n(-z))^k,  \quad \text{for $n,k \ge 0$.}
 \end{align*}
-We define the polynomial $p':\R^d \to \R$ as
-\[
-p'(x) = \left[ \sum_{i=1}^m A_{s,r}\left( \frac{\ip{v_i}{x}}{\gamma} \right) \prod_{\substack{j ~:~ 1 \le j \le m \\ j \neq i}} B_{s,r} \left( \frac{\ip{v_j}{x}}{\gamma} \right) \right]
+We define the polynomial $q:\R^d \to \R$ as
+$$
+q(x) = \left[ \sum_{i=1}^m A_{s,r}\left( \frac{\ip{v_i}{x}}{\gamma} \right) \prod_{\substack{j ~:~ 1 \le j \le m \\ j \neq i}} B_{s,r} \left( \frac{\ip{v_j}{x}}{\gamma} \right) \right]
 - \left(m - \frac{1}{2} \right) \prod_{j=1}^m B_{s,r} \left( \frac{\ip{v_j}{x}}{\gamma} \right) \; .
-\]
-Finally, we define the polynomial $p := 2^{-s(s+1)rm+1} \cdot p'$. We are going to show
+$$
+Finally, we define $p(x) = 2^{-s(s+1)rm+1} q(x)$. We are going to show
 that this polynomial $p$ satisfies the required properties.
 
 For convenience we define univariate rational function
@@ -418,7 +395,7 @@ Q(x) = \left( \sum_{i=1}^m S_{s,r}\left( \frac{\ip{v_i}{x}}{\gamma} \right) \rig
 $$
 It is easy to verify that
 $$
-p'(x) = Q(x) \prod_{j=1}^m B_{s,r} \left( \frac{\ip{v_j}{x}}{\gamma} \right) \; .
+q(x) = Q(x) \prod_{j=1}^m B_{s,r} \left( \frac{\ip{v_j}{x}}{\gamma} \right) \; .
 $$
 
 \begin{lemma}[Properties of $P_n$]
@@ -444,8 +421,8 @@ by $1$.
 To prove the second part, notice that $P_n(z)$ is non-negative and $P_n(-z)$ is
 non-positive for any $z \in [1,2^n]$. Now, fix $z \in [1,2^n]$ and let $j \in
 \{1,2,\dots,n\}$ be such that $2^{j-1} \le z \le 2^j$. This implies that
-$(z+2^{j})^2 \ge (2^j)^2 \ge 4 (z - 2^j)^2$. We can write $\frac{P_n(z)}{-P_n(-z)}$ as a
-product of $n+1$ non-negative fractions
+$(z+2^{j})^2 \ge (2^j)^2 \ge 4 (z - 2^j)^2$. We can write
+$\frac{P_n(z)}{-P_n(-z)}$ as a product of $n+1$ non-negative fractions
 $$
 \frac{P_n(z)}{-P_n(-z)}
 = \frac{z-1}{z+1} \cdot \frac{(z-2^j)^2}{(z+2^j)^2} \prod_{\substack{i ~:~ 1 \le i \le n \\ i \neq j}} \frac{(z-2^i)^2}{(z+2^i)^2} \; .
@@ -467,7 +444,7 @@ Let $r = 2 \left\lceil \frac{1}{4} \log_2(4m + 1) \right\rceil + 1$. Then,
 \item If $z \in [1,2^n]$ then $S_{n,r}(z) \in [1,1+\frac{1}{2m}]$.
 \item If $z \in [-2^n, -1]$ then $S_{n,r}(z) \in [-1-\frac{1}{2m}, -1]$.
 \item If $z \in [-1,1]$ then $|S_{n,r}(z)| \le 1$.
-\item If $z \in [-2^n,2^n]$ then \\ $B_{n,r}(z) \ge \left(1 - \frac{1}{4m+1} \right) 2^{n(n+1)r}$.
+\item If $z \in [-2^n,2^n]$ then $B_{n,r}(z) \ge \left(1 - \frac{1}{4m+1} \right) 2^{n(n+1)r}$.
 \end{enumerate}
 \end{lemma}
 
@@ -495,8 +472,6 @@ where $c = \left( - \frac{P_n(z)}{P_n(-z)}\right)^r$. If $z \in [0,1]$, by part
 1 of~\autoref{lemma:properties-of-p-n} and the fact that $r$ is odd, $c
 \in [-1,0]$, and thus, $S_{n,r}(z) = \frac{1+c}{1-c} \in [0,1]$. Since
 $S_{n,r}(z)$ is odd, for $z \in [-1,0]$, $S_{n,r}(z) \in [-1,0]$.
-
-%\frac{\displaystyle 1 + \left( - \frac{P_n(z)}{P_n(-z)}\right)^r}{\displaystyle 1 - \left( - \frac{P_n(z)}{P_n(-z)}\right)^r} =
 
 \item Since $B_{n,r}(z)$ is even, we can without loss generality assume that $z \ge
 0$. We consider two cases.
@@ -607,9 +582,9 @@ a_v(x) & = A_{s,r} \left( \frac{\ip{v}{x}}{\gamma} \right) \; , \\
 b_v(x) & = B_{s,r} \left( \frac{\ip{v}{x}}{\gamma} \right) \; .
 \end{align*}
 Note that
-\[
-p'(x) = \left[ \sum_{i=1}^m a_{v_i}(x) \prod_{\substack{j ~:~ 1 \le j \le m \\ j \neq i}} b_{v_j}(x) \right] - \left(m - \frac{1}{2} \right) \prod_{j=1}^n b_{v_j}(x) \; .
-\]
+$$
+q(x) = \left[ \sum_{i=1}^m a_{v_i}(x) \prod_{\substack{j ~:~ 1 \le j \le m \\ j \neq i}} b_{v_j}(x) \right] - \left(m - \frac{1}{2} \right) \prod_{j=1}^n b_{v_j}(x) \; .
+$$
 We bound the norms of these polynomials. We have
 $$
 \norm{f_{i,v}}^2 = \norm{v}^2/\gamma^2 + 2^{2i} \le 2 \cdot 2^{2s} \; .
@@ -633,7 +608,7 @@ Using parts 3 and 2 of \autoref{lemma:properties-of-norm-of-polynomials} we uppe
 \end{align*}
 The same upper bound holds for $\norm{b_v}^2$. Therefore,
 \begin{align*}
-\norm{p'}
+\norm{q}
 & \le \left[ \sum_{i=1}^m \norm{a_{v_i} \prod_{\substack{j ~:~ 1 \le j \le m \\ j \neq i}} b_{v_j}} \right] + \left(m - \frac{1}{2} \right) \norm{\prod_{j=1}^m b_{v_j}} \\
 & \le \left[ \sum_{i=1}^m m^{(s+1/2)rm} \norm{a_{v_i}} \prod_{\substack{j ~:~ 1 \le j \le m \\ j \neq i}} \norm{b_{v_j}} \right] \\
 & \qquad + \left(m - \frac{1}{2} \right) m^{(s+1/2)rm} \prod_{j=1}^m \norm{b_{v_j}} \\
@@ -641,4 +616,4 @@ The same upper bound holds for $\norm{b_v}^2$. Therefore,
 & = (2m-1/2) 2^m \cdot \left(2^{2s} rm (4s+2) \right)^{(s+1/2)rm} \; .
 \end{align*}
 Finally,
-$\norm{p} = 2^{-s(s+1)rm+1} \norm{p'} \leq (4m-1) 2^m \cdot \left(2^s rm (4s+2) \right)^{(s+1/2)rm}$. The theorem follows.
+$\norm{p} = 2^{-s(s+1)rm+1} \norm{q} \leq (4m-1) 2^m \cdot \left(2^s rm (4s+2) \right)^{(s+1/2)rm}$. The theorem follows.
