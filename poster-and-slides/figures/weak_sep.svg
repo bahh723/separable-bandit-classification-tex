@@ -1,0 +1,74 @@
+<?xml version="1.1" encoding="windows-1252"?>
+<svg xmlns="http://www.w3.org/2000/svg"
+    xmlns:latexdraw="http://latexdraw.sourceforge.net/namespaces/latexdraw"
+    version="1.1" baseProfile="full">
+    <g>
+        <g latexdraw:type="polygon" id="id28958136">
+            <polygon
+                points="569.9132653061215,470.54228855721385 674.0,532.1542288557216 559.0867346938779,526.1542288557216 389.5612244897961,529.9452736318409 216.0,529.0 457.5867346938776,408.0 "
+                stroke-width="2.0" stroke="white" fill="#9999ff" latexdraw:rotationAngle="0.0"/>
+        </g>
+        <g latexdraw:type="polygon" id="id32089918">
+            <polygon
+                points="633.4689457010238,146.02564102564105 691.5968466809109,288.8333333333333 755.0,507.0 491.3938701834527,362.8076923076924 475.0,96.0 570.7154645251603,125.01282051282033 "
+                stroke-width="2.0" stroke="white" fill="#ff9999" latexdraw:rotationAngle="0.0"/>
+        </g>
+        <g latexdraw:type="polygon" id="id12469871">
+            <polygon
+                points="408.0,100.0 427.0,369.0 262.0,447.0 167.0,387.0 171.0,303.0 214.0,217.0 "
+                stroke-width="2.0" stroke="white" fill="#66ff66" latexdraw:rotationAngle="0.0"/>
+        </g>
+        <g latexdraw:type="text" id="id8143741" fill="black" latexdraw:position="bl">
+            <text x="227.0" y="293.0">\Huge Class 1</text>
+        </g>
+        <g latexdraw:type="text" id="id15728410" fill="black" latexdraw:position="bl">
+            <text x="393.0" y="501.0">\Huge Class 3</text>
+        </g>
+        <g latexdraw:type="joinedLines" id="id10678339">
+            <polyline points="442.0,117.0 460.0,378.0 "
+                stroke-width="2.0" stroke="black" latexdraw:rotationAngle="0.0"/>
+        </g>
+        <g latexdraw:type="joinedLines" id="id17034280">
+            <polyline points="460.0,379.0 725.0,529.0 "
+                stroke-width="2.0" stroke="black" latexdraw:rotationAngle="0.0"/>
+        </g>
+        <g latexdraw:type="joinedLines" id="id21498133">
+            <polyline points="460.0,379.0 202.0,503.0 "
+                stroke-width="2.0" stroke="black" latexdraw:rotationAngle="0.0"/>
+        </g>
+        <g latexdraw:type="text" id="id9562371" fill="black" latexdraw:position="bl">
+            <text x="329.0" y="90.0">\Huge $\langle w_1 - w_2, x \rangle = 0$</text>
+        </g>
+        <g latexdraw:type="text" id="id30521782" fill="black" latexdraw:position="bl">
+            <text x="65.0" y="572.0">\Huge $\langle w_1 - w_3, x \rangle = 0$</text>
+        </g>
+        <g latexdraw:type="text" id="id5491541" fill="black" latexdraw:position="bl">
+            <text x="659.0" y="574.0">\Huge $\langle w_2 - w_3, x \rangle = 0$</text>
+        </g>
+        <g latexdraw:type="text" id="id30811309" fill="black" latexdraw:position="bl">
+            <text x="560.0" y="306.0">\Huge Class 2</text>
+        </g>
+    </g>
+    <defs/>
+    <metadata>
+        <latexdraw:metadata>
+            <latexdraw:latexIncludes/>
+            <latexdraw:displayXScale>true</latexdraw:displayXScale>
+            <latexdraw:displayYScale>true</latexdraw:displayYScale>
+            <latexdraw:unit>CM</latexdraw:unit>
+            <latexdraw:zoom>1.0</latexdraw:zoom>
+            <latexdraw:magneticGridStyle>NONE</latexdraw:magneticGridStyle>
+            <latexdraw:gridGap>20</latexdraw:gridGap>
+            <latexdraw:magneticGrid>true</latexdraw:magneticGrid>
+            <latexdraw:version>3.3.8</latexdraw:version>
+            <latexdraw:size>
+                <latexdraw:width>1516</latexdraw:width>
+                <latexdraw:height>976</latexdraw:height>
+            </latexdraw:size>
+            <latexdraw:position>
+                <latexdraw:x>0.0</latexdraw:x>
+                <latexdraw:y>0.0</latexdraw:y>
+            </latexdraw:position>
+        </latexdraw:metadata>
+    </metadata>
+</svg>
