@@ -16,3 +16,5 @@ receives a feature vector and it needs to predict one of <b>K</b> classes, after
 which it receives binary feedback whether or not the class was correct. We
 design efficient algorithms under the assumption that data are linearly
 separable.
+
+The source codes for the experiments are provided in another repository: https://github.com/bahh723/separable-bandit-classification.git
